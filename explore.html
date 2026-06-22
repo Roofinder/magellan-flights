@@ -32,6 +32,28 @@
             padding:5px 13px; border-radius:20px; cursor:pointer; margin-right:7px; }
   .regchip.on{ background:#fff; color:#0b1320; border-color:#fff; font-weight:600; }
   .topbar{ position:sticky; top:0; z-index:60; }
+  .blog-wrap{ max-width:760px; }
+  .blog-eyebrow{ color:var(--gold); font-size:12.5px; letter-spacing:.05em; text-transform:uppercase; margin-bottom:6px; }
+  .blog-title{ font-size:40px; margin:0 0 16px; }
+  .blog-deal{ display:flex; flex-wrap:wrap; gap:14px; justify-content:space-between; align-items:center; background:#0e141d; border:1px solid var(--line); border-radius:14px; padding:16px 18px; margin-bottom:22px; }
+  .blog-deal-label{ font-weight:700; } .blog-deal-dates{ color:var(--muted); font-size:13px; }
+  .blog-deal-right{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .blog-price{ font-size:26px; font-weight:800; color:var(--gold); } .blog-was{ color:var(--muted); font-size:13px; }
+  .blog-sec{ margin:0 0 22px; } .blog-sec h2{ font-size:21px; margin:0 0 8px; } .blog-sec p{ color:var(--ink2); line-height:1.7; }
+  .blog-list{ margin:0; padding-left:20px; line-height:1.9; } .blog-list li{ color:var(--ink2); }
+  .blog-lang{ font-size:13.5px; color:var(--muted); margin-top:8px; }
+  .blog-video{ display:flex; align-items:center; gap:14px; background:linear-gradient(135deg,#1a2330,#0e141d); border:1px solid var(--line); border-radius:12px; padding:18px 20px; text-decoration:none; color:var(--ink); transition:border-color .15s; }
+  .blog-video:hover{ border-color:var(--gold); }
+  .bv-play{ display:inline-flex; align-items:center; justify-content:center; width:46px; height:46px; border-radius:50%; background:var(--gold); color:#0b1118; font-size:18px; flex:0 0 auto; }
+  .bv-text{ font-size:15px; }
+  .blog-cta{ display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:8px; }
+  .mv-more{ display:block; margin:10px auto 2px; background:#0e141d; color:var(--gold); border:1px solid var(--line); border-radius:9px; padding:9px 18px; font-size:13px; cursor:pointer; }
+  .mv-more:hover{ border-color:var(--gold); }
+  .mv-head{ display:flex; align-items:center; gap:16px; margin:2px 8px 8px; }
+  .mv-sortbtn{ background:none; border:0; color:var(--muted); cursor:pointer; font-size:12.5px; display:inline-flex; align-items:center; gap:5px; padding:2px 0; }
+  .mv-sortbtn:hover{ color:var(--ink); }
+  .mv-sortbtn.on{ color:var(--gold); font-weight:600; }
+  .mv-ar{ font-size:10px; }
   .lp-dot{ display:inline-block; width:7px; height:7px; border-radius:50%; background:#27d07a; margin-right:6px; vertical-align:middle; animation:lppulse 1.8s infinite; }
   @keyframes lppulse{ 0%{box-shadow:0 0 0 0 rgba(39,208,122,.5)} 70%{box-shadow:0 0 0 6px rgba(39,208,122,0)} 100%{box-shadow:0 0 0 0 rgba(39,208,122,0)} }
   .ticker-toggle{ background:#0e141d; color:var(--gold); border:1px solid var(--line); border-radius:8px; padding:6px 9px; font-size:12px; cursor:pointer; display:inline-flex; align-items:center; gap:5px; line-height:1; }
@@ -307,7 +329,7 @@
 <header>
   <div class="bar">
     <a class="logo" href="index.html"><span class="mark"><svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="50" cy="50" r="47" fill="none" stroke="#e7b94e" stroke-width="2"/><circle cx="50" cy="50" r="39" fill="none" stroke="#e7b94e" stroke-width="1" opacity="0.4"/><g stroke="#b8862f" stroke-width="1.4" opacity="0.7"><line x1="50" y1="50" x2="71" y2="29"/><line x1="50" y1="50" x2="71" y2="71"/><line x1="50" y1="50" x2="29" y2="71"/><line x1="50" y1="50" x2="29" y2="29"/></g><path d="M50 7 L42 42 L50 50 Z" fill="#f0c860"/><path d="M50 7 L58 42 L50 50 Z" fill="#c79a33"/><path d="M93 50 L58 42 L50 50 Z" fill="#f0c860"/><path d="M93 50 L58 58 L50 50 Z" fill="#c79a33"/><path d="M50 93 L58 58 L50 50 Z" fill="#f0c860"/><path d="M50 93 L42 58 L50 50 Z" fill="#c79a33"/><path d="M7 50 L42 58 L50 50 Z" fill="#f0c860"/><path d="M7 50 L42 42 L50 50 Z" fill="#c79a33"/><circle cx="50" cy="50" r="5.5" fill="#0a0e14"/><circle cx="50" cy="50" r="3" fill="#f0c860"/></svg></span>Magellan Flights</a>
-    <nav class="nav"><a class="link" href="index.html">Home</a><a class="link" href="market.html">Market</a><a class="link active" href="explore.html">Explore</a><a class="link" href="trip.html">Journey</a><a class="link" href="watchlist.html">My Bucket List Flights</a><a class="link" href="essentials.html">Travel kit</a><a class="nav-cta" href="index.html#alerts">Get free alerts</a><button type="button" class="ticker-toggle" onclick="toggleTickers()" title="Hide or show the price ticker" aria-label="Toggle ticker"><span class="tt-ar">&#9650;</span> Ticker</button></nav>
+    <nav class="nav"><a class="link" href="index.html">Home</a><a class="link" href="market.html">Market</a><a class="link active" href="explore.html">Explore</a><a class="link" href="trip.html">Journey</a><a class="link" href="blog.html">Daily Guide</a><a class="link" href="watchlist.html">My Bucket List Flights</a><a class="link" href="essentials.html">Travel kit</a><a class="nav-cta" href="index.html#alerts">Get free alerts</a><button type="button" class="ticker-toggle" onclick="toggleTickers()" title="Hide or show the price ticker" aria-label="Toggle ticker"><span class="tt-ar">&#9650;</span> Ticker</button></nav>
   </div>
 </header>
 <script>
