@@ -779,7 +779,7 @@ function liveCard(btn){
 }
 function liveOnView(){
   function sigInfo(price,b){ if(!b) return null; var pct=Math.round((b-price)/b*100); var cls=pct>=20?'s-book':(pct>=8?'s-watch':'s-wait'); var sg=pct>=20?'BOOK':(pct>=8?'WATCH':'WAIT'); return {pct:pct,cls:cls,s:sg}; }
-  var queue=[], active=0, MAX=3, done=(typeof WeakSet!=='undefined')?new WeakSet():null, marker={};
+  var queue=[], active=0, MAX=3;
   function pump(){ while(active<MAX && queue.length){ doFetch(queue.shift()); } }
   function apply(el,np,link,b){
     var pe=el.querySelector('.mv-price, .price');
@@ -795,11 +795,12 @@ function liveOnView(){
     var u='/api/search?origin='+encodeURIComponent(o)+'&destination='+encodeURIComponent(d)+'&one_way='+(ow?'true':'false')+'&sorting=price&limit=1';
     fetch(u).then(function(r){return r.json();}).then(function(j){ var f=j&&j.data&&j.data[0]; if(f) apply(el, Math.round(f.price), f.link, b); }).catch(function(){}).then(function(){ active--; pump(); });
   }
-  function enq(el){ if(done){ if(done.has(el)) return; done.add(el); } else { if(el[marker]) return; el[marker]=1; } queue.push(el); }
-  var els=document.querySelectorAll('[data-lp]');
-  if(!('IntersectionObserver' in window)){ for(var i=0;i<els.length;i++) enq(els[i]); pump(); return; }
-  var io=new IntersectionObserver(function(ents){ for(var k=0;k<ents.length;k++){ if(ents[k].isIntersecting){ enq(ents[k].target); io.unobserve(ents[k].target); } } pump(); }, {rootMargin:'150px'});
-  for(var j=0;j<els.length;j++) io.observe(els[j]);
+  function inView(el){ var vh=window.innerHeight||document.documentElement.clientHeight; var r=el.getBoundingClientRect(); return r.height>0 && r.bottom>-250 && r.top < vh+250; }
+  function scan(){ var els=document.querySelectorAll('[data-lp]'); for(var i=0;i<els.length;i++){ var el=els[i]; if(el.__lp || el.offsetParent===null) continue; if(inView(el)){ el.__lp=1; queue.push(el); } } pump(); }
+  var t; function onScroll(){ clearTimeout(t); t=setTimeout(scan,120); }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', onScroll, {passive:true});
+  scan(); setInterval(scan, 1500);
 }
 function tlSpin(el,msg){ el.innerHTML='<div class="tl-load"><span class="astro sm" style="width:34px;display:inline-block">'+ASTRO+'</span><p>'+(msg||'Charting fares…')+'</p></div>'; }
 function tlRow(f, oneway){
