@@ -648,7 +648,7 @@ function tlHop(){
     var u2='/api/search?origin='+d+'&one_way=true&sorting=price&limit=200';
     if(arr) u2+='&departure_at='+arr;
     fetch(u2).then(function(r){return r.json();}).then(function(j2){
-      var onward=((j2&&j2.data)||[]).filte      var onward=((j2&&j2.data)||[]).filter(function(f){ if(f.destination_airport===o) return false; if(!arr||!f.departure_at) return true; var diff=(new Date(f.departure_at)-new Date(arr))/3600000; return diff>=-6 && diff<=48; });
+      var onward=((j2&&j2.data)||[]).filter(function(f){ if(f.destination_airport===o) return false; if(!arr||!f.departure_at) return true; var diff=(new Date(f.departure_at)-new Date(arr))/3600000; return diff>=-6 && diff<=48; });
       onward.sort(function(a,b){return a.price-b.price;});
       var h='<div class="hop-leg"><div class="hop-tag">Leg 1 &middot; get there</div>'+tlRow(leg1,true)+'</div>';
       h+='<div class="hop-leg"><div class="hop-tag">Leg 2 &middot; cheapest onward within 48h</div>'+(onward.length? onward.slice(0,6).map(function(f){return tlRow(f,true);}).join('') : '<div class="wl-hint">No onward one-way within 48h found from '+d+' — try another date.</div>')+'</div>';
