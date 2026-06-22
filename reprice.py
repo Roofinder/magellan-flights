@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Re-price every row in data/market_latest.csv against the LIVE Travelpayouts
-prices_for_dates API for each route's EXACT dates, so the price shown on the
-site equals what a user actually pays when they click. Recomputes savings_pct
-vs the existing benchmark. Rows that can't be verified (no current fare for the
-exact dates, and none for the route at all) are dropped rather than shown stale.
-Run after market.py and before buildsite.py."""
+prices_for_dates API for each route's EXACT dates, choosing a ROBUST price:
+- prefer fares cached today (freshest),
+- reject lone "phantom" singletons (a cheapest fare far below the next one),
+so the price shown is one a user can actually book. Recomputes savings_pct vs
+the existing benchmark and drops routes with no verifiable fare. Run after
+market.py and before buildsite.py."""
 import os, csv, json, time, datetime
 import urllib.parse as up, urllib.request as ur
 from concurrent.futures import ThreadPoolExecutor
@@ -16,19 +17,21 @@ cfg = json.load(open(os.path.join(HERE, "config.json"), encoding="utf-8"))
 TOKEN = cfg["api_token"]; MARKER = cfg.get("marker", "")
 CUR = cfg.get("currency", "usd"); MKT = cfg.get("market", "us")
 TODAY = datetime.date.today().isoformat()
+TODAY_SD = datetime.date.today().strftime("%d%m%Y")   # search_date format in links
+PHANTOM = 0.70   # a cheapest below 70% of the next-cheapest is treated as a phantom
 
 def _call(params):
     params = dict(params); params.update({"currency": CUR, "market": MKT,
-        "one_way": "false", "sorting": "price", "token": TOKEN})
+        "one_way": "false", "sorting": "price", "limit": "30", "token": TOKEN})
     url = "https://api.travelpayouts.com/aviasales/v3/prices_for_dates?" + up.urlencode(params)
     req = ur.Request(url); req.add_header("X-Access-Token", TOKEN)
-    for _ in range(3):
+    for _ in range(4):
         try:
             with ur.urlopen(req, timeout=25) as z:
                 return json.load(z).get("data", [])
         except Exception:
             time.sleep(0.6)
-    return None  # None = network failure (keep old row), [] = no fare
+    return None
 
 def _link(rel):
     if not rel: return ""
@@ -37,26 +40,37 @@ def _link(rel):
         u += ("&" if "?" in u else "?") + "marker=" + str(MARKER)
     return u
 
+def _robust(fares):
+    """Pick a trustworthy cheapest fare. Prefer today's cache; drop phantom
+    singletons that sit far below the next-cheapest."""
+    if not fares: return None
+    fresh = [f for f in fares if ("search_date=" + TODAY_SD) in (f.get("link","") or "")]
+    pool = fresh if fresh else fares
+    pool = sorted(pool, key=lambda f: float(f["price"]))
+    while len(pool) > 1 and float(pool[0]["price"]) < PHANTOM * float(pool[1]["price"]):
+        pool.pop(0)
+    return pool[0]
+
 def reprice(row):
     o, d = row["origin"], row["code"]
     dep, ret = row.get("depart",""), row.get("return","")
     try: bench = float(row["benchmark"])
     except: bench = 0.0
-    # 1) exact dates
     data = None
     if dep and ret:
-        data = _call({"origin": o, "destination": d, "departure_at": dep, "return_at": ret, "limit": "1"})
+        data = _call({"origin": o, "destination": d, "departure_at": dep, "return_at": ret})
     used = "exact"
-    # 2) fallback: current cheapest for the route (any dates)
     if not data:
-        nd = _call({"origin": o, "destination": d, "limit": "1"})
+        nd = _call({"origin": o, "destination": d})
         if nd:
             data = nd; used = "fallback"
         elif data is None or nd is None:
-            return ("keep", row)      # network hiccup -> don't lose the row
+            return ("keep", row)
         else:
-            return ("drop", row)      # genuinely no fare bookable -> drop
-    f = data[0]
+            return ("drop", row)
+    f = _robust(data)
+    if not f:
+        return ("drop", row)
     price = float(f["price"])
     row["price"] = f"{price:.0f}"
     row["airline"] = f.get("airline", row.get("airline",""))
@@ -68,18 +82,15 @@ def reprice(row):
     return (used, row)
 
 rows = list(csv.DictReader(open(SNAP, encoding="utf-8")))
-fields = rows[0].keys() if rows else []
-print(f"Re-pricing {len(rows)} routes against live exact-date fares...")
+fields = list(rows[0].keys()) if rows else []
+print(f"Re-pricing {len(rows)} routes (robust: today-pref + phantom-reject)...")
 out, stats = [], {"exact":0,"fallback":0,"drop":0,"keep":0}
-deltas = []
-with ThreadPoolExecutor(max_workers=6) as pool:
+with ThreadPoolExecutor(max_workers=12) as pool:
     for status, row in pool.map(reprice, rows):
         stats[status] += 1
         if status != "drop":
             out.append(row)
-
-# preserve original column order
-with open(SNAP, "w", newline="", encoding="utf-8") as f:
-    w = csv.DictWriter(f, fieldnames=list(fields))
+with open(SNAP, "w", newline="", encoding="utf-8") as fp:
+    w = csv.DictWriter(fp, fieldnames=fields)
     w.writeheader(); w.writerows(out)
-print("Done:", stats, f"-> {len(out)} rows written")
+print("Done:", stats, f"-> {len(out)} rows")
