@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Magellan Flights — Last-minute</title>
-<meta name="description" content="The cheapest flights from the USA, tracked like a market - every day.">
+<meta name="description" content="The cheapest flights from anywhere to everywhere — proof the world costs far less to see than you think.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <style>
   :root{ --bg:#0a0e14; --card:#121821; --ink:#e9edf4; --muted:#94a0b3; --line:#222b38;
@@ -181,7 +181,7 @@
   .ti-label{ flex:0 0 auto; position:relative; z-index:3; display:inline-flex; align-items:center; gap:6px; padding:8px 14px;
              background:var(--gold); color:var(--ink2); font-family:ui-monospace,Menlo,Consolas,monospace;
              font-size:11.5px; font-weight:700; letter-spacing:.10em; text-transform:uppercase; white-space:nowrap; }
-  .ticker.ow .ti-label{ background:transparent; color:var(--gold); border-right:1px solid var(--line); }
+  .ticker.ow .ti-label{ background:var(--gold); color:var(--ink2); }
 
   /* ====================  Historical context banners  ==================== */
   .context-banner{ display:flex; gap:10px; align-items:flex-start; margin:0 0 14px;
@@ -289,6 +289,11 @@
   .live-btn:hover{ border-color:var(--gold); color:var(--gold); }
   .live-ok{ font-size:11px; color:var(--green); font-weight:700; margin:0 0 10px; display:inline-block; }
   .live-up{ font-size:11px; color:var(--red); font-weight:700; margin:0 0 10px; display:inline-block; }
+
+  /* Mission band */
+  .mission{ background:linear-gradient(180deg, rgba(231,185,78,.06), rgba(231,185,78,0)); border:1px solid var(--line); border-radius:16px; padding:30px 26px; margin:34px 0 6px; text-align:center; }
+  .mission h2{ margin:0 0 10px; font-size:23px; }
+  .mission p{ margin:0 auto; max-width:690px; color:var(--muted); font-size:15px; line-height:1.7; }
 </style>
 </head>
 <body>
