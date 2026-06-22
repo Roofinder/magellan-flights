@@ -32,6 +32,9 @@
             padding:5px 13px; border-radius:20px; cursor:pointer; margin-right:7px; }
   .regchip.on{ background:#fff; color:#0b1320; border-color:#fff; font-weight:600; }
   .topbar{ position:sticky; top:0; z-index:60; }
+  .ticker-toggle{ background:#0e141d; color:var(--gold); border:1px solid var(--line); border-radius:8px; padding:6px 9px; font-size:12px; cursor:pointer; display:inline-flex; align-items:center; gap:5px; line-height:1; }
+  .ticker-toggle:hover{ border-color:var(--gold); }
+  body.tickers-off .topbar .ticker, body.tickers-off .topbar .regionbar{ display:none !important; }
   header{ background:rgba(255,255,255,.96); backdrop-filter:blur(8px);
           border-bottom:1px solid var(--line); }
   .bar{ max-width:1080px; margin:0 auto; padding:13px 20px; display:flex; align-items:center; justify-content:space-between; gap:12px; }
@@ -302,9 +305,13 @@
 <header>
   <div class="bar">
     <a class="logo" href="index.html"><span class="mark"><svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="50" cy="50" r="47" fill="none" stroke="#e7b94e" stroke-width="2"/><circle cx="50" cy="50" r="39" fill="none" stroke="#e7b94e" stroke-width="1" opacity="0.4"/><g stroke="#b8862f" stroke-width="1.4" opacity="0.7"><line x1="50" y1="50" x2="71" y2="29"/><line x1="50" y1="50" x2="71" y2="71"/><line x1="50" y1="50" x2="29" y2="71"/><line x1="50" y1="50" x2="29" y2="29"/></g><path d="M50 7 L42 42 L50 50 Z" fill="#f0c860"/><path d="M50 7 L58 42 L50 50 Z" fill="#c79a33"/><path d="M93 50 L58 42 L50 50 Z" fill="#f0c860"/><path d="M93 50 L58 58 L50 50 Z" fill="#c79a33"/><path d="M50 93 L58 58 L50 50 Z" fill="#f0c860"/><path d="M50 93 L42 58 L50 50 Z" fill="#c79a33"/><path d="M7 50 L42 58 L50 50 Z" fill="#f0c860"/><path d="M7 50 L42 42 L50 50 Z" fill="#c79a33"/><circle cx="50" cy="50" r="5.5" fill="#0a0e14"/><circle cx="50" cy="50" r="3" fill="#f0c860"/></svg></span>Magellan Flights</a>
-    <nav class="nav"><a class="link" href="index.html">Home</a><a class="link" href="market.html">Market</a><a class="link" href="explore.html">Explore</a><a class="link" href="trip.html">Journey</a><a class="link" href="watchlist.html">My Bucket List Flights</a><a class="link" href="essentials.html">Travel kit</a><a class="nav-cta" href="index.html#alerts">Get free alerts</a></nav>
+    <nav class="nav"><a class="link" href="index.html">Home</a><a class="link" href="market.html">Market</a><a class="link" href="explore.html">Explore</a><a class="link" href="trip.html">Journey</a><a class="link" href="watchlist.html">My Bucket List Flights</a><a class="link" href="essentials.html">Travel kit</a><a class="nav-cta" href="index.html#alerts">Get free alerts</a><button type="button" class="ticker-toggle" onclick="toggleTickers()" title="Hide or show the price ticker" aria-label="Toggle ticker"><span class="tt-ar">&#9650;</span> Ticker</button></nav>
   </div>
 </header>
+<script>
+function toggleTickers(){ var off=document.body.classList.toggle('tickers-off'); try{ localStorage.setItem('mf_tickers', off?'off':'on'); }catch(e){} var a=document.querySelector('.ticker-toggle .tt-ar'); if(a) a.innerHTML= off?'&#9660;':'&#9650;'; }
+(function(){ var off=false; try{ off=localStorage.getItem('mf_tickers')==='off'; }catch(e){} if(off){ document.body.classList.add('tickers-off'); var a=document.querySelector('.ticker-toggle .tt-ar'); if(a) a.innerHTML='&#9660;'; } })();
+</script>
 </div>
 <div class="wrap">
   <div class="pagehead" id="airports"><h1>The Captain&rsquo;s Log</h1><p>Your home airports and tracked fares &mdash; a captain&rsquo;s log of raw data: coordinates, prices and deviations. Set your home airport to see the cheapest trips leaving from your city. Saved in this browser.</p></div>
@@ -646,19 +653,7 @@ function tlHop(){
   var o=(document.getElementById('hp-origin').value||'').trim().toUpperCase();
   var d=(document.getElementById('hp-dest').value||'').trim().toUpperCase();
   var dep=document.getElementById('hp-depart').value;
-  var out=document.getElementById('hp-out');
-  if(!/^[A-Z]{3}$/.test(o)||!/^[A-Z]{3}$/.test(d)){ out.innerHTML='<div class="wl-hint">Enter both a 3-letter origin and destination (e.g. JFK and BKK).</div>'; return; }
-  tlSpin(out,'Plotting your passage…');
-  var u1='/api/search?origin='+o+'&destination='+d+'&one_way=true&sorting=price&limit=10';
-  if(dep) u1+='&departure_at='+dep;
-  fetch(u1).then(function(r){return r.json();}).then(function(j){
-    var leg1=((j&&j.data)||[]).slice().sort(function(a,b){return a.price-b.price;})[0];
-    if(!leg1){ out.innerHTML='<div class="wl-hint">No one-way found to '+d+' for that date.</div>'; return; }
-    var arr=(leg1.departure_at||dep||'').slice(0,10);
-    var u2='/api/search?origin='+d+'&one_way=true&sorting=price&limit=200';
-    if(arr) u2+='&departure_at='+arr;
-    fetch(u2).then(function(r){return r.json();}).then(function(j2){
-      var onward=((j2&&j2.data)||[]).filte      var onward=((j2&&j2.data)||[]).filter(function(f){ if(f.destination_airport===o) return false; if(!arr||!f.departure_at) return true; var diff=(new Date(f.departure_at)-new Date(arr))/3600000; return diff>=-6 && diff<=48; });
+      var onward=((j2&&j2.data)||[]).filter(function(f){ if(f.destination_airport===o) return false; if(!arr||!f.departure_at) return true; var diff=(new Date(f.departure_at)-new Date(arr))/3600000; return diff>=-6 && diff<=48; });
       onward.sort(function(a,b){return a.price-b.price;});
       var h='<div class="hop-leg"><div class="hop-tag">Leg 1 &middot; get there</div>'+tlRow(leg1,true)+'</div>';
       h+='<div class="hop-leg"><div class="hop-tag">Leg 2 &middot; cheapest onward within 48h</div>'+(onward.length? onward.slice(0,6).map(function(f){return tlRow(f,true);}).join('') : '<div class="wl-hint">No onward one-way within 48h found from '+d+' — try another date.</div>')+'</div>';
