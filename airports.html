@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Magellan Flights — Captain's Log</title>
 <meta name="description" content="The cheapest flights from the USA, tracked like a market - every day.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <style>
   :root{ --bg:#0a0e14; --card:#121821; --ink:#e9edf4; --muted:#94a0b3; --line:#222b38;
          --blue:#e7b94e; --blue-d:#d2a23a; --green:#27d07a; --green-bg:rgba(39,208,122,.14);
@@ -35,8 +36,8 @@
           border-bottom:1px solid var(--line); }
   .bar{ max-width:1080px; margin:0 auto; padding:13px 20px; display:flex; align-items:center; justify-content:space-between; gap:12px; }
   .logo{ display:flex; align-items:center; gap:9px; font-weight:700; font-size:19px; text-decoration:none; }
-  .logo .mark{ width:30px; height:30px; border-radius:7px; background:var(--blue); color:#fff;
-        display:flex; align-items:center; justify-content:center; font-size:17px; }
+  .logo .mark{ width:34px; height:34px; display:flex; align-items:center; justify-content:center; }
+  .logo .mark svg{ width:34px; height:34px; display:block; }
   .nav{ display:flex; align-items:center; gap:15px; flex-wrap:wrap; }
   .nav a.link{ font-size:14px; color:var(--muted); text-decoration:none; }
   .nav a.link.active{ color:var(--ink); font-weight:500; }
@@ -225,9 +226,9 @@
   .btn-primary{ background:var(--gold); color:var(--ink2); font-weight:700; text-decoration:none;
                 padding:13px 26px; border-radius:10px; font-size:15px; }
   .btn-primary:hover{ filter:brightness(1.07); }
-  .btn-ghost{ background:transparent; color:var(--ink); border:1px solid var(--line); text-decoration:none;
+  .btn-ghost{ background:#161d28; color:var(--ink); border:1px solid #2c3744; text-decoration:none;
               padding:13px 24px; border-radius:10px; font-size:15px; font-weight:600; }
-  .btn-ghost:hover{ border-color:var(--gold); color:var(--gold); }
+  .btn-ghost:hover{ border-color:var(--gold); color:var(--gold); background:#1b2330; }
   .trust{ margin:24px 0 0; font-size:12.5px; color:var(--muted); letter-spacing:.02em; }
   .trust b{ color:var(--ink); }
   .statbar{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:24px 0 4px; }
@@ -265,7 +266,7 @@
 <div class="ticker ow"><span class="ti-label">&#8600; One-way</span><div class="ticker-track" id="owtrack"></div></div>
 <header>
   <div class="bar">
-    <a class="logo" href="index.html"><span class="mark"><svg class="logo-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg></span>Magellan Flights</a>
+    <a class="logo" href="index.html"><span class="mark"><svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="50" cy="50" r="47" fill="none" stroke="#e7b94e" stroke-width="2"/><circle cx="50" cy="50" r="39" fill="none" stroke="#e7b94e" stroke-width="1" opacity="0.4"/><g stroke="#b8862f" stroke-width="1.4" opacity="0.7"><line x1="50" y1="50" x2="71" y2="29"/><line x1="50" y1="50" x2="71" y2="71"/><line x1="50" y1="50" x2="29" y2="71"/><line x1="50" y1="50" x2="29" y2="29"/></g><path d="M50 7 L42 42 L50 50 Z" fill="#f0c860"/><path d="M50 7 L58 42 L50 50 Z" fill="#c79a33"/><path d="M93 50 L58 42 L50 50 Z" fill="#f0c860"/><path d="M93 50 L58 58 L50 50 Z" fill="#c79a33"/><path d="M50 93 L58 58 L50 50 Z" fill="#f0c860"/><path d="M50 93 L42 58 L50 50 Z" fill="#c79a33"/><path d="M7 50 L42 58 L50 50 Z" fill="#f0c860"/><path d="M7 50 L42 42 L50 50 Z" fill="#c79a33"/><circle cx="50" cy="50" r="5.5" fill="#0a0e14"/><circle cx="50" cy="50" r="3" fill="#f0c860"/></svg></span>Magellan Flights</a>
     <nav class="nav"><a class="link" href="index.html">Home</a><a class="link" href="market.html">Market</a><a class="link" href="world.html">World</a><a class="link" href="explore.html">One-way</a><a class="link" href="lastminute.html">Last-minute</a><a class="link active" href="airports.html">Captain's Log</a><a class="link" href="watchlist.html">Watchlist</a><a class="link" href="essentials.html">Travel kit</a><a class="nav-cta" href="index.html#alerts">Get free alerts</a></nav>
   </div>
 </header>
