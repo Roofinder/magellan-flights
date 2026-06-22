@@ -349,7 +349,7 @@ function toggleTickers(){ var off=document.body.classList.toggle('tickers-off');
   function mvArrows(){ var btns=document.querySelectorAll('#mv-head .mv-sortbtn'); for(var i=0;i<btns.length;i++){ var k=btns[i].getAttribute('data-k'); var ar=btns[i].querySelector('.mv-ar'); if(k===MV_SORT){ btns[i].classList.add('on'); ar.innerHTML=(MV_DIR[k]==='asc')?'&#9650;':'&#9660;'; } else { btns[i].classList.remove('on'); ar.innerHTML='&#8597;'; } } }
   function mvSort(key){ if(MV_SORT===key){ MV_DIR[key]=(MV_DIR[key]==='asc')?'desc':'asc'; } MV_SORT=key; var dir=MV_DIR[key]; var sel=(key==='price')?'.mv-price':'.down'; var box=document.getElementById('movers-list'); var rows=[].slice.call(box.querySelectorAll('.mv-row')); rows.sort(function(a,b){ var av=mvNum(a,sel), bv=mvNum(b,sel); return dir==='asc'?(av-bv):(bv-av); }); for(var r=0;r<rows.length;r++){ box.appendChild(rows[r]); } mvArrows(); mvFilter(MV_REGION); }
   function mvToggleMore(){ MV_EXPANDED=!MV_EXPANDED; mvFilter(MV_REGION); }
-  mvArrows(); mvFilter('all');
+  mvArrows(); mvFilter('all'); setTimeout(function(){ mvFilter(MV_REGION); }, 60); window.addEventListener('load', function(){ mvFilter(MV_REGION); });
   </script>
   <div class="sec-head" id="deals"><h2>Today's cheapest trips</h2><span>tap to book</span></div>
   <div class="grid">
