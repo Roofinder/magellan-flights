@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Magellan Flights — Explore</title>
-<meta name="description" content="The cheapest flights from anywhere to everywhere — proof the world costs far less to see than you think.">
+<title>Magellan Flights — One-way</title>
+<meta name="description" content="The cheapest flights from the USA, tracked like a market - every day.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <style>
   :root{ --bg:#0a0e14; --card:#121821; --ink:#e9edf4; --muted:#94a0b3; --line:#222b38;
@@ -181,7 +181,7 @@
   .ti-label{ flex:0 0 auto; position:relative; z-index:3; display:inline-flex; align-items:center; gap:6px; padding:8px 14px;
              background:var(--gold); color:var(--ink2); font-family:ui-monospace,Menlo,Consolas,monospace;
              font-size:11.5px; font-weight:700; letter-spacing:.10em; text-transform:uppercase; white-space:nowrap; }
-  .ticker.ow .ti-label{ background:var(--gold); color:var(--ink2); }
+  .ticker.ow .ti-label{ background:transparent; color:var(--gold); border-right:1px solid var(--line); }
 
   /* ====================  Historical context banners  ==================== */
   .context-banner{ display:flex; gap:10px; align-items:flex-start; margin:0 0 14px;
@@ -289,22 +289,6 @@
   .live-btn:hover{ border-color:var(--gold); color:var(--gold); }
   .live-ok{ font-size:11px; color:var(--green); font-weight:700; margin:0 0 10px; display:inline-block; }
   .live-up{ font-size:11px; color:var(--red); font-weight:700; margin:0 0 10px; display:inline-block; }
-
-  /* Mission band */
-  .mission{ background:linear-gradient(180deg, rgba(231,185,78,.06), rgba(231,185,78,0)); border:1px solid var(--line); border-radius:16px; padding:30px 26px; margin:34px 0 6px; text-align:center; }
-  .mission h2{ margin:0 0 10px; font-size:23px; }
-  .mission p{ margin:0 auto; max-width:690px; color:var(--muted); font-size:15px; line-height:1.7; }
-  /* Bucket-list side widget */
-  .bucket-widget{ position:fixed; top:150px; right:14px; width:228px; max-height:68vh; overflow:auto; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px; z-index:40; box-shadow:0 8px 30px rgba(0,0,0,.45); }
-  .bw-head{ font-weight:700; font-size:13px; color:var(--gold); margin-bottom:8px; letter-spacing:.04em; }
-  .bw-empty{ font-size:12px; color:var(--muted); line-height:1.5; }
-  .bw-row{ display:flex; gap:6px; align-items:flex-start; border-top:1px solid var(--line); padding:8px 0; }
-  .bw-row:first-of-type{ border-top:0; }
-  .bw-row a{ flex:1; text-decoration:none; color:var(--ink); display:flex; flex-direction:column; gap:2px; }
-  .bw-row b{ font-size:13px; } .bw-row span{ font-size:12px; color:var(--gold); font-weight:600; } .bw-row small{ font-size:11px; color:var(--muted); }
-  .bw-x{ background:none; border:0; color:var(--muted); cursor:pointer; font-size:16px; line-height:1; }
-  .bw-toggle{ display:none; }
-  @media(max-width:1400px){ .bucket-widget{ display:none; } body.bw-open .bucket-widget{ display:block; top:auto; bottom:150px; } .bw-toggle{ display:inline-flex; align-items:center; gap:3px; position:fixed; bottom:84px; right:20px; z-index:51; background:var(--gold); color:var(--ink2); border:0; border-radius:30px; padding:10px 14px; font-weight:700; cursor:pointer; box-shadow:0 4px 14px rgba(0,0,0,.4); } }
 </style>
 </head>
 <body>
@@ -318,21 +302,25 @@
 <header>
   <div class="bar">
     <a class="logo" href="index.html"><span class="mark"><svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="50" cy="50" r="47" fill="none" stroke="#e7b94e" stroke-width="2"/><circle cx="50" cy="50" r="39" fill="none" stroke="#e7b94e" stroke-width="1" opacity="0.4"/><g stroke="#b8862f" stroke-width="1.4" opacity="0.7"><line x1="50" y1="50" x2="71" y2="29"/><line x1="50" y1="50" x2="71" y2="71"/><line x1="50" y1="50" x2="29" y2="71"/><line x1="50" y1="50" x2="29" y2="29"/></g><path d="M50 7 L42 42 L50 50 Z" fill="#f0c860"/><path d="M50 7 L58 42 L50 50 Z" fill="#c79a33"/><path d="M93 50 L58 42 L50 50 Z" fill="#f0c860"/><path d="M93 50 L58 58 L50 50 Z" fill="#c79a33"/><path d="M50 93 L58 58 L50 50 Z" fill="#f0c860"/><path d="M50 93 L42 58 L50 50 Z" fill="#c79a33"/><path d="M7 50 L42 58 L50 50 Z" fill="#f0c860"/><path d="M7 50 L42 42 L50 50 Z" fill="#c79a33"/><circle cx="50" cy="50" r="5.5" fill="#0a0e14"/><circle cx="50" cy="50" r="3" fill="#f0c860"/></svg></span>Magellan Flights</a>
-    <nav class="nav"><a class="link" href="index.html">Home</a><a class="link" href="market.html">Market</a><a class="link active" href="explore.html">Explore</a><a class="link" href="trip.html">Journey</a><a class="link" href="watchlist.html">My Bucket List Flights</a><a class="link" href="essentials.html">Travel kit</a><a class="nav-cta" href="index.html#alerts">Get free alerts</a></nav>
+    <nav class="nav"><a class="link" href="index.html">Home</a><a class="link" href="market.html">Market</a><a class="link" href="world.html">World</a><a class="link" href="trip.html">Trip Lab</a><a class="link active" href="explore.html">One-way</a><a class="link" href="lastminute.html">Last-minute</a><a class="link" href="airports.html">Captain's Log</a><a class="link" href="watchlist.html">Watchlist</a><a class="link" href="essentials.html">Travel kit</a><a class="nav-cta" href="index.html#alerts">Get free alerts</a></nav>
   </div>
 </header>
 </div>
 <div class="wrap">
-  <div class="pagehead"><h1>Explore</h1><p>Every deal in one place &mdash; live fares from your home airport to anywhere. Round-trip or one-way, anytime or soon, filtered by region. Star any deal to save it.</p></div>
+  <div class="pagehead"><h1>Explore</h1><p>Every deal in one place &mdash; live fares to anywhere. Add one <b>or several</b> home airports and we&rsquo;ll show the cheapest way to each destination across all of them. Round-trip or one-way, anytime or soon, filtered by region. Star any deal to save it.</p></div>
   <div class="tl-card">
     <div class="tl-form" style="align-items:flex-end">
-      <label>From (your airport)<input id="ex-from" value="RDU" maxlength="3" autocomplete="off"></label>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <span style="font-size:12px;color:var(--muted)">From (add one or more airports)</span>
+        <div style="display:flex;gap:6px"><input id="ex-add" maxlength="3" placeholder="e.g. CLT" autocomplete="off" style="width:96px;background:#0e141d;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:9px 10px" onkeydown="if(event.key==='Enter'){exAddOrig();return false;}"><button class="airchip" onclick="exAddOrig()">+ Add airport</button></div>
+        <div id="ex-origs" class="airchips"></div>
+      </div>
       <div style="display:flex;flex-direction:column;gap:5px"><span style="font-size:12px;color:var(--muted)">Trip</span><div class="airchips"><button class="airchip on" id="ex-rt-rt" onclick="exSetTrip('round')">Round-trip</button><button class="airchip" id="ex-rt-ow" onclick="exSetTrip('oneway')">One-way</button></div></div>
       <div style="display:flex;flex-direction:column;gap:5px"><span style="font-size:12px;color:var(--muted)">When</span><div class="airchips"><button class="airchip on" id="ex-wh-any" onclick="exSetWhen('any')">Anytime</button><button class="airchip" id="ex-wh-soon" onclick="exSetWhen('soon')">&#9889; Soon</button></div></div>
       <button class="btn-primary tl-go" onclick="exSearch()">Find deals</button>
     </div>
-    <div id="ex-regions" class="airchips" style="margin:4px 0 12px"></div>
-    <div class="panel"><div id="ex-out"><div class="wl-hint">Enter your home airport and hit &ldquo;Find deals.&rdquo;</div></div></div>
+    <div id="ex-regions" class="airchips" style="margin:8px 0 12px"></div>
+    <div class="panel"><div id="ex-out"><div class="wl-hint">Add your home airport(s) and hit &ldquo;Find deals.&rdquo;</div></div></div>
   </div>
   <p class="finehint" style="text-align:center">Live fares from Aviasales. Star &#9734; a deal to add it to your Bucket List.</p>
 </div>
@@ -343,17 +331,20 @@ var GROUPS={'SE Asia':'TH VN ID SG MY PH KH LA MM BN TL','E Asia':'JP KR CN TW H
 function tagsFor(code){ var c=CC[code]; if(!c) return ['Abroad']; if(c==='US') return ['USA']; var t=[]; for(var g in GROUPS){ if((' '+GROUPS[g]+' ').indexOf(' '+c+' ')>=0){ t.push(g); if(g==='SE Asia'||g==='E Asia'||g==='S Asia'||g==='C Asia') t.push('Asia'); break; } } if(c!=='CA') t.push('Abroad'); return t; }
 var REGIONS=['all','USA','Abroad','Asia','SE Asia','E Asia','S Asia','W Europe','E Europe','Nordic','S America','C America','Caribbean','Oceania','Middle East','Africa','Canada'];
 function go(id){ return document.getElementById(id); }
-var EX_TRIP='round', EX_WHEN='any', EX_REG='all', EX_DATA=[], EX_SHOWN=[];
+var EX_TRIP='round', EX_WHEN='any', EX_REG='all', EX_DATA=[], EX_SHOWN=[], EX_ORIG=['RDU'];
 function bucket(){ try{ return JSON.parse(localStorage.getItem('mf_bucket')||'[]'); }catch(e){ return []; } }
 function saved(id){ return bucket().some(function(x){ return x.id===id; }); }
+function renderOrigs(){ var box=go('ex-origs'); if(!box) return; box.innerHTML=EX_ORIG.map(function(c){ return '<button class="airchip on" data-o="'+c+'" title="remove">'+c+' &times;</button>'; }).join(''); }
+window.exAddOrig=function(){ var v=(go('ex-add').value||'').trim().toUpperCase(); if(!/^[A-Z]{3}$/.test(v)){ go('ex-add').focus(); return; } if(EX_ORIG.indexOf(v)<0) EX_ORIG.push(v); go('ex-add').value=''; renderOrigs(); exSearch(); };
 window.exSetTrip=function(t){ EX_TRIP=t; go('ex-rt-rt').classList.toggle('on',t==='round'); go('ex-rt-ow').classList.toggle('on',t==='oneway'); exSearch(); };
 window.exSetWhen=function(w){ EX_WHEN=w; go('ex-wh-any').classList.toggle('on',w==='any'); go('ex-wh-soon').classList.toggle('on',w==='soon'); exSearch(); };
 function renderChips(){ go('ex-regions').innerHTML=REGIONS.map(function(r){ var lab=r==='all'?'All':r; return '<button class="airchip'+(EX_REG===r?' on':'')+'" data-r="'+r+'">'+lab+'</button>'; }).join(''); }
-window.exSearch=function(){ var o=(go('ex-from').value||'RDU').trim().toUpperCase(); if(!/^[A-Z]{3}$/.test(o)){ go('ex-out').innerHTML='<div class="wl-hint">Enter your home airport (e.g. RDU).</div>'; return; } go('ex-out').innerHTML='<div class="wl-hint">Finding the cheapest '+(EX_TRIP==='oneway'?'one-way':'round-trip')+' fares from '+o+'&hellip;</div>'; var u='/api/search?origin='+o+'&one_way='+(EX_TRIP==='oneway'?'true':'false')+'&sorting=price&limit=600'; fetch(u).then(function(r){return r.json();}).then(function(j){ var data=((j&&j.data)||[]); var best={}; data.forEach(function(f){ var d=f.destination_airport; if(!d||d===o) return; if(!best[d]||f.price<best[d].price) best[d]=f; }); EX_DATA=Object.keys(best).map(function(k){return best[k];}).sort(function(a,b){return a.price-b.price;}); exFilter(); }).catch(function(){ go('ex-out').innerHTML='<div class="wl-hint">Couldn&rsquo;t load deals &mdash; try again.</div>'; }); };
-function exFilter(){ var out=go('ex-out'); var now=new Date(); var soon=new Date(); soon.setDate(soon.getDate()+16); var rows=EX_DATA.filter(function(f){ if(EX_REG!=='all' && tagsFor(f.destination_airport).indexOf(EX_REG)<0) return false; if(EX_WHEN==='soon'){ var dp=new Date((f.departure_at||'').slice(0,10)+'T00:00:00'); if(isNaN(dp)||dp<now||dp>soon) return false; } return true; }); EX_SHOWN=rows.slice(0,40); if(!EX_SHOWN.length){ out.innerHTML='<div class="wl-hint">No '+(EX_REG==='all'?'':EX_REG+' ')+(EX_WHEN==='soon'?'soon-departing ':'')+'fares found from there. Try another region or Anytime.</div>'; return; } out.innerHTML=EX_SHOWN.map(function(f,i){ var d=f.destination_airport, dp=(f.departure_at||'').slice(0,10), rt=(f.return_at||'').slice(0,10), p=Math.round(f.price); var id=f.origin_airport+d+dp; var on=saved(id)?' on':''; var star=saved(id)?'&#9733;':'&#9734;'; var sub=f.origin_airport+' &rarr; '+d+' &middot; '+dp+(EX_TRIP==='round'&&rt?(' &rarr; '+rt):''); return '<div class="mv-row"><button class="star'+on+'" onclick="exSave(this,'+i+')">'+star+'</button><div class="mv-dest"><span class="emoji">&#9992;</span><div><div class="mv-name">'+d+'</div><div class="mv-air">'+sub+'</div></div></div><div class="mv-right"><span class="mv-price">$'+p.toLocaleString()+'</span><a class="mini-book" href="'+f.link+'" target="_blank" rel="noopener">Book</a></div></div>'; }).join(''); }
+window.exSearch=function(){ if(!EX_ORIG.length){ EX_ORIG=['RDU']; renderOrigs(); } var ow=(EX_TRIP==='oneway'?'true':'false'); go('ex-out').innerHTML='<div class="wl-hint">Finding the cheapest '+(EX_TRIP==='oneway'?'one-way':'round-trip')+' fares from '+EX_ORIG.join(', ')+'&hellip;</div>'; var origset={}; EX_ORIG.forEach(function(o){origset[o]=1;}); var calls=EX_ORIG.map(function(o){ return fetch('/api/search?origin='+o+'&one_way='+ow+'&sorting=price&limit=600').then(function(r){return r.json();}).then(function(j){ return (j&&j.data)||[]; }).catch(function(){ return []; }); }); Promise.all(calls).then(function(arrs){ var best={}; arrs.forEach(function(data){ data.forEach(function(f){ var d=f.destination_airport; if(!d||origset[d]) return; if(!best[d]||f.price<best[d].price) best[d]=f; }); }); EX_DATA=Object.keys(best).map(function(k){return best[k];}).sort(function(a,b){return a.price-b.price;}); exFilter(); }).catch(function(){ go('ex-out').innerHTML='<div class="wl-hint">Couldn&rsquo;t load deals &mdash; try again.</div>'; }); };
+function exFilter(){ var out=go('ex-out'); var now=new Date(); var soon=new Date(); soon.setDate(soon.getDate()+16); var rows=EX_DATA.filter(function(f){ if(EX_REG!=='all' && tagsFor(f.destination_airport).indexOf(EX_REG)<0) return false; if(EX_WHEN==='soon'){ var dp=new Date((f.departure_at||'').slice(0,10)+'T00:00:00'); if(isNaN(dp)||dp<now||dp>soon) return false; } return true; }); EX_SHOWN=rows.slice(0,40); if(!EX_SHOWN.length){ out.innerHTML='<div class="wl-hint">No fares match those filters. Try another region or Anytime.</div>'; return; } var multi=EX_ORIG.length>1; out.innerHTML=EX_SHOWN.map(function(f,i){ var d=f.destination_airport, dp=(f.departure_at||'').slice(0,10), rt=(f.return_at||'').slice(0,10), p=Math.round(f.price); var oo=f.origin_airport; var id=oo+d+dp; var on=saved(id)?' on':''; var star=saved(id)?'&#9733;':'&#9734;'; var sub=oo+' &rarr; '+d+' &middot; '+dp+(EX_TRIP==='round'&&rt?(' &rarr; '+rt):''); var badge=multi?('<span style="display:inline-block;background:#0e141d;border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:11px;color:var(--gold);margin-left:8px">from '+oo+'</span>'):''; return '<div class="mv-row"><button class="star'+on+'" onclick="exSave(this,'+i+')">'+star+'</button><div class="mv-dest"><span class="emoji">&#9992;</span><div><div class="mv-name">'+d+badge+'</div><div class="mv-air">'+sub+'</div></div></div><div class="mv-right"><span class="mv-price">$'+p.toLocaleString()+'</span><a class="mini-book" href="'+f.link+'" target="_blank" rel="noopener">Book</a></div></div>'; }).join(''); }
 window.exSave=function(btn,i){ var f=EX_SHOWN[i]; if(!f) return; var list=bucket(); var id=f.origin_airport+f.destination_airport+(f.departure_at||'').slice(0,10); var idx=-1; for(var k=0;k<list.length;k++){ if(list[k].id===id){ idx=k; break; } } if(idx>=0){ list.splice(idx,1); btn.classList.remove('on'); btn.innerHTML='&#9734;'; } else { list.push({id:id,o:f.origin_airport,d:f.destination_airport,date:(f.departure_at||'').slice(0,10),ret:(f.return_at||'').slice(0,10),price:Math.round(f.price),link:f.link,ow:EX_TRIP==='oneway'?1:0}); btn.classList.add('on'); btn.innerHTML='&#9733;'; } localStorage.setItem('mf_bucket',JSON.stringify(list)); if(window.renderBucket) window.renderBucket(); };
 var rb=go('ex-regions'); if(rb){ rb.addEventListener('click', function(e){ var b=e.target.closest('[data-r]'); if(b){ EX_REG=b.getAttribute('data-r'); renderChips(); exFilter(); } }); }
-renderChips(); exSearch();
+var ob=go('ex-origs'); if(ob){ ob.addEventListener('click', function(e){ var b=e.target.closest('[data-o]'); if(!b) return; var c=b.getAttribute('data-o'); EX_ORIG=EX_ORIG.filter(function(x){return x!==c;}); if(!EX_ORIG.length) EX_ORIG=['RDU']; renderOrigs(); exSearch(); }); }
+renderOrigs(); renderChips(); exSearch();
 })();
 </script>
 

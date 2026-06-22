@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Magellan Flights — Journey</title>
-<meta name="description" content="The cheapest flights from anywhere to everywhere — proof the world costs far less to see than you think.">
+<title>Magellan Flights — Trip Lab</title>
+<meta name="description" content="The cheapest flights from the USA, tracked like a market - every day.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <style>
   :root{ --bg:#0a0e14; --card:#121821; --ink:#e9edf4; --muted:#94a0b3; --line:#222b38;
@@ -181,7 +181,7 @@
   .ti-label{ flex:0 0 auto; position:relative; z-index:3; display:inline-flex; align-items:center; gap:6px; padding:8px 14px;
              background:var(--gold); color:var(--ink2); font-family:ui-monospace,Menlo,Consolas,monospace;
              font-size:11.5px; font-weight:700; letter-spacing:.10em; text-transform:uppercase; white-space:nowrap; }
-  .ticker.ow .ti-label{ background:var(--gold); color:var(--ink2); }
+  .ticker.ow .ti-label{ background:transparent; color:var(--gold); border-right:1px solid var(--line); }
 
   /* ====================  Historical context banners  ==================== */
   .context-banner{ display:flex; gap:10px; align-items:flex-start; margin:0 0 14px;
@@ -289,22 +289,6 @@
   .live-btn:hover{ border-color:var(--gold); color:var(--gold); }
   .live-ok{ font-size:11px; color:var(--green); font-weight:700; margin:0 0 10px; display:inline-block; }
   .live-up{ font-size:11px; color:var(--red); font-weight:700; margin:0 0 10px; display:inline-block; }
-
-  /* Mission band */
-  .mission{ background:linear-gradient(180deg, rgba(231,185,78,.06), rgba(231,185,78,0)); border:1px solid var(--line); border-radius:16px; padding:30px 26px; margin:34px 0 6px; text-align:center; }
-  .mission h2{ margin:0 0 10px; font-size:23px; }
-  .mission p{ margin:0 auto; max-width:690px; color:var(--muted); font-size:15px; line-height:1.7; }
-  /* Bucket-list side widget */
-  .bucket-widget{ position:fixed; top:150px; right:14px; width:228px; max-height:68vh; overflow:auto; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px; z-index:40; box-shadow:0 8px 30px rgba(0,0,0,.45); }
-  .bw-head{ font-weight:700; font-size:13px; color:var(--gold); margin-bottom:8px; letter-spacing:.04em; }
-  .bw-empty{ font-size:12px; color:var(--muted); line-height:1.5; }
-  .bw-row{ display:flex; gap:6px; align-items:flex-start; border-top:1px solid var(--line); padding:8px 0; }
-  .bw-row:first-of-type{ border-top:0; }
-  .bw-row a{ flex:1; text-decoration:none; color:var(--ink); display:flex; flex-direction:column; gap:2px; }
-  .bw-row b{ font-size:13px; } .bw-row span{ font-size:12px; color:var(--gold); font-weight:600; } .bw-row small{ font-size:11px; color:var(--muted); }
-  .bw-x{ background:none; border:0; color:var(--muted); cursor:pointer; font-size:16px; line-height:1; }
-  .bw-toggle{ display:none; }
-  @media(max-width:1400px){ .bucket-widget{ display:none; } body.bw-open .bucket-widget{ display:block; top:auto; bottom:150px; } .bw-toggle{ display:inline-flex; align-items:center; gap:3px; position:fixed; bottom:84px; right:20px; z-index:51; background:var(--gold); color:var(--ink2); border:0; border-radius:30px; padding:10px 14px; font-weight:700; cursor:pointer; box-shadow:0 4px 14px rgba(0,0,0,.4); } }
 </style>
 </head>
 <body>
@@ -318,7 +302,7 @@
 <header>
   <div class="bar">
     <a class="logo" href="index.html"><span class="mark"><svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="50" cy="50" r="47" fill="none" stroke="#e7b94e" stroke-width="2"/><circle cx="50" cy="50" r="39" fill="none" stroke="#e7b94e" stroke-width="1" opacity="0.4"/><g stroke="#b8862f" stroke-width="1.4" opacity="0.7"><line x1="50" y1="50" x2="71" y2="29"/><line x1="50" y1="50" x2="71" y2="71"/><line x1="50" y1="50" x2="29" y2="71"/><line x1="50" y1="50" x2="29" y2="29"/></g><path d="M50 7 L42 42 L50 50 Z" fill="#f0c860"/><path d="M50 7 L58 42 L50 50 Z" fill="#c79a33"/><path d="M93 50 L58 42 L50 50 Z" fill="#f0c860"/><path d="M93 50 L58 58 L50 50 Z" fill="#c79a33"/><path d="M50 93 L58 58 L50 50 Z" fill="#f0c860"/><path d="M50 93 L42 58 L50 50 Z" fill="#c79a33"/><path d="M7 50 L42 58 L50 50 Z" fill="#f0c860"/><path d="M7 50 L42 42 L50 50 Z" fill="#c79a33"/><circle cx="50" cy="50" r="5.5" fill="#0a0e14"/><circle cx="50" cy="50" r="3" fill="#f0c860"/></svg></span>Magellan Flights</a>
-    <nav class="nav"><a class="link" href="index.html">Home</a><a class="link" href="market.html">Market</a><a class="link" href="explore.html">Explore</a><a class="link active" href="trip.html">Journey</a><a class="link" href="watchlist.html">My Bucket List Flights</a><a class="link" href="essentials.html">Travel kit</a><a class="nav-cta" href="index.html#alerts">Get free alerts</a></nav>
+    <nav class="nav"><a class="link" href="index.html">Home</a><a class="link" href="market.html">Market</a><a class="link" href="world.html">World</a><a class="link active" href="trip.html">Trip Lab</a><a class="link" href="explore.html">One-way</a><a class="link" href="lastminute.html">Last-minute</a><a class="link" href="airports.html">Captain's Log</a><a class="link" href="watchlist.html">Watchlist</a><a class="link" href="essentials.html">Travel kit</a><a class="nav-cta" href="index.html#alerts">Get free alerts</a></nav>
   </div>
 </header>
 </div>
@@ -365,7 +349,7 @@ window.jRemove=function(){ JRNY.pop(); JREG='all'; jRender(); jOptions(); };
 function jOrigin(){ return JRNY.length? JRNY[JRNY.length-1].d : (go('j-origin').value||'RDU').trim().toUpperCase(); }
 function jAfter(){ if(!JRNY.length) return go('j-date').value||''; var last=JRNY[JRNY.length-1]; var n=parseInt(go('j-nights').value,10); if(isNaN(n))n=0; var dt=new Date(last.date+'T00:00:00'); dt.setDate(dt.getDate()+n); return dt.toISOString().slice(0,10); }
 function jRenderChips(){ var box=go('j-regions'); box.innerHTML=REGIONS.map(function(r){ var lab=r==='all'?'All':r; return '<button class="airchip'+(JREG===r?' on':'')+'" data-r="'+r+'">'+lab+'</button>'; }).join(''); }
-window.jOptions=function(){ var o=jOrigin(); var out=go('j-options'); if(!/^[A-Z]{3}$/.test(o)){ out.innerHTML='<div class="wl-hint">Enter a 3-letter starting airport (e.g. RDU).</div>'; return; } out.innerHTML='<div class="wl-hint">Finding the cheapest hops from '+o+'&hellip;</div>'; var after=jAfter(); var u='/api/search?origin='+o+'&one_way=true&sorting=price&limit=500'; if(after) u+='&departure_at='+after; fetch(u).then(function(r){return r.json();}).then(function(j){ var data=((j&&j.data)||[]); var visited={}; JRNY.forEach(function(l){visited[l.d]=1;}); visited[o]=1; var best={}; data.forEach(function(f){ var d=f.destination_airport; if(!d||visited[d]) return; if(JREG!=='all' && tagsFor(d).indexOf(JREG)<0) return; if(!best[d]||f.price<best[d].price) best[d]=f; }); JOPTS=Object.keys(best).map(function(k){return best[k];}).sort(function(a,b){return a.price-b.price;}).slice(0,18); if(!JOPTS.length){ out.innerHTML='<div class="wl-hint">No '+(JREG==='all'?'':JREG+' ')+'hops found from '+o+' for that window. Try another region or fewer nights.</div>'; return; } out.innerHTML=JOPTS.map(function(f,i){ var d=f.destination_airport, dt=(f.departure_at||'').slice(0,10), p=Math.round(f.price); return '<div class="mv-row"><div class="mv-dest"><span class="emoji">&#9992;</span><div><div class="mv-name">'+d+'</div><div class="mv-air">'+o+' &rarr; '+d+' &middot; '+dt+'</div></div></div><div class="mv-right"><span class="mv-price">$'+p.toLocaleString()+'</span><button class="mini-book" style="border:0;cursor:pointer" onclick="jAdd('+i+')">Add hop</button></div></div>'; }).join(''); }).catch(function(){ out.innerHTML='<div class="wl-hint">Couldn&rsquo;t load hops &mdash; try again.</div>'; }); };
+window.jOptions=function(){ var o=jOrigin(); var out=go('j-options'); if(!/^[A-Z]{3}$/.test(o)){ out.innerHTML='<div class="wl-hint">Enter a 3-letter starting airport (e.g. RDU).</div>'; return; } out.innerHTML='<div class="wl-hint">Finding every onward flight from '+o+'&hellip;</div>'; var after=jAfter(); var u='/api/search?origin='+o+'&one_way=true&sorting=price&limit=1000'; fetch(u).then(function(r){return r.json();}).then(function(j){ var data=((j&&j.data)||[]); var visited={}; JRNY.forEach(function(l){visited[l.d]=1;}); visited[o]=1; var best={}; data.forEach(function(f){ var d=f.destination_airport; if(!d||visited[d]) return; if(JREG!=='all' && tagsFor(d).indexOf(JREG)<0) return; if(!best[d]||f.price<best[d].price) best[d]=f; }); var all=Object.keys(best).map(function(k){return best[k];}); var fil=all; if(after){ var aft=all.filter(function(f){ var dt=(f.departure_at||'').slice(0,10); return !dt || dt>=after; }); if(aft.length>=6) fil=aft; } fil.sort(function(a,b){return a.price-b.price;}); JOPTS=fil.slice(0,60); if(!JOPTS.length){ out.innerHTML='<div class="wl-hint">No '+(JREG==='all'?'':JREG+' ')+'flights found onward from '+o+'. Try another region.</div>'; return; } out.innerHTML=JOPTS.map(function(f,i){ var d=f.destination_airport, dt=(f.departure_at||'').slice(0,10), p=Math.round(f.price); return '<div class="mv-row"><div class="mv-dest"><span class="emoji">&#9992;</span><div><div class="mv-name">'+d+'</div><div class="mv-air">'+o+' &rarr; '+d+' &middot; '+dt+'</div></div></div><div class="mv-right"><span class="mv-price">$'+p.toLocaleString()+'</span><button class="mini-book" style="border:0;cursor:pointer" onclick="jAdd('+i+')">Add hop</button></div></div>'; }).join(''); }).catch(function(){ out.innerHTML='<div class="wl-hint">Couldn&rsquo;t load hops &mdash; try again.</div>'; }); };
 window.jAdd=function(i){ var f=JOPTS[i]; if(!f) return; JRNY.push({o:jOrigin(),d:f.destination_airport,date:(f.departure_at||'').slice(0,10),price:Math.round(f.price),link:f.link}); JREG='all'; jRender(); jOptions(); };
 function jRender(){ var has=JRNY.length>0; go('j-summary').style.display=has?'flex':'none'; go('j-removebtn').style.display=has?'inline-block':'none'; go('j-nightsrow').style.display=has?'flex':'none'; go('j-curlabel').style.display='block'; go('j-regions').style.display='flex'; var start=(go('j-origin').value||'RDU').trim().toUpperCase(); var html='<span class="j-stop start">'+(JRNY.length?JRNY[0].o:start)+'</span>'; var total=0; JRNY.forEach(function(l){ total+=l.price; html+='<span class="j-arrow">&rarr;</span><a class="j-stop" href="'+l.link+'" target="_blank" rel="noopener" title="'+l.date+'">'+l.d+'<small>$'+l.price.toLocaleString()+'</small></a>'; }); go('j-itin').innerHTML=html; go('j-total').textContent='$'+total.toLocaleString(); var cur=jOrigin(); if(has){ go('j-staylabel').textContent='Staying in '+JRNY[JRNY.length-1].d+' —'; go('j-curlabel').textContent='Cheapest onward hops from '+cur+':'; } else { go('j-curlabel').textContent='Cheapest first hops from '+cur+':'; } jRenderChips(); }
 var rbox=go('j-regions'); if(rbox){ rbox.addEventListener('click', function(e){ var b=e.target.closest('[data-r]'); if(b){ JREG=b.getAttribute('data-r'); jRenderChips(); jOptions(); } }); }

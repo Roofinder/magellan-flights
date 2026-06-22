@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Magellan Flights — Home</title>
-<meta name="description" content="The cheapest flights from anywhere to everywhere — proof the world costs far less to see than you think.">
+<meta name="description" content="The cheapest flights from the USA, tracked like a market - every day.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <style>
   :root{ --bg:#0a0e14; --card:#121821; --ink:#e9edf4; --muted:#94a0b3; --line:#222b38;
@@ -181,7 +181,7 @@
   .ti-label{ flex:0 0 auto; position:relative; z-index:3; display:inline-flex; align-items:center; gap:6px; padding:8px 14px;
              background:var(--gold); color:var(--ink2); font-family:ui-monospace,Menlo,Consolas,monospace;
              font-size:11.5px; font-weight:700; letter-spacing:.10em; text-transform:uppercase; white-space:nowrap; }
-  .ticker.ow .ti-label{ background:var(--gold); color:var(--ink2); }
+  .ticker.ow .ti-label{ background:transparent; color:var(--gold); border-right:1px solid var(--line); }
 
   /* ====================  Historical context banners  ==================== */
   .context-banner{ display:flex; gap:10px; align-items:flex-start; margin:0 0 14px;
@@ -289,22 +289,6 @@
   .live-btn:hover{ border-color:var(--gold); color:var(--gold); }
   .live-ok{ font-size:11px; color:var(--green); font-weight:700; margin:0 0 10px; display:inline-block; }
   .live-up{ font-size:11px; color:var(--red); font-weight:700; margin:0 0 10px; display:inline-block; }
-
-  /* Mission band */
-  .mission{ background:linear-gradient(180deg, rgba(231,185,78,.06), rgba(231,185,78,0)); border:1px solid var(--line); border-radius:16px; padding:30px 26px; margin:34px 0 6px; text-align:center; }
-  .mission h2{ margin:0 0 10px; font-size:23px; }
-  .mission p{ margin:0 auto; max-width:690px; color:var(--muted); font-size:15px; line-height:1.7; }
-  /* Bucket-list side widget */
-  .bucket-widget{ position:fixed; top:150px; right:14px; width:228px; max-height:68vh; overflow:auto; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px; z-index:40; box-shadow:0 8px 30px rgba(0,0,0,.45); }
-  .bw-head{ font-weight:700; font-size:13px; color:var(--gold); margin-bottom:8px; letter-spacing:.04em; }
-  .bw-empty{ font-size:12px; color:var(--muted); line-height:1.5; }
-  .bw-row{ display:flex; gap:6px; align-items:flex-start; border-top:1px solid var(--line); padding:8px 0; }
-  .bw-row:first-of-type{ border-top:0; }
-  .bw-row a{ flex:1; text-decoration:none; color:var(--ink); display:flex; flex-direction:column; gap:2px; }
-  .bw-row b{ font-size:13px; } .bw-row span{ font-size:12px; color:var(--gold); font-weight:600; } .bw-row small{ font-size:11px; color:var(--muted); }
-  .bw-x{ background:none; border:0; color:var(--muted); cursor:pointer; font-size:16px; line-height:1; }
-  .bw-toggle{ display:none; }
-  @media(max-width:1400px){ .bucket-widget{ display:none; } body.bw-open .bucket-widget{ display:block; top:auto; bottom:150px; } .bw-toggle{ display:inline-flex; align-items:center; gap:3px; position:fixed; bottom:84px; right:20px; z-index:51; background:var(--gold); color:var(--ink2); border:0; border-radius:30px; padding:10px 14px; font-weight:700; cursor:pointer; box-shadow:0 4px 14px rgba(0,0,0,.4); } }
 </style>
 </head>
 <body>
@@ -318,7 +302,7 @@
 <header>
   <div class="bar">
     <a class="logo" href="index.html"><span class="mark"><svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="50" cy="50" r="47" fill="none" stroke="#e7b94e" stroke-width="2"/><circle cx="50" cy="50" r="39" fill="none" stroke="#e7b94e" stroke-width="1" opacity="0.4"/><g stroke="#b8862f" stroke-width="1.4" opacity="0.7"><line x1="50" y1="50" x2="71" y2="29"/><line x1="50" y1="50" x2="71" y2="71"/><line x1="50" y1="50" x2="29" y2="71"/><line x1="50" y1="50" x2="29" y2="29"/></g><path d="M50 7 L42 42 L50 50 Z" fill="#f0c860"/><path d="M50 7 L58 42 L50 50 Z" fill="#c79a33"/><path d="M93 50 L58 42 L50 50 Z" fill="#f0c860"/><path d="M93 50 L58 58 L50 50 Z" fill="#c79a33"/><path d="M50 93 L58 58 L50 50 Z" fill="#f0c860"/><path d="M50 93 L42 58 L50 50 Z" fill="#c79a33"/><path d="M7 50 L42 58 L50 50 Z" fill="#f0c860"/><path d="M7 50 L42 42 L50 50 Z" fill="#c79a33"/><circle cx="50" cy="50" r="5.5" fill="#0a0e14"/><circle cx="50" cy="50" r="3" fill="#f0c860"/></svg></span>Magellan Flights</a>
-    <nav class="nav"><a class="link active" href="index.html">Home</a><a class="link" href="market.html">Market</a><a class="link" href="explore.html">Explore</a><a class="link" href="trip.html">Journey</a><a class="link" href="watchlist.html">My Bucket List Flights</a><a class="link" href="essentials.html">Travel kit</a><a class="nav-cta" href="index.html#alerts">Get free alerts</a></nav>
+    <nav class="nav"><a class="link active" href="index.html">Home</a><a class="link" href="market.html">Market</a><a class="link" href="world.html">World</a><a class="link" href="trip.html">Trip Lab</a><a class="link" href="explore.html">One-way</a><a class="link" href="lastminute.html">Last-minute</a><a class="link" href="airports.html">Captain's Log</a><a class="link" href="watchlist.html">Watchlist</a><a class="link" href="essentials.html">Travel kit</a><a class="nav-cta" href="index.html#alerts">Get free alerts</a></nav>
   </div>
 </header>
 </div>
@@ -344,7 +328,7 @@
     <div class="stat"><div class="n">53</div><div class="l">global hubs</div></div>
   </div>
   <p class="updated">&#9660; Fares are running ~29% BELOW normal across 31 routes &middot; updated twice daily</p>
-  <div id="deals"><section class="home-sec"><div class="sec-head"><h2>&#128293; Flash deals</h2><span>rare prices — book fast</span></div><div class="grid">
+  <div id="deals"><section class="home-sec"><div class="sec-head"><h2>&#128293; Today&rsquo;s top deals</h2><span>the 4 biggest price drops right now</span></div><div class="grid">
       <div class="flip"><div class="flip-inner">
       <article class="card flip-front" data-o="JFK" data-c="MAD" data-dep="2026-09-26" data-ret="2026-10-12" data-ow="0">
         <div class="card-top"><img class="flag" src="https://flagcdn.com/w40/es.png" srcset="https://flagcdn.com/w80/es.png 2x" alt="" loading="lazy">
@@ -448,33 +432,6 @@
         <h3 class="dest">Auckland, New Zealand</h3>
         <p class="binfo-h">&#127757; Things to know before you go</p>
         <p class="binfo"><b>Language:</b> English, Maori</p><p class="binfo"><b>English:</b> Native</p><p class="binfo"><b>Visa (US passport):</b> NZeTA required (online)</p><p class="binfo"><b>Safety:</b> Very safe</p><p class="binfo"><b>Good to know:</b> Drive on the left</p>
-        <p class="finehint">General guidance for US travelers — verify official sources before booking.</p>
-        <button class="flipbtn" onclick="flipCard(this)">&#8592; Back to the deal</button>
-      </article>
-      </div></div>
-
-      <div class="flip"><div class="flip-inner">
-      <article class="card flip-front" data-o="LAX" data-c="MNL" data-dep="2026-09-09" data-ret="2026-10-03" data-ow="0">
-        <div class="card-top"><img class="flag" src="https://flagcdn.com/w40/ph.png" srcset="https://flagcdn.com/w80/ph.png 2x" alt="" loading="lazy">
-          <div class="card-top-right"><span class="badge flash">&#128293; FLASH</span>
-            <button class="star" data-code="MNL" aria-label="watch">&#9734;</button></div></div>
-        <h3 class="dest">Manila, Philippines</h3>
-        <p class="route">China Eastern &middot; round-trip from LAX</p>
-        <p class="dates">2026-09-09 &rarr; 2026-10-03</p>
-        <p class="dates">&#9728; Best time: Dec–Apr (dry)</p>
-        <p class="price">$634 <span class="was" title="The Standard Meridian — this route's historical baseline fare">$1,100</span></p>
-        <p style="font-size:11px;color:var(--muted);margin:-11px 0 8px;letter-spacing:.03em">&#9678; vs. the <b style="color:var(--gold);font-weight:600">Standard Meridian</b> &middot; historical baseline</p>
-        <button class="live-btn" onclick="liveCard(this)">&#8635; check live price</button>
-        <div class="cardmeta"><span class="sig s-book">BOOK</span><svg class="spark" width="84" height="22" viewBox="0 0 84 22"><polyline fill="none" stroke="#27d07a" stroke-width="1.5" points="2.0,2.0 42.0,20.0 82.0,20.0"/></svg></div>
-        <p class="trip">A week here &asymp; <b>$929</b> <span>(flight $634 &middot; hotel ~$40/nt &times;7 &middot; eSIM $15)</span></p>
-        <p class="trip">&#128178; <span data-cur="PHP">$1 &asymp; 58.0 PHP</span></p>
-        <a class="book" href="https://www.aviasales.com/search/LAX0909MNL03101?t=MU17889570001789089600001310LAXPVGMNL17910216001791108300002345MNLPVGLAX_473383f0b423b314134a3533e19c491c_46363&amp;search_date=20062026&amp;expected_price_uuid=019ee412-7345-8010-6f81-22410815c73c&amp;static_fare_key=TY%7CP0%7CH1%7CL0%7CCH1%7CR0%7CTBC0&amp;itinerary_key=DiFXLKUO-EUY-KhnNd_lmQ&amp;expected_price_source=share&amp;expected_price_currency=usd&amp;expected_price=634&amp;marker=741311" target="_blank" rel="noopener">Book this trip</a>
-        <button class="flipbtn" onclick="flipCard(this)">&#9432; Things to know &rarr;</button>
-      </article>
-      <article class="card flip-back">
-        <h3 class="dest">Manila, Philippines</h3>
-        <p class="binfo-h">&#127757; Things to know before you go</p>
-        <p class="binfo"><b>Language:</b> Filipino, English</p><p class="binfo"><b>English:</b> Widely spoken</p><p class="binfo"><b>Visa (US passport):</b> Visa-free, 30 days</p><p class="binfo"><b>Safety:</b> Use caution in some areas</p><p class="binfo"><b>Good to know:</b> Heed regional advisories (Mindanao)</p>
         <p class="finehint">General guidance for US travelers — verify official sources before booking.</p>
         <button class="flipbtn" onclick="flipCard(this)">&#8592; Back to the deal</button>
       </article>
