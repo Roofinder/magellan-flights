@@ -175,8 +175,9 @@
 
   /* ====================  Fleet Tracker label  ==================== */
   .ticker{ display:flex; align-items:stretch; }
-  .ticker .ticker-track{ flex:1 1 auto; min-width:0; }
-  .ti-label{ flex:0 0 auto; display:inline-flex; align-items:center; gap:6px; padding:8px 14px;
+  .ticker{ position:relative; }
+  .ticker .ticker-track{ flex:1 1 auto; min-width:0; position:relative; z-index:1; }
+  .ti-label{ flex:0 0 auto; position:relative; z-index:3; display:inline-flex; align-items:center; gap:6px; padding:8px 14px;
              background:var(--gold); color:var(--ink2); font-family:ui-monospace,Menlo,Consolas,monospace;
              font-size:11.5px; font-weight:700; letter-spacing:.10em; text-transform:uppercase; white-space:nowrap; }
   .ticker.ow .ti-label{ background:transparent; color:var(--gold); border-right:1px solid var(--line); }
