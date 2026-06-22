@@ -722,7 +722,7 @@ def card_html(m):
         <div class="cardmeta"><span class="sig {hcls}">{hlabel}</span>{spark}</div>
         <p class="trip">A week here &asymp; <b>${wk:,}</b> <span>(flight ${m['price']:,.0f} &middot; hotel ~${hn}/nt &times;7 &middot; eSIM ${ESIM_COST})</span></p>
         {fx}
-        <a class="book" href="{link}" target="_blank" rel="noopener">Book this trip</a>
+        <a class="book" href="{link}" target="_blank" rel="noopener">See live price &rarr;</a>
         <button class="flipbtn" onclick="flipCard(this)">&#9432; Things to know &rarr;</button>
       </article>
       <article class="card flip-back">
@@ -1701,7 +1701,7 @@ def winner_highlight(market):
     return (f'<a class="winner" href="blog.html">'
             f'<span class="winner-badge">&#9733; Today&rsquo;s Biggest Winner</span>'
             f'<div class="winner-main"><div class="winner-city">{html.escape(w["name"])}</div>'
-            f'<div class="winner-route">Round-trip from {html.escape(w["origin"])} &middot; {dates}</div></div>'
+            f'<div class="winner-route">Round-trip from {html.escape(w["origin"])} &middot; {dates} &middot; <span style="color:var(--gold)">tracked fare</span> &middot; live price at booking</div></div>'
             f'<div class="winner-right"><span class="winner-price">${w["price"]:,.0f}</span>'
             f'<span class="winner-was">${w["benchmark"]:,.0f}</span>'
             f'<span class="winner-off">{pct:.0f}% off</span></div>'
@@ -1739,7 +1739,7 @@ def body_home(market, hist, cards, lastmin, oneway, summary):
       <a class="btn-primary" href="#deals">Explore today&rsquo;s deals</a>
       <a class="btn-ghost" href="world.html">Anywhere &rarr; Anywhere</a>
     </div>
-    <p class="trust">Free, forever &middot; fares tracked every day &middot; live prices on tap &middot; <b>{nroutes}</b> routes &amp; <b>{noneway}+</b> one-ways across <b>{ncountries}</b> countries</p>
+    <p class="trust">Free, forever &middot; fares tracked through the day &middot; live price confirmed at booking &middot; <b>{nroutes}</b> routes &amp; <b>{noneway}+</b> one-ways across <b>{ncountries}</b> countries</p>
   </div>
 </section>
 <div class="wrap">
@@ -1750,9 +1750,10 @@ def body_home(market, hist, cards, lastmin, oneway, summary):
     <div class="stat"><div class="n">{nbook}</div><div class="l">flagged BUY today</div></div>
     <div class="stat"><div class="n">{ncountries}</div><div class="l">countries</div></div>
   </div>
-  <p class="updated">{market_pulse(market)} &middot; updated twice daily</p>
+  <p class="updated">{market_pulse(market)} &middot; tracked fares, refreshed through the day</p>
   {winner_highlight(market)}
   <div id="deals">{flash_section}</div>
+  <p class="finehint" style="text-align:center">These are recently-tracked fares &mdash; tap any deal to see today&rsquo;s live price and book on Aviasales.</p>
   <div style="text-align:center;margin:26px 0 8px">
     <a class="btn-primary" href="market.html">See the full Market &rarr;</a>
     <p style="color:var(--muted);font-size:13.5px;margin:12px auto 0;max-width:560px">Fare indices, every biggest mover, today&rsquo;s cheapest trips, last-minute getaways and one-way deals &mdash; the whole board lives on the <a href="market.html" style="color:var(--gold)">Market</a> tab.</p>
@@ -1926,7 +1927,7 @@ def body_blog(market):
   <h1 class="blog-title">{html.escape(name)}</h1>
   <div class="blog-deal">
     <div><div class="blog-deal-label">Round-trip from {html.escape(win['origin'])}</div><div class="blog-deal-dates">{dates} &middot; best time to go: {html.escape(best)}</div></div>
-    <div class="blog-deal-right"><span class="blog-price">${win['price']:,.0f}</span><span class="blog-was">was ~${win['benchmark']:,.0f}</span><span class="sig s-book">{sig} &middot; {pct:.0f}% off</span><a class="book" href="{link}" target="_blank" rel="noopener">Book this deal</a></div>
+    <div class="blog-deal-right"><span class="blog-price">${win['price']:,.0f}</span><span class="blog-was">was ~${win['benchmark']:,.0f}</span><span class="sig s-book">{sig} &middot; {pct:.0f}% off</span><a class="book" href="{link}" target="_blank" rel="noopener">See live price &amp; book &rarr;</a></div>
   </div>
   <section class="blog-sec"><h2>The overview</h2><p>{html.escape(overview) if g else overview}</p></section>
   <section class="blog-sec"><h2>&#128200; Price trend</h2><div class="blog-spark">{spark}</div><p>{verdict}</p></section>
@@ -1936,7 +1937,7 @@ def body_blog(market):
   <section class="blog-sec"><h2>&#128220; A bit of history</h2><p>{html.escape(history) if g else history}</p></section>
   <section class="blog-sec"><h2>&#127757; Culture &amp; language</h2><p>{html.escape(culture) if g else culture}</p><p class="blog-lang"><b>Language:</b> {html.escape(info['lang'])} &middot; <b>English spoken:</b> {html.escape(info['eng'])}</p></section>
   <div class="blog-cta"><a class="btn-primary" href="{link}" target="_blank" rel="noopener">Grab the {html.escape(name.split(',')[0])} deal &rarr;</a><a class="btn-ghost" href="explore.html">Find your own deal</a></div>
-  <p class="finehint" style="text-align:center;margin-top:18px">Updated daily with whichever destination has the biggest price drop. Prices are live; safety and visa notes are general guidance for US travelers &mdash; verify official sources before booking.</p>
+  <p class="finehint" style="text-align:center;margin-top:18px">Updated daily with whichever destination has the biggest price drop. Prices are recently-tracked fares &mdash; your live price is confirmed when you book on Aviasales. Safety and visa notes are general guidance for US travelers &mdash; verify official sources before booking.</p>
 </div>"""
 def body_market(market, hist, cards, lastmin, oneway):
     return f"""<div class="wrap">
