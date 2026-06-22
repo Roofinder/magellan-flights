@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Magellan Flights — One-way</title>
+<title>Magellan Flights — Explore</title>
 <meta name="description" content="The cheapest flights from anywhere to everywhere — proof the world costs far less to see than you think.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <style>
@@ -294,6 +294,17 @@
   .mission{ background:linear-gradient(180deg, rgba(231,185,78,.06), rgba(231,185,78,0)); border:1px solid var(--line); border-radius:16px; padding:30px 26px; margin:34px 0 6px; text-align:center; }
   .mission h2{ margin:0 0 10px; font-size:23px; }
   .mission p{ margin:0 auto; max-width:690px; color:var(--muted); font-size:15px; line-height:1.7; }
+  /* Bucket-list side widget */
+  .bucket-widget{ position:fixed; top:150px; right:14px; width:228px; max-height:68vh; overflow:auto; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px; z-index:40; box-shadow:0 8px 30px rgba(0,0,0,.45); }
+  .bw-head{ font-weight:700; font-size:13px; color:var(--gold); margin-bottom:8px; letter-spacing:.04em; }
+  .bw-empty{ font-size:12px; color:var(--muted); line-height:1.5; }
+  .bw-row{ display:flex; gap:6px; align-items:flex-start; border-top:1px solid var(--line); padding:8px 0; }
+  .bw-row:first-of-type{ border-top:0; }
+  .bw-row a{ flex:1; text-decoration:none; color:var(--ink); display:flex; flex-direction:column; gap:2px; }
+  .bw-row b{ font-size:13px; } .bw-row span{ font-size:12px; color:var(--gold); font-weight:600; } .bw-row small{ font-size:11px; color:var(--muted); }
+  .bw-x{ background:none; border:0; color:var(--muted); cursor:pointer; font-size:16px; line-height:1; }
+  .bw-toggle{ display:none; }
+  @media(max-width:1400px){ .bucket-widget{ display:none; } body.bw-open .bucket-widget{ display:block; top:auto; bottom:150px; } .bw-toggle{ display:inline-flex; align-items:center; gap:3px; position:fixed; bottom:84px; right:20px; z-index:51; background:var(--gold); color:var(--ink2); border:0; border-radius:30px; padding:10px 14px; font-weight:700; cursor:pointer; box-shadow:0 4px 14px rgba(0,0,0,.4); } }
 </style>
 </head>
 <body>
@@ -352,6 +363,13 @@ renderChips(); exSearch();
   <div class="cp-msgs" id="cpmsgs"></div>
   <div class="cp-in"><input id="cpinput" placeholder="e.g. cheapest one-way to Asia" onkeydown="if(event.key==='Enter')chatSend()"><button onclick="chatSend()">Send</button></div>
 </div>
+<aside id="bucket-widget" class="bucket-widget"><div class="bw-head">&#9733; My Bucket List</div><div id="bw-list"></div></aside>
+<button class="bw-toggle" onclick="document.body.classList.toggle('bw-open')">&#9733;<span id="bw-count"></span></button>
+<script>
+window.renderBucket=function(){ var list=[]; try{ list=JSON.parse(localStorage.getItem('mf_bucket')||'[]'); }catch(e){} var cnt=document.getElementById('bw-count'); if(cnt) cnt.textContent=list.length?(' '+list.length):''; var w=document.getElementById('bw-list'); if(w){ w.innerHTML = list.length ? list.map(function(f,i){ return '<div class="bw-row"><a href="'+f.link+'" target="_blank" rel="noopener"><b>'+f.o+' &rarr; '+f.d+'</b><span>$'+(f.price||0).toLocaleString()+(f.ow?' one-way':'')+'</span><small>'+(f.date||'')+(f.ret?(' &rarr; '+f.ret):'')+'</small></a><button class="bw-x" title="remove" onclick="bucketRemove('+i+')">&times;</button></div>'; }).join('') : '<div class="bw-empty">Star &#9734; any deal on Explore to save it here.</div>'; } var pg=document.getElementById('bucket-page'); if(pg){ pg.innerHTML = list.length ? ('<div class="panel">'+list.map(function(f,i){ return '<div class="mv-row"><div class="mv-dest"><span class="emoji">&#9992;</span><div><div class="mv-name">'+f.o+' &rarr; '+f.d+'</div><div class="mv-air">'+(f.date||'')+(f.ret?(' &rarr; '+f.ret):'')+(f.ow?' &middot; one-way':' &middot; round-trip')+'</div></div></div><div class="mv-right"><span class="mv-price">$'+(f.price||0).toLocaleString()+'</span><a class="mini-book" href="'+f.link+'" target="_blank" rel="noopener">Book</a><button class="star on" title="remove" onclick="bucketRemove('+i+')">&#9733;</button></div></div>'; }).join('')+'</div>') : '<div class="wl-hint">No saved flights yet. Star &#9734; any deal on the <a href="explore.html">Explore</a> page to add it to your bucket list.</div>'; } };
+window.bucketRemove=function(i){ var list=[]; try{ list=JSON.parse(localStorage.getItem('mf_bucket')||'[]'); }catch(e){} list.splice(i,1); localStorage.setItem('mf_bucket',JSON.stringify(list)); window.renderBucket(); };
+window.addEventListener('load', window.renderBucket);
+</script>
 <footer><p>Prices are round-trip unless marked one-way, and change fast — book soon if you see one you love.</p><p>Magellan Flights may earn a commission when you book through our links, at no extra cost to you.<br>Fares found June 22, 2026 and may change at any time.</p></footer>
 <script>
 var ASTRO='<svg viewBox="0 0 100 100" fill="none" stroke="#e7b94e" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="50" cy="50" r="47" stroke-opacity=".9"/><circle cx="50" cy="50" r="43" stroke-width="1" stroke-opacity=".5"/><path d="M44 6 h12 v4 a6 6 0 0 1 -12 0 z" stroke-width="1"/><g class="a-slow"><circle cx="50" cy="50" r="39" stroke-width="1" stroke-dasharray="0.6 5.1" stroke-opacity=".85"/><circle cx="50" cy="50" r="31" stroke-width="1" stroke-opacity=".35"/></g><g class="a-fast"><circle cx="58" cy="44" r="19" stroke-width="1.2" stroke-opacity=".9"/><line x1="50" y1="50" x2="74" y2="30"/><line x1="50" y1="50" x2="26" y2="70"/><line x1="50" y1="50" x2="30" y2="34"/><circle cx="74" cy="30" r="1.8" fill="#e7b94e" stroke="none"/><circle cx="26" cy="70" r="1.8" fill="#e7b94e" stroke="none"/><circle cx="30" cy="34" r="1.6" fill="#e7b94e" stroke="none"/></g><line x1="50" y1="3" x2="50" y2="97" stroke-width="1" stroke-opacity=".4"/><line x1="3" y1="50" x2="97" y2="50" stroke-width="1" stroke-opacity=".4"/><circle cx="50" cy="50" r="3.4" fill="#0a0e14"/><circle cx="50" cy="50" r="2.2" fill="#e7b94e" stroke="none"/></svg>';
