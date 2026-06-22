@@ -272,6 +272,23 @@
   #mapGlow path:hover{ stroke:#5fffa6; }
   #mapDots circle{ fill:#f0c860; }
   .wm-hint{ font-size:11.5px; color:var(--muted); text-align:center; padding:7px 0 2px; }
+
+  /* ====================  Trip Lab + live prices  ==================== */
+  .tl-card{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px 18px; margin:0 0 18px; }
+  .tl-card h2{ margin:0 0 4px; font-size:19px; }
+  .tl-sub{ margin:0 0 14px; color:var(--muted); font-size:13.5px; line-height:1.55; }
+  .tl-form{ display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end; margin-bottom:14px; }
+  .tl-form label{ display:flex; flex-direction:column; gap:5px; font-size:12px; color:var(--muted); }
+  .tl-form input, .tl-form select{ background:#0e141d; color:var(--ink); border:1px solid var(--line); border-radius:9px; padding:10px 12px; font-size:14px; min-width:120px; }
+  .tl-form input[maxlength="3"]{ text-transform:uppercase; letter-spacing:.08em; }
+  .tl-form .tl-go{ border:0; cursor:pointer; }
+  .tl-load{ text-align:center; padding:26px 10px; color:var(--muted); } .tl-load p{ margin:8px 0 0; font-size:13px; }
+  .hop-leg{ border-top:1px solid var(--line); } .hop-leg:first-child{ border-top:0; }
+  .hop-tag{ font-size:11.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--gold); padding:13px 16px 2px; }
+  .live-btn{ background:none; border:1px solid var(--line); color:var(--muted); font-size:11px; padding:3px 9px; border-radius:7px; cursor:pointer; margin:0 0 10px; }
+  .live-btn:hover{ border-color:var(--gold); color:var(--gold); }
+  .live-ok{ font-size:11px; color:var(--green); font-weight:700; margin:0 0 10px; display:inline-block; }
+  .live-up{ font-size:11px; color:var(--red); font-weight:700; margin:0 0 10px; display:inline-block; }
 </style>
 </head>
 <body>
@@ -285,7 +302,7 @@
 <header>
   <div class="bar">
     <a class="logo" href="index.html"><span class="mark"><svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="50" cy="50" r="47" fill="none" stroke="#e7b94e" stroke-width="2"/><circle cx="50" cy="50" r="39" fill="none" stroke="#e7b94e" stroke-width="1" opacity="0.4"/><g stroke="#b8862f" stroke-width="1.4" opacity="0.7"><line x1="50" y1="50" x2="71" y2="29"/><line x1="50" y1="50" x2="71" y2="71"/><line x1="50" y1="50" x2="29" y2="71"/><line x1="50" y1="50" x2="29" y2="29"/></g><path d="M50 7 L42 42 L50 50 Z" fill="#f0c860"/><path d="M50 7 L58 42 L50 50 Z" fill="#c79a33"/><path d="M93 50 L58 42 L50 50 Z" fill="#f0c860"/><path d="M93 50 L58 58 L50 50 Z" fill="#c79a33"/><path d="M50 93 L58 58 L50 50 Z" fill="#f0c860"/><path d="M50 93 L42 58 L50 50 Z" fill="#c79a33"/><path d="M7 50 L42 58 L50 50 Z" fill="#f0c860"/><path d="M7 50 L42 42 L50 50 Z" fill="#c79a33"/><circle cx="50" cy="50" r="5.5" fill="#0a0e14"/><circle cx="50" cy="50" r="3" fill="#f0c860"/></svg></span>Magellan Flights</a>
-    <nav class="nav"><a class="link" href="index.html">Home</a><a class="link" href="market.html">Market</a><a class="link" href="world.html">World</a><a class="link" href="explore.html">One-way</a><a class="link" href="lastminute.html">Last-minute</a><a class="link active" href="airports.html">Captain's Log</a><a class="link" href="watchlist.html">Watchlist</a><a class="link" href="essentials.html">Travel kit</a><a class="nav-cta" href="index.html#alerts">Get free alerts</a></nav>
+    <nav class="nav"><a class="link" href="index.html">Home</a><a class="link" href="market.html">Market</a><a class="link" href="world.html">World</a><a class="link" href="trip.html">Trip Lab</a><a class="link" href="explore.html">One-way</a><a class="link" href="lastminute.html">Last-minute</a><a class="link active" href="airports.html">Captain's Log</a><a class="link" href="watchlist.html">Watchlist</a><a class="link" href="essentials.html">Travel kit</a><a class="nav-cta" href="index.html#alerts">Get free alerts</a></nav>
   </div>
 </header>
 </div>
@@ -571,6 +588,77 @@ function buildWorld(){ var box=document.getElementById('worldlist'); if(!box||ty
 function selWorldOrigin(v){ WORG=v; buildWorld(); }
 function setWorldMode(m){ WMODE=m; buildWorld(); }
 function toggleWR(r){ if(r==='all'){ WSEL=[]; } else { var i=WSEL.indexOf(r); if(i<0)WSEL.push(r); else WSEL.splice(i,1); } buildWorld(); }
+function liveCard(btn){
+  var c=btn.closest('.card'); if(!c) return;
+  var o=c.getAttribute('data-o'), d=c.getAttribute('data-c'), dep=c.getAttribute('data-dep'), ret=c.getAttribute('data-ret'), ow=c.getAttribute('data-ow');
+  if(!o||!d) return;
+  var orig=btn.innerHTML; btn.disabled=true; btn.innerHTML='checking…';
+  var u='/api/search?origin='+encodeURIComponent(o)+'&destination='+encodeURIComponent(d)+'&one_way='+(ow==='1'?'true':'false')+'&sorting=price&limit=1';
+  if(dep) u+='&departure_at='+dep;
+  if(ret && ow!=='1') u+='&return_at='+ret;
+  fetch(u).then(function(r){return r.json();}).then(function(j){
+    var f=j&&j.data&&j.data[0];
+    if(!f){ btn.disabled=false; btn.innerHTML=orig; return; }
+    var pe=c.querySelector('.price'); var oldp=pe?parseInt((pe.textContent||'').replace(/[^0-9]/g,''),10):0;
+    var np=Math.round(f.price);
+    if(pe){ var was=pe.querySelector('.was'); pe.innerHTML='$'+np.toLocaleString()+(was?' ':''); if(was) pe.appendChild(was); }
+    var bk=c.querySelector('.book'); if(bk&&f.link) bk.href=f.link;
+    var up=(oldp&&np>oldp); var s=document.createElement('span'); s.className=up?'live-up':'live-ok';
+    s.innerHTML=up?('&#9650; live &middot; now $'+np.toLocaleString()):('&#10003; live &middot; $'+np.toLocaleString());
+    btn.parentNode.replaceChild(s, btn);
+  }).catch(function(){ btn.disabled=false; btn.innerHTML=orig; });
+}
+function tlSpin(el,msg){ el.innerHTML='<div class="tl-load"><span class="astro sm" style="width:34px;display:inline-block">'+ASTRO+'</span><p>'+(msg||'Charting fares…')+'</p></div>'; }
+function tlRow(f, oneway){
+  var price='$'+Number(f.price).toLocaleString();
+  var dep=(f.departure_at||'').slice(0,10);
+  var sub=f.origin_airport+' → '+f.destination_airport+' &middot; '+dep+(oneway?'':(f.return_at?(' → '+(f.return_at||'').slice(0,10)):''));
+  return '<div class="mv-row"><div class="mv-dest"><span class="emoji">&#9992;</span><div><div class="mv-name">'+f.destination_airport+'</div><div class="mv-air">'+sub+'</div></div></div><div class="mv-right"><span class="mv-price">'+price+'</span><a class="mini-book" href="'+f.link+'" target="_blank" rel="noopener">Book</a></div></div>';
+}
+function tlTrip(){
+  var o=(document.getElementById('tl-origin').value||'').trim().toUpperCase();
+  var d=(document.getElementById('tl-dest').value||'').trim().toUpperCase();
+  var dep=document.getElementById('tl-depart').value;
+  var wk=document.getElementById('tl-weeks').value;
+  var out=document.getElementById('tl-trip-out');
+  if(!/^[A-Z]{3}$/.test(o)){ out.innerHTML='<div class="wl-hint">Enter a 3-letter origin airport (e.g. JFK).</div>'; return; }
+  tlSpin(out);
+  var u='/api/search?origin='+o+'&one_way=false&sorting=price&limit=200';
+  if(/^[A-Z]{3}$/.test(d)) u+='&destination='+d;
+  if(dep) u+='&departure_at='+dep;
+  fetch(u).then(function(r){return r.json();}).then(function(j){
+    var data=(j&&j.data)||[];
+    if(wk!=='any'){ var target=parseInt(wk,10)*7;
+      data=data.filter(function(f){ if(!f.departure_at||!f.return_at) return false; var n=Math.round((new Date(f.return_at)-new Date(f.departure_at))/86400000); return Math.abs(n-target)<=3; }); }
+    var seen={}; data=data.filter(function(f){ var k=f.destination_airport+(f.departure_at||''); if(seen[k])return false; seen[k]=1; return true; });
+    data.sort(function(a,b){return a.price-b.price;}); data=data.slice(0,24);
+    out.innerHTML = data.length? data.map(function(f){return tlRow(f,false);}).join('') : '<div class="wl-hint">No round-trips matched that length/month. Try “Any length” or a different month.</div>';
+  }).catch(function(){ out.innerHTML='<div class="wl-hint">Couldn’t load fares right now — please try again.</div>'; });
+}
+function tlHop(){
+  var o=(document.getElementById('hp-origin').value||'').trim().toUpperCase();
+  var d=(document.getElementById('hp-dest').value||'').trim().toUpperCase();
+  var dep=document.getElementById('hp-depart').value;
+  var out=document.getElementById('hp-out');
+  if(!/^[A-Z]{3}$/.test(o)||!/^[A-Z]{3}$/.test(d)){ out.innerHTML='<div class="wl-hint">Enter both a 3-letter origin and destination (e.g. JFK and BKK).</div>'; return; }
+  tlSpin(out,'Plotting your passage…');
+  var u1='/api/search?origin='+o+'&destination='+d+'&one_way=true&sorting=price&limit=10';
+  if(dep) u1+='&departure_at='+dep;
+  fetch(u1).then(function(r){return r.json();}).then(function(j){
+    var leg1=((j&&j.data)||[]).slice().sort(function(a,b){return a.price-b.price;})[0];
+    if(!leg1){ out.innerHTML='<div class="wl-hint">No one-way found to '+d+' for that date.</div>'; return; }
+    var arr=(leg1.departure_at||dep||'').slice(0,10);
+    var u2='/api/search?origin='+d+'&one_way=true&sorting=price&limit=200';
+    if(arr) u2+='&departure_at='+arr;
+    fetch(u2).then(function(r){return r.json();}).then(function(j2){
+      var onward=((j2&&j2.data)||[]).filte      var onward=((j2&&j2.data)||[]).filter(function(f){ if(f.destination_airport===o) return false; if(!arr||!f.departure_at) return true; var diff=(new Date(f.departure_at)-new Date(arr))/3600000; return diff>=-6 && diff<=48; });
+      onward.sort(function(a,b){return a.price-b.price;});
+      var h='<div class="hop-leg"><div class="hop-tag">Leg 1 &middot; get there</div>'+tlRow(leg1,true)+'</div>';
+      h+='<div class="hop-leg"><div class="hop-tag">Leg 2 &middot; cheapest onward within 48h</div>'+(onward.length? onward.slice(0,6).map(function(f){return tlRow(f,true);}).join('') : '<div class="wl-hint">No onward one-way within 48h found from '+d+' — try another date.</div>')+'</div>';
+      out.innerHTML=h;
+    }).catch(function(){ out.innerHTML='<div class="wl-hint">Couldn’t load the onward hop — try again.</div>'; });
+  }).catch(function(){ out.innerHTML='<div class="wl-hint">Couldn’t load the hop right now — try again.</div>'; });
+}
 buildOW('all'); render(); renderCities(); renderAirportWatch(); applyLayout(); buildLM(); buildOWPage(); buildWorld(); loadFX();
 </script>
 </body>
