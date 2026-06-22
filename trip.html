@@ -32,6 +32,8 @@
             padding:5px 13px; border-radius:20px; cursor:pointer; margin-right:7px; }
   .regchip.on{ background:#fff; color:#0b1320; border-color:#fff; font-weight:600; }
   .topbar{ position:sticky; top:0; z-index:60; }
+  .lp-dot{ display:inline-block; width:7px; height:7px; border-radius:50%; background:#27d07a; margin-right:6px; vertical-align:middle; animation:lppulse 1.8s infinite; }
+  @keyframes lppulse{ 0%{box-shadow:0 0 0 0 rgba(39,208,122,.5)} 70%{box-shadow:0 0 0 6px rgba(39,208,122,0)} 100%{box-shadow:0 0 0 0 rgba(39,208,122,0)} }
   .ticker-toggle{ background:#0e141d; color:var(--gold); border:1px solid var(--line); border-radius:8px; padding:6px 9px; font-size:12px; cursor:pointer; display:inline-flex; align-items:center; gap:5px; line-height:1; }
   .ticker-toggle:hover{ border-color:var(--gold); }
   body.tickers-off .topbar .ticker, body.tickers-off .topbar .regionbar{ display:none !important; }
@@ -657,6 +659,30 @@ function liveCard(btn){
     btn.parentNode.replaceChild(s, btn);
   }).catch(function(){ btn.disabled=false; btn.innerHTML=orig; });
 }
+function liveOnView(){
+  function sigInfo(price,b){ if(!b) return null; var pct=Math.round((b-price)/b*100); var cls=pct>=20?'s-book':(pct>=8?'s-watch':'s-wait'); var sg=pct>=20?'BOOK':(pct>=8?'WATCH':'WAIT'); return {pct:pct,cls:cls,s:sg}; }
+  var queue=[], active=0, MAX=3, done=(typeof WeakSet!=='undefined')?new WeakSet():null, marker={};
+  function pump(){ while(active<MAX && queue.length){ doFetch(queue.shift()); } }
+  function apply(el,np,link,b){
+    var pe=el.querySelector('.mv-price, .price');
+    if(pe){ var was=pe.querySelector('.was'); pe.innerHTML='<span class="lp-dot" title="live fare"></span>$'+np.toLocaleString(); if(was){ pe.appendChild(document.createTextNode(' ')); pe.appendChild(was); } }
+    var bk=el.querySelector('.mini-book, .book'); if(bk&&link) bk.href=link;
+    var info=sigInfo(np,b);
+    if(info){ var dn=el.querySelector('.down'); if(dn) dn.innerHTML='&#9660;'+info.pct+'%'; var sg=el.querySelector('.sig'); if(sg){ sg.textContent=info.s; sg.className='sig '+info.cls; }
+      var bd=el.querySelector('.badge'); if(bd && bd.className.indexOf('flash')<0){ bd.textContent=info.pct>0?('Save '+info.pct+'%'):''; } }
+  }
+  function doFetch(el){ active++;
+    var o=el.getAttribute('data-o'), d=el.getAttribute('data-d')||el.getAttribute('data-c'), ow=el.getAttribute('data-ow')==='1', b=parseFloat(el.getAttribute('data-b'))||0;
+    if(!o||!d){ active--; pump(); return; }
+    var u='/api/search?origin='+encodeURIComponent(o)+'&destination='+encodeURIComponent(d)+'&one_way='+(ow?'true':'false')+'&sorting=price&limit=1';
+    fetch(u).then(function(r){return r.json();}).then(function(j){ var f=j&&j.data&&j.data[0]; if(f) apply(el, Math.round(f.price), f.link, b); }).catch(function(){}).then(function(){ active--; pump(); });
+  }
+  function enq(el){ if(done){ if(done.has(el)) return; done.add(el); } else { if(el[marker]) return; el[marker]=1; } queue.push(el); }
+  var els=document.querySelectorAll('[data-lp]');
+  if(!('IntersectionObserver' in window)){ for(var i=0;i<els.length;i++) enq(els[i]); pump(); return; }
+  var io=new IntersectionObserver(function(ents){ for(var k=0;k<ents.length;k++){ if(ents[k].isIntersecting){ enq(ents[k].target); io.unobserve(ents[k].target); } } pump(); }, {rootMargin:'150px'});
+  for(var j=0;j<els.length;j++) io.observe(els[j]);
+}
 function tlSpin(el,msg){ el.innerHTML='<div class="tl-load"><span class="astro sm" style="width:34px;display:inline-block">'+ASTRO+'</span><p>'+(msg||'Charting fares…')+'</p></div>'; }
 function tlRow(f, oneway){
   var price='$'+Number(f.price).toLocaleString();
@@ -708,7 +734,7 @@ function tlHop(){
     }).catch(function(){ out.innerHTML='<div class="wl-hint">Couldn’t load the onward hop — try again.</div>'; });
   }).catch(function(){ out.innerHTML='<div class="wl-hint">Couldn’t load the hop right now — try again.</div>'; });
 }
-buildOW('all'); render(); renderCities(); renderAirportWatch(); applyLayout(); buildLM(); buildOWPage(); buildWorld(); loadFX();
+buildOW('all'); render(); renderCities(); renderAirportWatch(); applyLayout(); buildLM(); buildOWPage(); buildWorld(); loadFX(); liveOnView();
 </script>
 </body>
 </html>
