@@ -1,0 +1,18 @@
+# Secrets — never commit the API key
+config.json
+
+# Python
+__pycache__/
+*.pyc
+
+# Logs & generated data
+logs/
+data/pricehistory.csv
+
+# Large daily CSV outputs (regenerated locally by the data scripts)
+*.csv
+deals_*/
+
+# OS
+.DS_Store
+Thumbs.db
