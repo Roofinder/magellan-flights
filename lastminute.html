@@ -420,6 +420,60 @@
   .live-btn:hover{ border-color:var(--gold); color:var(--gold); }
   .live-ok{ font-size:11px; color:var(--green); font-weight:700; margin:0 0 10px; display:inline-block; }
   .live-up{ font-size:11px; color:var(--red); font-weight:700; margin:0 0 10px; display:inline-block; }
+
+  /* ====================  Design refresh: nav, rhythm, footer  ==================== */
+  .nav{ gap:18px; }
+  .nav-star{ font-size:18px; color:var(--muted); text-decoration:none; line-height:1; padding:2px 4px; }
+  .nav-star:hover{ color:var(--gold); }
+  /* one calm vertical rhythm for stacked homepage / content sections */
+  .home-sec{ margin:48px 0 0; }
+  .sec-head{ margin:0 0 14px; }
+  .section-head-lg{ text-align:center; max-width:620px; margin:60px auto 24px; }
+  .section-head-lg h2{ font-size:24px; margin:0 0 8px; letter-spacing:-.01em; }
+  .section-head-lg p{ margin:0; color:var(--muted); font-size:14.5px; line-height:1.6; }
+  .mission{ max-width:760px; margin:60px auto 0; text-align:center; }
+  .mission .astro{ margin:0 auto 6px; }
+  .mission h2{ font-size:24px; margin:6px 0 12px; letter-spacing:-.01em; }
+  .mission p{ color:var(--muted); font-size:15px; line-height:1.75; margin:0 auto; max-width:680px; }
+  /* slightly larger, calmer cards */
+  .why-card{ border-radius:16px; }
+  .stat{ border-radius:14px; }
+  .statbar{ margin:22px 0 6px; }
+  .stat-note{ text-align:center; font-size:13px; color:var(--muted); margin:8px auto 0; }
+  /* footer */
+  .site-footer{ max-width:1080px; margin:72px auto 0; padding:0 20px; color:var(--muted);
+                border-top:1px solid var(--line); text-align:left; }
+  .ft-top{ display:grid; grid-template-columns:1.3fr 2fr; gap:40px; padding:40px 0 32px; }
+  .ft-brand .logo{ font-size:19px; color:var(--ink); margin-bottom:12px; }
+  .ft-tag{ font-size:13.5px; line-height:1.65; color:var(--muted); margin:0 0 16px; max-width:340px; }
+  .ft-cta{ display:inline-block; }
+  .ft-links{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  .ft-col h4{ font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink); margin:0 0 12px; }
+  .ft-col a{ display:block; color:var(--muted); text-decoration:none; font-size:13.5px; padding:4px 0; }
+  .ft-col a:hover{ color:var(--gold); }
+  .ft-bottom{ border-top:1px solid var(--line); padding:18px 0 50px; line-height:1.6; }
+  .ft-bottom p{ margin:0 0 6px; font-size:12px; color:var(--muted); }
+  @media(max-width:760px){ .ft-top{ grid-template-columns:1fr; gap:26px; } }
+  @media(max-width:480px){ .ft-links{ grid-template-columns:1fr 1fr; gap:16px; } }
+
+  /* bucket-list quick widget — floating bottom-left, hidden until opened */
+  .bw-toggle{ position:fixed; bottom:20px; left:20px; z-index:50; display:inline-flex; align-items:center; gap:6px;
+              background:var(--card); color:var(--gold); border:1px solid var(--line); border-radius:24px;
+              padding:10px 15px; font-size:15px; cursor:pointer; box-shadow:0 4px 14px rgba(0,0,0,.45); line-height:1; }
+  .bw-toggle:hover{ border-color:var(--gold); }
+  .bw-toggle #bw-count{ font-size:13px; font-weight:700; color:var(--ink); }
+  .bucket-widget{ position:fixed; bottom:74px; left:20px; z-index:50; width:300px; max-width:92vw; max-height:60vh;
+                  overflow-y:auto; background:var(--card); border:1px solid var(--line); border-radius:14px;
+                  box-shadow:0 8px 30px rgba(0,0,0,.5); padding:14px 16px; display:none; }
+  body.bw-open .bucket-widget{ display:block; }
+  .bw-head{ font-weight:700; font-size:14px; color:var(--ink); margin-bottom:10px; }
+  .bw-empty{ font-size:13px; color:var(--muted); line-height:1.5; }
+  .bw-row{ display:flex; align-items:center; gap:8px; border-top:1px solid var(--line); padding:9px 0; }
+  .bw-row:first-of-type{ border-top:0; }
+  .bw-row a{ flex:1; min-width:0; text-decoration:none; color:var(--ink); display:flex; flex-direction:column; gap:1px; }
+  .bw-row a b{ font-size:13.5px; } .bw-row a span{ font-size:13px; color:var(--gold); } .bw-row a small{ font-size:11.5px; color:var(--muted); }
+  .bw-x{ background:none; border:0; color:var(--muted); font-size:16px; cursor:pointer; line-height:1; }
+  .bw-x:hover{ color:var(--red); }
 </style>
 </head>
 <body>
@@ -436,7 +490,7 @@ window.addEventListener('load',function(){setTimeout(done, rm?700:2700);});})();
 <header>
   <div class="bar">
     <a class="logo" href="index.html"><span class="mark"><svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="50" cy="50" r="47" fill="none" stroke="#e7b94e" stroke-width="2"/><circle cx="50" cy="50" r="39" fill="none" stroke="#e7b94e" stroke-width="1" opacity="0.4"/><g stroke="#b8862f" stroke-width="1.4" opacity="0.7"><line x1="50" y1="50" x2="71" y2="29"/><line x1="50" y1="50" x2="71" y2="71"/><line x1="50" y1="50" x2="29" y2="71"/><line x1="50" y1="50" x2="29" y2="29"/></g><path d="M50 7 L42 42 L50 50 Z" fill="#f0c860"/><path d="M50 7 L58 42 L50 50 Z" fill="#c79a33"/><path d="M93 50 L58 42 L50 50 Z" fill="#f0c860"/><path d="M93 50 L58 58 L50 50 Z" fill="#c79a33"/><path d="M50 93 L58 58 L50 50 Z" fill="#f0c860"/><path d="M50 93 L42 58 L50 50 Z" fill="#c79a33"/><path d="M7 50 L42 58 L50 50 Z" fill="#f0c860"/><path d="M7 50 L42 42 L50 50 Z" fill="#c79a33"/><circle cx="50" cy="50" r="5.5" fill="#0a0e14"/><circle cx="50" cy="50" r="3" fill="#f0c860"/></svg></span>Magellan Flights</a>
-    <nav class="nav"><a class="link" href="index.html">Home</a><a class="link" href="market.html">Market</a><a class="link" href="explore.html">Explore</a><a class="link" href="trip.html">Journey</a><a class="link" href="blog.html">Daily Guide</a><a class="link" href="guides.html">Guides</a><a class="link" href="cheap-flights.html">By airport</a><a class="link" href="watchlist.html">My Bucket List Flights</a><a class="link" href="essentials.html">Travel kit</a><a class="nav-cta" href="index.html#alerts">Get free alerts</a><button type="button" class="ticker-toggle" onclick="toggleTickers()" title="Hide or show the price ticker" aria-label="Toggle ticker"><span class="tt-ar">&#9650;</span> Ticker</button></nav>
+    <nav class="nav"><a class="link" href="index.html">Home</a><a class="link" href="market.html">Market</a><a class="link" href="explore.html">Explore</a><a class="link" href="guides.html">Guides</a><a class="link" href="cheap-flights.html">By airport</a><a class="nav-star" href="watchlist.html" title="My bucket list" aria-label="My bucket list">&#9733;</a><a class="nav-cta" href="index.html#alerts">Get free alerts</a><button type="button" class="ticker-toggle" onclick="toggleTickers()" title="Hide or show the price ticker" aria-label="Toggle ticker"><span class="tt-ar">&#9650;</span> Ticker</button></nav>
   </div>
 </header>
 <script>
@@ -459,11 +513,24 @@ function toggleTickers(){ var off=document.body.classList.toggle('tickers-off');
 <aside id="bucket-widget" class="bucket-widget"><div class="bw-head">&#9733; My Bucket List</div><div id="bw-list"></div></aside>
 <button class="bw-toggle" onclick="document.body.classList.toggle('bw-open')">&#9733;<span id="bw-count"></span></button>
 <script>
-window.renderBucket=function(){ var list=[]; try{ list=JSON.parse(localStorage.getItem('mf_bucket')||'[]'); }catch(e){} var cnt=document.getElementById('bw-count'); if(cnt) cnt.textContent=list.length?(' '+list.length):''; var w=document.getElementById('bw-list'); if(w){ w.innerHTML = list.length ? list.map(function(f,i){ return '<div class="bw-row"><a href="'+f.link+'" target="_blank" rel="noopener"><b>'+f.o+' &rarr; '+f.d+'</b><span>$'+(f.price||0).toLocaleString()+(f.ow?' one-way':'')+'</span><small>'+(f.date||'')+(f.ret?(' &rarr; '+f.ret):'')+'</small></a><button class="bw-x" title="remove" onclick="bucketRemove('+i+')">&times;</button></div>'; }).join('') : '<div class="bw-empty">Star &#9734; any deal on Explore to save it here.</div>'; } var pg=document.getElementById('bucket-page'); if(pg){ pg.innerHTML = list.length ? ('<div class="panel">'+list.map(function(f,i){ return '<div class="mv-row"><div class="mv-dest"><span class="emoji">&#9992;</span><div><div class="mv-name">'+f.o+' &rarr; '+f.d+'</div><div class="mv-air">'+(f.date||'')+(f.ret?(' &rarr; '+f.ret):'')+(f.ow?' &middot; one-way':' &middot; round-trip')+'</div></div></div><div class="mv-right"><span class="mv-price">$'+(f.price||0).toLocaleString()+'</span><a class="mini-book" href="'+f.link+'" target="_blank" rel="noopener">Book</a><button class="star on" title="remove" onclick="bucketRemove('+i+')">&#9733;</button></div></div>'; }).join('')+'</div>') : '<div class="wl-hint">No saved flights yet. Star &#9734; any deal on the <a href="explore.html">Explore</a> page to add it to your bucket list.</div>'; } };
+window.renderBucket=function(){ var list=[]; try{ list=JSON.parse(localStorage.getItem('mf_bucket')||'[]'); }catch(e){} var cnt=document.getElementById('bw-count'); if(cnt) cnt.textContent=list.length?(' '+list.length):''; var w=document.getElementById('bw-list'); if(w){ w.innerHTML = list.length ? list.map(function(f,i){ return '<div class="bw-row"><a href="'+f.link+'" target="_blank" rel="noopener"><b>'+f.o+' &rarr; '+f.d+'</b><span>$'+(f.price||0).toLocaleString()+(f.ow?' one-way':'')+'</span><small>'+(f.date||'')+(f.ret?(' &rarr; '+f.ret):'')+'</small></a><button class="bw-x" title="remove" onclick="bucketRemove('+i+')">&times;</button></div>'; }).join('') : '<div class="bw-empty">Star &#9734; any deal on Explore to save it here.</div>'; } var pg=document.getElementById('bucket-page'); if(pg){ pg.innerHTML = list.length ? ('<div class="panel">'+list.map(function(f,i){ return '<div class="mv-row" data-lp data-o="'+f.o+'" data-d="'+f.d+'" data-ow="'+(f.ow?'1':'0')+'"><div class="mv-dest"><span class="emoji">&#9992;</span><div><div class="mv-name">'+f.o+' &rarr; '+f.d+'</div><div class="mv-air">'+(f.date||'')+(f.ret?(' &rarr; '+f.ret):'')+(f.ow?' &middot; one-way':' &middot; round-trip')+'</div></div></div><div class="mv-right"><span class="mv-price">$'+(f.price||0).toLocaleString()+'</span><a class="mini-book" href="'+f.link+'" target="_blank" rel="noopener">Book</a><button class="star on" title="remove" onclick="bucketRemove('+i+')">&#9733;</button></div></div>'; }).join('')+'</div>') : '<div class="wl-hint">No saved flights yet. Star &#9734; any deal on the <a href="explore.html">Explore</a> page to add it to your bucket list.</div>'; } };
 window.bucketRemove=function(i){ var list=[]; try{ list=JSON.parse(localStorage.getItem('mf_bucket')||'[]'); }catch(e){} list.splice(i,1); localStorage.setItem('mf_bucket',JSON.stringify(list)); window.renderBucket(); };
 window.addEventListener('load', window.renderBucket);
 </script>
-<footer><p>Prices are round-trip unless marked one-way, and change fast — book soon if you see one you love.</p><p>Magellan Flights may earn a commission when you book through our links, at no extra cost to you.<br>Fares found June 22, 2026 and may change at any time.</p></footer>
+<footer class="site-footer">
+  <div class="ft-top">
+    <div class="ft-brand">
+      <a class="logo" href="index.html"><span class="mark"><svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="50" cy="50" r="47" fill="none" stroke="#e7b94e" stroke-width="2"/><circle cx="50" cy="50" r="39" fill="none" stroke="#e7b94e" stroke-width="1" opacity="0.4"/><g stroke="#b8862f" stroke-width="1.4" opacity="0.7"><line x1="50" y1="50" x2="71" y2="29"/><line x1="50" y1="50" x2="71" y2="71"/><line x1="50" y1="50" x2="29" y2="71"/><line x1="50" y1="50" x2="29" y2="29"/></g><path d="M50 7 L42 42 L50 50 Z" fill="#f0c860"/><path d="M50 7 L58 42 L50 50 Z" fill="#c79a33"/><path d="M93 50 L58 42 L50 50 Z" fill="#f0c860"/><path d="M93 50 L58 58 L50 50 Z" fill="#c79a33"/><path d="M50 93 L58 58 L50 50 Z" fill="#f0c860"/><path d="M50 93 L42 58 L50 50 Z" fill="#c79a33"/><path d="M7 50 L42 58 L50 50 Z" fill="#f0c860"/><path d="M7 50 L42 42 L50 50 Z" fill="#c79a33"/><circle cx="50" cy="50" r="5.5" fill="#0a0e14"/><circle cx="50" cy="50" r="3" fill="#f0c860"/></svg></span>Magellan Flights</a>
+      <p class="ft-tag">The cheapest flights from the USA to anywhere on earth &mdash; tracked every day, judged against their own price history.</p>
+      <a class="nav-cta ft-cta" href="index.html#alerts">Get free price alerts</a>
+    </div>
+    <nav class="ft-links"><div class="ft-col"><h4>Browse fares</h4><a href="market.html">The Market</a><a href="explore.html">Explore anywhere</a><a href="world.html">Anywhere &rarr; Anywhere</a><a href="cheap-flights.html">Cheap flights by airport</a><a href="trip.html">Journey Builder</a></div><div class="ft-col"><h4>Learn</h4><a href="guides.html">Guides &amp; tips</a><a href="blog.html">Today&rsquo;s Daily Guide</a><a href="essentials.html">Travel kit</a><a href="how-to-find-cheap-flights.html">How to find cheap flights</a></div><div class="ft-col"><h4>Your trips</h4><a href="watchlist.html">My bucket list</a><a href="index.html#alerts">Get free price alerts</a></div></nav>
+  </div>
+  <div class="ft-bottom">
+    <p>Prices are round-trip unless marked one-way and change fast &mdash; book soon if you see one you love. Magellan Flights may earn a commission when you book through our links, at no extra cost to you.</p>
+    <p>&copy; Magellan Flights &middot; Fares found June 22, 2026 and may change at any time.</p>
+  </div>
+</footer>
 <script>
 var ASTRO='<svg viewBox="0 0 100 100" fill="none" stroke="#e7b94e" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="50" cy="50" r="47" stroke-opacity=".9"/><circle cx="50" cy="50" r="43" stroke-width="1" stroke-opacity=".5"/><path d="M44 6 h12 v4 a6 6 0 0 1 -12 0 z" stroke-width="1"/><g class="a-slow"><circle cx="50" cy="50" r="39" stroke-width="1" stroke-dasharray="0.6 5.1" stroke-opacity=".85"/><circle cx="50" cy="50" r="31" stroke-width="1" stroke-opacity=".35"/></g><g class="a-fast"><circle cx="58" cy="44" r="19" stroke-width="1.2" stroke-opacity=".9"/><line x1="50" y1="50" x2="74" y2="30"/><line x1="50" y1="50" x2="26" y2="70"/><line x1="50" y1="50" x2="30" y2="34"/><circle cx="74" cy="30" r="1.8" fill="#e7b94e" stroke="none"/><circle cx="26" cy="70" r="1.8" fill="#e7b94e" stroke="none"/><circle cx="30" cy="34" r="1.6" fill="#e7b94e" stroke="none"/></g><line x1="50" y1="3" x2="50" y2="97" stroke-width="1" stroke-opacity=".4"/><line x1="3" y1="50" x2="97" y2="50" stroke-width="1" stroke-opacity=".4"/><circle cx="50" cy="50" r="3.4" fill="#0a0e14"/><circle cx="50" cy="50" r="2.2" fill="#e7b94e" stroke="none"/></svg>';
 var ACO = {};
@@ -511,7 +578,7 @@ function buildOW(region){ var t=document.getElementById('owtrack'); if(!t) retur
   document.querySelectorAll('[data-region]').forEach(function(b){ var r=b.dataset.region;
     var show=(r==='all')||(r==='Abroad'?!!av['Abroad']:!!av[r]); b.style.display=show?'':'none'; }); }
 function selRegion(r){ document.querySelectorAll('.regchip').forEach(function(b){ b.classList.toggle('on', b.dataset.region===r); }); buildOW(r); }
-function wlRow(m){ return '<div class="mv-row"><button class="star on" onclick="toggleDest(\''+m.c+'\')">&#9733;</button>'
+function wlRow(m){ return '<div class="mv-row" data-lp data-o="'+m.o+'" data-d="'+m.c+'" data-ow="0"><button class="star on" onclick="toggleDest(\''+m.c+'\')">&#9733;</button>'
   + '<div class="mv-dest">'+flag(m.cc)+'<div><div class="mv-name">'+m.n+'</div>'
   + '<div class="mv-air">'+m.an+' &middot; from '+m.o+'</div></div></div>'
   + '<div class="mv-right"><span class="mv-price">$'+m.p.toLocaleString()+'</span>'
@@ -537,7 +604,7 @@ function render(){
     : 'No airlines followed yet — tap one above to follow it.'; }
 }
 function dealRow(o,d){ var on=WF.indexOf(o+'|'+d.code)>=0;
-  return '<div class="mv-row"><button class="star'+(on?' on':'')+'" onclick="toggleFlight(\''+o+'\',\''+d.code+'\')">'+(on?'&#9733;':'&#9734;')+'</button>'
+  return '<div class="mv-row" data-lp data-o="'+o+'" data-d="'+d.code+'" data-ow="0"><button class="star'+(on?' on':'')+'" onclick="toggleFlight(\''+o+'\',\''+d.code+'\')">'+(on?'&#9733;':'&#9734;')+'</button>'
   + '<div class="mv-dest"><span class="emoji">&#9992;</span>'
   + '<div><div class="mv-name">'+d.name+'</div><div class="mv-air">round-trip from '+o+' &middot; '+d.depart+' &rarr; '+d['return']+'</div></div></div>'
   + '<div class="mv-right"><span class="mv-price">$'+d.price.toLocaleString()+'</span>'
@@ -652,7 +719,7 @@ function applyLayout(){ HSECS.forEach(function(s){ var el=document.querySelector
   if(el) el.style.display = secOn(s)?'':'none'; var cb=document.getElementById('cb-'+s); if(cb) cb.checked=secOn(s); }); }
 function toggleSec(s){ HL[s]=!secOn(s); localStorage.setItem('fs_home_layout', JSON.stringify(HL)); applyLayout(); }
 function toggleCustomize(){ var p=document.getElementById('customizer'); if(p) p.style.display=(p.style.display==='block')?'none':'block'; }
-function lmItem(d){ return '<div class="mv-row"><div class="mv-dest"><span class="emoji">&#9889;</span>'
+function lmItem(d){ return '<div class="mv-row" data-lp data-o="'+d.o+'" data-d="'+d.c+'" data-ow="0"><div class="mv-dest"><span class="emoji">&#9889;</span>'
   + '<div><div class="mv-name">'+d.n+'</div><div class="mv-air">round-trip from '+d.o+' &middot; '+d.dep+' &rarr; '+d.ret+'</div></div></div>'
   + '<div class="mv-right"><span class="mv-price">$'+d.p.toLocaleString()+'</span>'
   + '<a class="mini-book" href="'+d.l+'" target="_blank" rel="noopener">Book</a></div></div>'; }
@@ -669,7 +736,7 @@ function toggleLMR(r){ if(r==='all'){ LMSEL=[]; } else { var i=LMSEL.indexOf(r);
 var OWMODE='6m'; var OWPSEL=[];
 function owData(){ return OWMODE==='lm' ? OWLM : OW; }
 function owMatch(d){ return OWPSEL.length===0 || (d.t && d.t.some(function(t){ return OWPSEL.indexOf(t)>=0; })); }
-function owpItem(d){ return '<div class="mv-row"><div class="mv-dest"><span class="emoji">&#9992;</span>'
+function owpItem(d){ return '<div class="mv-row" data-lp data-o="'+d.o+'" data-d="'+d.c+'" data-ow="1"><div class="mv-dest"><span class="emoji">&#9992;</span>'
   + '<div><div class="mv-name">'+d.n+'</div><div class="mv-air">one-way from '+d.o+(d.dep?(' &middot; '+d.dep):'')+'</div></div></div>'
   + '<div class="mv-right"><span class="mv-price">$'+d.p.toLocaleString()+'</span>'
   + '<a class="mini-book" href="'+d.l+'" target="_blank" rel="noopener">Book</a></div></div>'; }
@@ -689,7 +756,7 @@ function loadFX(){ fetch('https://open.er-api.com/v6/latest/USD').then(function(
   if(d&&d.rates){ FX=d.rates; document.querySelectorAll('[data-cur]').forEach(function(el){ var c=el.dataset.cur;
     if(FX[c]) el.textContent='$1 ≈ '+fmtRate(FX[c])+' '+c; }); } }).catch(function(){}); }
 var WSEL=[]; var WORG='all'; var WMODE='any';
-function worldItem(x){ return '<div class="mv-row"><div class="mv-dest"><span class="emoji">&#9992;</span>'
+function worldItem(x){ return '<div class="mv-row" data-lp data-o="'+x.o+'" data-d="'+x.c+'" data-ow="1"><div class="mv-dest"><span class="emoji">&#9992;</span>'
   + '<div><div class="mv-name">'+x.n+'</div><div class="mv-air">one-way: '+x.on+' ('+x.o+') &rarr; '+x.c+' &middot; '+x.dep+'</div></div></div>'
   + '<div class="mv-right"><span class="mv-price">$'+x.p.toLocaleString()+'</span>'
   + '<a class="mini-book" href="'+x.l+'" target="_blank" rel="noopener">Book</a></div></div>'; }
@@ -758,7 +825,7 @@ function liveOnView(){
   var queue=[], active=0, MAX=3;
   function pump(){ while(active<MAX && queue.length){ doFetch(queue.shift()); } }
   function apply(el,np,link,b){
-    var pe=el.querySelector('.mv-price, .price');
+    var pe=el.querySelector('.mv-price, .price, .dt-price, .winner-price, .blog-price');
     if(pe){ var was=pe.querySelector('.was'); pe.innerHTML='<span class="lp-dot" title="live fare"></span>$'+np.toLocaleString(); if(was){ pe.appendChild(document.createTextNode(' ')); pe.appendChild(was); } }
     var bk=el.querySelector('.mini-book, .book'); if(bk&&link) bk.href=link;
     var info=sigInfo(np,b);
@@ -783,7 +850,7 @@ function tlRow(f, oneway){
   var price='$'+Number(f.price).toLocaleString();
   var dep=(f.departure_at||'').slice(0,10);
   var sub=f.origin_airport+' → '+f.destination_airport+' &middot; '+dep+(oneway?'':(f.return_at?(' → '+(f.return_at||'').slice(0,10)):''));
-  return '<div class="mv-row"><div class="mv-dest"><span class="emoji">&#9992;</span><div><div class="mv-name">'+f.destination_airport+'</div><div class="mv-air">'+sub+'</div></div></div><div class="mv-right"><span class="mv-price">'+price+'</span><a class="mini-book" href="'+f.link+'" target="_blank" rel="noopener">Book</a></div></div>';
+  return '<div class="mv-row"><div class="mv-dest"><span class="emoji">&#9992;</span><div><div class="mv-name">'+f.destination_airport+'</div><div class="mv-air">'+sub+'</div></div></div><div class="mv-right"><span class="mv-price"><span class="lp-dot" title="live fare"></span>'+price+'</span><a class="mini-book" href="'+f.link+'" target="_blank" rel="noopener">Book</a></div></div>';
 }
 function tlTrip(){
   var o=(document.getElementById('tl-origin').value||'').trim().toUpperCase();

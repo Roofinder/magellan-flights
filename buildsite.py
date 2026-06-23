@@ -98,10 +98,19 @@ REGION_BTNS = ["all", "USA", "Abroad", "Asia", "SE Asia", "E Asia", "S Asia",
                "W Europe", "E Europe", "Nordic", "S America", "C America",
                "Caribbean", "Oceania", "Middle East", "Africa", "Canada"]
 
+# Primary nav — kept to five clear destinations. Secondary pages live in the
+# grouped footer (FOOTER_NAV) so nothing is lost and everything stays crawlable.
 NAV = [("index.html", "Home"), ("market.html", "Market"), ("explore.html", "Explore"),
-       ("trip.html", "Journey"), ("blog.html", "Daily Guide"), ("guides.html", "Guides"),
-       ("cheap-flights.html", "By airport"),
-       ("watchlist.html", "My Bucket List Flights"), ("essentials.html", "Travel kit")]
+       ("guides.html", "Guides"), ("cheap-flights.html", "By airport")]
+
+FOOTER_NAV = [
+    ("Browse fares", [("market.html", "The Market"), ("explore.html", "Explore anywhere"),
+                      ("world.html", "Anywhere &rarr; Anywhere"), ("cheap-flights.html", "Cheap flights by airport"),
+                      ("trip.html", "Journey Builder")]),
+    ("Learn", [("guides.html", "Guides &amp; tips"), ("blog.html", "Today&rsquo;s Daily Guide"),
+               ("essentials.html", "Travel kit"), ("how-to-find-cheap-flights.html", "How to find cheap flights")]),
+    ("Your trips", [("watchlist.html", "My bucket list"), ("index.html#alerts", "Get free price alerts")]),
+]
 
 
 def regions_for(cc):
@@ -1471,6 +1480,60 @@ CSS = r"""<style>
   .live-btn:hover{ border-color:var(--gold); color:var(--gold); }
   .live-ok{ font-size:11px; color:var(--green); font-weight:700; margin:0 0 10px; display:inline-block; }
   .live-up{ font-size:11px; color:var(--red); font-weight:700; margin:0 0 10px; display:inline-block; }
+
+  /* ====================  Design refresh: nav, rhythm, footer  ==================== */
+  .nav{ gap:18px; }
+  .nav-star{ font-size:18px; color:var(--muted); text-decoration:none; line-height:1; padding:2px 4px; }
+  .nav-star:hover{ color:var(--gold); }
+  /* one calm vertical rhythm for stacked homepage / content sections */
+  .home-sec{ margin:48px 0 0; }
+  .sec-head{ margin:0 0 14px; }
+  .section-head-lg{ text-align:center; max-width:620px; margin:60px auto 24px; }
+  .section-head-lg h2{ font-size:24px; margin:0 0 8px; letter-spacing:-.01em; }
+  .section-head-lg p{ margin:0; color:var(--muted); font-size:14.5px; line-height:1.6; }
+  .mission{ max-width:760px; margin:60px auto 0; text-align:center; }
+  .mission .astro{ margin:0 auto 6px; }
+  .mission h2{ font-size:24px; margin:6px 0 12px; letter-spacing:-.01em; }
+  .mission p{ color:var(--muted); font-size:15px; line-height:1.75; margin:0 auto; max-width:680px; }
+  /* slightly larger, calmer cards */
+  .why-card{ border-radius:16px; }
+  .stat{ border-radius:14px; }
+  .statbar{ margin:22px 0 6px; }
+  .stat-note{ text-align:center; font-size:13px; color:var(--muted); margin:8px auto 0; }
+  /* footer */
+  .site-footer{ max-width:1080px; margin:72px auto 0; padding:0 20px; color:var(--muted);
+                border-top:1px solid var(--line); text-align:left; }
+  .ft-top{ display:grid; grid-template-columns:1.3fr 2fr; gap:40px; padding:40px 0 32px; }
+  .ft-brand .logo{ font-size:19px; color:var(--ink); margin-bottom:12px; }
+  .ft-tag{ font-size:13.5px; line-height:1.65; color:var(--muted); margin:0 0 16px; max-width:340px; }
+  .ft-cta{ display:inline-block; }
+  .ft-links{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  .ft-col h4{ font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink); margin:0 0 12px; }
+  .ft-col a{ display:block; color:var(--muted); text-decoration:none; font-size:13.5px; padding:4px 0; }
+  .ft-col a:hover{ color:var(--gold); }
+  .ft-bottom{ border-top:1px solid var(--line); padding:18px 0 50px; line-height:1.6; }
+  .ft-bottom p{ margin:0 0 6px; font-size:12px; color:var(--muted); }
+  @media(max-width:760px){ .ft-top{ grid-template-columns:1fr; gap:26px; } }
+  @media(max-width:480px){ .ft-links{ grid-template-columns:1fr 1fr; gap:16px; } }
+
+  /* bucket-list quick widget — floating bottom-left, hidden until opened */
+  .bw-toggle{ position:fixed; bottom:20px; left:20px; z-index:50; display:inline-flex; align-items:center; gap:6px;
+              background:var(--card); color:var(--gold); border:1px solid var(--line); border-radius:24px;
+              padding:10px 15px; font-size:15px; cursor:pointer; box-shadow:0 4px 14px rgba(0,0,0,.45); line-height:1; }
+  .bw-toggle:hover{ border-color:var(--gold); }
+  .bw-toggle #bw-count{ font-size:13px; font-weight:700; color:var(--ink); }
+  .bucket-widget{ position:fixed; bottom:74px; left:20px; z-index:50; width:300px; max-width:92vw; max-height:60vh;
+                  overflow-y:auto; background:var(--card); border:1px solid var(--line); border-radius:14px;
+                  box-shadow:0 8px 30px rgba(0,0,0,.5); padding:14px 16px; display:none; }
+  body.bw-open .bucket-widget{ display:block; }
+  .bw-head{ font-weight:700; font-size:14px; color:var(--ink); margin-bottom:10px; }
+  .bw-empty{ font-size:13px; color:var(--muted); line-height:1.5; }
+  .bw-row{ display:flex; align-items:center; gap:8px; border-top:1px solid var(--line); padding:9px 0; }
+  .bw-row:first-of-type{ border-top:0; }
+  .bw-row a{ flex:1; min-width:0; text-decoration:none; color:var(--ink); display:flex; flex-direction:column; gap:1px; }
+  .bw-row a b{ font-size:13.5px; } .bw-row a span{ font-size:13px; color:var(--gold); } .bw-row a small{ font-size:11.5px; color:var(--muted); }
+  .bw-x{ background:none; border:0; color:var(--muted); font-size:16px; cursor:pointer; line-height:1; }
+  .bw-x:hover{ color:var(--red); }
 </style>"""
 
 SCRIPT = r"""<script>
@@ -1515,7 +1578,7 @@ function buildOW(region){ var t=document.getElementById('owtrack'); if(!t) retur
   document.querySelectorAll('[data-region]').forEach(function(b){ var r=b.dataset.region;
     var show=(r==='all')||(r==='Abroad'?!!av['Abroad']:!!av[r]); b.style.display=show?'':'none'; }); }
 function selRegion(r){ document.querySelectorAll('.regchip').forEach(function(b){ b.classList.toggle('on', b.dataset.region===r); }); buildOW(r); }
-function wlRow(m){ return '<div class="mv-row"><button class="star on" onclick="toggleDest(\''+m.c+'\')">&#9733;</button>'
+function wlRow(m){ return '<div class="mv-row" data-lp data-o="'+m.o+'" data-d="'+m.c+'" data-ow="0"><button class="star on" onclick="toggleDest(\''+m.c+'\')">&#9733;</button>'
   + '<div class="mv-dest">'+flag(m.cc)+'<div><div class="mv-name">'+m.n+'</div>'
   + '<div class="mv-air">'+m.an+' &middot; from '+m.o+'</div></div></div>'
   + '<div class="mv-right"><span class="mv-price">$'+m.p.toLocaleString()+'</span>'
@@ -1541,7 +1604,7 @@ function render(){
     : 'No airlines followed yet — tap one above to follow it.'; }
 }
 function dealRow(o,d){ var on=WF.indexOf(o+'|'+d.code)>=0;
-  return '<div class="mv-row"><button class="star'+(on?' on':'')+'" onclick="toggleFlight(\''+o+'\',\''+d.code+'\')">'+(on?'&#9733;':'&#9734;')+'</button>'
+  return '<div class="mv-row" data-lp data-o="'+o+'" data-d="'+d.code+'" data-ow="0"><button class="star'+(on?' on':'')+'" onclick="toggleFlight(\''+o+'\',\''+d.code+'\')">'+(on?'&#9733;':'&#9734;')+'</button>'
   + '<div class="mv-dest"><span class="emoji">&#9992;</span>'
   + '<div><div class="mv-name">'+d.name+'</div><div class="mv-air">round-trip from '+o+' &middot; '+d.depart+' &rarr; '+d['return']+'</div></div></div>'
   + '<div class="mv-right"><span class="mv-price">$'+d.price.toLocaleString()+'</span>'
@@ -1656,7 +1719,7 @@ function applyLayout(){ HSECS.forEach(function(s){ var el=document.querySelector
   if(el) el.style.display = secOn(s)?'':'none'; var cb=document.getElementById('cb-'+s); if(cb) cb.checked=secOn(s); }); }
 function toggleSec(s){ HL[s]=!secOn(s); localStorage.setItem('fs_home_layout', JSON.stringify(HL)); applyLayout(); }
 function toggleCustomize(){ var p=document.getElementById('customizer'); if(p) p.style.display=(p.style.display==='block')?'none':'block'; }
-function lmItem(d){ return '<div class="mv-row"><div class="mv-dest"><span class="emoji">&#9889;</span>'
+function lmItem(d){ return '<div class="mv-row" data-lp data-o="'+d.o+'" data-d="'+d.c+'" data-ow="0"><div class="mv-dest"><span class="emoji">&#9889;</span>'
   + '<div><div class="mv-name">'+d.n+'</div><div class="mv-air">round-trip from '+d.o+' &middot; '+d.dep+' &rarr; '+d.ret+'</div></div></div>'
   + '<div class="mv-right"><span class="mv-price">$'+d.p.toLocaleString()+'</span>'
   + '<a class="mini-book" href="'+d.l+'" target="_blank" rel="noopener">Book</a></div></div>'; }
@@ -1673,7 +1736,7 @@ function toggleLMR(r){ if(r==='all'){ LMSEL=[]; } else { var i=LMSEL.indexOf(r);
 var OWMODE='6m'; var OWPSEL=[];
 function owData(){ return OWMODE==='lm' ? OWLM : OW; }
 function owMatch(d){ return OWPSEL.length===0 || (d.t && d.t.some(function(t){ return OWPSEL.indexOf(t)>=0; })); }
-function owpItem(d){ return '<div class="mv-row"><div class="mv-dest"><span class="emoji">&#9992;</span>'
+function owpItem(d){ return '<div class="mv-row" data-lp data-o="'+d.o+'" data-d="'+d.c+'" data-ow="1"><div class="mv-dest"><span class="emoji">&#9992;</span>'
   + '<div><div class="mv-name">'+d.n+'</div><div class="mv-air">one-way from '+d.o+(d.dep?(' &middot; '+d.dep):'')+'</div></div></div>'
   + '<div class="mv-right"><span class="mv-price">$'+d.p.toLocaleString()+'</span>'
   + '<a class="mini-book" href="'+d.l+'" target="_blank" rel="noopener">Book</a></div></div>'; }
@@ -1693,7 +1756,7 @@ function loadFX(){ fetch('https://open.er-api.com/v6/latest/USD').then(function(
   if(d&&d.rates){ FX=d.rates; document.querySelectorAll('[data-cur]').forEach(function(el){ var c=el.dataset.cur;
     if(FX[c]) el.textContent='$1 ≈ '+fmtRate(FX[c])+' '+c; }); } }).catch(function(){}); }
 var WSEL=[]; var WORG='all'; var WMODE='any';
-function worldItem(x){ return '<div class="mv-row"><div class="mv-dest"><span class="emoji">&#9992;</span>'
+function worldItem(x){ return '<div class="mv-row" data-lp data-o="'+x.o+'" data-d="'+x.c+'" data-ow="1"><div class="mv-dest"><span class="emoji">&#9992;</span>'
   + '<div><div class="mv-name">'+x.n+'</div><div class="mv-air">one-way: '+x.on+' ('+x.o+') &rarr; '+x.c+' &middot; '+x.dep+'</div></div></div>'
   + '<div class="mv-right"><span class="mv-price">$'+x.p.toLocaleString()+'</span>'
   + '<a class="mini-book" href="'+x.l+'" target="_blank" rel="noopener">Book</a></div></div>'; }
@@ -1762,7 +1825,7 @@ function liveOnView(){
   var queue=[], active=0, MAX=3;
   function pump(){ while(active<MAX && queue.length){ doFetch(queue.shift()); } }
   function apply(el,np,link,b){
-    var pe=el.querySelector('.mv-price, .price');
+    var pe=el.querySelector('.mv-price, .price, .dt-price, .winner-price, .blog-price');
     if(pe){ var was=pe.querySelector('.was'); pe.innerHTML='<span class="lp-dot" title="live fare"></span>$'+np.toLocaleString(); if(was){ pe.appendChild(document.createTextNode(' ')); pe.appendChild(was); } }
     var bk=el.querySelector('.mini-book, .book'); if(bk&&link) bk.href=link;
     var info=sigInfo(np,b);
@@ -1787,7 +1850,7 @@ function tlRow(f, oneway){
   var price='$'+Number(f.price).toLocaleString();
   var dep=(f.departure_at||'').slice(0,10);
   var sub=f.origin_airport+' → '+f.destination_airport+' &middot; '+dep+(oneway?'':(f.return_at?(' → '+(f.return_at||'').slice(0,10)):''));
-  return '<div class="mv-row"><div class="mv-dest"><span class="emoji">&#9992;</span><div><div class="mv-name">'+f.destination_airport+'</div><div class="mv-air">'+sub+'</div></div></div><div class="mv-right"><span class="mv-price">'+price+'</span><a class="mini-book" href="'+f.link+'" target="_blank" rel="noopener">Book</a></div></div>';
+  return '<div class="mv-row"><div class="mv-dest"><span class="emoji">&#9992;</span><div><div class="mv-name">'+f.destination_airport+'</div><div class="mv-air">'+sub+'</div></div></div><div class="mv-right"><span class="mv-price"><span class="lp-dot" title="live fare"></span>'+price+'</span><a class="mini-book" href="'+f.link+'" target="_blank" rel="noopener">Book</a></div></div>';
 }
 function tlTrip(){
   var o=(document.getElementById('tl-origin').value||'').trim().toUpperCase();
@@ -1881,7 +1944,7 @@ window.addEventListener('load',function(){{setTimeout(done, rm?700:2700);}});}})
 <header>
   <div class="bar">
     <a class="logo" href="index.html"><span class="mark">{LOGO_SVG}</span>{BRAND}</a>
-    <nav class="nav">{nav_html}<a class="nav-cta" href="index.html#alerts">Get free alerts</a><button type="button" class="ticker-toggle" onclick="toggleTickers()" title="Hide or show the price ticker" aria-label="Toggle ticker"><span class="tt-ar">&#9650;</span> Ticker</button></nav>
+    <nav class="nav">{nav_html}<a class="nav-star" href="watchlist.html" title="My bucket list" aria-label="My bucket list">&#9733;</a><a class="nav-cta" href="index.html#alerts">Get free alerts</a><button type="button" class="ticker-toggle" onclick="toggleTickers()" title="Hide or show the price ticker" aria-label="Toggle ticker"><span class="tt-ar">&#9650;</span> Ticker</button></nav>
   </div>
 </header>
 <script>
@@ -1894,10 +1957,32 @@ function toggleTickers(){{ var off=document.body.classList.toggle('tickers-off')
 WIDGET_HTML = """<aside id="bucket-widget" class="bucket-widget"><div class="bw-head">&#9733; My Bucket List</div><div id="bw-list"></div></aside>
 <button class="bw-toggle" onclick="document.body.classList.toggle('bw-open')">&#9733;<span id="bw-count"></span></button>
 <script>
-window.renderBucket=function(){ var list=[]; try{ list=JSON.parse(localStorage.getItem('mf_bucket')||'[]'); }catch(e){} var cnt=document.getElementById('bw-count'); if(cnt) cnt.textContent=list.length?(' '+list.length):''; var w=document.getElementById('bw-list'); if(w){ w.innerHTML = list.length ? list.map(function(f,i){ return '<div class="bw-row"><a href="'+f.link+'" target="_blank" rel="noopener"><b>'+f.o+' &rarr; '+f.d+'</b><span>$'+(f.price||0).toLocaleString()+(f.ow?' one-way':'')+'</span><small>'+(f.date||'')+(f.ret?(' &rarr; '+f.ret):'')+'</small></a><button class="bw-x" title="remove" onclick="bucketRemove('+i+')">&times;</button></div>'; }).join('') : '<div class="bw-empty">Star &#9734; any deal on Explore to save it here.</div>'; } var pg=document.getElementById('bucket-page'); if(pg){ pg.innerHTML = list.length ? ('<div class="panel">'+list.map(function(f,i){ return '<div class="mv-row"><div class="mv-dest"><span class="emoji">&#9992;</span><div><div class="mv-name">'+f.o+' &rarr; '+f.d+'</div><div class="mv-air">'+(f.date||'')+(f.ret?(' &rarr; '+f.ret):'')+(f.ow?' &middot; one-way':' &middot; round-trip')+'</div></div></div><div class="mv-right"><span class="mv-price">$'+(f.price||0).toLocaleString()+'</span><a class="mini-book" href="'+f.link+'" target="_blank" rel="noopener">Book</a><button class="star on" title="remove" onclick="bucketRemove('+i+')">&#9733;</button></div></div>'; }).join('')+'</div>') : '<div class="wl-hint">No saved flights yet. Star &#9734; any deal on the <a href="explore.html">Explore</a> page to add it to your bucket list.</div>'; } };
+window.renderBucket=function(){ var list=[]; try{ list=JSON.parse(localStorage.getItem('mf_bucket')||'[]'); }catch(e){} var cnt=document.getElementById('bw-count'); if(cnt) cnt.textContent=list.length?(' '+list.length):''; var w=document.getElementById('bw-list'); if(w){ w.innerHTML = list.length ? list.map(function(f,i){ return '<div class="bw-row"><a href="'+f.link+'" target="_blank" rel="noopener"><b>'+f.o+' &rarr; '+f.d+'</b><span>$'+(f.price||0).toLocaleString()+(f.ow?' one-way':'')+'</span><small>'+(f.date||'')+(f.ret?(' &rarr; '+f.ret):'')+'</small></a><button class="bw-x" title="remove" onclick="bucketRemove('+i+')">&times;</button></div>'; }).join('') : '<div class="bw-empty">Star &#9734; any deal on Explore to save it here.</div>'; } var pg=document.getElementById('bucket-page'); if(pg){ pg.innerHTML = list.length ? ('<div class="panel">'+list.map(function(f,i){ return '<div class="mv-row" data-lp data-o="'+f.o+'" data-d="'+f.d+'" data-ow="'+(f.ow?'1':'0')+'"><div class="mv-dest"><span class="emoji">&#9992;</span><div><div class="mv-name">'+f.o+' &rarr; '+f.d+'</div><div class="mv-air">'+(f.date||'')+(f.ret?(' &rarr; '+f.ret):'')+(f.ow?' &middot; one-way':' &middot; round-trip')+'</div></div></div><div class="mv-right"><span class="mv-price">$'+(f.price||0).toLocaleString()+'</span><a class="mini-book" href="'+f.link+'" target="_blank" rel="noopener">Book</a><button class="star on" title="remove" onclick="bucketRemove('+i+')">&#9733;</button></div></div>'; }).join('')+'</div>') : '<div class="wl-hint">No saved flights yet. Star &#9734; any deal on the <a href="explore.html">Explore</a> page to add it to your bucket list.</div>'; } };
 window.bucketRemove=function(i){ var list=[]; try{ list=JSON.parse(localStorage.getItem('mf_bucket')||'[]'); }catch(e){} list.splice(i,1); localStorage.setItem('mf_bucket',JSON.stringify(list)); window.renderBucket(); };
 window.addEventListener('load', window.renderBucket);
 </script>"""
+
+
+def site_footer(today):
+    cols = []
+    for heading, links in FOOTER_NAV:
+        items = "".join(f'<a href="{href}">{label}</a>' for href, label in links)
+        cols.append(f'<div class="ft-col"><h4>{heading}</h4>{items}</div>')
+    cols_html = "".join(cols)
+    return f"""<footer class="site-footer">
+  <div class="ft-top">
+    <div class="ft-brand">
+      <a class="logo" href="index.html"><span class="mark">{LOGO_SVG}</span>{BRAND}</a>
+      <p class="ft-tag">The cheapest flights from the USA to anywhere on earth &mdash; tracked every day, judged against their own price history.</p>
+      <a class="nav-cta ft-cta" href="index.html#alerts">Get free price alerts</a>
+    </div>
+    <nav class="ft-links">{cols_html}</nav>
+  </div>
+  <div class="ft-bottom">
+    <p>Prices are round-trip unless marked one-way and change fast &mdash; book soon if you see one you love. {BRAND} may earn a commission when you book through our links, at no extra cost to you.</p>
+    <p>&copy; {BRAND} &middot; Fares found {today} and may change at any time.</p>
+  </div>
+</footer>"""
 
 
 def render_page(active, title, body, market, oneway, onewaylm, home, lm, world, worldlm, today):
@@ -1914,9 +1999,7 @@ def render_page(active, title, body, market, oneway, onewaylm, home, lm, world, 
               .replace("__HOMEJS__", json.dumps(home if active in ("airports.html", "watchlist.html") else {}))
               .replace("__ACOJS__", MAP_COORDS if active == "world.html" else "{}")
               .replace("__ASTRO__", ASTRO_SVG))
-    foot = (f'<footer><p>Prices are round-trip unless marked one-way, and change fast — '
-            f'book soon if you see one you love.</p><p>{BRAND} may earn a commission when you '
-            f'book through our links, at no extra cost to you.<br>Fares found {today} and may change at any time.</p></footer>')
+    foot = site_footer(today)
     _cc = "{}"
     if active in ("trip.html", "explore.html"):
         try:
@@ -2047,7 +2130,7 @@ window.jRemove=function(){ JRNY.pop(); JREG='all'; jRender(); jOptions(); };
 function jOrigin(){ return JRNY.length? JRNY[JRNY.length-1].d : (go('j-origin').value||'RDU').trim().toUpperCase(); }
 function jAfter(){ if(!JRNY.length) return go('j-date').value||''; var last=JRNY[JRNY.length-1]; var n=parseInt(go('j-nights').value,10); if(isNaN(n))n=0; var dt=new Date(last.date+'T00:00:00'); dt.setDate(dt.getDate()+n); return dt.toISOString().slice(0,10); }
 function jRenderChips(){ var box=go('j-regions'); box.innerHTML=REGIONS.map(function(r){ var lab=r==='all'?'All':r; return '<button class="airchip'+(JREG===r?' on':'')+'" data-r="'+r+'">'+lab+'</button>'; }).join(''); }
-window.jOptions=function(){ var o=jOrigin(); var out=go('j-options'); if(!/^[A-Z]{3}$/.test(o)){ out.innerHTML='<div class="wl-hint">Enter a 3-letter starting airport (e.g. RDU).</div>'; return; } var after=jAfter(); out.innerHTML='<div class="wl-hint">Finding onward flights from '+o+(after?(' on/after '+after):'')+'&hellip;</div>'; var months=[]; if(after){ var bd=new Date(after+'T00:00:00'); if(!isNaN(bd)){ for(var k=0;k<2;k++){ var dt=new Date(bd.getFullYear(), bd.getMonth()+k, 1); months.push(dt.getFullYear()+'-'+('0'+(dt.getMonth()+1)).slice(-2)); } } } var urls = months.length ? months.map(function(m){ return '/api/search?origin='+o+'&one_way=true&sorting=price&limit=1000&departure_at='+m; }) : ['/api/search?origin='+o+'&one_way=true&sorting=price&limit=1000']; Promise.all(urls.map(function(u){ return fetch(u).then(function(r){return r.json();}).then(function(j){ return (j&&j.data)||[]; }).catch(function(){ return []; }); })).then(function(arrs){ var data=[]; arrs.forEach(function(a){ data=data.concat(a); }); var visited={}; JRNY.forEach(function(l){visited[l.d]=1;}); visited[o]=1; var best={}; data.forEach(function(f){ var d=f.destination_airport; if(!d||visited[d]) return; if(JREG!=='all' && tagsFor(d).indexOf(JREG)<0) return; var dt=(f.departure_at||'').slice(0,10); if(after && dt && dt<after) return; if(!best[d]||f.price<best[d].price) best[d]=f; }); var list=Object.keys(best).map(function(k){return best[k];}); list.sort(function(a,b){return a.price-b.price;}); JOPTS=list.slice(0,60); if(!JOPTS.length){ out.innerHTML='<div class="wl-hint">No '+(JREG==='all'?'':JREG+' ')+'flights found onward from '+o+(after?(' on/after '+after):'')+'. Try another region'+(after?' or an earlier date':'')+'.</div>'; return; } out.innerHTML=JOPTS.map(function(f,i){ var d=f.destination_airport, dt=(f.departure_at||'').slice(0,10), p=Math.round(f.price); return '<div class="mv-row"><div class="mv-dest"><span class="emoji">&#9992;</span><div><div class="mv-name">'+d+'</div><div class="mv-air">'+o+' &rarr; '+d+' &middot; '+dt+'</div></div></div><div class="mv-right"><span class="mv-price">$'+p.toLocaleString()+'</span><button class="mini-book" style="border:0;cursor:pointer" onclick="jAdd('+i+')">Add hop</button></div></div>'; }).join(''); }).catch(function(){ out.innerHTML='<div class="wl-hint">Couldn&rsquo;t load hops &mdash; try again.</div>'; }); };
+window.jOptions=function(){ var o=jOrigin(); var out=go('j-options'); if(!/^[A-Z]{3}$/.test(o)){ out.innerHTML='<div class="wl-hint">Enter a 3-letter starting airport (e.g. RDU).</div>'; return; } var after=jAfter(); out.innerHTML='<div class="wl-hint">Finding onward flights from '+o+(after?(' on/after '+after):'')+'&hellip;</div>'; var months=[]; if(after){ var bd=new Date(after+'T00:00:00'); if(!isNaN(bd)){ for(var k=0;k<2;k++){ var dt=new Date(bd.getFullYear(), bd.getMonth()+k, 1); months.push(dt.getFullYear()+'-'+('0'+(dt.getMonth()+1)).slice(-2)); } } } var urls = months.length ? months.map(function(m){ return '/api/search?origin='+o+'&one_way=true&sorting=price&limit=1000&departure_at='+m; }) : ['/api/search?origin='+o+'&one_way=true&sorting=price&limit=1000']; Promise.all(urls.map(function(u){ return fetch(u).then(function(r){return r.json();}).then(function(j){ return (j&&j.data)||[]; }).catch(function(){ return []; }); })).then(function(arrs){ var data=[]; arrs.forEach(function(a){ data=data.concat(a); }); var visited={}; JRNY.forEach(function(l){visited[l.d]=1;}); visited[o]=1; var best={}; data.forEach(function(f){ var d=f.destination_airport; if(!d||visited[d]) return; if(JREG!=='all' && tagsFor(d).indexOf(JREG)<0) return; var dt=(f.departure_at||'').slice(0,10); if(after && dt && dt<after) return; if(!best[d]||f.price<best[d].price) best[d]=f; }); var list=Object.keys(best).map(function(k){return best[k];}); list.sort(function(a,b){return a.price-b.price;}); JOPTS=list.slice(0,60); if(!JOPTS.length){ out.innerHTML='<div class="wl-hint">No '+(JREG==='all'?'':JREG+' ')+'flights found onward from '+o+(after?(' on/after '+after):'')+'. Try another region'+(after?' or an earlier date':'')+'.</div>'; return; } out.innerHTML=JOPTS.map(function(f,i){ var d=f.destination_airport, dt=(f.departure_at||'').slice(0,10), p=Math.round(f.price); return '<div class="mv-row"><div class="mv-dest"><span class="emoji">&#9992;</span><div><div class="mv-name">'+d+'</div><div class="mv-air">'+o+' &rarr; '+d+' &middot; '+dt+'</div></div></div><div class="mv-right"><span class="mv-price"><span class="lp-dot" title="live fare"></span>$'+p.toLocaleString()+'</span><button class="mini-book" style="border:0;cursor:pointer" onclick="jAdd('+i+')">Add hop</button></div></div>'; }).join(''); }).catch(function(){ out.innerHTML='<div class="wl-hint">Couldn&rsquo;t load hops &mdash; try again.</div>'; }); };
 window.jAdd=function(i){ var f=JOPTS[i]; if(!f) return; JRNY.push({o:jOrigin(),d:f.destination_airport,date:(f.departure_at||'').slice(0,10),price:Math.round(f.price),link:f.link}); JREG='all'; jRender(); jOptions(); };
 function jRender(){ var has=JRNY.length>0; go('j-summary').style.display=has?'flex':'none'; go('j-removebtn').style.display=has?'inline-block':'none'; go('j-nightsrow').style.display=has?'flex':'none'; go('j-curlabel').style.display='block'; go('j-regions').style.display='flex'; var start=(go('j-origin').value||'RDU').trim().toUpperCase(); var html='<span class="j-stop start">'+(JRNY.length?JRNY[0].o:start)+'</span>'; var total=0; JRNY.forEach(function(l){ total+=l.price; html+='<span class="j-arrow">&rarr;</span><a class="j-stop" href="'+l.link+'" target="_blank" rel="noopener" title="'+l.date+'">'+l.d+'<small>$'+l.price.toLocaleString()+'</small></a>'; }); go('j-itin').innerHTML=html; go('j-total').textContent='$'+total.toLocaleString(); var cur=jOrigin(); if(has){ go('j-staylabel').textContent='Staying in '+JRNY[JRNY.length-1].d+' —'; go('j-curlabel').textContent='Cheapest onward hops from '+cur+':'; } else { go('j-curlabel').textContent='Cheapest first hops from '+cur+':'; } jRenderChips(); }
 var rbox=go('j-regions'); if(rbox){ rbox.addEventListener('click', function(e){ var b=e.target.closest('[data-r]'); if(b){ JREG=b.getAttribute('data-r'); jRenderChips(); jOptions(); } }); }
@@ -2085,7 +2168,7 @@ def winner_highlight(market):
     rng_txt = f' &middot; tracking ${rng[0]:,.0f}&ndash;${rng[1]:,.0f}' if rng else ''
     vtxt = (' &middot; <span style="color:#4ed08a">Skyscanner-checked &#10003;</span>'
             if FEATURED_VERIFIED.get(w["code"]) else '')
-    return (f'<a class="winner" href="blog.html">'
+    return (f'<a class="winner" data-lp data-o="{html.escape(w["origin"], quote=True)}" data-d="{w["code"]}" data-ow="0" href="blog.html">'
             f'<span class="winner-badge">&#9733; Today&rsquo;s Biggest Winner</span>'
             f'<div class="winner-main"><div class="winner-city">{html.escape(w["name"])}</div>'
             f'<div class="winner-route">Round-trip from {html.escape(w["origin"])} &middot; {dates} &middot; <span style="color:var(--gold)">tracked fare</span> &middot; live price at booking{rng_txt}{vtxt}</div></div>'
@@ -2126,24 +2209,24 @@ def body_home(market, hist, cards, lastmin, oneway, summary):
       <a class="btn-primary" href="#deals">Explore today&rsquo;s deals</a>
       <a class="btn-ghost" href="world.html">Anywhere &rarr; Anywhere</a>
     </div>
-    <p class="trust">Free, forever &middot; fares tracked through the day &middot; live price confirmed at booking &middot; <b>{nroutes}</b> routes &amp; <b>{noneway}+</b> one-ways across <b>{ncountries}</b> countries</p>
+    <p class="trust">Free, forever &middot; fares tracked through the day &middot; live price confirmed when you book on Aviasales</p>
   </div>
 </section>
 <div class="wrap">
-  <div class="summary" data-sec="summary" style="margin-top:6px">{summary}</div>
   <div class="statbar">
     <div class="stat"><div class="n">{nroutes}</div><div class="l">routes tracked</div></div>
     <div class="stat"><div class="n">{noneway}+</div><div class="l">one-way fares</div></div>
     <div class="stat"><div class="n">{nbook}</div><div class="l">flagged BUY today</div></div>
     <div class="stat"><div class="n">{ncountries}</div><div class="l">countries</div></div>
   </div>
-  <p class="updated">{market_pulse(market)} &middot; tracked fares, refreshed through the day</p>
-  {winner_highlight(market)}
+  <p class="stat-note">{market_pulse(market)} &middot; tracked fares, refreshed through the day</p>
+  <div class="summary" data-sec="summary">{summary}</div>
+  <section class="home-sec">{winner_highlight(market)}</section>
   <div id="deals">{flash_section}</div>
-  <p class="finehint" style="text-align:center">These are recently-tracked fares &mdash; tap any deal to see today&rsquo;s live price and book on Aviasales.</p>
-  <div style="text-align:center;margin:26px 0 8px">
+  <p class="finehint" style="text-align:center;margin-top:14px">These are recently-tracked fares &mdash; tap any deal to see today&rsquo;s live price and book on Aviasales.</p>
+  <div class="home-sec" style="text-align:center">
     <a class="btn-primary" href="market.html">See the full Market &rarr;</a>
-    <p style="color:var(--muted);font-size:13.5px;margin:12px auto 0;max-width:560px">Fare indices, every biggest mover, today&rsquo;s cheapest trips, last-minute getaways and one-way deals &mdash; the whole board lives on the <a href="market.html" style="color:var(--gold)">Market</a> tab.</p>
+    <p style="color:var(--muted);font-size:13.5px;margin:14px auto 0;max-width:560px">Fare indices, every biggest mover, today&rsquo;s cheapest trips, last-minute getaways and one-way deals &mdash; the whole board lives on the <a href="market.html" style="color:var(--gold)">Market</a> tab.</p>
   </div>
   <div class="section-head-lg"><h2>How we flag a deal</h2><p>Every route is measured against its own price history &mdash; its Standard Meridian.</p></div>
   <div class="why">
@@ -2152,9 +2235,9 @@ def body_home(market, hist, cards, lastmin, oneway, summary):
     <div class="why-card"><span class="sig s-wait">WAIT</span><h3 style="margin-top:12px">Near or above typical</h3><p>Around the usual price or higher. History suggests it&rsquo;s likely to fall &mdash; hold off for now.</p></div>
   </div>
   <section class="mission">
-    <div class="astro lg" style="width:66px;margin:0 auto 14px">{ASTRO_SVG}</div>
+    <div class="astro lg" style="width:58px">{ASTRO_SVG}</div>
     <h2>Why &ldquo;Magellan&rdquo;?</h2>
-    <p>In 1519, Ferdinand Magellan set sail to prove the world could be crossed &mdash; and his expedition became the first to circle the entire globe. It was the moment the planet became reachable. Five centuries on, the world is more connected than ever, yet the cost of seeing it is wrapped in mystery and made to feel out of reach. Magellan Flights exists to pull back that curtain: to put the real numbers in your hands, show you that a week abroad can cost less than a weekend at home, and give the freedom of travel back to ordinary people.</p>
+    <p>In 1519, Magellan&rsquo;s expedition became the first to circle the globe &mdash; the moment the whole planet became reachable. Five centuries on, we pull back the curtain on airfare: the real numbers in your hands, genuine deals judged against history, and the freedom of travel handed back to ordinary people.</p>
   </section>
   <section class="promise">
     <h2>Our promise to you</h2>
@@ -2312,7 +2395,7 @@ def body_blog(market):
     return f"""<div class="wrap blog-wrap">
   <div class="blog-eyebrow">&#9733; Today&rsquo;s Biggest Winner &middot; biggest price drop on the board</div>
   <h1 class="blog-title">{html.escape(name)}</h1>
-  <div class="blog-deal">
+  <div class="blog-deal" data-lp data-o="{html.escape(win['origin'], quote=True)}" data-d="{win['code']}" data-ow="{0 if win.get('return') else 1}">
     <div><div class="blog-deal-label">Round-trip from {html.escape(win['origin'])}</div><div class="blog-deal-dates">{dates} &middot; best time to go: {html.escape(best)}</div></div>
     <div class="blog-deal-right"><span class="blog-price">${win['price']:,.0f}</span><span class="blog-was">was ~${win['benchmark']:,.0f}</span><span class="sig s-book">{sig} &middot; {pct:.0f}% off</span><a class="book" href="{link}" target="_blank" rel="noopener">See live price &amp; book &rarr;</a></div>
   </div>
@@ -2409,7 +2492,7 @@ window.exSearch=function(){ if(!EX_ORIG.length){ EX_ORIG=['RDU']; renderOrigs();
   }
   go('ex-out').innerHTML='<div class="wl-hint">Finding the cheapest '+(EX_TRIP==='oneway'?'one-way':'round-trip')+' fares from '+EX_ORIG.join(', ')+'&hellip;</div>'; var origset={}; EX_ORIG.forEach(function(o){origset[o]=1;}); var calls2=EX_ORIG.map(function(o){ return fetch('/api/search?origin='+o+'&one_way='+ow+'&sorting=price&limit=600').then(function(r){return r.json();}).then(function(j){ return (j&&j.data)||[]; }).catch(function(){ return []; }); }); Promise.all(calls2).then(function(arrs){ var best={}; arrs.forEach(function(data){ data.forEach(function(f){ var d=f.destination_airport; if(!d||origset[d]) return; if(!best[d]||f.price<best[d].price) best[d]=f; }); }); EX_DATA=Object.keys(best).map(function(k){return best[k];}).sort(function(a,b){return a.price-b.price;}); exFilter(); }).catch(function(){ go('ex-out').innerHTML='<div class="wl-hint">Couldn&rsquo;t load deals &mdash; try again.</div>'; }); };
 function exFilter(){ var now=new Date(); var soon=new Date(); soon.setDate(soon.getDate()+16); var rows=EX_DATA.filter(function(f){ if(EX_REG!=='all' && tagsFor(f.destination_airport).indexOf(EX_REG)<0) return false; if(EX_WHEN==='soon'){ var dp=new Date((f.departure_at||'').slice(0,10)+'T00:00:00'); if(isNaN(dp)||dp<now||dp>soon) return false; } return true; }); EX_SHOWN=rows.slice(0,40); exRender(); }
-function exRender(){ var out=go('ex-out'); if(!EX_SHOWN.length){ out.innerHTML='<div class="wl-hint">'+(EX_P2P?'No fares found for that route/date. Try clearing the date or switching trip type.':'No fares match those filters. Try another region or Anytime.')+'</div>'; return; } var multi=EX_ORIG.length>1; out.innerHTML=EX_SHOWN.map(function(f,i){ var d=f.destination_airport, dp=(f.departure_at||'').slice(0,10), rt=(f.return_at||'').slice(0,10), p=Math.round(f.price); var oo=f.origin_airport; var id=oo+d+dp; var on=saved(id)?' on':''; var star=saved(id)?'&#9733;':'&#9734;'; var sub=oo+' &rarr; '+d+' &middot; '+dp+(EX_TRIP==='round'&&rt?(' &rarr; '+rt):''); var title=EX_P2P?dp:(d+(multi?('<span style="display:inline-block;background:#0e141d;border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:11px;color:var(--gold);margin-left:8px">from '+oo+'</span>'):'')); return '<div class="mv-row"><button class="star'+on+'" onclick="exSave(this,'+i+')">'+star+'</button><div class="mv-dest"><span class="emoji">&#9992;</span><div><div class="mv-name">'+title+'</div><div class="mv-air">'+sub+'</div></div></div><div class="mv-right"><span class="mv-price">$'+p.toLocaleString()+'</span><a class="mini-book" href="'+f.link+'" target="_blank" rel="noopener">Book</a></div></div>'; }).join(''); }
+function exRender(){ var out=go('ex-out'); if(!EX_SHOWN.length){ out.innerHTML='<div class="wl-hint">'+(EX_P2P?'No fares found for that route/date. Try clearing the date or switching trip type.':'No fares match those filters. Try another region or Anytime.')+'</div>'; return; } var multi=EX_ORIG.length>1; out.innerHTML=EX_SHOWN.map(function(f,i){ var d=f.destination_airport, dp=(f.departure_at||'').slice(0,10), rt=(f.return_at||'').slice(0,10), p=Math.round(f.price); var oo=f.origin_airport; var id=oo+d+dp; var on=saved(id)?' on':''; var star=saved(id)?'&#9733;':'&#9734;'; var sub=oo+' &rarr; '+d+' &middot; '+dp+(EX_TRIP==='round'&&rt?(' &rarr; '+rt):''); var title=EX_P2P?dp:(d+(multi?('<span style="display:inline-block;background:#0e141d;border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:11px;color:var(--gold);margin-left:8px">from '+oo+'</span>'):'')); return '<div class="mv-row"><button class="star'+on+'" onclick="exSave(this,'+i+')">'+star+'</button><div class="mv-dest"><span class="emoji">&#9992;</span><div><div class="mv-name">'+title+'</div><div class="mv-air">'+sub+'</div></div></div><div class="mv-right"><span class="mv-price"><span class="lp-dot" title="live fare"></span>$'+p.toLocaleString()+'</span><a class="mini-book" href="'+f.link+'" target="_blank" rel="noopener">Book</a></div></div>'; }).join(''); }
 window.exSave=function(btn,i){ var f=EX_SHOWN[i]; if(!f) return; var list=bucket(); var id=f.origin_airport+f.destination_airport+(f.departure_at||'').slice(0,10); var idx=-1; for(var k=0;k<list.length;k++){ if(list[k].id===id){ idx=k; break; } } if(idx>=0){ list.splice(idx,1); btn.classList.remove('on'); btn.innerHTML='&#9734;'; } else { list.push({id:id,o:f.origin_airport,d:f.destination_airport,date:(f.departure_at||'').slice(0,10),ret:(f.return_at||'').slice(0,10),price:Math.round(f.price),link:f.link,ow:EX_TRIP==='oneway'?1:0}); btn.classList.add('on'); btn.innerHTML='&#9733;'; } localStorage.setItem('mf_bucket',JSON.stringify(list)); if(window.renderBucket) window.renderBucket(); };
 var rb=go('ex-regions'); if(rb){ rb.addEventListener('click', function(e){ var b=e.target.closest('[data-r]'); if(b){ EX_REG=b.getAttribute('data-r'); renderChips(); exFilter(); } }); }
 var ob=go('ex-origs'); if(ob){ ob.addEventListener('click', function(e){ var b=e.target.closest('[data-o]'); if(!b) return; var c=b.getAttribute('data-o'); EX_ORIG=EX_ORIG.filter(function(x){return x!==c;}); if(!EX_ORIG.length) EX_ORIG=['RDU']; renderOrigs(); exSearch(); }); }
@@ -3144,7 +3227,7 @@ def body_moneypage(p, today):
             dates += " &rarr; " + html.escape(d.get("return", ""))
         link = html.escape(d["link"], quote=True)
         rows.append(
-            f'<tr><td class="dt-dest">{flag_img(d["code"], "flag")} {nm} '
+            f'<tr data-lp data-o="{p["code"]}" data-d="{d["code"]}" data-ow="{0 if d.get("return") else 1}"><td class="dt-dest">{flag_img(d["code"], "flag")} {nm} '
             f'<span class="dt-code">{d["code"]}</span></td>'
             f'<td class="dt-dates">{dates}</td>'
             f'<td class="dt-price">${d["price"]:,.0f}</td>'
