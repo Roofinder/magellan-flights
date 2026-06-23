@@ -99,8 +99,8 @@ REGION_BTNS = ["all", "USA", "Abroad", "Asia", "SE Asia", "E Asia", "S Asia",
                "Caribbean", "Oceania", "Middle East", "Africa", "Canada"]
 
 NAV = [("index.html", "Home"), ("market.html", "Market"), ("explore.html", "Explore"),
-       ("trip.html", "Journey"), ("blog.html", "Daily Guide"), ("watchlist.html", "My Bucket List Flights"),
-       ("essentials.html", "Travel kit")]
+       ("trip.html", "Journey"), ("blog.html", "Daily Guide"), ("guides.html", "Guides"),
+       ("watchlist.html", "My Bucket List Flights"), ("essentials.html", "Travel kit")]
 
 
 def regions_for(cc):
@@ -131,6 +131,196 @@ def lm_tags(cc):
 FORM_ACTION = "https://formspree.io/f/mojoqrgn"
 BRAND = "Magellan Flights"
 TAGLINE = "The cheapest flights from the USA, tracked like a market - every day."
+
+# --------------------------------------------------------------------------- #
+# SEO: per-page titles + descriptions, social cards, schema, sitemap.
+# All booking links stay Aviasales/Travelpayouts (marker 741311) — SEO only
+# touches the <head> and a couple of static text files; it never changes links.
+# --------------------------------------------------------------------------- #
+BASE_URL = "https://magellanflights.com"          # canonical home (no trailing slash)
+OG_IMAGE = BASE_URL + "/og-image.png"             # 1200x630 social share image
+
+# Unique, keyword-targeted <title> + meta description per page. Keep titles
+# ~55-60 chars and descriptions ~150-160 so Google shows them in full.
+SEO = {
+    "index.html": (
+        "Cheap Flights from the USA — Tracked Daily | Magellan Flights",
+        "Find today's cheapest flights from the USA to anywhere. Real fares "
+        "refreshed several times a day and tracked like a stock market, so you "
+        "book at the low. Round-trip and one-way deals."),
+    "market.html": (
+        "Cheap Flight Deals Today — Live Fare Tracker | Magellan Flights",
+        "A live board of the cheapest round-trip flights from the USA, with "
+        "price history and how far below normal each fare is. Updated daily."),
+    "world.html": (
+        "Cheapest Flights Anywhere to Anywhere | Magellan Flights",
+        "Explore the cheapest flights between 50 global hubs — anywhere to "
+        "anywhere. Compare live fares and find the best-value route today."),
+    "explore.html": (
+        "Cheap One-Way Flights from the USA (Next 6 Months) | Magellan Flights",
+        "The cheapest one-way flights from the USA over the next six months. "
+        "Filter by region and home airport to find your next trip for less."),
+    "lastminute.html": (
+        "Cheap Last-Minute Flights from the USA | Magellan Flights",
+        "Today's cheapest last-minute flights from the USA, domestic and "
+        "international. Real, bookable fares for travelers who can leave soon."),
+    "blog.html": (
+        "Today's Cheapest Flight from the USA — Daily Guide | Magellan Flights",
+        "Our daily guide to the single best flight deal from the USA right now: "
+        "the price, the dates, why it's a deal, and how to book it."),
+    "airports.html": (
+        "Cheap Flights from Your Home Airport | Magellan Flights",
+        "See the cheapest flights leaving your home airport right now. Pick "
+        "your airports and track fares to everywhere they fly."),
+    "trip.html": (
+        "Plan a Trip — Cheapest Dates & Fares | Magellan Flights",
+        "Plan your journey around the cheapest dates and fares from the USA, "
+        "with trip-cost and best-time-to-go guidance."),
+    "watchlist.html": (
+        "Your Flight Watchlist — Track Fare Drops | Magellan Flights",
+        "Track the routes you care about and watch for price drops. Your "
+        "personal watchlist of the cheapest flights from the USA."),
+    "essentials.html": (
+        "Travel Essentials — Gear & Tips for Cheap Trips | Magellan Flights",
+        "Hand-picked travel essentials and tips to make your cheap flight a "
+        "great trip — from carry-ons to currency know-how."),
+    "guides.html": (
+        "Flight Deal Guides — When to Book & Where to Go | Magellan Flights",
+        "Straight answers on when to book flights, the cheapest time to fly, "
+        "and how to catch a cheap fare — backed by fares we track daily."),
+}
+
+# Questions AI assistants and Google's "People also ask" love to answer.
+# Rendered as a FAQPage schema so ChatGPT/Gemini/Claude/Google can quote us.
+SEO_FAQ = [
+    ("How does Magellan Flights find the cheapest flights from the USA?",
+     "Magellan Flights scans live airfare data several times a day and tracks "
+     "each route's price history like a stock market. That lets it flag when a "
+     "fare is unusually low — well below its normal range — so you book at the "
+     "right moment instead of guessing."),
+    ("Are the flight prices on Magellan Flights real and bookable?",
+     "Yes. Every fare is re-checked against live airline pricing before it is "
+     "shown, and obvious phantom prices are removed. Clicking a deal takes you "
+     "to a secure booking page for that exact flight."),
+    ("What's the difference between a round-trip and a one-way deal here?",
+     "Round-trip deals cover a there-and-back journey from a US airport. "
+     "One-way deals are single legs — useful for open-jaw trips, long stays, or "
+     "pairing two cheap one-ways into a cheaper round-trip."),
+    ("How often are the deals updated?",
+     "The whole board refreshes several times every day, so the prices you see "
+     "reflect what's available right now, not last week."),
+    ("Is Magellan Flights free to use?",
+     "Yes, it's completely free. When you book through a deal link we may earn "
+     "a small commission from the travel partner, at no extra cost to you."),
+]
+
+
+def _seo_for(active, fallback_title):
+    """(full <title>, meta description) for a page — unique where defined."""
+    art = globals().get("ARTICLE_BY_FILE", {})
+    if active in art:
+        return (art[active]["title"], art[active]["description"])
+    if active in SEO:
+        return SEO[active]
+    return (f"{fallback_title} | {BRAND}", TAGLINE)
+
+
+def _esc_attr(s):
+    return (str(s).replace("&", "&amp;").replace('"', "&quot;")
+            .replace("<", "&lt;").replace(">", "&gt;"))
+
+
+def head_seo(active, full_title, description, market=None):
+    """Canonical + Open Graph + Twitter + JSON-LD schema for one page."""
+    url = BASE_URL + "/" + ("" if active == "index.html" else active)
+    t, d = _esc_attr(full_title), _esc_attr(description)
+    tags = [
+        f'<link rel="canonical" href="{url}">',
+        '<meta name="robots" content="index, follow, max-image-preview:large">',
+        '<meta name="theme-color" content="#0a0e14">',
+        f'<meta property="og:type" content="website">',
+        f'<meta property="og:site_name" content="{BRAND}">',
+        f'<meta property="og:title" content="{t}">',
+        f'<meta property="og:description" content="{d}">',
+        f'<meta property="og:url" content="{url}">',
+        f'<meta property="og:image" content="{OG_IMAGE}">',
+        '<meta name="twitter:card" content="summary_large_image">',
+        f'<meta name="twitter:title" content="{t}">',
+        f'<meta name="twitter:description" content="{d}">',
+        f'<meta name="twitter:image" content="{OG_IMAGE}">',
+    ]
+    # ---- JSON-LD schema graph ------------------------------------------ #
+    graph = [
+        {"@type": "Organization", "@id": BASE_URL + "/#org", "name": BRAND,
+         "url": BASE_URL, "logo": OG_IMAGE,
+         "description": TAGLINE},
+        {"@type": "WebSite", "@id": BASE_URL + "/#website", "name": BRAND,
+         "url": BASE_URL, "publisher": {"@id": BASE_URL + "/#org"},
+         "potentialAction": {
+             "@type": "SearchAction",
+             "target": {"@type": "EntryPoint",
+                        "urlTemplate": BASE_URL + "/world.html?q={search_term_string}"},
+             "query-input": "required name=search_term_string"}},
+        {"@type": "WebPage", "@id": url + "#webpage", "url": url,
+         "name": full_title, "description": description,
+         "isPartOf": {"@id": BASE_URL + "/#website"}},
+    ]
+    # Home + market: list the live deals so search engines see structured offers.
+    if active in ("index.html", "market.html") and market:
+        items = []
+        for i, m in enumerate(sorted(market, key=lambda x: _to_int(x.get("price")))[:10], 1):
+            try:
+                price = _to_int(m.get("price"))
+            except Exception:
+                continue
+            if not price:
+                continue
+            items.append({
+                "@type": "ListItem", "position": i,
+                "name": f"{m.get('origin','USA')} to {m.get('name', m.get('code',''))}",
+                "url": url})
+        if items:
+            graph.append({"@type": "ItemList", "name": "Cheapest flight deals today",
+                          "numberOfItems": len(items), "itemListElement": items})
+    # Home: add the FAQ so AI assistants can quote concrete answers (GEO).
+    if active == "index.html":
+        graph.append({
+            "@type": "FAQPage",
+            "mainEntity": [
+                {"@type": "Question", "name": q,
+                 "acceptedAnswer": {"@type": "Answer", "text": a}}
+                for q, a in SEO_FAQ]})
+    # Blog article: add Article + breadcrumb + (optional) FAQ schema.
+    art = globals().get("ARTICLE_BY_FILE", {})
+    if active in art:
+        a = art[active]
+        graph.append({
+            "@type": "Article", "headline": a["h1"], "description": a["description"],
+            "datePublished": a["published"], "dateModified": a["updated"],
+            "author": {"@id": BASE_URL + "/#org"},
+            "publisher": {"@id": BASE_URL + "/#org"},
+            "image": OG_IMAGE, "mainEntityOfPage": {"@id": url + "#webpage"}})
+        graph.append({
+            "@type": "BreadcrumbList", "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "Guides",
+                 "item": BASE_URL + "/guides.html"},
+                {"@type": "ListItem", "position": 2, "name": a["h1"], "item": url}]})
+        if a.get("faqs"):
+            graph.append({"@type": "FAQPage", "mainEntity": [
+                {"@type": "Question", "name": q,
+                 "acceptedAnswer": {"@type": "Answer", "text": ans}}
+                for q, ans in a["faqs"]]})
+    blob = json.dumps({"@context": "https://schema.org", "@graph": graph},
+                      ensure_ascii=False)
+    tags.append(f'<script type="application/ld+json">{blob}</script>')
+    return "\n".join(tags)
+
+
+def _to_int(v):
+    try:
+        return int(float(v))
+    except Exception:
+        return 0
 
 
 def _marker():
@@ -194,6 +384,7 @@ HOTEL_NIGHT = {"SE Asia": 40, "E Asia": 110, "S Asia": 35, "W Europe": 140,
                "USA": 140, "Canada": 130}
 ESIM_COST = 15
 HIST_SERIES = {}  # {code: [price per day, oldest..newest]} — filled in main()
+FEATURED_VERIFIED = {}  # {code: True} — featured deals cross-checked vs Skyscanner
 
 
 def hotel_night(code):
@@ -278,6 +469,36 @@ def is_flash(code, price, benchmark):
     if len(series) >= 5 and price <= min(series) and pct >= 30:
         return True
     return pct >= 42
+
+
+def corroborated(code, price):
+    """Is this price trustworthy enough to FEATURE (winner / top deals)?
+    Once we have a few days of history, reject a price that sits far below the
+    route's own recent typical UNLESS that low has shown up on >=2 recent
+    snapshots (i.e. it's a real trend, not a lone phantom). Lenient until history
+    matures so we never blank the page early on."""
+    series = HIST_SERIES.get(code, [])
+    if len(series) < 3:
+        return True
+    s = sorted(series)
+    median = s[len(s) // 2]
+    if not median or price >= 0.65 * median:
+        return True
+    near = sum(1 for v in series if v <= price * 1.20)
+    return near >= 2
+
+
+def price_range(code, price):
+    """A believable recent range to show alongside a fare, e.g. ($340, $410).
+    Uses the route's recent history (15th-85th percentile) + today's price."""
+    series = sorted(list(HIST_SERIES.get(code, [])) + [price])
+    if len(series) < 3:
+        return None
+    lo = series[int(len(series) * 0.15)]
+    hi = series[min(len(series) - 1, int(len(series) * 0.85))]
+    if hi <= lo * 1.05:
+        return None
+    return (lo, hi)
 
 
 def sparkline_svg(series, w=84, h=22):
@@ -843,8 +1064,30 @@ CSS = r"""<style>
   .blog-deal-label{ font-weight:700; } .blog-deal-dates{ color:var(--muted); font-size:13px; }
   .blog-deal-right{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
   .blog-price{ font-size:26px; font-weight:800; color:var(--gold); } .blog-was{ color:var(--muted); font-size:13px; }
-  .blog-sec{ margin:0 0 22px; } .blog-sec h2{ font-size:21px; margin:0 0 8px; } .blog-sec p{ color:var(--ink2); line-height:1.7; }
-  .blog-list{ margin:0; padding-left:20px; line-height:1.9; } .blog-list li{ color:var(--ink2); }
+  .blog-sec{ margin:0 0 22px; } .blog-sec h2{ font-size:21px; margin:0 0 8px; } .blog-sec p{ color:var(--ink); line-height:1.7; }
+  .blog-list{ margin:0; padding-left:20px; line-height:1.9; } .blog-list li{ color:var(--ink); }
+  .blog-sec a, .art-lede a{ color:var(--gold); }
+  .crumbs{ font-size:12.5px; color:var(--muted); margin-bottom:10px; } .crumbs a{ color:var(--gold); text-decoration:none; }
+  .art-meta{ font-size:12.5px; color:var(--muted); margin:-8px 0 18px; }
+  .art-lede{ font-size:18px; line-height:1.75; color:var(--ink); margin:0 0 22px; }
+  .art-cta{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:14px;
+            background:#0e141d; border:1px solid var(--line); border-left:3px solid var(--gold);
+            border-radius:12px; padding:16px 18px; margin:0 0 24px; }
+  .art-cta-txt{ color:var(--ink); font-size:14.5px; max-width:62ch; }
+  .art-q{ border-bottom:1px solid var(--line); padding:12px 0; }
+  .art-q summary{ cursor:pointer; font-weight:600; color:var(--ink); list-style:none; }
+  .art-q summary::-webkit-details-marker{ display:none; }
+  .art-q summary::before{ content:"+"; color:var(--gold); margin-right:9px; font-weight:700; }
+  .art-q[open] summary::before{ content:"\2013"; }
+  .art-q p{ color:var(--ink); line-height:1.7; margin:10px 0 2px; }
+  .guide-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; }
+  .guide-card{ display:flex; flex-direction:column; gap:8px; background:var(--card); border:1px solid var(--line);
+               border-radius:14px; padding:18px 18px 16px; text-decoration:none; transition:border-color .15s,transform .15s; }
+  .guide-card:hover{ border-color:var(--gold); transform:translateY(-2px); }
+  .gc-kick{ font-size:11.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--gold); }
+  .gc-title{ font-size:18px; font-weight:700; color:var(--ink); line-height:1.3; }
+  .gc-desc{ font-size:13.5px; color:var(--muted); line-height:1.55; flex:1; }
+  .gc-more{ font-size:13px; color:var(--gold); font-weight:600; }
   .blog-lang{ font-size:13.5px; color:var(--muted); margin-top:8px; }
   .blog-video{ display:flex; align-items:center; gap:14px; background:linear-gradient(135deg,#1a2330,#0e141d); border:1px solid var(--line); border-radius:12px; padding:18px 20px; text-decoration:none; color:var(--ink); transition:border-color .15s; }
   .blog-video:hover{ border-color:var(--gold); }
@@ -1042,12 +1285,33 @@ CSS = r"""<style>
   @media(prefers-reduced-motion:reduce){ .astro .a-slow, .astro .a-fast{ animation:none; } }
   .bub.think{ padding:6px 10px; }
   #astro-splash{ position:fixed; inset:0; z-index:200; background:var(--bg);
-                 display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px;
-                 transition:opacity .55s ease; }
+                 display:flex; align-items:center; justify-content:center;
+                 transition:opacity .6s ease; }
   #astro-splash.hide{ opacity:0; pointer-events:none; }
-  #astro-splash .sp-cap{ font-family:ui-monospace,Menlo,Consolas,monospace; font-size:11.5px;
-                         letter-spacing:.22em; text-transform:uppercase; color:var(--gold); }
-  #astro-splash .sp-sub{ font-size:12.5px; color:var(--muted); margin-top:-6px; }
+  .intro-stage{ width:min(760px,90vw); }
+  .intro-svg{ width:100%; height:auto; display:block; overflow:visible; }
+  .intro-grid line{ stroke:#16202c; stroke-width:1; }
+  .intro-arc{ fill:none; stroke:var(--gold); stroke-width:4; stroke-linecap:round;
+              stroke-dasharray:1300; stroke-dashoffset:1300;
+              animation:mfArc 2.2s cubic-bezier(.45,0,.25,1) .25s forwards; }
+  .intro-dot-a{ fill:var(--ink); opacity:0; animation:mfFade .4s ease .15s forwards; }
+  .intro-dot-b{ fill:none; stroke:var(--gold); stroke-width:4; opacity:0;
+                animation:mfFade .5s ease 2.15s forwards; }
+  .intro-plane{ opacity:0; animation:mfFade .3s ease .25s forwards; }
+  .intro-plane path{ fill:var(--gold); }
+  .intro-ttl{ font:800 96px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+              fill:var(--ink); opacity:0; animation:mfFade .7s ease .9s forwards; }
+  .intro-sub{ font:600 40px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+              fill:var(--gold); opacity:0; animation:mfFade .7s ease 1.25s forwards; }
+  .intro-url{ font:500 30px ui-monospace,Menlo,Consolas,monospace;
+              fill:var(--muted); opacity:0; animation:mfFade .6s ease 1.9s forwards; }
+  @keyframes mfArc{ to{ stroke-dashoffset:0; } }
+  @keyframes mfFade{ from{ opacity:0; } to{ opacity:1; } }
+  @media(prefers-reduced-motion:reduce){
+    .intro-arc{ animation:none; stroke-dashoffset:0; }
+    .intro-plane,.intro-ttl,.intro-sub,.intro-url,.intro-dot-a,.intro-dot-b{
+      animation:none; opacity:1; }
+  }
 
   /* ====================  Landing hero  ==================== */
   .lander{ position:relative; overflow:hidden; text-align:center; padding:62px 20px 26px; }
@@ -1508,6 +1772,30 @@ buildOW('all'); render(); renderCities(); renderAirportWatch(); applyLayout(); b
 </script>"""
 
 
+# Animated intro: the og-image motif drawn live — the arc draws in and a plane
+# flies it start-to-finish, then the title/subtitle fade up. Shown once per
+# session (see the script in top_chrome). Pure SVG+CSS, no images required.
+_INTRO_GRID = "".join(
+    [f'<line x1="{x}" y1="40" x2="{x}" y2="592"/>' for x in range(85, 1160, 85)] +
+    [f'<line x1="40" y1="{y}" x2="1160" y2="{y}"/>' for y in range(110, 600, 70)])
+INTRO_SVG = (
+    '<svg class="intro-svg" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg" '
+    'role="img" aria-label="Magellan Flights">'
+    '<defs><path id="arcpath" d="M 84 474 Q 600 14 1116 474"/></defs>'
+    f'<g class="intro-grid">{_INTRO_GRID}</g>'
+    '<use href="#arcpath" class="intro-arc"/>'
+    '<circle class="intro-dot-a" cx="84" cy="474" r="12"/>'
+    '<circle class="intro-dot-b" cx="1116" cy="474" r="11"/>'
+    '<g class="intro-plane"><path d="M-18,-10 L20,0 L-18,10 L-9,0 Z"/>'
+    '<animateMotion dur="2.2s" begin="0.25s" fill="freeze" rotate="auto" '
+    'calcMode="spline" keyTimes="0;1" keySplines="0.45 0 0.25 1">'
+    '<mpath href="#arcpath"/></animateMotion></g>'
+    f'<text class="intro-ttl" x="82" y="180">{BRAND}</text>'
+    '<text class="intro-sub" x="86" y="240">The cheapest flights from the USA</text>'
+    '<text class="intro-url" x="86" y="566">magellanflights.com</text>'
+    '</svg>')
+
+
 def top_chrome(active, market):
     nav = []
     for href, label in NAV:
@@ -1515,9 +1803,12 @@ def top_chrome(active, market):
         nav.append(f'<a class="{cls}" href="{href}">{label}</a>')
     nav_html = "".join(nav)
     return f"""<body>
-<div id="astro-splash"><div class="astro lg">{ASTRO_SVG}</div>
-  <div class="sp-cap">{BRAND}</div><div class="sp-sub">Calculating your coordinates&hellip;</div></div>
-<script>window.addEventListener('load',function(){{setTimeout(function(){{var s=document.getElementById('astro-splash');if(!s)return;s.classList.add('hide');setTimeout(function(){{s.style.display='none';}},600);}},850);}});</script>
+<div id="astro-splash"><div class="intro-stage">{INTRO_SVG}</div></div>
+<script>(function(){{var s=document.getElementById('astro-splash');if(!s)return;
+if(sessionStorage.getItem('mf_intro')){{s.parentNode.removeChild(s);return;}}
+var rm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function done(){{s.classList.add('hide');sessionStorage.setItem('mf_intro','1');setTimeout(function(){{if(s.parentNode)s.parentNode.removeChild(s);}},650);}}
+window.addEventListener('load',function(){{setTimeout(done, rm?700:2700);}});}})();</script>
 <div class="topbar">
 <div class="ticker"><span class="ti-label">Flight Tracker</span><div class="ticker-track">{ticker_rt(market)}</div></div>
 <div class="regionbar">{region_buttons()}</div>
@@ -1568,88 +1859,15 @@ def render_page(active, title, body, market, oneway, onewaylm, home, lm, world, 
                 _cc = _ccf.read().strip()
         except Exception:
             pass
-    # Per-page SEO data
-    PAGE_SEO = {
-        "index.html":      ("Cheap Flights from the USA — Tracked Daily | Magellan Flights",
-                            "Browse today's cheapest round-trip and one-way flights departing from the USA. Fares tracked daily like a stock market — real prices, bookable now."),
-        "market.html":     ("Cheap Flight Deals Today — Live Fare Tracker | Magellan Flights",
-                            "See which US departure cities have the lowest fares right now. Sorted by value, updated every day."),
-        "world.html":      ("Cheap Flights Worldwide from the USA — Interactive Map | Magellan Flights",
-                            "Explore the cheapest one-way flights from every US city on an interactive world map. Find your next adventure."),
-        "trip.html":       ("Plan a Cheap Trip from the USA — Flight + Budget Tool | Magellan Flights",
-                            "Enter your home airport and budget to find cheap trips. Round-trip and one-way options, updated daily."),
-        "explore.html":    ("Cheap One-Way Flights from the USA (Next 6 Months) | Magellan Flights",
-                            "Every cheap one-way flight departing the USA in the next 6 months. Filter by region, price, and date."),
-        "blog.html":       ("Daily Flight Deal Guide — Where to Fly Cheap This Week | Magellan Flights",
-                            "Today's best flight deals explained: which routes are below normal, by how much, and why you should book now."),
-        "lastminute.html": ("Last-Minute Cheap Flights from the USA — Book Today | Magellan Flights",
-                            "Flights departing in the next 72 hours at rock-bottom prices. Updated continuously for spontaneous travelers."),
-        "airports.html":   ("Cheap Flights by US Airport — Captain's Log | Magellan Flights",
-                            "Browse the cheapest flights departing from your home airport, updated daily."),
-        "watchlist.html":  ("My Flight Watchlist — Track Cheap Fares | Magellan Flights",
-                            "Save destinations you want to visit and watch their fares. Get notified when prices drop."),
-        "essentials.html": ("Travel Essentials for Cheap Flights — Packing & Tips | Magellan Flights",
-                            "Everything you need before you fly: packing lists, travel gear, and money-saving tips for budget travelers."),
-    }
-    seo_title, seo_desc = PAGE_SEO.get(active, (f"{BRAND} — {title}", TAGLINE))
-    canonical_url = f"https://magellanflights.com/{active if active != 'index.html' else ''}"
-    og_image = "https://magellanflights.com/og-image.png"
-    schema_org = f"""<script type=\"application/ld+json\">
-{{
-  \"@context\": \"https://schema.org\",
-  \"@graph\": [
-    {{
-      \"@type\": \"Organization\",
-      \"@id\": \"https://magellanflights.com/#org\",
-      \"name\": \"Magellan Flights\",
-      \"url\": \"https://magellanflights.com\",
-      \"logo\": \"https://magellanflights.com/favicon.svg\",
-      \"description\": \"{TAGLINE}\"
-    }},
-    {{
-      \"@type\": \"WebSite\",
-      \"@id\": \"https://magellanflights.com/#website\",
-      \"url\": \"https://magellanflights.com\",
-      \"name\": \"Magellan Flights\",
-      \"publisher\": {{\"@id\": \"https://magellanflights.com/#org\"}},
-      \"potentialAction\": {{
-        \"@type\": \"SearchAction\",
-        \"target\": \"https://magellanflights.com/explore.html?q={{search_term_string}}\",
-        \"query-input\": \"required name=search_term_string\"
-      }}
-    }},
-    {{
-      \"@type\": \"WebPage\",
-      \"@id\": \"{canonical_url}#webpage\",
-      \"url\": \"{canonical_url}\",
-      \"name\": \"{seo_title}\",
-      \"description\": \"{seo_desc}\",
-      \"isPartOf\": {{\"@id\": \"https://magellanflights.com/#website\"}}
-    }}
-  ]
-}}
-</script>"""
-    seo_head = (
-        f'''<meta charset="utf-8">\n'''
-        f'''<meta name="viewport" content="width=device-width, initial-scale=1">\n'''
-        f'''<title>{seo_title}</title>\n'''
-        f'''<meta name="description" content="{seo_desc}">\n'''
-        f'''<link rel="canonical" href="{canonical_url}">\n'''
-        f'''<meta name="robots" content="index, follow">\n'''
-        f'''<meta property="og:type" content="website">\n'''
-        f'''<meta property="og:url" content="{canonical_url}">\n'''
-        f'''<meta property="og:title" content="{seo_title}">\n'''
-        f'''<meta property="og:description" content="{seo_desc}">\n'''
-        f'''<meta property="og:image" content="{og_image}">\n'''
-        f'''<meta property="og:site_name" content="Magellan Flights">\n'''
-        f'''<meta name="twitter:card" content="summary_large_image">\n'''
-        f'''<meta name="twitter:title" content="{seo_title}">\n'''
-        f'''<meta name="twitter:description" content="{seo_desc}">\n'''
-        f'''<meta name="twitter:image" content="{og_image}">\n'''
-        f'''<link rel="icon" type="image/svg+xml" href="favicon.svg">\n'''
-        f'''{schema_org}\n'''
-    )
-    return (f'''<!doctype html>\n<html lang="en">\n<head>\n{seo_head}{CSS}\n</head>\n{top_chrome(active, market)}\n{body}\n{CHAT_HTML}\n{WIDGET_HTML}\n{foot}\n{script}\n</body>\n</html>''').replace("__CCJS__", _cc)
+    seo_title, seo_desc = _seo_for(active, title)
+    seo_head = head_seo(active, seo_title, seo_desc, market)
+    return (f'<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
+            f'<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+            f'<title>{_esc_attr(seo_title)}</title>\n'
+            f'<meta name="description" content="{_esc_attr(seo_desc)}">\n'
+            f'{seo_head}\n'
+            f'<link rel="icon" type="image/svg+xml" href="favicon.svg">\n'
+            f'{CSS}\n</head>\n{top_chrome(active, market)}\n{body}\n{CHAT_HTML}\n{WIDGET_HTML}\n{foot}\n{script}\n</body>\n</html>').replace("__CCJS__", _cc)
 
 
 # --------------------------------------------------------------------------- #
@@ -1768,17 +1986,28 @@ Q_INDICES = ('<span class="cb-em">Charting the unknown paths.</span> Each index 
              'their Standard Meridian &mdash; the historical baseline &mdash; to pinpoint your ideal departure window.')
 
 
+def featured_pool(market):
+    """Routes trustworthy enough to feature — corroborated by recent history.
+    Falls back to the whole board if nothing qualifies (early days)."""
+    pool = [m for m in market if corroborated(m["code"], m["price"])]
+    return pool if pool else market
+
+
 def winner_highlight(market):
-    ranked = sorted(market, key=lambda m: signal_for(m["price"], m["benchmark"])[1], reverse=True)
+    ranked = sorted(featured_pool(market), key=lambda m: signal_for(m["price"], m["benchmark"])[1], reverse=True)
     if not ranked:
         return ""
     w = ranked[0]
     sig, pct = signal_for(w["price"], w["benchmark"])
     dates = f'{html.escape(w.get("depart",""))} &rarr; {html.escape(w.get("return",""))}' if w.get("return") else html.escape(w.get("depart",""))
+    rng = price_range(w["code"], w["price"])
+    rng_txt = f' &middot; tracking ${rng[0]:,.0f}&ndash;${rng[1]:,.0f}' if rng else ''
+    vtxt = (' &middot; <span style="color:#4ed08a">Skyscanner-checked &#10003;</span>'
+            if FEATURED_VERIFIED.get(w["code"]) else '')
     return (f'<a class="winner" href="blog.html">'
             f'<span class="winner-badge">&#9733; Today&rsquo;s Biggest Winner</span>'
             f'<div class="winner-main"><div class="winner-city">{html.escape(w["name"])}</div>'
-            f'<div class="winner-route">Round-trip from {html.escape(w["origin"])} &middot; {dates} &middot; <span style="color:var(--gold)">tracked fare</span> &middot; live price at booking</div></div>'
+            f'<div class="winner-route">Round-trip from {html.escape(w["origin"])} &middot; {dates} &middot; <span style="color:var(--gold)">tracked fare</span> &middot; live price at booking{rng_txt}{vtxt}</div></div>'
             f'<div class="winner-right"><span class="winner-price">${w["price"]:,.0f}</span>'
             f'<span class="winner-was">${w["benchmark"]:,.0f}</span>'
             f'<span class="winner-off">{pct:.0f}% off</span></div>'
@@ -1791,7 +2020,7 @@ def body_home(market, hist, cards, lastmin, oneway, summary):
               ("lastminute", "Last-minute getaways"), ("oneway", "One-way escapes")]
     checks = "".join(f'<label><input type="checkbox" id="cb-{k}" onchange="toggleSec(\'{k}\')"> {lab}</label>'
                      for k, lab in labels)
-    top4 = sorted(market, key=lambda m: signal_for(m["price"], m["benchmark"])[1], reverse=True)[:4]
+    top4 = sorted(featured_pool(market), key=lambda m: signal_for(m["price"], m["benchmark"])[1], reverse=True)[:4]
     flash_section = ""
     if top4:
         fcards = "\n".join(card_html(m) for m in top4)
@@ -1953,7 +2182,7 @@ CITY_GUIDE = {
 
 
 def body_blog(market):
-    ranked = sorted(market, key=lambda m: signal_for(m["price"], m["benchmark"])[1], reverse=True)
+    ranked = sorted(featured_pool(market), key=lambda m: signal_for(m["price"], m["benchmark"])[1], reverse=True)
     if not ranked:
         return '<div class="wrap"><div class="pagehead"><h1>Daily Guide</h1><p>No deals to feature yet today.</p></div></div>'
     win = ranked[0]
@@ -2170,6 +2399,186 @@ def body_watchlist(market):
 </div>"""
 
 
+# --------------------------------------------------------------------------- #
+# Evergreen blog (SEO). Each article targets a keyword cluster (see seo/).
+# To publish a post, append a dict to ARTICLES — the page, Article + FAQ schema,
+# sitemap entry, and index card are all generated automatically. Booking links
+# stay Aviasales/Travelpayouts. {LIVE_*} tokens are filled from today's data.
+# --------------------------------------------------------------------------- #
+ARTICLES = [
+    {
+        "slug": "cheapest-day-to-book-flights",
+        "title": "The Cheapest Day to Book Flights (What the Data Shows) | Magellan Flights",
+        "h1": "The cheapest day to book flights",
+        "description": "The cheapest day to book flights is usually Tuesday or "
+                       "Wednesday - but your booking window matters more. Here's "
+                       "what thousands of live fares actually show.",
+        "primary": "cheapest day to book flights",
+        "secondary": ["cheapest day to fly", "what day of the week are flights cheapest",
+                      "best day to buy plane tickets", "is tuesday the cheapest day to fly"],
+        "kicker": "Booking timing",
+        "published": "2026-06-22", "updated": "2026-06-22", "read_min": 6,
+        "money_href": "market.html", "money_label": "today's cheapest flight deals",
+        "lede": "Everyone &ldquo;knows&rdquo; you should book flights on a Tuesday. "
+                "It&rsquo;s half true &mdash; and it&rsquo;s quietly costing you money, "
+                "because the day of the week is the <i>smallest</i> lever you can pull. "
+                "Here&rsquo;s what actually decides the price, backed by the thousands of "
+                "live fares we track every day.",
+        "sections": [
+            ("The short answer",
+             "<p>The <b>cheapest day to book a flight is usually Tuesday or Wednesday</b>, "
+             "when airlines and their rivals refresh fares after the weekend. The "
+             "<b>cheapest days to fly</b> are typically Tuesday, Wednesday and Saturday. "
+             "But here&rsquo;s the part most articles skip: the day of the week is a small "
+             "lever &mdash; worth a few percent. <b>How far ahead you book, and whether a "
+             "fare has actually dropped below its normal range, matters far more.</b></p>"),
+            ("Does the day of the week really matter?",
+             "<p>There&rsquo;s a kernel of truth to the Tuesday myth. Airlines file fare "
+             "changes through the week and competitors match them, so mid-week you&rsquo;ll "
+             "sometimes catch a fresh, slightly lower price. Large fare studies keep landing "
+             "in the same place: booking Tuesday or Wednesday saves a little versus a "
+             "weekend &mdash; on the order of a few percent on average.</p>"
+             "<p>The trap is treating that as your <i>main</i> strategy. A 2&ndash;3% "
+             "midweek dip is real, but it&rsquo;s noise next to the 20&ndash;40% swings that "
+             "come from booking in the right window or catching a sale. Don&rsquo;t "
+             "reorganize your life around a Tuesday.</p>"),
+            ("The lever that actually moves the price: your booking window",
+             "<p>This is where the real money is. Fares are cheapest inside a sweet spot "
+             "&mdash; far enough ahead that cheap seats remain, close enough that the airline "
+             "isn&rsquo;t charging a premium for certainty.</p>"
+             "<ul class='blog-list'>"
+             "<li><b>Domestic US flights:</b> roughly <b>1 to 3 months</b> ahead.</li>"
+             "<li><b>International flights:</b> roughly <b>2 to 8 months</b> ahead &mdash; "
+             "longer for peak summer and the holidays.</li>"
+             "<li><b>The danger zone:</b> inside two weeks, prices usually climb fast as the "
+             "cheap fare buckets sell out.</li></ul>"
+             "<p>Booking on a perfect Tuesday inside the wrong window still loses to booking "
+             "on a Sunday inside the right one.</p>"),
+            ("What our live fare data shows",
+             "<p>We don&rsquo;t guess at this &mdash; we track it. Magellan Flights watches "
+             "<b>{LIVE_ROUTES} routes</b> from the USA and logs the price every day, like a "
+             "stock ticker for airfare. That reveals the thing a single search can&rsquo;t: "
+             "each route&rsquo;s <i>normal</i> price, and the moment a fare drops below it.</p>"
+             "<p>Right now the standout on the board is <b>{LIVE_TOPCITY}</b>, sitting about "
+             "<b>{LIVE_TOPPCT}% below</b> its usual fare. That&rsquo;s the real "
+             "&ldquo;cheapest day to book&rdquo; &mdash; not a weekday on the calendar, but "
+             "the day a specific route dips under its normal range. You can watch those live "
+             "on <a href='market.html'>today&rsquo;s deal board</a>.</p>"),
+            ("Cheapest days to fly (which is a different question)",
+             "<p>Booking day and travel day aren&rsquo;t the same thing. To <i>fly</i> "
+             "cheaply, midweek wins more clearly than it does for booking:</p>"
+             "<ul class='blog-list'>"
+             "<li><b>Cheapest to fly:</b> Tuesday, Wednesday and Saturday.</li>"
+             "<li><b>Most expensive:</b> Friday and Sunday, when weekend and business "
+             "travelers crowd in.</li>"
+             "<li>Shifting a trip by a day &mdash; flying out Wednesday instead of Friday "
+             "&mdash; often beats any booking-day trick.</li></ul>"),
+            ("A 5-minute routine to book at the low",
+             "<p>Here&rsquo;s the routine we&rsquo;d actually use:</p>"
+             "<ul class='blog-list'>"
+             "<li><b>Start early</b> &mdash; begin watching 1&ndash;3 months out (domestic) "
+             "or 2&ndash;8 months (international).</li>"
+             "<li><b>Track, don&rsquo;t refresh</b> &mdash; let a tracker show you the normal "
+             "price so you recognize a real drop.</li>"
+             "<li><b>Stay flexible by a day or two</b> &mdash; midweek departures are cheaper.</li>"
+             "<li><b>Book when it dips below normal</b>, not on a magic weekday.</li></ul>"
+             "<p>Flying overseas? The windows shift a little &mdash; browse our "
+             "<a href='world.html'>international deal board</a> to see them move in real time.</p>"),
+        ],
+        "faqs": [
+            ("What day of the week are flights cheapest to book?",
+             "On average, Tuesday and Wednesday are slightly cheaper to book than weekends, "
+             "because airlines refresh fares mid-week. The gap is usually only a few percent, "
+             "so it matters far less than booking in the right window."),
+            ("Is Tuesday really the cheapest day to fly?",
+             "Tuesday is one of the cheapest days to fly, along with Wednesday and Saturday. "
+             "Friday and Sunday are typically the most expensive, because that's when leisure "
+             "and business demand peak."),
+            ("What is the best day to buy plane tickets?",
+             "There isn't a magic day. The best time to buy is when a fare drops below its "
+             "normal range, which can happen any day. Booking 1 to 3 months ahead for "
+             "domestic trips and 2 to 8 months for international gives you the best odds."),
+            ("Does booking at a specific time of day get cheaper flights?",
+             "Not reliably. Fares can change at any hour as inventory updates, but there is no "
+             "consistent cheapest time of day to book. Watching the price trend beats timing "
+             "the clock."),
+        ],
+    },
+]
+ARTICLE_BY_FILE = {a["slug"] + ".html": a for a in ARTICLES}
+
+
+def _live_stats(market):
+    routes = len(market)
+    best = None
+    for m in market:
+        try:
+            _sig, pct = signal_for(m["price"], m["benchmark"])
+        except Exception:
+            continue
+        if best is None or pct > best[1]:
+            best = (m["name"].split(",")[0], pct)
+    return {
+        "routes": f"{routes:,}",
+        "topcity": html.escape(best[0]) if best else "a top city",
+        "toppct": f"{best[1]:.0f}" if best else "30",
+    }
+
+
+def body_article(a, market):
+    secs = "\n".join(
+        f'<section class="blog-sec"><h2>{html.escape(h2)}</h2>{para}</section>'
+        for h2, para in a["sections"])
+    faq_html = ""
+    if a.get("faqs"):
+        items = "".join(
+            f'<details class="art-q"><summary>{html.escape(q)}</summary>'
+            f'<p>{html.escape(ans)}</p></details>'
+            for q, ans in a["faqs"])
+        faq_html = f'<section class="blog-sec"><h2>Frequently asked questions</h2>{items}</section>'
+    related = [x for x in ARTICLES if x["slug"] != a["slug"]][:3]
+    rel_html = ""
+    if related:
+        links = "".join(
+            f'<li><a href="{x["slug"]}.html">{html.escape(x["h1"])}</a></li>'
+            for x in related)
+        rel_html = f'<section class="blog-sec"><h2>Keep reading</h2><ul class="blog-list">{links}</ul></section>'
+    cta = (f'<div class="art-cta"><div class="art-cta-txt"><b>See it live:</b> '
+           f'{html.escape(a["money_label"])} are on the board right now, refreshed '
+           f'through the day.</div>'
+           f'<a class="book" href="{a["money_href"]}">Open the tracker &rarr;</a></div>')
+    out = f"""<div class="wrap blog-wrap">
+  <nav class="crumbs"><a href="guides.html">Guides</a> &rsaquo; {html.escape(a["h1"])}</nav>
+  <div class="blog-eyebrow">{html.escape(a["kicker"])}</div>
+  <h1 class="blog-title">{html.escape(a["h1"])}</h1>
+  <div class="art-meta">Updated {a["updated"]} &middot; {a["read_min"]} min read &middot; {BRAND}</div>
+  <p class="art-lede">{a["lede"]}</p>
+  {cta}
+  {secs}
+  {faq_html}
+  {cta}
+  {rel_html}
+</div>"""
+    st = _live_stats(market)
+    return (out.replace("{LIVE_ROUTES}", st["routes"])
+               .replace("{LIVE_TOPCITY}", st["topcity"])
+               .replace("{LIVE_TOPPCT}", st["toppct"]))
+
+
+def body_guides(market):
+    cards = "".join(
+        f'<a class="guide-card" href="{a["slug"]}.html">'
+        f'<div class="gc-kick">{html.escape(a["kicker"])}</div>'
+        f'<div class="gc-title">{html.escape(a["h1"])}</div>'
+        f'<div class="gc-desc">{html.escape(a["description"])}</div>'
+        f'<div class="gc-more">Read guide &rarr;</div></a>'
+        for a in ARTICLES)
+    return f"""<div class="wrap">
+  <div class="pagehead"><h1>Flight deal guides</h1><p>Straight answers on when to book, where to go, and how to catch a cheap fare &mdash; backed by the fares we track every day.</p></div>
+  <div class="guide-grid">{cards}</div>
+</div>"""
+
+
 def main():
     market = read_snapshot()
     if not market:
@@ -2192,8 +2601,12 @@ def main():
             for d in c.get(key, []):
                 d["t"] = lm_tags(d.get("cc", ""))
     hist = index_history()
-    global HIST_SERIES
+    global HIST_SERIES, FEATURED_VERIFIED
     HIST_SERIES = read_history_series()
+    try:
+        FEATURED_VERIFIED = json.load(open(os.path.join(DATA_DIR, "featured_verified.json"), encoding="utf-8"))
+    except Exception:
+        FEATURED_VERIFIED = {}
     today = datetime.now().strftime("%B %d, %Y")
     summary = market_summary(market)
     cards_src = sorted(market, key=lambda m: signal_for(m["price"], m["benchmark"])[1], reverse=True)[:8]
@@ -2210,6 +2623,7 @@ def main():
         "airports.html": ("Captain's Log", body_airports(home)),
         "watchlist.html": ("Watchlist", body_watchlist(market)),
         "essentials.html": ("Travel essentials", body_essentials()),
+        "guides.html": ("Guides", body_guides(market)),
     }
 
     os.makedirs(SITE_DIR, exist_ok=True)
@@ -2218,40 +2632,46 @@ def main():
         with open(os.path.join(SITE_DIR, fname), "w", encoding="utf-8") as f:
             f.write(doc)
 
-    # ── Generate sitemap.xml ──
-    from datetime import datetime as _dt
-    today_iso = _dt.now().strftime("%Y-%m-%d")
-    base = "https://magellanflights.com/"
-    urls = [
-        (base, "1.0", "daily"),
-        (base + "market.html", "0.9", "daily"),
-        (base + "explore.html", "0.9", "daily"),
-        (base + "world.html", "0.8", "daily"),
-        (base + "lastminute.html", "0.8", "daily"),
-        (base + "blog.html", "0.8", "daily"),
-        (base + "trip.html", "0.7", "weekly"),
-        (base + "airports.html", "0.7", "daily"),
-        (base + "watchlist.html", "0.6", "weekly"),
-        (base + "essentials.html", "0.5", "monthly"),
-    ]
-    sitemap_lines = ['<?xml version="1.0" encoding="UTF-8"?>',
-                     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
-    for url, pri, freq in urls:
-        sitemap_lines.append(f"  <url><loc>{url}</loc><lastmod>{today_iso}</lastmod>"
-                             f"<changefreq>{freq}</changefreq><priority>{pri}</priority></url>")
-    sitemap_lines.append("</urlset>")
-    sitemap_path = os.path.join(HERE, "sitemap.xml")
-    with open(sitemap_path, "w", encoding="utf-8") as f:
-        f.write("\n".join(sitemap_lines))
+    # Evergreen blog articles (one page per cluster).
+    for a in ARTICLES:
+        fname = a["slug"] + ".html"
+        doc = render_page(fname, a["h1"], body_article(a, market), market,
+                          oneway, onewaylm, home, lastmin, world, worldlm, today)
+        with open(os.path.join(SITE_DIR, fname), "w", encoding="utf-8") as f:
+            f.write(doc)
 
-    # ── Generate robots.txt ──
-    robots = "User-agent: *\nAllow: /\nSitemap: https://magellanflights.com/sitemap.xml\n"
-    robots_path = os.path.join(HERE, "robots.txt")
-    with open(robots_path, "w", encoding="utf-8") as f:
-        f.write(robots)
-
-    print(f"Built {len(pages)} pages + sitemap.xml + robots.txt -> {SITE_DIR}  "
+    all_files = list(pages) + [a["slug"] + ".html" for a in ARTICLES]
+    write_seo_files(all_files)
+    print(f"Built {len(pages)} pages + {len(ARTICLES)} articles + sitemap/robots -> {SITE_DIR}  "
           f"({len(market)} routes, {len(oneway)} one-ways, {len(home)} home airports)")
+
+
+def write_seo_files(pages):
+    """Emit sitemap.xml + robots.txt so search engines can crawl efficiently.
+
+    `pages` is an iterable of page filenames to include in the sitemap.
+    """
+    lastmod = datetime.now().strftime("%Y-%m-%d")
+    # Rough priority: home highest, then the deal boards, then helper pages.
+    prio = {"index.html": "1.0", "market.html": "0.9", "world.html": "0.8",
+            "explore.html": "0.8", "lastminute.html": "0.8", "guides.html": "0.7",
+            "blog.html": "0.7", "airports.html": "0.6"}
+    article_files = set(globals().get("ARTICLE_BY_FILE", {}))
+    urls = []
+    for fname in pages:
+        loc = BASE_URL + "/" + ("" if fname == "index.html" else fname)
+        urls.append(
+            f"  <url>\n    <loc>{loc}</loc>\n    <lastmod>{lastmod}</lastmod>\n"
+            f"    <changefreq>{'monthly' if fname in article_files else 'daily'}</changefreq>\n"
+            f"    <priority>{prio.get(fname, '0.6' if fname in article_files else '0.5')}</priority>\n  </url>")
+    sitemap = ('<?xml version="1.0" encoding="UTF-8"?>\n'
+               '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+               + "\n".join(urls) + "\n</urlset>\n")
+    with open(os.path.join(SITE_DIR, "sitemap.xml"), "w", encoding="utf-8") as f:
+        f.write(sitemap)
+    robots = (f"User-agent: *\nAllow: /\n\nSitemap: {BASE_URL}/sitemap.xml\n")
+    with open(os.path.join(SITE_DIR, "robots.txt"), "w", encoding="utf-8") as f:
+        f.write(robots)
 
 
 if __name__ == "__main__":

@@ -40,23 +40,30 @@ jobs:
           python lastminute.py --international || true
           python homebase.py || true
 
-      - name: Re-price every route for accuracy (exact dates)
-        run: python reprice.py
+      - name: Re-price for accuracy (round-trip + one-way + featured cross-check)
+        env:
+          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+        run: |
+          python reprice.py
+          python reprice_oneway.py || true
+          python verify_featured.py || true
 
       - name: Rebuild the site
         run: python buildsite.py
 
-      - name: Publish built HTML to repo root
+      - name: Publish built HTML + SEO files to repo root
         run: |
           cp site/*.html .
           cp site/favicon.svg . 2>/dev/null || true
+          cp site/sitemap.xml site/robots.txt . 2>/dev/null || true
+          cp site/og-image.png . 2>/dev/null || true
 
       - name: Commit & push if anything changed
         run: |
           git config user.name "magellan-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add -A -- '*.html' favicon.svg
-          git add -f data/pricehistory.csv data/market_latest.csv 2>/dev/null || true
+          git add -A -- '*.html' favicon.svg sitemap.xml robots.txt og-image.png
+          git add -f data/pricehistory.csv data/market_latest.csv data/sky_ids.json 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No changes to publish."
           else
