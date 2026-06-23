@@ -244,10 +244,12 @@ def head_seo(active, full_title, description, market=None):
         f'<meta property="og:description" content="{d}">',
         f'<meta property="og:url" content="{url}">',
         f'<meta property="og:image" content="{OG_IMAGE}">',
+        f'<meta property="og:image:alt" content="{_esc_attr(BRAND)} — the cheapest flights from the USA">',
         '<meta name="twitter:card" content="summary_large_image">',
         f'<meta name="twitter:title" content="{t}">',
         f'<meta name="twitter:description" content="{d}">',
         f'<meta name="twitter:image" content="{OG_IMAGE}">',
+        f'<meta name="twitter:image:alt" content="{_esc_attr(BRAND)} — the cheapest flights from the USA">',
     ]
     # ---- JSON-LD schema graph ------------------------------------------ #
     graph = [
@@ -505,7 +507,8 @@ def sparkline_svg(series, w=84, h=22):
     if not series:
         return ""
     if len(series) < 2:
-        return ('<svg class="spark" width="%d" height="%d" viewBox="0 0 %d %d">'
+        return ('<svg class="spark" width="%d" height="%d" viewBox="0 0 %d %d" '
+                'role="img" aria-label="Not enough price history yet">'
                 '<circle cx="%d" cy="%d" r="2.5" fill="#888"/></svg>'
                 % (w, h, w, h, w // 2, h // 2))
     lo, hi = min(series), max(series)
@@ -516,10 +519,14 @@ def sparkline_svg(series, w=84, h=22):
         x = i * (w - 4) / (n - 1) + 2
         y = h - 2 - (v - lo) / rng * (h - 4)
         pts.append("%.1f,%.1f" % (x, y))
-    color = "#27d07a" if series[-1] <= series[0] else "#ff5e5e"
-    return ('<svg class="spark" width="%d" height="%d" viewBox="0 0 %d %d">'
+    falling = series[-1] <= series[0]
+    color = "#27d07a" if falling else "#ff5e5e"
+    label = ("Price trend over %d days: %s, from $%d to $%d, now $%d"
+             % (n, "falling" if falling else "rising", lo, hi, series[-1]))
+    return ('<svg class="spark" width="%d" height="%d" viewBox="0 0 %d %d" '
+            'role="img" aria-label="%s">'
             '<polyline fill="none" stroke="%s" stroke-width="1.5" points="%s"/></svg>'
-            % (w, h, w, h, color, " ".join(pts)))
+            % (w, h, w, h, html.escape(label, quote=True), color, " ".join(pts)))
 
 
 _FLAG_NA_SVG = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" '
@@ -1904,7 +1911,11 @@ def world_map_html():
     for t, lon, lat in labels:
         x, y = pj(lon, lat)
         labs.append(f'<text x="{x:.0f}" y="{y:.0f}" class="ml-lab" text-anchor="middle">{t}</text>')
-    svg = ('<svg viewBox="0 18 1000 412" preserveAspectRatio="xMidYMid meet" class="worldmap">'
+    svg = ('<svg viewBox="0 18 1000 412" preserveAspectRatio="xMidYMid meet" class="worldmap" '
+           'role="img" aria-labelledby="wmap-t wmap-d">'
+           '<title id="wmap-t">World map of cheap flight routes</title>'
+           '<desc id="wmap-d">Interactive map showing the cheapest tracked flight '
+           'routes between cities around the world.</desc>'
            '<defs><filter id="mglow" x="-50%" y="-50%" width="200%" height="200%">'
            '<feGaussianBlur stdDeviation="3" result="b"/><feMerge>'
            '<feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>'
