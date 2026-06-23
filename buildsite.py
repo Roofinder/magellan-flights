@@ -137,7 +137,7 @@ TAGLINE = "The cheapest flights from the USA, tracked like a market - every day.
 # All booking links stay Aviasales/Travelpayouts (marker 741311) — SEO only
 # touches the <head> and a couple of static text files; it never changes links.
 # --------------------------------------------------------------------------- #
-BASE_URL = "https://magellanflights.com"          # canonical home (no trailing slash)
+BASE_URL = "https://www.magellanflights.com"      # canonical home (served domain; apex 308s here)
 OG_IMAGE = BASE_URL + "/og-image.png"             # 1200x630 social share image
 
 # Unique, keyword-targeted <title> + meta description per page. Keep titles
