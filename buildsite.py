@@ -312,6 +312,13 @@ def head_seo(active, full_title, description, market=None):
                 {"@type": "Question", "name": q,
                  "acceptedAnswer": {"@type": "Answer", "text": ans}}
                 for q, ans in a["faqs"]]})
+        if a.get("howto"):
+            ht = a["howto"]
+            graph.append({
+                "@type": "HowTo", "name": ht.get("name", a["h1"]),
+                "step": [{"@type": "HowToStep", "position": i,
+                          "name": s.get("name", ""), "text": s.get("text", "")}
+                         for i, s in enumerate(ht.get("steps", []), 1)]})
     blob = json.dumps({"@context": "https://schema.org", "@graph": graph},
                       ensure_ascii=False)
     tags.append(f'<script type="application/ld+json">{blob}</script>')
@@ -1077,6 +1084,11 @@ CSS = r"""<style>
   .crumbs{ font-size:12.5px; color:var(--muted); margin-bottom:10px; } .crumbs a{ color:var(--gold); text-decoration:none; }
   .art-meta{ font-size:12.5px; color:var(--muted); margin:-8px 0 18px; }
   .art-lede{ font-size:18px; line-height:1.75; color:var(--ink); margin:0 0 22px; }
+  .art-answer, .art-takeaways{ background:rgba(231,185,78,.08); border:1px solid rgba(231,185,78,.35);
+            border-radius:12px; padding:14px 18px; margin:0 0 22px; }
+  .aa-label{ font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--gold); font-weight:700; margin-bottom:5px; }
+  .art-answer p{ margin:0; color:var(--ink); line-height:1.65; font-size:16px; }
+  .art-takeaways ul{ margin:0; padding-left:20px; line-height:1.8; } .art-takeaways li{ color:var(--ink); }
   .art-cta{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:14px;
             background:#0e141d; border:1px solid var(--line); border-left:3px solid var(--gold);
             border-radius:12px; padding:16px 18px; margin:0 0 24px; }
@@ -2435,6 +2447,12 @@ ARTICLES = [
                 "because the day of the week is the <i>smallest</i> lever you can pull. "
                 "Here&rsquo;s what actually decides the price, backed by the thousands of "
                 "live fares we track every day.",
+        "quick_answer": "The cheapest day to <i>book</i> a flight is usually Tuesday or "
+                        "Wednesday, and the cheapest days to <i>fly</i> are Tuesday, Wednesday "
+                        "and Saturday. But the bigger lever is your booking window: about "
+                        "1&ndash;3 months ahead for domestic trips and 2&ndash;8 months for "
+                        "international. Booking inside that window beats any &ldquo;magic "
+                        "weekday.&rdquo;",
         "sections": [
             ("The short answer",
              "<p>The <b>cheapest day to book a flight is usually Tuesday or Wednesday</b>, "
@@ -2558,12 +2576,24 @@ def body_article(a, market):
            f'{html.escape(a["money_label"])} are on the board right now, refreshed '
            f'through the day.</div>'
            f'<a class="book" href="{a["money_href"]}">Open the tracker &rarr;</a></div>')
+    # AI-SEO: an answer-first box (extractable for Google AI Overviews / ChatGPT).
+    answer_html = ""
+    if a.get("quick_answer"):
+        answer_html = ('<div class="art-answer"><div class="aa-label">Quick answer</div>'
+                       f'<p>{a["quick_answer"]}</p></div>')
+    takeaways_html = ""
+    if a.get("key_takeaways"):
+        lis = "".join(f"<li>{t}</li>" for t in a["key_takeaways"])
+        takeaways_html = ('<div class="art-takeaways"><div class="aa-label">Key takeaways</div>'
+                          f'<ul>{lis}</ul></div>')
     out = f"""<div class="wrap blog-wrap">
   <nav class="crumbs"><a href="guides.html">Guides</a> &rsaquo; {html.escape(a["h1"])}</nav>
   <div class="blog-eyebrow">{html.escape(a["kicker"])}</div>
   <h1 class="blog-title">{html.escape(a["h1"])}</h1>
   <div class="art-meta">Updated {a["updated"]} &middot; {a["read_min"]} min read &middot; {BRAND}</div>
   <p class="art-lede">{a["lede"]}</p>
+  {answer_html}
+  {takeaways_html}
   {cta}
   {secs}
   {faq_html}
