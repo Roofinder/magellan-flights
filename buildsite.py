@@ -2585,6 +2585,394 @@ ARTICLES = [
              "the clock."),
         ],
     },
+    {
+        "slug": "when-to-book-international-flights",
+        "title": "When to Book International Flights for the Lowest Fare | Magellan Flights",
+        "h1": "When to book international flights",
+        "description": "Book international flights too early and you overpay; too late and "
+                       "prices spike. The sweet spot is wider than you think — here's "
+                       "exactly when to buy.",
+        "primary": "best time to book international flights",
+        "secondary": ["when to book flights to europe", "how far in advance to book international flights",
+                      "best time to buy international plane tickets", "how many months ahead to book international flights"],
+        "kicker": "Booking timing",
+        "published": "2026-06-22", "updated": "2026-06-22", "read_min": 6,
+        "money_href": "world.html", "money_label": "today's cheapest international fares",
+        "lede": "Book an international flight too early and you overpay for the airline's peace of "
+                "mind. Too late and you're funding their next jet. The good news: the sweet spot is "
+                "wider than the internet makes it sound — here's where it actually sits, and how "
+                "to land inside it.",
+        "quick_answer": "Book most international flights about <b>2 to 8 months ahead</b>. For peak "
+                        "summer and the winter holidays, aim earlier (5&ndash;8 months); for "
+                        "off-peak trips, 2&ndash;4 months is plenty. The danger zone is the final "
+                        "three weeks, when the cheap fare buckets are usually gone.",
+        "sections": [
+            ("The short answer",
+             "<p>For international flights from the USA, the cheapest window is roughly "
+             "<b>two to eight months before departure</b>. Where you land inside that window "
+             "depends on demand:</p>"
+             "<ul class='blog-list'>"
+             "<li><b>Peak (summer, Christmas/New Year):</b> book 5&ndash;8 months out.</li>"
+             "<li><b>Shoulder and off-peak:</b> 2&ndash;4 months is usually enough.</li>"
+             "<li><b>Inside ~3 weeks:</b> the danger zone — prices climb fast.</li></ul>"),
+            ("Why “as early as possible” is wrong",
+             "<p>Airlines load seats for sale around 11 months out, but they open them at high "
+             "introductory prices, betting eager planners will pay. Those fares usually drift "
+             "<i>down</i> into the sweet spot before climbing again near departure. Booking the day "
+             "the calendar opens often means overpaying for the privilege of being early.</p>"
+             "<p>The exception is genuinely scarce travel — a tiny route, a festival week, peak "
+             "holiday dates — where seats sell out and waiting backfires. When in doubt about a "
+             "high-demand date, lean earlier.</p>"),
+            ("The window shifts by season and destination",
+             "<p>Summer in Western Europe and the winter holidays everywhere are the two big "
+             "premium periods — treat those as “book early.” Shoulder seasons (spring "
+             "and fall) give you more room to wait. And don't forget the un-sexy logistics: if your "
+             "passport is expiring, the U.S. State Department's "
+             "<a href='https://travel.state.gov/content/travel/en/passports.html' target='_blank' "
+             "rel='noopener'>passport service</a> can take weeks, so sort that before you book a "
+             "non-refundable international ticket.</p>"),
+            ("What our live fares show",
+             "<p>We track <b>{LIVE_ROUTES} routes</b> from the USA and log the price daily, so we "
+             "can see each route's <i>normal</i> range — the only way to know whether today's "
+             "international fare is actually a deal or just a number. Right now the standout on the "
+             "board is <b>{LIVE_TOPCITY}</b>, about <b>{LIVE_TOPPCT}% below</b> its usual price. "
+             "Watch international routes move in real time on our "
+             "<a href='world.html'>anywhere-to-anywhere board</a>.</p>"),
+            ("A simple plan to book at the low",
+             "<ul class='blog-list'>"
+             "<li><b>Start watching early</b> — around 8 months out for peak trips, 4 for off-peak.</li>"
+             "<li><b>Track the normal price</b> so you recognize a real dip instead of guessing.</li>"
+             "<li><b>Be flexible by a few days</b> — mid-week and shoulder dates are cheaper.</li>"
+             "<li><b>Book when it drops below normal</b>, and make sure your passport is valid "
+             "(check the "
+             "<a href='https://www.transportation.gov/airconsumer' target='_blank' rel='noopener'>"
+             "DOT's consumer protection</a> page for your rights if a schedule changes after you book).</li></ul>"),
+        ],
+        "faqs": [
+            ("How many months ahead should I book an international flight?",
+             "About 2 to 8 months ahead for most trips. Lean toward 5-8 months for peak summer "
+             "and the winter holidays, and 2-4 months for off-peak travel."),
+            ("When should I book flights to Europe?",
+             "For summer travel, book 5-6 months ahead. For spring, fall, or winter trips, 2-4 "
+             "months is usually enough to catch a good fare."),
+            ("Is it cheaper to book international flights far in advance?",
+             "Only up to a point. Very early fares are often high introductory prices. The cheapest "
+             "fares usually appear in the 2-8 month window, not the moment seats go on sale."),
+            ("Does the day of the week matter for international flights?",
+             "A little — mid-week departures are usually cheaper than weekends — but your "
+             "booking window matters far more than which day you buy."),
+        ],
+    },
+    {
+        "slug": "cheapest-time-to-fly-to-europe",
+        "title": "The Cheapest Time to Fly to Europe From the USA | Magellan Flights",
+        "h1": "The cheapest time to fly to Europe",
+        "description": "The cheapest time to fly to Europe from the USA is the off-season — "
+                       "roughly mid-January to March and November to mid-December. Here's how to "
+                       "save the most.",
+        "primary": "cheapest time to fly to europe",
+        "secondary": ["cheapest month to fly to europe", "when is the cheapest time to visit europe",
+                      "cheapest time to fly to europe from usa", "off season travel to europe"],
+        "kicker": "Where & when",
+        "published": "2026-06-22", "updated": "2026-06-22", "read_min": 6,
+        "money_href": "world.html", "money_label": "today's cheapest fares to Europe",
+        "lede": "Europe in summer is gorgeous, crowded, and brutally overpriced to fly to. The "
+                "secret most travelers miss: the exact same cities cost a fraction in the months "
+                "just before and after — with shorter lines and better hotel rates thrown in. "
+                "Here's when to go.",
+        "quick_answer": "The cheapest time to fly to Europe from the USA is the off-season: roughly "
+                        "<b>mid-January through March</b> and <b>November through mid-December</b> "
+                        "(skip the holidays themselves). Summer (June&ndash;August) is the most "
+                        "expensive. The <b>shoulder months</b> — April/May and September/October "
+                        "— are the sweet spot: lower fares, great weather.",
+        "sections": [
+            ("The cheapest months, ranked",
+             "<p>Roughly cheapest to priciest for transatlantic fares:</p>"
+             "<ul class='blog-list'>"
+             "<li><b>Cheapest:</b> mid-January, February, early March, and November to mid-December.</li>"
+             "<li><b>Sweet spot (value + weather):</b> April, May, late September, October.</li>"
+             "<li><b>Most expensive:</b> June, July, August, and the Christmas/New Year window.</li></ul>"
+             "<p>Flying in February instead of July can cut a transatlantic round-trip by hundreds "
+             "of dollars on the same route. The U.S. "
+             "<a href='https://www.bts.gov/' target='_blank' rel='noopener'>Bureau of Transportation "
+             "Statistics</a> tracks average international airfares if you want a route's ballpark.</p>"),
+            ("Shoulder season is the real sweet spot",
+             "<p>If winter feels too cold, the shoulder months are where savvy travelers live. "
+             "Late April through May and September into October give you mild weather, thinner "
+             "crowds at the big sights, and fares well below the summer peak. You get most of the "
+             "summer experience for off-season money.</p>"),
+            ("It varies by city",
+             "<p>Southern Europe (Spain, Italy, Greece) stays warmer later, so its shoulder deals "
+             "stretch into October and November. Northern Europe (London, Amsterdam, the Nordics) "
+             "goes cheap earlier as the weather turns. Either way, check entry requirements for "
+             "your passport on the State Department's "
+             "<a href='https://travel.state.gov/content/travel/en/international-travel.html' "
+             "target='_blank' rel='noopener'>international travel</a> pages before you commit.</p>"),
+            ("What our live fares show",
+             "<p>We track the cheapest fares from the USA to Europe every day across "
+             "<b>{LIVE_ROUTES} routes</b>, so you can see the off-season dip happen in real time "
+             "rather than taking our word for it. The cheapest “month” is really the day a "
+             "specific route drops below its normal range — watch for it on our "
+             "<a href='world.html'>live board</a> and book when it does.</p>"),
+            ("How to lock in the lowest Europe fare",
+             "<ul class='blog-list'>"
+             "<li><b>Travel off-peak or shoulder</b> — the single biggest lever.</li>"
+             "<li><b>Stay flexible on the city</b> — fly into the cheapest European hub and take "
+             "a cheap train or budget flight onward.</li>"
+             "<li><b>Book in the 2&ndash;5 month window</b> for off-peak Europe trips.</li>"
+             "<li><b>Track the route</b> so you recognize a genuine drop.</li></ul>"),
+        ],
+        "faqs": [
+            ("What is the cheapest month to fly to Europe?",
+             "February is typically the cheapest, with January, early March, and November close "
+             "behind. Summer months are the most expensive."),
+            ("Is it cheaper to fly to Europe in winter?",
+             "Yes — outside the Christmas/New Year holidays, winter (January to early March) "
+             "has some of the lowest transatlantic fares of the year."),
+            ("When is the cheapest time to visit Europe excluding the holidays?",
+             "Mid-January through March and November to mid-December. These off-season weeks avoid "
+             "both the summer peak and the holiday spike."),
+            ("How much can you save flying to Europe off-season?",
+             "Often hundreds of dollars round-trip versus summer on the same route, plus cheaper "
+             "hotels and far smaller crowds."),
+        ],
+    },
+    {
+        "slug": "are-last-minute-flights-cheaper",
+        "title": "Are Last-Minute Flights Cheaper? What the Data Says | Magellan Flights",
+        "h1": "Are last-minute flights cheaper?",
+        "description": "Usually no — last-minute flights are typically more expensive, not "
+                       "cheaper. But there are specific cases where waiting pays off. Here's the "
+                       "honest answer.",
+        "primary": "are last minute flights cheaper",
+        "secondary": ["how to get cheap last minute flights", "when do last minute flights get cheaper",
+                      "do flight prices drop closer to departure", "cheap last minute flight tips"],
+        "kicker": "Myth check",
+        "published": "2026-06-22", "updated": "2026-06-22", "read_min": 5,
+        "money_href": "lastminute.html", "money_label": "today's cheapest last-minute fares",
+        "lede": "There's a stubborn myth that airlines slash prices at the last second to fill empty "
+                "seats. Mostly, the opposite is true — and believing it can cost you real money. "
+                "But there's a real exception worth knowing. Here's the honest version.",
+        "quick_answer": "Usually <b>not</b>. For most routes, last-minute flights are <i>more</i> "
+                        "expensive — airlines know late buyers (often business travelers) will "
+                        "pay up, so prices typically climb in the final two weeks. The exception: "
+                        "off-peak leisure routes with empty seats, where genuine last-minute deals "
+                        "occasionally appear.",
+        "sections": [
+            ("The short answer",
+             "<p>For the vast majority of trips, waiting until the last minute costs you more, not "
+             "less. Prices usually rise sharply inside the final two weeks. The cheap last-minute "
+             "flight is the exception, not the rule — and you have to know where to look.</p>"),
+            ("Why prices usually rise, not fall",
+             "<p>Airlines sell seats in price tiers (“fare buckets”). The cheap buckets sell "
+             "first, so as a flight fills, only pricier seats remain. On top of that, the people "
+             "still booking a week out are disproportionately business travelers on expense accounts "
+             "— exactly the customer airlines charge the most. Dropping prices for them would "
+             "leave money on the table, so they don't.</p>"),
+            ("When last-minute <i>can</i> be cheap",
+             "<p>The myth isn't completely empty. Genuine last-minute deals show up when:</p>"
+             "<ul class='blog-list'>"
+             "<li>It's an <b>off-peak leisure route</b> the airline is struggling to fill.</li>"
+             "<li>There's <b>overcapacity</b> — too many seats chasing too few travelers.</li>"
+             "<li>You're <b>flexible</b> on destination and can pounce on whatever drops.</li></ul>"
+             "<p>That's exactly what our <a href='lastminute.html'>last-minute board</a> surfaces "
+             "— the routes where leaving soon is actually cheap right now.</p>"),
+            ("How to play it if you must book late",
+             "<ul class='blog-list'>"
+             "<li><b>Be flexible on dates and airports</b> — flexibility is your only leverage late.</li>"
+             "<li><b>Watch a last-minute deal feed</b> instead of searching one route over and over.</li>"
+             "<li><b>Fly mid-week</b> — Tuesday and Wednesday departures stay cheaper even late.</li>"
+             "<li><b>Know your rights</b> if a flight is cancelled or changed — see the "
+             "<a href='https://www.transportation.gov/airconsumer' target='_blank' rel='noopener'>"
+             "DOT's aviation consumer protection</a> office.</li></ul>"),
+            ("What our data shows",
+             "<p>Across the <b>{LIVE_ROUTES} routes</b> we track — and in the national fare data the "
+             "U.S. <a href='https://www.bts.gov/' target='_blank' rel='noopener'>Bureau of "
+             "Transportation Statistics</a> publishes — the cheapest fares almost always "
+             "belong to trips booked in the normal window, not the final scramble. When a real "
+             "last-minute bargain does appear, it's because a specific route dropped below its "
+             "normal range — which is the moment our tracker flags it.</p>"),
+        ],
+        "faqs": [
+            ("Do flight prices drop closer to departure?",
+             "Usually they rise, not drop. Cheap fare tiers sell out and late demand skews toward "
+             "business travelers who pay more. Genuine last-minute drops are the exception."),
+            ("When do last-minute flights get cheaper?",
+             "Mainly on off-peak leisure routes with unsold seats. If a flight is undersold close to "
+             "departure, an airline may release cheaper fares — but it's not reliable."),
+            ("What is the cheapest day to book a last-minute flight?",
+             "There's no magic day this late. Flexibility on your travel dates and airports matters "
+             "far more than the day you buy."),
+            ("Are same-day flights cheaper?",
+             "Rarely. Same-day fares are typically among the most expensive, aimed at travelers who "
+             "have no choice but to fly now."),
+        ],
+    },
+    {
+        "slug": "how-to-find-cheap-flights",
+        "title": "How to Find Cheap Flights: 9 Tricks That Work | Magellan Flights",
+        "h1": "How to find cheap flights",
+        "description": "Nine tricks that actually work for finding cheap flights — the right "
+                       "booking window, flexible dates, fare alerts, and spotting fares below their "
+                       "normal price.",
+        "primary": "how to find cheap flights",
+        "secondary": ["how to get cheap flight tickets", "tricks to find cheap flights",
+                      "how to search for cheap flights", "how to find cheap flights to anywhere"],
+        "kicker": "How-to",
+        "published": "2026-06-22", "updated": "2026-06-22", "read_min": 7,
+        "money_href": "index.html", "money_label": "today's cheapest fares",
+        "lede": "Finding cheap flights isn't luck and it isn't a secret “hack” — it's a "
+                "handful of habits that stack up. Do these nine things and you'll pay less than the "
+                "person in the next seat almost every time. The biggest one? Knowing what a fare is "
+                "<i>supposed</i> to cost.",
+        "quick_answer": "To find cheap flights: book in the sweet spot (<b>1&ndash;3 months</b> "
+                        "domestic, <b>2&ndash;8 months</b> international), stay flexible on dates and "
+                        "airports, fly mid-week, use a fare tracker so you recognize a real drop, and "
+                        "act fast when a fare falls below its normal range. Knowing the normal price "
+                        "is the biggest lever.",
+        "sections": [
+            ("9 tricks that actually work",
+             "<ol class='blog-list'>"
+             "<li><b>Book in the sweet spot</b> — 1&ndash;3 months ahead for domestic, "
+             "2&ndash;8 for international. Too early or too late both cost more.</li>"
+             "<li><b>Know the normal price.</b> You can't spot a deal without a baseline. Track a "
+             "route so you know whether today's fare is genuinely low.</li>"
+             "<li><b>Be flexible on dates.</b> Shifting a day or two — especially to Tuesday, "
+             "Wednesday, or Saturday — often beats every other trick.</li>"
+             "<li><b>Be flexible on airports.</b> A nearby airport, or a cheap hub plus an onward "
+             "budget flight, can slash the total.</li>"
+             "<li><b>Fly the cheap season.</b> Off-peak and shoulder months are dramatically cheaper "
+             "for the same destination.</li>"
+             "<li><b>Set fare alerts.</b> Let the price come to you instead of refreshing searches.</li>"
+             "<li><b>Consider two one-ways.</b> Mixing airlines on a one-way each direction is "
+             "sometimes cheaper than a single round-trip.</li>"
+             "<li><b>Search anywhere.</b> If you're flexible on <i>where</i>, let the cheapest "
+             "destination pick itself.</li>"
+             "<li><b>Act fast on real drops.</b> The best fares vanish in hours — when one falls "
+             "below its normal range, book it.</li></ol>"
+             "<p>Want shortcuts? Our <a href='index.html'>live board</a> already does the "
+             "tracking, the “search anywhere,” and the “below-normal” flag for you.</p>"),
+            ("The one trick that beats the rest",
+             "<p>If you only do one thing: <b>know the normal price.</b> Every other tip is noise "
+             "without a baseline. A “$600 flight to Rome” means nothing until you know that "
+             "route usually runs $750 — then it's a buy. That's the entire idea behind tracking "
+             "fares like a market, and it's why a tracker beats endless manual searching. The U.S. "
+             "<a href='https://www.bts.gov/' target='_blank' rel='noopener'>Bureau of Transportation "
+             "Statistics</a> publishes average-fare data if you want to sanity-check a route's "
+             "ballpark.</p>"),
+            ("What our live data adds",
+             "<p>We watch <b>{LIVE_ROUTES} routes</b> from the USA and log every price daily, so the "
+             "deals you see are already filtered to the ones below their normal range. The current "
+             "standout is <b>{LIVE_TOPCITY}</b>, about <b>{LIVE_TOPPCT}% under</b> its usual fare. "
+             "If a flight is cancelled or delayed after you book, the "
+             "<a href='https://www.transportation.gov/airconsumer' target='_blank' rel='noopener'>"
+             "DOT's consumer protection</a> office explains what you're owed.</p>"),
+        ],
+        "faqs": [
+            ("What is the cheapest way to find flights?",
+             "Track the route so you know its normal price, stay flexible on dates and airports, and "
+             "book when a fare drops below normal. A fare tracker beats searching one route "
+             "repeatedly."),
+            ("What is the best site to find cheap flights?",
+             "Use a tool that shows a route's price history and flags fares below normal, so you can "
+             "tell a real deal from a random number — that context matters more than the search "
+             "box itself."),
+            ("How do I find cheap flights to anywhere?",
+             "Search 'anywhere' from your home airport and let the cheapest destination surface, then "
+             "build a trip around the deal instead of picking the destination first."),
+            ("Does searching in incognito mode find cheaper flights?",
+             "No — that's a myth. Clearing cookies or using incognito doesn't meaningfully lower "
+             "fares. Timing, flexibility, and knowing the normal price are what actually work."),
+        ],
+        "howto": {
+            "name": "How to find cheap flights",
+            "steps": [
+                {"name": "Book in the sweet spot", "text": "Aim for 1-3 months ahead for domestic flights and 2-8 months for international."},
+                {"name": "Know the normal price", "text": "Track the route so you have a baseline and can tell whether today's fare is genuinely low."},
+                {"name": "Stay flexible on dates", "text": "Shift a day or two; mid-week (Tuesday, Wednesday, Saturday) departures are usually cheaper."},
+                {"name": "Stay flexible on airports", "text": "Check nearby airports, or fly to a cheap hub and take an onward budget flight."},
+                {"name": "Set fare alerts", "text": "Let a tracker notify you when the price drops instead of searching repeatedly."},
+                {"name": "Act fast on real drops", "text": "When a fare falls below its normal range, book it — the best fares disappear within hours."},
+            ],
+        },
+    },
+    {
+        "slug": "what-is-a-mistake-fare",
+        "title": "What Is a Mistake Fare? (And How to Catch One) | Magellan Flights",
+        "h1": "What is a mistake fare?",
+        "description": "A mistake fare is a flight priced far below normal because of an airline "
+                       "error. They're real and bookable — but rare, fleeting, and not always "
+                       "honored. Here's how they work.",
+        "primary": "what is a mistake fare",
+        "secondary": ["error fare flights", "are mistake fares legal",
+                      "how to find mistake fares", "mistake fare meaning"],
+        "kicker": "Explainer",
+        "published": "2026-06-22", "updated": "2026-06-22", "read_min": 5,
+        "money_href": "index.html", "money_label": "the live deal board",
+        "lede": "Every so often a flight pops up at a price that looks like a typo — New York to "
+                "Milan for $180, business class to Asia for the price of economy. Sometimes it <i>is</i> "
+                "a typo. These are mistake fares, and catching one is the closest thing travel has to "
+                "winning a small lottery. Here's how they work — and the catch.",
+        "quick_answer": "A mistake fare (or “error fare”) is a flight accidentally priced far "
+                        "below normal — from a currency slip, a missing fuel surcharge, or a plain "
+                        "typo. They're real and often bookable, but <b>rare, gone within hours, and "
+                        "not always honored</b>, so book a refundable fare and don't make other plans "
+                        "until it's confirmed.",
+        "sections": [
+            ("Mistake fare, in plain English",
+             "<p>A mistake fare is exactly what it sounds like: a fare an airline (or its software) "
+             "published by accident, priced well below what the route should cost. “Error "
+             "fare” means the same thing. They can be 50%, 70%, even 90% off normal — which "
+             "is why deal hunters chase them.</p>"),
+            ("How mistake fares happen",
+             "<ul class='blog-list'>"
+             "<li><b>Currency slip-ups</b> — a fare loaded in the wrong currency or a bad "
+             "conversion.</li>"
+             "<li><b>Missing fuel surcharge</b> — a big chunk of the price simply doesn't get "
+             "added.</li>"
+             "<li><b>Typos</b> — a fare filed with a digit dropped.</li>"
+             "<li><b>System glitches</b> — promo codes or pricing rules misfiring.</li></ul>"),
+            ("Are mistake fares legal? Will the airline honor it?",
+             "<p>Booking one is perfectly legal — you're accepting a price the airline published. "
+             "The catch is whether they'll <i>honor</i> it. Sometimes airlines quietly let mistake "
+             "fares stand as goodwill; other times they cancel and refund them, and the rules around "
+             "this have shifted over the years. So the golden rule: <b>book a refundable fare, pay "
+             "with a card, and don't buy non-refundable hotels or onward flights until the ticket is "
+             "confirmed.</b> If an airline cancels on you, the "
+             "<a href='https://www.transportation.gov/airconsumer' target='_blank' rel='noopener'>"
+             "DOT's aviation consumer protection</a> office is the place to understand your options.</p>"),
+            ("How to catch one",
+             "<ul class='blog-list'>"
+             "<li><b>Move fast</b> — mistake fares often last only hours before they're pulled.</li>"
+             "<li><b>Watch a deal tracker</b> rather than hunting manually — by the time a fare "
+             "trends on social media, it's usually dead.</li>"
+             "<li><b>Don't add non-refundable plans</b> until the airline confirms the ticket.</li>"
+             "<li><b>Be ready to be flexible</b> on dates — you take the error fare's terms, not "
+             "your ideal schedule (and if it's international, confirm your "
+             "<a href='https://travel.state.gov/content/travel/en/passports.html' target='_blank' "
+             "rel='noopener'>passport</a> is valid).</li></ul>"),
+            ("What our tracker does",
+             "<p>The whole point of tracking <b>{LIVE_ROUTES} routes</b> like a market is to catch "
+             "the moment a fare falls far below its normal range — which is exactly what a mistake "
+             "fare looks like in the data. Keep an eye on our <a href='index.html'>live board</a>; "
+             "when something drops that far, it surfaces fast.</p>"),
+        ],
+        "faqs": [
+            ("Are mistake fares legal to book?",
+             "Yes. You're accepting a price the airline published. What's uncertain is whether the "
+             "airline will honor it or cancel and refund — so book refundable and wait before "
+             "making other plans."),
+            ("Will airlines honor a mistake fare?",
+             "Sometimes. Some airlines let them stand as goodwill; others cancel and refund. There's "
+             "no guarantee, so never book non-refundable plans around one until it's confirmed."),
+            ("How do I find mistake fares?",
+             "Watch a deal tracker that flags fares far below their normal range and be ready to "
+             "book within hours — mistake fares disappear fast once they spread."),
+            ("What does 'error fare' mean?",
+             "It's another name for a mistake fare — a flight accidentally priced far below "
+             "normal because of a currency, surcharge, or typo error."),
+        ],
+    },
 ]
 ARTICLE_BY_FILE = {a["slug"] + ".html": a for a in ARTICLES}
 
