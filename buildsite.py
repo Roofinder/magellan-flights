@@ -139,6 +139,9 @@ TAGLINE = "The cheapest flights from the USA, tracked like a market - every day.
 # --------------------------------------------------------------------------- #
 BASE_URL = "https://www.magellanflights.com"      # canonical home (served domain; apex 308s here)
 OG_IMAGE = BASE_URL + "/og-image.png"             # 1200x630 social share image
+# Paste the token from Google Search Console's "HTML tag" verification method here
+# (just the content="..." value), then deploy — the meta tag goes on every page.
+GOOGLE_SITE_VERIFICATION = ""
 
 # Unique, keyword-targeted <title> + meta description per page. Keep titles
 # ~55-60 chars and descriptions ~150-160 so Google shows them in full.
@@ -234,7 +237,10 @@ def head_seo(active, full_title, description, market=None):
     """Canonical + Open Graph + Twitter + JSON-LD schema for one page."""
     url = BASE_URL + "/" + ("" if active == "index.html" else active)
     t, d = _esc_attr(full_title), _esc_attr(description)
-    tags = [
+    tags = []
+    if GOOGLE_SITE_VERIFICATION:
+        tags.append(f'<meta name="google-site-verification" content="{GOOGLE_SITE_VERIFICATION}">')
+    tags += [
         f'<link rel="canonical" href="{url}">',
         '<meta name="robots" content="index, follow, max-image-preview:large">',
         '<meta name="theme-color" content="#0a0e14">',
@@ -2467,8 +2473,10 @@ ARTICLES = [
             ("Does the day of the week really matter?",
              "<p>There&rsquo;s a kernel of truth to the Tuesday myth. Airlines file fare "
              "changes through the week and competitors match them, so mid-week you&rsquo;ll "
-             "sometimes catch a fresh, slightly lower price. Large fare studies keep landing "
-             "in the same place: booking Tuesday or Wednesday saves a little versus a "
+             "sometimes catch a fresh, slightly lower price. Large studies of airfare data "
+             "&mdash; the kind the U.S. <a href=\"https://www.bts.gov/\" target=\"_blank\" "
+             "rel=\"noopener\">Bureau of Transportation Statistics</a> publishes &mdash; keep "
+             "landing in the same place: booking Tuesday or Wednesday saves a little versus a "
              "weekend &mdash; on the order of a few percent on average.</p>"
              "<p>The trap is treating that as your <i>main</i> strategy. A 2&ndash;3% "
              "midweek dip is real, but it&rsquo;s noise next to the 20&ndash;40% swings that "
@@ -2515,7 +2523,11 @@ ARTICLES = [
              "<li><b>Stay flexible by a day or two</b> &mdash; midweek departures are cheaper.</li>"
              "<li><b>Book when it dips below normal</b>, not on a magic weekday.</li></ul>"
              "<p>Flying overseas? The windows shift a little &mdash; browse our "
-             "<a href='world.html'>international deal board</a> to see them move in real time.</p>"),
+             "<a href='world.html'>international deal board</a> to see them move in real time. "
+             "And if a booked fare changes on you, the U.S. DOT&rsquo;s "
+             "<a href=\"https://www.transportation.gov/airconsumer\" target=\"_blank\" "
+             "rel=\"noopener\">aviation consumer protection</a> office sets the rules on "
+             "refunds and major schedule changes.</p>"),
         ],
         "faqs": [
             ("What day of the week are flights cheapest to book?",
