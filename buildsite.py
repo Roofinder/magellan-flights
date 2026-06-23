@@ -1940,6 +1940,10 @@ def render_page(active, title, body, market, oneway, onewaylm, home, lm, world, 
             f'<link rel="preconnect" href="https://flagcdn.com" crossorigin>\n'
             f'<link rel="dns-prefetch" href="https://flagcdn.com">\n'
             f'<link rel="icon" type="image/svg+xml" href="favicon.svg">\n'
+            f'<link rel="icon" type="image/png" sizes="96x96" href="favicon-96.png">\n'
+            f'<link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">\n'
+            f'<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">\n'
+            f'<link rel="apple-touch-icon" href="apple-touch-icon.png">\n'
             f'{CSS}\n</head>\n{top_chrome(active, market)}\n{body}\n{CHAT_HTML}\n{WIDGET_HTML}\n{foot}\n{script}\n</body>\n</html>').replace("__CCJS__", _cc)
 
 

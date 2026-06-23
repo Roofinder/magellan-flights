@@ -54,7 +54,7 @@ jobs:
       - name: Publish built HTML + SEO files to repo root
         run: |
           cp site/*.html .
-          cp site/favicon.svg . 2>/dev/null || true
+          cp site/favicon.svg site/favicon-32.png site/favicon-48.png site/favicon-96.png site/apple-touch-icon.png . 2>/dev/null || true
           cp site/sitemap.xml site/robots.txt site/llms.txt . 2>/dev/null || true
           cp site/og-image.png . 2>/dev/null || true
 
@@ -62,7 +62,7 @@ jobs:
         run: |
           git config user.name "magellan-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add -A -- '*.html' favicon.svg sitemap.xml robots.txt llms.txt og-image.png
+          git add -A -- '*.html' favicon.svg favicon-32.png favicon-48.png favicon-96.png apple-touch-icon.png sitemap.xml robots.txt llms.txt og-image.png
           git add -f data/pricehistory.csv data/market_latest.csv data/sky_ids.json 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No changes to publish."
