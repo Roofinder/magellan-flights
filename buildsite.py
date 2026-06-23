@@ -143,6 +143,8 @@ OG_IMAGE = BASE_URL + "/og-image.png"             # 1200x630 social share image
 # Paste the token from Google Search Console's "HTML tag" verification method here
 # (just the content="..." value), then deploy — the meta tag goes on every page.
 GOOGLE_SITE_VERIFICATION = ""
+# Google Analytics 4 Measurement ID (public; embedded on every page). Empty = no tag.
+GA_MEASUREMENT_ID = "G-EX9M7KPYCK"
 
 # Unique, keyword-targeted <title> + meta description per page. Keep titles
 # ~55-60 chars and descriptions ~150-160 so Google shows them in full.
@@ -1924,8 +1926,14 @@ def render_page(active, title, body, market, oneway, onewaylm, home, lm, world, 
             pass
     seo_title, seo_desc = _seo_for(active, title)
     seo_head = head_seo(active, seo_title, seo_desc, market)
+    ga = ""
+    if GA_MEASUREMENT_ID:
+        ga = (f'<script async src="https://www.googletagmanager.com/gtag/js?id={GA_MEASUREMENT_ID}"></script>\n'
+              f'<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}'
+              f'gtag(\'js\',new Date());gtag(\'config\',\'{GA_MEASUREMENT_ID}\');</script>\n')
     return (f'<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
             f'<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+            f'{ga}'
             f'<title>{_esc_attr(seo_title)}</title>\n'
             f'<meta name="description" content="{_esc_attr(seo_desc)}">\n'
             f'{seo_head}\n'
