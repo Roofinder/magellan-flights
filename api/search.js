@@ -68,8 +68,9 @@ export default async function handler(req, res) {
         j.data = pool;
       }
     }
-    // cache at the edge for 5 min, serve stale up to 30 min while revalidating
-    res.setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=1800");
+    // cache at the edge for 90s, serve stale up to 10 min while revalidating —
+    // a page refresh re-pulls fresher data from Travelpayouts after 90s.
+    res.setHeader("Cache-Control", "public, s-maxage=90, stale-while-revalidate=600");
     res.status(200).json(j);
   } catch (e) {
     res.status(502).json({ success: false, error: "fetch failed", detail: String(e) });

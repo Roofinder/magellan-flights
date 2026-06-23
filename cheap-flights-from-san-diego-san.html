@@ -502,7 +502,7 @@ function toggleTickers(){ var off=document.body.classList.toggle('tickers-off');
   <nav class="crumbs"><a href="cheap-flights.html">Cheap flights</a> &rsaquo; from San Diego</nav>
   <div class="blog-eyebrow">Departure city</div>
   <h1 class="blog-title">Cheap flights from San Diego (SAN)</h1>
-  <div class="art-meta">Updated June 22, 2026 &middot; live fares &middot; Magellan Flights</div>
+  <div class="art-meta">Updated June 23, 2026 &middot; live fares &middot; Magellan Flights</div>
   <div class="art-answer"><div class="aa-label">Quick answer</div>
     <p>The cheapest flight from San Diego (SAN) right now is
     <b>$85 to Las Vegas</b>. Below are the 20 cheapest destinations
@@ -538,7 +538,7 @@ window.addEventListener('load', window.renderBucket);
   </div>
   <div class="ft-bottom">
     <p>Prices are round-trip unless marked one-way and change fast &mdash; book soon if you see one you love. Magellan Flights may earn a commission when you book through our links, at no extra cost to you.</p>
-    <p>&copy; Magellan Flights &middot; Fares found June 22, 2026 and may change at any time.</p>
+    <p>&copy; Magellan Flights &middot; Fares found June 23, 2026 and may change at any time.</p>
   </div>
 </footer>
 <script>
@@ -836,7 +836,7 @@ function liveOnView(){
   function pump(){ while(active<MAX && queue.length){ doFetch(queue.shift()); } }
   function apply(el,np,link,b){
     var pe=el.querySelector('.mv-price, .price, .dt-price, .winner-price, .blog-price');
-    if(pe){ var was=pe.querySelector('.was'); pe.innerHTML='<span class="lp-dot" title="live fare"></span>$'+np.toLocaleString(); if(was){ pe.appendChild(document.createTextNode(' ')); pe.appendChild(was); } }
+    if(pe){ var was=pe.querySelector('.was'); pe.innerHTML='<span class="lp-dot" title="Freshest tracked fare — your live, bookable price is confirmed on Aviasales"></span>$'+np.toLocaleString(); if(was){ pe.appendChild(document.createTextNode(' ')); pe.appendChild(was); } }
     var bk=el.querySelector('.mini-book, .book'); if(bk&&link) bk.href=link;
     var info=sigInfo(np,b);
     if(info){ var dn=el.querySelector('.down'); if(dn) dn.innerHTML='&#9660;'+info.pct+'%'; var sg=el.querySelector('.sig'); if(sg){ sg.textContent=info.s; sg.className='sig '+info.cls; }
@@ -860,7 +860,7 @@ function tlRow(f, oneway){
   var price='$'+Number(f.price).toLocaleString();
   var dep=(f.departure_at||'').slice(0,10);
   var sub=f.origin_airport+' → '+f.destination_airport+' &middot; '+dep+(oneway?'':(f.return_at?(' → '+(f.return_at||'').slice(0,10)):''));
-  return '<div class="mv-row"><div class="mv-dest"><span class="emoji">&#9992;</span><div><div class="mv-name">'+f.destination_airport+'</div><div class="mv-air">'+sub+'</div></div></div><div class="mv-right"><span class="mv-price"><span class="lp-dot" title="live fare"></span>'+price+'</span><a class="mini-book" href="'+f.link+'" target="_blank" rel="noopener">Book</a></div></div>';
+  return '<div class="mv-row"><div class="mv-dest"><span class="emoji">&#9992;</span><div><div class="mv-name">'+f.destination_airport+'</div><div class="mv-air">'+sub+'</div></div></div><div class="mv-right"><span class="mv-price"><span class="lp-dot" title="Freshest tracked fare — your live, bookable price is confirmed on Aviasales"></span>'+price+'</span><a class="mini-book" href="'+f.link+'" target="_blank" rel="noopener">Book</a></div></div>';
 }
 function tlTrip(){
   var o=(document.getElementById('tl-origin').value||'').trim().toUpperCase();

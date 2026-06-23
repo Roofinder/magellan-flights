@@ -2,8 +2,9 @@ name: Refresh & publish Magellan Flights
 
 on:
   schedule:
-    # 4x/day (UTC). GitHub may start these a few minutes late under load.
-    - cron: '0 1,7,13,19 * * *'
+    # Every 3h / 8x a day (UTC) to keep tracked fares fresh. GitHub may start
+    # these a few minutes late under load.
+    - cron: '0 */3 * * *'
   workflow_dispatch: {}   # adds a manual "Run workflow" button
 
 permissions:
