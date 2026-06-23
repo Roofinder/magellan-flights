@@ -546,8 +546,11 @@ def _flag_cc(code):
 
 def flag_img(code, cls="flag"):
     cc = _flag_cc(code)
+    # Explicit width/height prevent layout shift (CLS) — sizes match the CSS.
+    w, h = (18, 13) if "ti-flag" in cls else (30, 21)
     if cc:
-        return f'<img class="{cls}" src="https://flagcdn.com/{cc}.svg" alt="" loading="lazy">'
+        return (f'<img class="{cls}" src="https://flagcdn.com/{cc}.svg" alt="" '
+                f'width="{w}" height="{h}" loading="lazy">')
     return f'<span class="{cls} flag-na" aria-hidden="true">{_FLAG_NA_SVG}</span>'
 
 
@@ -1444,7 +1447,7 @@ function save(){ localStorage.setItem('fs_watch_dest', JSON.stringify(WD));
   localStorage.setItem('fs_home', JSON.stringify(WC));
   localStorage.setItem('fs_watch_flights', JSON.stringify(WF)); }
 function sigClass(s){ return s==='BOOK'?'s-book':(s==='WATCH'?'s-watch':'s-wait'); }
-function flag(cc){ return cc ? '<img class="flag" src="https://flagcdn.com/'+String(cc).toLowerCase()+'.svg" alt="">' : '<span class="flag flag-na" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/></svg></span>'; }
+function flag(cc){ return cc ? '<img class="flag" src="https://flagcdn.com/'+String(cc).toLowerCase()+'.svg" alt="" width="30" height="21" loading="lazy">' : '<span class="flag flag-na" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/></svg></span>'; }
 function owItem(x){ return '<a class="ti-item" href="'+x.l+'" target="_blank" rel="noopener">'
   + '<span class="ti-code">'+x.o+'&rarr;'+x.c+'</span><span class="ti-price">$'+x.p.toLocaleString()
   + '</span><span class="ow">1-way</span></a>'; }
@@ -2713,6 +2716,26 @@ def write_seo_files(pages):
     robots = (f"User-agent: *\nAllow: /\n\nSitemap: {BASE_URL}/sitemap.xml\n")
     with open(os.path.join(SITE_DIR, "robots.txt"), "w", encoding="utf-8") as f:
         f.write(robots)
+
+    # llms.txt — a curated map so AI crawlers (ChatGPT, Claude, Gemini) can find
+    # our best answers directly. https://llmstxt.org spec.
+    lines = [f"# {BRAND}", "", f"> {TAGLINE}", "",
+             "Magellan Flights tracks the cheapest flights from the USA every day, "
+             "like a stock market, so travelers book at the low. Every fare is real "
+             "and links to booking.", "", "## Key pages"]
+    for fn in ["index.html", "market.html", "world.html", "explore.html",
+               "lastminute.html", "airports.html", "guides.html"]:
+        if fn in SEO:
+            t, desc = SEO[fn]
+            loc = BASE_URL + "/" + ("" if fn == "index.html" else fn)
+            lines.append(f"- [{t.split(' | ')[0]}]({loc}): {desc}")
+    if ARTICLES:
+        lines += ["", "## Guides"]
+        for a in ARTICLES:
+            lines.append(f"- [{a['h1']}]({BASE_URL}/{a['slug']}.html): {a['description']}")
+    lines.append("")
+    with open(os.path.join(SITE_DIR, "llms.txt"), "w", encoding="utf-8") as f:
+        f.write("\n".join(lines))
 
 
 if __name__ == "__main__":

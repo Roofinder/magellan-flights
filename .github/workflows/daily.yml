@@ -55,14 +55,14 @@ jobs:
         run: |
           cp site/*.html .
           cp site/favicon.svg . 2>/dev/null || true
-          cp site/sitemap.xml site/robots.txt . 2>/dev/null || true
+          cp site/sitemap.xml site/robots.txt site/llms.txt . 2>/dev/null || true
           cp site/og-image.png . 2>/dev/null || true
 
       - name: Commit & push if anything changed
         run: |
           git config user.name "magellan-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add -A -- '*.html' favicon.svg sitemap.xml robots.txt og-image.png
+          git add -A -- '*.html' favicon.svg sitemap.xml robots.txt llms.txt og-image.png
           git add -f data/pricehistory.csv data/market_latest.csv data/sky_ids.json 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No changes to publish."
