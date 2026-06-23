@@ -1894,6 +1894,8 @@ def render_page(active, title, body, market, oneway, onewaylm, home, lm, world, 
             f'<title>{_esc_attr(seo_title)}</title>\n'
             f'<meta name="description" content="{_esc_attr(seo_desc)}">\n'
             f'{seo_head}\n'
+            f'<link rel="preconnect" href="https://flagcdn.com" crossorigin>\n'
+            f'<link rel="dns-prefetch" href="https://flagcdn.com">\n'
             f'<link rel="icon" type="image/svg+xml" href="favicon.svg">\n'
             f'{CSS}\n</head>\n{top_chrome(active, market)}\n{body}\n{CHAT_HTML}\n{WIDGET_HTML}\n{foot}\n{script}\n</body>\n</html>').replace("__CCJS__", _cc)
 
