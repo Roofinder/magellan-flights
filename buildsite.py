@@ -1568,11 +1568,88 @@ def render_page(active, title, body, market, oneway, onewaylm, home, lm, world, 
                 _cc = _ccf.read().strip()
         except Exception:
             pass
-    return (f'<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
-            f'<meta name="viewport" content="width=device-width, initial-scale=1">\n'
-            f'<title>{BRAND} — {title}</title>\n<meta name="description" content="{TAGLINE}">\n'
-            f'<link rel="icon" type="image/svg+xml" href="favicon.svg">\n'
-            f'{CSS}\n</head>\n{top_chrome(active, market)}\n{body}\n{CHAT_HTML}\n{WIDGET_HTML}\n{foot}\n{script}\n</body>\n</html>').replace("__CCJS__", _cc)
+    # Per-page SEO data
+    PAGE_SEO = {
+        "index.html":      ("Cheap Flights from the USA — Tracked Daily | Magellan Flights",
+                            "Browse today's cheapest round-trip and one-way flights departing from the USA. Fares tracked daily like a stock market — real prices, bookable now."),
+        "market.html":     ("Cheap Flight Deals Today — Live Fare Tracker | Magellan Flights",
+                            "See which US departure cities have the lowest fares right now. Sorted by value, updated every day."),
+        "world.html":      ("Cheap Flights Worldwide from the USA — Interactive Map | Magellan Flights",
+                            "Explore the cheapest one-way flights from every US city on an interactive world map. Find your next adventure."),
+        "trip.html":       ("Plan a Cheap Trip from the USA — Flight + Budget Tool | Magellan Flights",
+                            "Enter your home airport and budget to find cheap trips. Round-trip and one-way options, updated daily."),
+        "explore.html":    ("Cheap One-Way Flights from the USA (Next 6 Months) | Magellan Flights",
+                            "Every cheap one-way flight departing the USA in the next 6 months. Filter by region, price, and date."),
+        "blog.html":       ("Daily Flight Deal Guide — Where to Fly Cheap This Week | Magellan Flights",
+                            "Today's best flight deals explained: which routes are below normal, by how much, and why you should book now."),
+        "lastminute.html": ("Last-Minute Cheap Flights from the USA — Book Today | Magellan Flights",
+                            "Flights departing in the next 72 hours at rock-bottom prices. Updated continuously for spontaneous travelers."),
+        "airports.html":   ("Cheap Flights by US Airport — Captain's Log | Magellan Flights",
+                            "Browse the cheapest flights departing from your home airport, updated daily."),
+        "watchlist.html":  ("My Flight Watchlist — Track Cheap Fares | Magellan Flights",
+                            "Save destinations you want to visit and watch their fares. Get notified when prices drop."),
+        "essentials.html": ("Travel Essentials for Cheap Flights — Packing & Tips | Magellan Flights",
+                            "Everything you need before you fly: packing lists, travel gear, and money-saving tips for budget travelers."),
+    }
+    seo_title, seo_desc = PAGE_SEO.get(active, (f"{BRAND} — {title}", TAGLINE))
+    canonical_url = f"https://magellanflights.com/{active if active != 'index.html' else ''}"
+    og_image = "https://magellanflights.com/og-image.png"
+    schema_org = f"""<script type=\"application/ld+json\">
+{{
+  \"@context\": \"https://schema.org\",
+  \"@graph\": [
+    {{
+      \"@type\": \"Organization\",
+      \"@id\": \"https://magellanflights.com/#org\",
+      \"name\": \"Magellan Flights\",
+      \"url\": \"https://magellanflights.com\",
+      \"logo\": \"https://magellanflights.com/favicon.svg\",
+      \"description\": \"{TAGLINE}\"
+    }},
+    {{
+      \"@type\": \"WebSite\",
+      \"@id\": \"https://magellanflights.com/#website\",
+      \"url\": \"https://magellanflights.com\",
+      \"name\": \"Magellan Flights\",
+      \"publisher\": {{\"@id\": \"https://magellanflights.com/#org\"}},
+      \"potentialAction\": {{
+        \"@type\": \"SearchAction\",
+        \"target\": \"https://magellanflights.com/explore.html?q={{search_term_string}}\",
+        \"query-input\": \"required name=search_term_string\"
+      }}
+    }},
+    {{
+      \"@type\": \"WebPage\",
+      \"@id\": \"{canonical_url}#webpage\",
+      \"url\": \"{canonical_url}\",
+      \"name\": \"{seo_title}\",
+      \"description\": \"{seo_desc}\",
+      \"isPartOf\": {{\"@id\": \"https://magellanflights.com/#website\"}}
+    }}
+  ]
+}}
+</script>"""
+    seo_head = (
+        f'''<meta charset="utf-8">\n'''
+        f'''<meta name="viewport" content="width=device-width, initial-scale=1">\n'''
+        f'''<title>{seo_title}</title>\n'''
+        f'''<meta name="description" content="{seo_desc}">\n'''
+        f'''<link rel="canonical" href="{canonical_url}">\n'''
+        f'''<meta name="robots" content="index, follow">\n'''
+        f'''<meta property="og:type" content="website">\n'''
+        f'''<meta property="og:url" content="{canonical_url}">\n'''
+        f'''<meta property="og:title" content="{seo_title}">\n'''
+        f'''<meta property="og:description" content="{seo_desc}">\n'''
+        f'''<meta property="og:image" content="{og_image}">\n'''
+        f'''<meta property="og:site_name" content="Magellan Flights">\n'''
+        f'''<meta name="twitter:card" content="summary_large_image">\n'''
+        f'''<meta name="twitter:title" content="{seo_title}">\n'''
+        f'''<meta name="twitter:description" content="{seo_desc}">\n'''
+        f'''<meta name="twitter:image" content="{og_image}">\n'''
+        f'''<link rel="icon" type="image/svg+xml" href="favicon.svg">\n'''
+        f'''{schema_org}\n'''
+    )
+    return (f'''<!doctype html>\n<html lang="en">\n<head>\n{seo_head}{CSS}\n</head>\n{top_chrome(active, market)}\n{body}\n{CHAT_HTML}\n{WIDGET_HTML}\n{foot}\n{script}\n</body>\n</html>''').replace("__CCJS__", _cc)
 
 
 # --------------------------------------------------------------------------- #
@@ -2140,7 +2217,40 @@ def main():
         doc = render_page(fname, title, body, market, oneway, onewaylm, home, lastmin, world, worldlm, today)
         with open(os.path.join(SITE_DIR, fname), "w", encoding="utf-8") as f:
             f.write(doc)
-    print(f"Built {len(pages)} pages -> {SITE_DIR}  "
+
+    # ── Generate sitemap.xml ──
+    from datetime import datetime as _dt
+    today_iso = _dt.now().strftime("%Y-%m-%d")
+    base = "https://magellanflights.com/"
+    urls = [
+        (base, "1.0", "daily"),
+        (base + "market.html", "0.9", "daily"),
+        (base + "explore.html", "0.9", "daily"),
+        (base + "world.html", "0.8", "daily"),
+        (base + "lastminute.html", "0.8", "daily"),
+        (base + "blog.html", "0.8", "daily"),
+        (base + "trip.html", "0.7", "weekly"),
+        (base + "airports.html", "0.7", "daily"),
+        (base + "watchlist.html", "0.6", "weekly"),
+        (base + "essentials.html", "0.5", "monthly"),
+    ]
+    sitemap_lines = ['<?xml version="1.0" encoding="UTF-8"?>',
+                     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for url, pri, freq in urls:
+        sitemap_lines.append(f"  <url><loc>{url}</loc><lastmod>{today_iso}</lastmod>"
+                             f"<changefreq>{freq}</changefreq><priority>{pri}</priority></url>")
+    sitemap_lines.append("</urlset>")
+    sitemap_path = os.path.join(HERE, "sitemap.xml")
+    with open(sitemap_path, "w", encoding="utf-8") as f:
+        f.write("\n".join(sitemap_lines))
+
+    # ── Generate robots.txt ──
+    robots = "User-agent: *\nAllow: /\nSitemap: https://magellanflights.com/sitemap.xml\n"
+    robots_path = os.path.join(HERE, "robots.txt")
+    with open(robots_path, "w", encoding="utf-8") as f:
+        f.write(robots)
+
+    print(f"Built {len(pages)} pages + sitemap.xml + robots.txt -> {SITE_DIR}  "
           f"({len(market)} routes, {len(oneway)} one-ways, {len(home)} home airports)")
 
 
