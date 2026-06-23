@@ -26,6 +26,7 @@ import json
 import os
 from collections import defaultdict
 from datetime import datetime
+from urllib.parse import quote_plus
 
 import dealsgen as dg
 
@@ -107,8 +108,8 @@ FOOTER_NAV = [
     ("Browse fares", [("market.html", "The Market"), ("explore.html", "Explore anywhere"),
                       ("world.html", "Anywhere &rarr; Anywhere"), ("cheap-flights.html", "Cheap flights by airport"),
                       ("trip.html", "Journey Builder")]),
-    ("Learn", [("guides.html", "Guides &amp; tips"), ("blog.html", "Today&rsquo;s Daily Guide"),
-               ("essentials.html", "Travel kit"), ("how-to-find-cheap-flights.html", "How to find cheap flights")]),
+    ("Learn", [("city-guides.html", "City guides"), ("guides.html", "Guides &amp; tips"),
+               ("blog.html", "Today&rsquo;s Daily Guide"), ("essentials.html", "Travel kit")]),
     ("Your trips", [("watchlist.html", "My bucket list"), ("index.html#alerts", "Get free price alerts")]),
 ]
 
@@ -242,6 +243,9 @@ def _seo_for(active, fallback_title):
     money = globals().get("MONEY_BY_FILE", {})
     if active in money:
         return (money[active]["title"], money[active]["description"])
+    cg = globals().get("CITYGUIDE_BY_FILE", {})
+    if active in cg:
+        return (cg[active]["title"], cg[active]["description"])
     if active in SEO:
         return SEO[active]
     return (f"{fallback_title} | {BRAND}", TAGLINE)
@@ -361,6 +365,30 @@ def head_seo(active, full_title, description, market=None):
             {"@type": "Question", "name": q,
              "acceptedAnswer": {"@type": "Answer", "text": a2}}
             for q, a2 in money_faqs(p)]})
+    # City guide: TouristDestination + breadcrumb + FAQ + (VideoObject if present).
+    cg_by = globals().get("CITYGUIDE_BY_FILE", {})
+    if active in cg_by:
+        g = cg_by[active]
+        info = DEST_INFO.get(g["code"], {})
+        best = BEST_TIME.get(g["code"], "year-round")
+        deal = find_city_deal(g["code"], market) if market else None
+        graph.append({"@type": "TouristDestination", "name": g["city"],
+                      "description": g["description"], "url": url})
+        graph.append({"@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "City guides",
+             "item": BASE_URL + "/city-guides.html"},
+            {"@type": "ListItem", "position": 2, "name": g["city"], "item": url}]})
+        graph.append({"@type": "FAQPage", "mainEntity": [
+            {"@type": "Question", "name": q,
+             "acceptedAnswer": {"@type": "Answer", "text": a3}}
+            for q, a3 in city_faqs(g, deal, best, info)]})
+        vid = YT_VIDEOS.get(g["code"], "")
+        if vid:
+            graph.append({"@type": "VideoObject", "name": f"{g['city']} travel guide",
+                          "description": g["description"],
+                          "thumbnailUrl": f"https://i.ytimg.com/vi/{vid}/hqdefault.jpg",
+                          "embedUrl": f"https://www.youtube.com/embed/{vid}",
+                          "uploadDate": datetime.now().strftime("%Y-%m-%d")})
     blob = json.dumps({"@context": "https://schema.org", "@graph": graph},
                       ensure_ascii=False)
     tags.append(f'<script type="application/ld+json">{blob}</script>')
@@ -1534,6 +1562,12 @@ CSS = r"""<style>
   .bw-row a b{ font-size:13.5px; } .bw-row a span{ font-size:13px; color:var(--gold); } .bw-row a small{ font-size:11.5px; color:var(--muted); }
   .bw-x{ background:none; border:0; color:var(--muted); font-size:16px; cursor:pointer; line-height:1; }
   .bw-x:hover{ color:var(--red); }
+  /* share row on city guides */
+  .share-row{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:6px 0 22px; }
+  .share-lbl{ font-size:13px; color:var(--muted); margin-right:2px; }
+  .share-btn{ display:inline-flex; align-items:center; gap:6px; background:#0e141d; border:1px solid var(--line);
+              color:var(--ink); text-decoration:none; font-size:13px; font-weight:600; padding:7px 14px; border-radius:8px; }
+  .share-btn:hover{ border-color:var(--gold); color:var(--gold); }
 </style>"""
 
 SCRIPT = r"""<script>
@@ -2378,6 +2412,10 @@ def body_blog(market):
     else:
         verdict = "We just started logging this route &mdash; the trend line fills in a little more every day."
     cityshort = name.split(",")[0].strip()
+    cg_fname = next((g["fname"] for g in CITY_GUIDES if g["code"] == code), None)
+    guide_link = (f'<p style="text-align:center;margin-top:8px"><a href="{cg_fname}" '
+                  f'style="color:var(--gold);font-weight:600">&rarr; Open the full {html.escape(cityshort)} '
+                  f'travel guide</a></p>') if cg_fname else ""
     _vid = YT_VIDEOS.get(code, "")
     _sub = (YT_CHANNEL + ("&" if "?" in YT_CHANNEL else "?") + "sub_confirmation=1") if YT_CHANNEL else ""
     if _vid:
@@ -2407,6 +2445,7 @@ def body_blog(market):
   <section class="blog-sec"><h2>&#128220; A bit of history</h2><p>{html.escape(history) if g else history}</p></section>
   <section class="blog-sec"><h2>&#127757; Culture &amp; language</h2><p>{html.escape(culture) if g else culture}</p><p class="blog-lang"><b>Language:</b> {html.escape(info['lang'])} &middot; <b>English spoken:</b> {html.escape(info['eng'])}</p></section>
   <div class="blog-cta"><a class="btn-primary" href="{link}" target="_blank" rel="noopener">Grab the {html.escape(name.split(',')[0])} deal &rarr;</a><a class="btn-ghost" href="explore.html">Find your own deal</a></div>
+  {guide_link}
   <p class="finehint" style="text-align:center;margin-top:18px">Updated daily with whichever destination has the biggest price drop. Prices are recently-tracked fares &mdash; your live price is confirmed when you book on Aviasales. Safety and visa notes are general guidance for US travelers &mdash; verify official sources before booking.</p>
 </div>"""
 def body_market(market, hist, cards, lastmin, oneway):
@@ -3290,6 +3329,195 @@ def body_money_hub(pages):
 </div>"""
 
 
+# --------------------------------------------------------------------------- #
+# Evergreen per-city guide pages — the permanent home for each city's deal,
+# video, and travel guide (the content flywheel: deal -> video -> guide -> share)
+# --------------------------------------------------------------------------- #
+# code -> (City display name, Country, url slug). One page per CITY_GUIDE city.
+CITY_META = {
+    "SJU": ("San Juan", "Puerto Rico", "san-juan"),
+    "SJD": ("Los Cabos", "Mexico", "los-cabos"),
+    "CUN": ("Cancun", "Mexico", "cancun"),
+    "MEX": ("Mexico City", "Mexico", "mexico-city"),
+    "PUJ": ("Punta Cana", "Dominican Republic", "punta-cana"),
+    "MBJ": ("Montego Bay", "Jamaica", "montego-bay"),
+    "AUA": ("Aruba", "Aruba", "aruba"),
+    "BOG": ("Bogota", "Colombia", "bogota"),
+    "LIS": ("Lisbon", "Portugal", "lisbon"),
+    "KEF": ("Reykjavik", "Iceland", "reykjavik"),
+    "DUB": ("Dublin", "Ireland", "dublin"),
+    "BKK": ("Bangkok", "Thailand", "bangkok"),
+    "ATH": ("Athens", "Greece", "athens"),
+    "IST": ("Istanbul", "Turkey", "istanbul"),
+    "DXB": ("Dubai", "United Arab Emirates", "dubai"),
+    "RAK": ("Marrakech", "Morocco", "marrakech"),
+    "CAI": ("Cairo", "Egypt", "cairo"),
+    "BCN": ("Barcelona", "Spain", "barcelona"),
+    "CTG": ("Cartagena", "Colombia", "cartagena"),
+    "MDE": ("Medellin", "Colombia", "medellin"),
+}
+
+
+def _build_city_guides():
+    out = []
+    for code, (city, country, slug) in CITY_META.items():
+        if code not in CITY_GUIDE:
+            continue
+        out.append({
+            "code": code, "city": city, "country": country, "slug": slug,
+            "fname": f"cheap-flights-to-{slug}-{code.lower()}.html",
+            "h1": f"Cheap Flights to {city} + {city} Travel Guide",
+            "title": f"Cheap Flights to {city} ({code}) + Travel Guide | {BRAND}",
+            "description": (f"The cheapest flights to {city}, {country} from the USA right now, "
+                            f"plus the best time to go, top things to do, safety and culture "
+                            f"— your complete {city} travel guide."),
+        })
+    return out
+
+
+CITY_GUIDES = _build_city_guides()
+CITYGUIDE_BY_FILE = {g["fname"]: g for g in CITY_GUIDES}
+
+
+def find_city_deal(code, market):
+    cand = [m for m in market if m.get("code") == code]
+    return min(cand, key=lambda m: m["price"]) if cand else None
+
+
+def city_watch_html(code, cityshort):
+    _vid = YT_VIDEOS.get(code, "")
+    _sub = (YT_CHANNEL + ("&" if "?" in YT_CHANNEL else "?") + "sub_confirmation=1") if YT_CHANNEL else ""
+    if _vid:
+        return (f'<div class="blog-embed"><iframe src="https://www.youtube.com/embed/{_vid}" '
+                f'title="{html.escape(cityshort)} travel guide" loading="lazy" frameborder="0" '
+                f'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" '
+                f'allowfullscreen></iframe></div>'
+                f'<a class="yt-sub" href="{_sub}" target="_blank" rel="noopener">&#9654; Subscribe on YouTube</a>')
+    if YT_CHANNEL:
+        return (f'<a class="blog-video" href="{_sub}" target="_blank" rel="noopener">'
+                f'<span class="bv-play">&#9654;</span><span class="bv-text">A <b>{html.escape(cityshort)}</b> '
+                f'video guide is on the way &mdash; <b style="color:var(--gold)">subscribe</b> '
+                f'so you don&rsquo;t miss it.</span></a>')
+    return '<div class="blog-soon">&#127909; Video guide coming soon</div>'
+
+
+def city_faqs(g, deal, best, info):
+    city, country, code = g["city"], g["country"], g["code"]
+    faqs = []
+    if deal:
+        faqs.append((f"How much is a flight to {city}?",
+                     f"The cheapest round-trip we're tracking to {city} ({code}) from the USA is about "
+                     f"${deal['price']:,.0f} right now. Live fares move through the day, so confirm the "
+                     f"current price before you book."))
+    faqs.append((f"When is the best time to visit {city}?",
+                 f"The best time to fly to {city} is generally {best}. Shoulder-season trips often pair "
+                 f"good weather with lower fares."))
+    faqs.append((f"Is {city} safe for tourists?",
+                 f"{info.get('safe', 'Check the latest travel advisory')}. As anywhere, watch your "
+                 f"belongings in crowds and check your government's current advisory before you go."))
+    faqs.append((f"Do US citizens need a visa for {country}?",
+                 f"Visa for US passports: {info.get('visa', 'check entry requirements')}. Always confirm "
+                 f"the latest entry rules with official sources before booking."))
+    return faqs
+
+
+def body_cityguide(g, market, today):
+    code, city, country = g["code"], g["city"], g["country"]
+    cg = CITY_GUIDE.get(code, {})
+    info = DEST_INFO.get(code, {"lang": "the local language", "eng": "varies",
+                                "visa": "Check entry requirements for US passports",
+                                "safe": "Check your government's latest travel advisory",
+                                "note": "Verify details before booking"})
+    best = BEST_TIME.get(code, "year-round")
+    deal = find_city_deal(code, market)
+    if deal:
+        dates = (f'{html.escape(deal.get("depart",""))} &rarr; {html.escape(deal.get("return",""))}'
+                 if deal.get("return") else html.escape(deal.get("depart", "")))
+        sig, pct = signal_for(deal["price"], deal["benchmark"])
+        link = html.escape(deal["link"], quote=True)
+        deal_block = (
+            f'<div class="blog-deal" data-lp data-o="{html.escape(deal["origin"], quote=True)}" data-d="{code}" data-ow="0">'
+            f'<div><div class="blog-deal-label">Round-trip to {city} from {html.escape(deal["origin"])}</div>'
+            f'<div class="blog-deal-dates">{dates} &middot; best time to go: {html.escape(best)}</div></div>'
+            f'<div class="blog-deal-right"><span class="blog-price">${deal["price"]:,.0f}</span>'
+            f'<span class="blog-was">was ~${deal["benchmark"]:,.0f}</span>'
+            f'<span class="sig s-book">{sig} &middot; {pct:.0f}% off</span>'
+            f'<a class="book" href="{link}" target="_blank" rel="noopener">See live price &amp; book &rarr;</a></div></div>')
+        cheapest_line = (f"The cheapest round-trip to {city} from the USA right now is "
+                         f"<b>${deal['price']:,.0f}</b> (from {html.escape(deal['origin'])}).")
+    else:
+        deal_block = ('<div class="art-cta"><div class="art-cta-txt"><b>No standout fare to '
+                      f'{city} on the board this minute.</b> Fares move all day &mdash; set a free '
+                      'alert and we&rsquo;ll ping you the moment one drops.</div>'
+                      '<a class="book" href="index.html#alerts">Get free alerts &rarr;</a></div>')
+        cheapest_line = (f"We track flights to {city} from across the USA every day &mdash; check back "
+                         "or set an alert for the next drop.")
+    todo = "".join(f"<li>{html.escape(t)}</li>" for t in cg.get("todo", []))
+    todo_block = f'<ul class="blog-list">{todo}</ul>' if todo else ""
+    watch = city_watch_html(code, city)
+    overview = cg.get("overview", f"{city} is one of the destinations we track from the USA every day.")
+    history = cg.get("history", "")
+    culture = cg.get("culture", "")
+    faqs = city_faqs(g, deal, best, info)
+    faq_items = "".join(
+        f'<details class="art-q"><summary>{html.escape(q)}</summary><p>{html.escape(a)}</p></details>'
+        for q, a in faqs)
+    others = [o for o in CITY_GUIDES if o["code"] != code][:6]
+    others_html = "".join(
+        f'<li><a href="{o["fname"]}">Cheap flights to {html.escape(o["city"])}</a></li>' for o in others)
+    share_url = BASE_URL + "/" + g["fname"]
+    share_txt = quote_plus(f"Cheap flights to {city} + a {city} travel guide — from {BRAND}")
+    su = quote_plus(share_url)
+    share = (
+        '<div class="share-row"><span class="share-lbl">Share this guide</span>'
+        f'<a class="share-btn" target="_blank" rel="noopener" href="https://twitter.com/intent/tweet?url={su}&text={share_txt}">X</a>'
+        f'<a class="share-btn" target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u={su}">Facebook</a>'
+        f'<a class="share-btn" target="_blank" rel="noopener" href="https://api.whatsapp.com/send?text={share_txt}%20{su}">WhatsApp</a>'
+        f'<a class="share-btn" target="_blank" rel="noopener" href="mailto:?subject={quote_plus("Cheap flights to "+city)}&body={share_txt}%20{su}">Email</a></div>')
+    hist_block = (f'<section class="blog-sec"><h2>&#128220; A bit of history</h2><p>{html.escape(history)}</p></section>'
+                  if history else "")
+    cult_block = (f'<section class="blog-sec"><h2>&#127757; Culture &amp; language</h2><p>{html.escape(culture)}</p>'
+                  f'<p class="blog-lang"><b>Language:</b> {html.escape(info.get("lang","—"))} &middot; '
+                  f'<b>English spoken:</b> {html.escape(info.get("eng","—"))}</p></section>') if culture else ""
+    return f"""<div class="wrap blog-wrap">
+  <nav class="crumbs"><a href="city-guides.html">City guides</a> &rsaquo; {html.escape(city)}</nav>
+  <div class="blog-eyebrow">{html.escape(country)} &middot; flight deal + travel guide</div>
+  <h1 class="blog-title">{g['h1']}</h1>
+  <div class="art-meta">Updated {today} &middot; live fares &middot; {BRAND}</div>
+  <div class="art-answer"><div class="aa-label">Quick answer</div><p>{cheapest_line} Below: a quick video, when to go, what to do, safety and culture.</p></div>
+  {deal_block}
+  <section class="blog-sec"><h2>&#9654;&#65039; Watch: {html.escape(city)} in a couple of minutes</h2>{watch}</section>
+  <section class="blog-sec"><h2>The overview</h2><p>{html.escape(overview)}</p></section>
+  <section class="blog-sec"><h2>&#128205; Top things to do in {html.escape(city)}</h2>{todo_block}</section>
+  <section class="blog-sec"><h2>&#128197; Best time to visit</h2><p>The sweet spot for {html.escape(city)} is generally <b>{html.escape(best)}</b> &mdash; and the cheapest fares often land just outside peak season.</p></section>
+  <section class="blog-sec"><h2>&#128737; Is it safe?</h2><p>{html.escape(info.get('safe','Check the latest travel advisory'))}. Watch your belongings in crowds and tourist areas, and check your government&rsquo;s current advisory before you go. Visa for US passports: {html.escape(info.get('visa','check entry requirements'))}.</p></section>
+  {hist_block}
+  {cult_block}
+  {share}
+  <section class="blog-sec"><h2>Frequently asked questions</h2>{faq_items}</section>
+  <div class="blog-cta"><a class="btn-primary" href="{html.escape(deal['link'], quote=True) if deal else 'explore.html'}" {'target="_blank" rel="noopener"' if deal else ''}>{'Grab the '+city+' deal &rarr;' if deal else 'Find your own deal &rarr;'}</a><a class="btn-ghost" href="index.html#alerts">Get price-drop alerts</a></div>
+  <section class="blog-sec"><h2>More city guides</h2><ul class="blog-list">{others_html}</ul></section>
+  <p class="finehint" style="text-align:center;margin-top:8px">Prices are recently-tracked fares &mdash; your live, bookable price is confirmed on Aviasales. Safety and visa notes are general guidance for US travelers; verify official sources before booking.</p>
+</div>"""
+
+
+def body_cityguide_hub(guides, market):
+    cards = []
+    for g in guides:
+        deal = find_city_deal(g["code"], market)
+        price = f'From ${deal["price"]:,.0f}' if deal else "Set an alert"
+        cards.append(
+            f'<a class="guide-card" href="{g["fname"]}">'
+            f'<div class="gc-kick">{html.escape(g["country"])}</div>'
+            f'<div class="gc-title">{html.escape(g["city"])}</div>'
+            f'<div class="gc-desc">{price} &middot; video, things to do, safety &amp; culture</div>'
+            f'<div class="gc-more">Read guide &rarr;</div></a>')
+    return f"""<div class="wrap">
+  <div class="pagehead"><h1>City guides</h1><p>Deal of the day, a quick video, and a real travel guide for each city &mdash; what to do, when to go, safety and culture. {len(guides)} destinations and growing.</p></div>
+  <div class="guide-grid">{"".join(cards)}</div>
+</div>"""
+
+
 def main():
     market = read_snapshot()
     if not market:
@@ -3338,6 +3566,7 @@ def main():
         "essentials.html": ("Travel essentials", body_essentials()),
         "guides.html": ("Guides", body_guides(market)),
         "cheap-flights.html": ("By airport", body_money_hub(MONEY_PAGES)),
+        "city-guides.html": ("City guides", body_cityguide_hub(CITY_GUIDES, market)),
     }
 
     os.makedirs(SITE_DIR, exist_ok=True)
@@ -3361,11 +3590,19 @@ def main():
         with open(os.path.join(SITE_DIR, p["fname"]), "w", encoding="utf-8") as f:
             f.write(doc)
 
+    # Evergreen per-city guide pages (deal + video + travel guide).
+    for g in CITY_GUIDES:
+        doc = render_page(g["fname"], g["h1"], body_cityguide(g, market, today), market,
+                          oneway, onewaylm, home, lastmin, world, worldlm, today)
+        with open(os.path.join(SITE_DIR, g["fname"]), "w", encoding="utf-8") as f:
+            f.write(doc)
+
     all_files = (list(pages) + [a["slug"] + ".html" for a in ARTICLES]
-                 + [p["fname"] for p in MONEY_PAGES])
+                 + [p["fname"] for p in MONEY_PAGES]
+                 + [g["fname"] for g in CITY_GUIDES])
     write_seo_files(all_files)
     print(f"Built {len(pages)} pages + {len(ARTICLES)} articles + {len(MONEY_PAGES)} money pages "
-          f"+ sitemap/robots -> {SITE_DIR}  "
+          f"+ {len(CITY_GUIDES)} city guides + sitemap/robots -> {SITE_DIR}  "
           f"({len(market)} routes, {len(oneway)} one-ways, {len(home)} home airports)")
 
 
@@ -3378,16 +3615,22 @@ def write_seo_files(pages):
     # Rough priority: home highest, then the deal boards, then helper pages.
     prio = {"index.html": "1.0", "market.html": "0.9", "world.html": "0.8",
             "explore.html": "0.8", "lastminute.html": "0.8", "cheap-flights.html": "0.8",
-            "guides.html": "0.7", "blog.html": "0.7", "airports.html": "0.6"}
+            "city-guides.html": "0.8", "guides.html": "0.7", "blog.html": "0.7",
+            "airports.html": "0.6"}
     article_files = set(globals().get("ARTICLE_BY_FILE", {}))
     money_files = set(globals().get("MONEY_BY_FILE", {}))
+    cityguide_files = set(globals().get("CITYGUIDE_BY_FILE", {}))
     urls = []
     for fname in pages:
         loc = BASE_URL + "/" + ("" if fname == "index.html" else fname)
+        cf = ("monthly" if fname in article_files
+              else "weekly" if fname in cityguide_files else "daily")
+        dp = ("0.6" if fname in article_files
+              else "0.7" if fname in money_files or fname in cityguide_files else "0.5")
         urls.append(
             f"  <url>\n    <loc>{loc}</loc>\n    <lastmod>{lastmod}</lastmod>\n"
-            f"    <changefreq>{'monthly' if fname in article_files else 'daily'}</changefreq>\n"
-            f"    <priority>{prio.get(fname, '0.6' if fname in article_files else ('0.7' if fname in money_files else '0.5'))}</priority>\n  </url>")
+            f"    <changefreq>{cf}</changefreq>\n"
+            f"    <priority>{prio.get(fname, dp)}</priority>\n  </url>")
     sitemap = ('<?xml version="1.0" encoding="UTF-8"?>\n'
                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
                + "\n".join(urls) + "\n</urlset>\n")
