@@ -2121,7 +2121,7 @@ def body_home(market, hist, cards, lastmin, oneway, summary):
   <div class="lander-inner">
     <span class="eyebrow">&#9788; The world is closer than you think</span>
     <h1>Find the world&rsquo;s cheapest flights <span class="g">from anywhere.</span></h1>
-    <p class="lead">Magellan tracks the lowest fares from any city to everywhere on earth, every day &mdash; and tells you when a price is a genuine deal. We built it to prove one thing: seeing the world costs far less than you&rsquo;ve been told.</p>
+    <p class="lead">Magellan Flights tracks the cheapest flights from the USA to anywhere on earth, every single day &mdash; and flags the moment a fare drops below its normal price. Real, bookable deals, refreshed through the day, so you book at the low.</p>
     <div class="cta-row">
       <a class="btn-primary" href="#deals">Explore today&rsquo;s deals</a>
       <a class="btn-ghost" href="world.html">Anywhere &rarr; Anywhere</a>
