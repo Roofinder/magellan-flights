@@ -100,6 +100,7 @@ REGION_BTNS = ["all", "USA", "Abroad", "Asia", "SE Asia", "E Asia", "S Asia",
 
 NAV = [("index.html", "Home"), ("market.html", "Market"), ("explore.html", "Explore"),
        ("trip.html", "Journey"), ("blog.html", "Daily Guide"), ("guides.html", "Guides"),
+       ("cheap-flights.html", "By airport"),
        ("watchlist.html", "My Bucket List Flights"), ("essentials.html", "Travel kit")]
 
 
@@ -191,6 +192,10 @@ SEO = {
         "Flight Deal Guides — When to Book & Where to Go | Magellan Flights",
         "Straight answers on when to book flights, the cheapest time to fly, "
         "and how to catch a cheap fare — backed by fares we track daily."),
+    "cheap-flights.html": (
+        "Cheap Flights by Departure City — Live Deals | Magellan Flights",
+        "Find the cheapest flights from your home airport. Live, bookable fares "
+        "from 25 major US cities to everywhere they fly, updated daily."),
 }
 
 # Questions AI assistants and Google's "People also ask" love to answer.
@@ -223,6 +228,9 @@ def _seo_for(active, fallback_title):
     art = globals().get("ARTICLE_BY_FILE", {})
     if active in art:
         return (art[active]["title"], art[active]["description"])
+    money = globals().get("MONEY_BY_FILE", {})
+    if active in money:
+        return (money[active]["title"], money[active]["description"])
     if active in SEO:
         return SEO[active]
     return (f"{fallback_title} | {BRAND}", TAGLINE)
@@ -325,6 +333,23 @@ def head_seo(active, full_title, description, market=None):
                 "step": [{"@type": "HowToStep", "position": i,
                           "name": s.get("name", ""), "text": s.get("text", "")}
                          for i, s in enumerate(ht.get("steps", []), 1)]})
+    # Money page: ItemList of the cheapest fares + breadcrumb + FAQ.
+    money = globals().get("MONEY_BY_FILE", {})
+    if active in money:
+        p = money[active]
+        items = [{"@type": "ListItem", "position": i,
+                  "name": f"{p['city']} to {d['name'].split(',')[0]}", "url": url}
+                 for i, d in enumerate(p["deals"][:20], 1)]
+        graph.append({"@type": "ItemList", "name": f"Cheapest flights from {p['city']}",
+                      "numberOfItems": len(items), "itemListElement": items})
+        graph.append({"@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Cheap flights",
+             "item": BASE_URL + "/cheap-flights.html"},
+            {"@type": "ListItem", "position": 2, "name": p["h1"], "item": url}]})
+        graph.append({"@type": "FAQPage", "mainEntity": [
+            {"@type": "Question", "name": q,
+             "acceptedAnswer": {"@type": "Answer", "text": a2}}
+            for q, a2 in money_faqs(p)]})
     blob = json.dumps({"@context": "https://schema.org", "@graph": graph},
                       ensure_ascii=False)
     tags.append(f'<script type="application/ld+json">{blob}</script>')
@@ -1108,6 +1133,16 @@ CSS = r"""<style>
   .art-q summary::before{ content:"+"; color:var(--gold); margin-right:9px; font-weight:700; }
   .art-q[open] summary::before{ content:"\2013"; }
   .art-q p{ color:var(--ink); line-height:1.7; margin:10px 0 2px; }
+  .deal-table{ width:100%; border-collapse:collapse; margin:0 0 24px; }
+  .deal-table th{ text-align:left; color:var(--muted); font-weight:600; font-size:11.5px; letter-spacing:.04em; text-transform:uppercase; padding:8px 10px; border-bottom:1px solid var(--line); }
+  .deal-table td{ padding:11px 10px; border-bottom:1px solid var(--line); vertical-align:middle; }
+  .deal-table tr:hover td{ background:#0e141d; }
+  .dt-dest{ font-weight:600; color:var(--ink); } .dt-code{ color:var(--muted); font-size:12px; font-weight:400; margin-left:4px; }
+  .dt-dest .flag{ vertical-align:-4px; margin-right:8px; }
+  .dt-dates{ color:var(--muted); font-size:13px; white-space:nowrap; }
+  .dt-price{ color:var(--gold); font-weight:800; font-size:17px; white-space:nowrap; }
+  .deal-table .book{ padding:6px 13px; font-size:13px; white-space:nowrap; }
+  @media(max-width:560px){ .deal-table .dt-dates{ display:none; } }
   .guide-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; }
   .guide-card{ display:flex; flex-direction:column; gap:8px; background:var(--card); border:1px solid var(--line);
                border-radius:14px; padding:18px 18px 16px; text-decoration:none; transition:border-color .15s,transform .15s; }
@@ -2637,6 +2672,141 @@ def body_guides(market):
 </div>"""
 
 
+# --------------------------------------------------------------------------- #
+# Money pages (service-page matrix): one static, indexable page per departure
+# airport — "Cheap flights from {City} ({CODE})" — server-rendered from live
+# homebase data so each page has unique, crawlable fares (not a thin template).
+# See seo/money_pages_matrix.md. Booking links stay Aviasales (marker 741311).
+# --------------------------------------------------------------------------- #
+MONEY_AIRPORTS = [
+    ("ATL", "Atlanta"), ("LAX", "Los Angeles"), ("ORD", "Chicago"), ("DFW", "Dallas"),
+    ("DEN", "Denver"), ("JFK", "New York"), ("SFO", "San Francisco"), ("SEA", "Seattle"),
+    ("LAS", "Las Vegas"), ("MCO", "Orlando"), ("MIA", "Miami"), ("CLT", "Charlotte"),
+    ("PHX", "Phoenix"), ("IAH", "Houston"), ("BOS", "Boston"), ("MSP", "Minneapolis"),
+    ("FLL", "Fort Lauderdale"), ("DTW", "Detroit"), ("PHL", "Philadelphia"), ("LGA", "New York"),
+    ("BWI", "Baltimore"), ("SLC", "Salt Lake City"), ("DCA", "Washington"), ("SAN", "San Diego"),
+    ("TPA", "Tampa"),
+]
+MONEY_PAGES = []          # populated in main() from homebase data
+MONEY_BY_FILE = {}
+
+
+def _slugify(s):
+    import re
+    s = re.sub(r"\([^)]*\)", "", str(s)).strip().lower()
+    return re.sub(r"[^a-z0-9]+", "-", s).strip("-")
+
+
+def money_targets(home):
+    out = []
+    for code, city in MONEY_AIRPORTS:
+        info = home.get(code)
+        if not info:
+            continue
+        deals = sorted(info.get("deals", []), key=lambda x: x.get("price", 1e9))
+        if len(deals) < 5:
+            continue
+        lm = sorted(info.get("lastminute", []), key=lambda x: x.get("price", 1e9))
+        slug = f"cheap-flights-from-{_slugify(city)}-{code.lower()}"
+        low = deals[0]; topdest = low["name"].split(",")[0]
+        out.append({
+            "code": code, "city": city, "slug": slug, "fname": slug + ".html",
+            "title": f"Cheap Flights from {city} ({code}) — Live Deals | {BRAND}",
+            "description": (f"Today's cheapest flights from {city} ({code}): real, bookable "
+                            f"fares to {topdest} from ${low['price']:,.0f} and more, updated daily."),
+            "h1": f"Cheap flights from {city} ({code})",
+            "deals": deals, "lm": lm,
+        })
+    return out
+
+
+def money_faqs(p):
+    low = p["deals"][0]; topdest = low["name"].split(",")[0]
+    return [
+        (f"What is the cheapest place to fly from {p['city']} right now?",
+         f"Right now it's {topdest} at ${low['price']:,.0f} from {p['code']}. The cheapest "
+         f"destination shifts as fares move, so this page refreshes daily with the current lows."),
+        (f"Are these {p['city']} flight deals real and bookable?",
+         "Yes. Every fare is re-checked against live pricing before it's shown, and each Book "
+         "link goes to a secure booking page for that exact flight."),
+        (f"How often do the fares from {p['code']} update?",
+         "Several times a day, so the prices here reflect what's actually bookable right now."),
+    ]
+
+
+def body_moneypage(p, today):
+    deals = p["deals"][:20]
+    rows = []
+    for d in deals:
+        nm = html.escape(d["name"].split(",")[0])
+        dates = html.escape(d.get("depart", ""))
+        if d.get("return"):
+            dates += " &rarr; " + html.escape(d.get("return", ""))
+        link = html.escape(d["link"], quote=True)
+        rows.append(
+            f'<tr><td class="dt-dest">{flag_img(d["code"], "flag")} {nm} '
+            f'<span class="dt-code">{d["code"]}</span></td>'
+            f'<td class="dt-dates">{dates}</td>'
+            f'<td class="dt-price">${d["price"]:,.0f}</td>'
+            f'<td><a class="book" href="{link}" target="_blank" rel="noopener">Book &rarr;</a></td></tr>')
+    table = ('<table class="deal-table"><thead><tr><th>Destination</th><th>Dates</th>'
+             '<th>Price</th><th></th></tr></thead><tbody>' + "".join(rows) + "</tbody></table>")
+    low = p["deals"][0]; topdest = html.escape(low["name"].split(",")[0])
+    lm = p["lm"][:6]
+    lm_html = ""
+    if lm:
+        lmrows = "".join(
+            f'<li>{html.escape(d["name"].split(",")[0])} &mdash; <b>${d["price"]:,.0f}</b> '
+            f'<span class="dt-dates">({html.escape(d.get("depart",""))})</span> &middot; '
+            f'<a href="{html.escape(d["link"], quote=True)}" target="_blank" rel="noopener" '
+            f'style="color:var(--gold)">book</a></li>' for d in lm)
+        lm_html = (f'<section class="blog-sec"><h2>Cheapest last-minute flights from '
+                   f'{html.escape(p["city"])}</h2><ul class="blog-list">{lmrows}</ul></section>')
+    faq_items = "".join(
+        f'<details class="art-q"><summary>{html.escape(q)}</summary><p>{html.escape(a)}</p></details>'
+        for q, a in money_faqs(p))
+    faq_html = f'<section class="blog-sec"><h2>Frequently asked questions</h2>{faq_items}</section>'
+    others = [q for q in MONEY_PAGES if q["code"] != p["code"]][:8]
+    others_html = (
+        '<section class="blog-sec"><h2>Cheap flights from other cities</h2>'
+        '<ul class="blog-list">' + "".join(
+            f'<li><a href="{q["fname"]}">Cheap flights from {html.escape(q["city"])} ({q["code"]})</a></li>'
+            for q in others) + "</ul></section>")
+    cta = ('<div class="art-cta"><div class="art-cta-txt"><b>Heads up:</b> these fares move fast. '
+           'Every price here is re-checked against live pricing and links straight to a secure '
+           'booking page &mdash; if you see one you love, grab it.</div>'
+           '<a class="book" href="world.html">Explore everywhere &rarr;</a></div>')
+    return f"""<div class="wrap blog-wrap">
+  <nav class="crumbs"><a href="cheap-flights.html">Cheap flights</a> &rsaquo; from {html.escape(p['city'])}</nav>
+  <div class="blog-eyebrow">Departure city</div>
+  <h1 class="blog-title">{html.escape(p['h1'])}</h1>
+  <div class="art-meta">Updated {today} &middot; live fares &middot; {BRAND}</div>
+  <div class="art-answer"><div class="aa-label">Quick answer</div>
+    <p>The cheapest flight from {html.escape(p['city'])} ({p['code']}) right now is
+    <b>${low['price']:,.0f} to {topdest}</b>. Below are the {len(deals)} cheapest destinations
+    we're tracking from {p['code']} &mdash; all real, bookable, and refreshed through the day.</p></div>
+  {cta}
+  {table}
+  {lm_html}
+  {faq_html}
+  {others_html}
+</div>"""
+
+
+def body_money_hub(pages):
+    cards = "".join(
+        f'<a class="guide-card" href="{p["fname"]}">'
+        f'<div class="gc-kick">Departure city</div>'
+        f'<div class="gc-title">Cheap flights from {html.escape(p["city"])} ({p["code"]})</div>'
+        f'<div class="gc-desc">From ${p["deals"][0]["price"]:,.0f} &mdash; live deals to '
+        f'{min(len(p["deals"]), 20)} destinations</div>'
+        f'<div class="gc-more">See deals &rarr;</div></a>' for p in pages)
+    return f"""<div class="wrap">
+  <div class="pagehead"><h1>Cheap flights by departure city</h1><p>Pick your home airport for a live list of the cheapest places to fly right now &mdash; real, bookable fares from {len(pages)} US cities, refreshed daily.</p></div>
+  <div class="guide-grid">{cards}</div>
+</div>"""
+
+
 def main():
     market = read_snapshot()
     if not market:
@@ -2659,12 +2829,14 @@ def main():
             for d in c.get(key, []):
                 d["t"] = lm_tags(d.get("cc", ""))
     hist = index_history()
-    global HIST_SERIES, FEATURED_VERIFIED
+    global HIST_SERIES, FEATURED_VERIFIED, MONEY_PAGES, MONEY_BY_FILE
     HIST_SERIES = read_history_series()
     try:
         FEATURED_VERIFIED = json.load(open(os.path.join(DATA_DIR, "featured_verified.json"), encoding="utf-8"))
     except Exception:
         FEATURED_VERIFIED = {}
+    MONEY_PAGES = money_targets(home)
+    MONEY_BY_FILE = {p["fname"]: p for p in MONEY_PAGES}
     today = datetime.now().strftime("%B %d, %Y")
     summary = market_summary(market)
     cards_src = sorted(market, key=lambda m: signal_for(m["price"], m["benchmark"])[1], reverse=True)[:8]
@@ -2682,6 +2854,7 @@ def main():
         "watchlist.html": ("Watchlist", body_watchlist(market)),
         "essentials.html": ("Travel essentials", body_essentials()),
         "guides.html": ("Guides", body_guides(market)),
+        "cheap-flights.html": ("By airport", body_money_hub(MONEY_PAGES)),
     }
 
     os.makedirs(SITE_DIR, exist_ok=True)
@@ -2698,9 +2871,18 @@ def main():
         with open(os.path.join(SITE_DIR, fname), "w", encoding="utf-8") as f:
             f.write(doc)
 
-    all_files = list(pages) + [a["slug"] + ".html" for a in ARTICLES]
+    # Money pages (one per departure airport).
+    for p in MONEY_PAGES:
+        doc = render_page(p["fname"], p["h1"], body_moneypage(p, today), market,
+                          oneway, onewaylm, home, lastmin, world, worldlm, today)
+        with open(os.path.join(SITE_DIR, p["fname"]), "w", encoding="utf-8") as f:
+            f.write(doc)
+
+    all_files = (list(pages) + [a["slug"] + ".html" for a in ARTICLES]
+                 + [p["fname"] for p in MONEY_PAGES])
     write_seo_files(all_files)
-    print(f"Built {len(pages)} pages + {len(ARTICLES)} articles + sitemap/robots -> {SITE_DIR}  "
+    print(f"Built {len(pages)} pages + {len(ARTICLES)} articles + {len(MONEY_PAGES)} money pages "
+          f"+ sitemap/robots -> {SITE_DIR}  "
           f"({len(market)} routes, {len(oneway)} one-ways, {len(home)} home airports)")
 
 
@@ -2712,16 +2894,17 @@ def write_seo_files(pages):
     lastmod = datetime.now().strftime("%Y-%m-%d")
     # Rough priority: home highest, then the deal boards, then helper pages.
     prio = {"index.html": "1.0", "market.html": "0.9", "world.html": "0.8",
-            "explore.html": "0.8", "lastminute.html": "0.8", "guides.html": "0.7",
-            "blog.html": "0.7", "airports.html": "0.6"}
+            "explore.html": "0.8", "lastminute.html": "0.8", "cheap-flights.html": "0.8",
+            "guides.html": "0.7", "blog.html": "0.7", "airports.html": "0.6"}
     article_files = set(globals().get("ARTICLE_BY_FILE", {}))
+    money_files = set(globals().get("MONEY_BY_FILE", {}))
     urls = []
     for fname in pages:
         loc = BASE_URL + "/" + ("" if fname == "index.html" else fname)
         urls.append(
             f"  <url>\n    <loc>{loc}</loc>\n    <lastmod>{lastmod}</lastmod>\n"
             f"    <changefreq>{'monthly' if fname in article_files else 'daily'}</changefreq>\n"
-            f"    <priority>{prio.get(fname, '0.6' if fname in article_files else '0.5')}</priority>\n  </url>")
+            f"    <priority>{prio.get(fname, '0.6' if fname in article_files else ('0.7' if fname in money_files else '0.5'))}</priority>\n  </url>")
     sitemap = ('<?xml version="1.0" encoding="UTF-8"?>\n'
                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
                + "\n".join(urls) + "\n</urlset>\n")
