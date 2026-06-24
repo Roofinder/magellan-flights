@@ -6,6 +6,18 @@ on:
     # these a few minutes late under load.
     - cron: '0 */3 * * *'
   workflow_dispatch: {}   # adds a manual "Run workflow" button
+  push:
+    branches: [main]
+    # Rebuild + publish immediately when SOURCE changes (e.g. buildsite.py).
+    # The bot's own HTML/data commits use GITHUB_TOKEN (which can't retrigger a
+    # workflow) and only touch the paths below, so this never loops.
+    paths-ignore:
+      - '**.html'
+      - 'data/**'
+      - 'sitemap.xml'
+      - 'robots.txt'
+      - 'llms.txt'
+      - '**.png'
 
 permissions:
   contents: write
