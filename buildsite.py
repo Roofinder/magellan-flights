@@ -1316,6 +1316,11 @@ CSS = r"""<style>
   .pr-verdict{ font-weight:700; } .pr-verdict.g{ color:var(--green); } .pr-verdict.y{ color:var(--gold); } .pr-verdict.r{ color:var(--red); }
   .pr-fresh{ font-size:11px; color:var(--muted); margin:0 0 10px; }
   .pr-fresh .dotc{ display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--green); margin-right:6px; vertical-align:middle; }
+  .owm-bar{ display:flex; gap:10px; align-items:center; margin:0 0 12px; flex-wrap:wrap; }
+  .owm-bar input{ flex:1; min-width:170px; background:#0e141d; color:var(--ink); border:1px solid var(--line); border-radius:9px; padding:9px 12px; font-size:14px; }
+  .owm-bar input::placeholder{ color:var(--muted); }
+  .owm-sort{ background:var(--card); border:1px solid var(--line); color:var(--ink); font-size:13px; font-weight:600; padding:9px 14px; border-radius:9px; cursor:pointer; white-space:nowrap; }
+  .owm-sort:hover{ border-color:var(--gold); color:var(--gold); }
   .minibar{ display:flex; align-items:center; gap:8px; }
   .mb-track{ position:relative; width:74px; height:4px; background:#1b2330; border-radius:3px; flex:none; }
   .mb-dot{ position:absolute; top:50%; width:11px; height:11px; border-radius:50%; border:2px solid var(--card); transform:translate(-50%,-50%); }
@@ -2712,7 +2717,7 @@ def oneway_row(o, rt, pfx="m"):
         ret_html = (f'<div class="owret" id="owret-{pfx}-{code}"><span class="owret-lab">Round-trip there &amp; back:</span> '
                     f'<span class="owret-rp">${rtprice:,.0f}</span> '
                     f'<a class="owret-link" href="{rtlink}" target="_blank" rel="noopener">see round-trip &rarr;</a></div>')
-    return (f'<div class="owr" data-region="{continent_of(code)}">'
+    return (f'<div class="owr" data-region="{continent_of(code)}" data-price="{price:.0f}">'
             f'<div class="mv-row" data-lp data-o="{html.escape(o["origin"], quote=True)}" data-c="{code}" data-dep="{html.escape(o["depart"], quote=True)}" data-ow="1">'
             f'<button class="star" data-code="{code}" aria-label="watch">&#9734;</button>'
             f'<div class="mv-dest">{flag_img(code)}<div class="mv-destcol"><div class="mv-name">{html.escape(o["name"])}</div>'
@@ -2753,11 +2758,17 @@ def oneway_market(oneway, market, limit=30):
     for r in order:
         if r in regions:
             chips.append(f'<button class="airchip" data-owreg="{r}" onclick="owFilter(\'{r}\')">{r}</button>')
+    chips_html = "".join(chips).replace('onclick="owFilter(', 'onclick="owSetReg(')
     return (f'<div class="sec-head" id="deals"><h2>✈️ One-way Voyages</h2>'
             f'<span>cheap one-way fares to anywhere &middot; add a return any time</span></div>'
-            f'<div class="airchips" style="margin:2px 0 12px">{"".join(chips)}</div>'
-            f'<div class="panel">{"".join(rows)}</div>'
-            f'<script>function owFilter(reg){{var rs=document.querySelectorAll(".owr");for(var i=0;i<rs.length;i++){{var rr=rs[i].getAttribute("data-region");rs[i].style.display=(reg==="all"||rr===reg)?"":"none";}}var ch=document.querySelectorAll("[data-owreg]");for(var k=0;k<ch.length;k++){{ch[k].classList.toggle("on",ch[k].getAttribute("data-owreg")===reg);}}}}</script>')
+            f'<div class="airchips" style="margin:2px 0 10px">{chips_html}</div>'
+            f'<div class="owm-bar"><input type="text" id="ow-q" placeholder="Search a city…" oninput="owApply()" autocomplete="off">'
+            f'<button class="owm-sort" onclick="owToggleSort()">Price <span id="ow-ar">&#9650;</span></button></div>'
+            f'<div class="panel owm-panel">{"".join(rows)}</div>'
+            f'<script>var OW_REG="all",OW_DIR="asc";'
+            f'function owSetReg(r){{OW_REG=r;var ch=document.querySelectorAll("[data-owreg]");for(var k=0;k<ch.length;k++){{ch[k].classList.toggle("on",ch[k].getAttribute("data-owreg")===r);}}owApply();}}'
+            f'function owApply(){{var q=((document.getElementById("ow-q")||{{}}).value||"").toLowerCase();var rows=document.querySelectorAll(".owm-panel .owr");for(var i=0;i<rows.length;i++){{var reg=rows[i].getAttribute("data-region");var nm=((rows[i].querySelector(".mv-name")||{{}}).textContent||"").toLowerCase();var ok=(OW_REG==="all"||reg===OW_REG)&&(q===""||nm.indexOf(q)>=0);rows[i].style.display=ok?"":"none";}}}}'
+            f'function owToggleSort(){{OW_DIR=(OW_DIR==="asc")?"desc":"asc";var ar=document.getElementById("ow-ar");if(ar)ar.innerHTML=(OW_DIR==="asc")?"&#9650;":"&#9660;";var p=document.querySelector(".owm-panel");if(!p)return;var rows=[].slice.call(p.querySelectorAll(".owr"));rows.sort(function(a,b){{var pa=parseFloat(a.getAttribute("data-price"))||0,pb=parseFloat(b.getAttribute("data-price"))||0;return OW_DIR==="asc"?(pa-pb):(pb-pa);}});for(var r=0;r<rows.length;r++){{p.appendChild(rows[r]);}}}}</script>')
 
 
 def oneway_lastminute(oneway, market, limit=8):
