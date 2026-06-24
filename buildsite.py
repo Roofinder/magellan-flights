@@ -1316,6 +1316,22 @@ CSS = r"""<style>
   .pr-verdict{ font-weight:700; } .pr-verdict.g{ color:var(--green); } .pr-verdict.y{ color:var(--gold); } .pr-verdict.r{ color:var(--red); }
   .pr-fresh{ font-size:11px; color:var(--muted); margin:0 0 10px; }
   .pr-fresh .dotc{ display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--green); margin-right:6px; vertical-align:middle; }
+  .minibar{ display:flex; align-items:center; gap:8px; }
+  .mb-track{ position:relative; width:74px; height:4px; background:#1b2330; border-radius:3px; flex:none; }
+  .mb-dot{ position:absolute; top:50%; width:11px; height:11px; border-radius:50%; border:2px solid var(--card); transform:translate(-50%,-50%); }
+  .mb-dot.g{ background:var(--green); } .mb-dot.y{ background:var(--gold); } .mb-dot.r{ background:var(--red); }
+  .mb-lab{ font-size:11.5px; font-weight:700; min-width:46px; } .mb-lab.g{ color:var(--green); } .mb-lab.y{ color:var(--gold); } .mb-lab.r{ color:var(--red); }
+  .mv-destcol{ min-width:0; }
+  .owr .mv-row .pr-fresh{ margin:3px 0 0; }
+  .owr-price{ display:flex; align-items:baseline; gap:5px; white-space:nowrap; }
+  .owr-price .mv-price{ font-size:16px; }
+  .ow-unit{ color:var(--muted); font-size:11.5px; font-weight:600; }
+  .addret-sm{ background:transparent; border:1px solid var(--line); color:var(--ink); font-size:12px; font-weight:600; padding:6px 11px; border-radius:7px; cursor:pointer; white-space:nowrap; }
+  .addret-sm:hover{ border-color:var(--gold); color:var(--gold); }
+  .owr .owret{ display:none; padding:0 16px 12px 49px; }
+  .owr .owret.show{ display:block; }
+  .owret-lab{ color:var(--muted); font-size:12.5px; } .owret-rp{ font-weight:700; font-size:15px; color:var(--gold); } .owret-link{ color:var(--gold); font-size:12.5px; margin-left:8px; }
+  @media(max-width:760px){ .mv-right{ flex-wrap:wrap; justify-content:flex-end; gap:8px; } .owr .owret{ padding-left:16px; } }
   .ow-card .ow-top{ display:flex; align-items:center; gap:8px; margin-bottom:4px; }
   .ow-card .ow-from{ color:var(--muted); font-size:12.5px; }
   .ow-card .ow-date{ color:var(--muted); font-size:13px; margin:2px 0 0; }
@@ -1912,7 +1928,7 @@ function selWorldOrigin(v){ WORG=v; buildWorld(); }
 function setWorldMode(m){ WMODE=m; buildWorld(); }
 function toggleWR(r){ if(r==='all'){ WSEL=[]; } else { var i=WSEL.indexOf(r); if(i<0)WSEL.push(r); else WSEL.splice(i,1); } buildWorld(); }
 function liveCard(btn){
-  var c=btn.closest('.card'); if(!c) return;
+  var c=btn.closest('[data-lp]'); if(!c) return;
   var o=c.getAttribute('data-o'), d=c.getAttribute('data-c'), dep=c.getAttribute('data-dep'), ret=c.getAttribute('data-ret'), ow=c.getAttribute('data-ow');
   if(!o||!d) return;
   var orig=btn.innerHTML; btn.disabled=true; btn.innerHTML='checking…';
@@ -1922,10 +1938,10 @@ function liveCard(btn){
   fetch(u).then(function(r){return r.json();}).then(function(j){
     var f=j&&j.data&&j.data[0];
     if(!f){ btn.disabled=false; btn.innerHTML=orig; return; }
-    var pe=c.querySelector('.price'); var oldp=pe?parseInt((pe.textContent||'').replace(/[^0-9]/g,''),10):0;
+    var pe=c.querySelector('.price')||c.querySelector('.mv-price'); var oldp=pe?parseInt((pe.textContent||'').replace(/[^0-9]/g,''),10):0;
     var np=Math.round(f.price);
-    if(pe){ var was=pe.querySelector('.was'); var unit=pe.querySelector('.ow-unit'); pe.innerHTML='$'+np.toLocaleString(); if(was){ pe.appendChild(document.createTextNode(' ')); pe.appendChild(was); } if(unit){ pe.appendChild(document.createTextNode(' ')); pe.appendChild(unit); } }
-    var bk=c.querySelector('.book'); if(bk&&f.link) bk.href=f.link;
+    if(pe){ if(pe.classList.contains('mv-price')){ pe.textContent='$'+np.toLocaleString(); } else { var was=pe.querySelector('.was'); var unit=pe.querySelector('.ow-unit'); pe.innerHTML='$'+np.toLocaleString(); if(was){ pe.appendChild(document.createTextNode(' ')); pe.appendChild(was); } if(unit){ pe.appendChild(document.createTextNode(' ')); pe.appendChild(unit); } } }
+    var bk=c.querySelector('.book')||c.querySelector('.mini-book'); if(bk&&f.link) bk.href=f.link;
     var up=(oldp&&np>oldp); var s=document.createElement('span'); s.className=up?'live-up':'live-ok';
     s.innerHTML=up?('&#9650; live &middot; now $'+np.toLocaleString()):('&#10003; live &middot; $'+np.toLocaleString());
     btn.parentNode.replaceChild(s, btn);
@@ -2659,36 +2675,97 @@ def body_blog(market):
   {guide_link}
   <p class="finehint" style="text-align:center;margin-top:18px">Updated daily with whichever destination has the biggest price drop. Prices are recently-tracked fares &mdash; your live price is confirmed when you book on Aviasales. Safety and visa notes are general guidance for US travelers &mdash; verify official sources before booking.</p>
 </div>"""
-def oneway_market(oneway, market, limit=30):
+def oneway_minibar(price, typ):
+    try:
+        price = float(price); typ = float(typ)
+    except Exception:
+        return ""
+    if typ <= 0:
+        return ""
+    lo, hi = typ * 0.6, typ * 1.4
+    if hi <= lo:
+        return ""
+    frac = max(2.0, min(98.0, (price - lo) / (hi - lo) * 100))
+    if price <= typ * 0.90:
+        c, v = "g", "Low"
+    elif price <= typ * 1.10:
+        c, v = "y", "Typical"
+    else:
+        c, v = "r", "High"
+    return (f'<div class="minibar"><div class="mb-track"><span class="mb-dot {c}" style="left:{frac:.0f}%"></span></div>'
+            f'<span class="mb-lab {c}">{v}</span></div>')
+
+
+def oneway_row(o, rt, pfx="m"):
+    code = o["code"]; price = float(o["price"])
+    typ = (float(rt["price"]) * 0.62) if (rt and rt.get("price")) else 0
+    bar = oneway_minibar(price, typ)
+    link = html.escape(o["link"], quote=True)
+    addret = ""; ret_html = ""
+    if rt:
+        rtlink = html.escape(rt.get("booking_link") or rt.get("link", ""), quote=True)
+        try:
+            rtprice = float(rt["price"])
+        except Exception:
+            rtprice = 0
+        addret = f'<button class="addret-sm" type="button" data-owret="{pfx}-{code}">+ return</button>'
+        ret_html = (f'<div class="owret" id="owret-{pfx}-{code}"><span class="owret-lab">Round-trip there &amp; back:</span> '
+                    f'<span class="owret-rp">${rtprice:,.0f}</span> '
+                    f'<a class="owret-link" href="{rtlink}" target="_blank" rel="noopener">see round-trip &rarr;</a></div>')
+    return (f'<div class="owr" data-region="{continent_of(code)}">'
+            f'<div class="mv-row" data-lp data-o="{html.escape(o["origin"], quote=True)}" data-c="{code}" data-dep="{html.escape(o["depart"], quote=True)}" data-ow="1">'
+            f'<button class="star" data-code="{code}" aria-label="watch">&#9734;</button>'
+            f'<div class="mv-dest">{flag_img(code)}<div class="mv-destcol"><div class="mv-name">{html.escape(o["name"])}</div>'
+            f'<div class="mv-air">one-way from {html.escape(o["origin"])}</div>{verified_tag()}</div></div>'
+            f'<div class="mv-right">{bar}'
+            f'<div class="owr-price"><span class="mv-price">${price:,.0f}</span> <span class="ow-unit">one-way</span></div>'
+            f'{addret}'
+            f'<button class="live-btn" onclick="liveCard(this)">&#8635; live</button>'
+            f'<a class="mini-book" href="{link}" target="_blank" rel="noopener">See live price</a></div>'
+            f'</div>{ret_html}</div>')
+
+
+def oneway_rows_block(rows_data, market, limit, pfx="m"):
     by_code = {}
     for m in market:
         c = m["code"]
         if c not in by_code or m["price"] < by_code[c]["price"]:
             by_code[c] = m
-    seen = set(); cards = []; regions = set()
-    for o in oneway:
+    seen = set(); out = []; regions = set()
+    for o in rows_data:
         if (o.get("cc") or "").upper() == "US":
             continue
         if o["code"] in seen:
             continue
-        seen.add(o["code"])
-        regions.add(continent_of(o["code"]))
-        cards.append(oneway_card(o, by_code.get(o["code"])))
-        if len(cards) >= limit:
+        seen.add(o["code"]); regions.add(continent_of(o["code"]))
+        out.append(oneway_row(o, by_code.get(o["code"]), pfx))
+        if len(out) >= limit:
             break
-    if not cards:
+    return out, regions
+
+
+def oneway_market(oneway, market, limit=30):
+    rows, regions = oneway_rows_block(oneway, market, limit, "m")
+    if not rows:
         return ""
     order = ["Americas", "Europe", "Asia", "Middle East", "Africa", "Oceania", "Other"]
     chips = ['<button class="airchip on" data-owreg="all" onclick="owFilter(\'all\')">All</button>']
     for r in order:
         if r in regions:
             chips.append(f'<button class="airchip" data-owreg="{r}" onclick="owFilter(\'{r}\')">{r}</button>')
-    chip_html = "".join(chips)
-    return (f'<div class="sec-head" id="deals"><h2>\u2708\ufe0f One-way Voyages</h2>'
+    return (f'<div class="sec-head" id="deals"><h2>✈️ One-way Voyages</h2>'
             f'<span>cheap one-way fares to anywhere &middot; add a return any time</span></div>'
-            f'<div class="airchips" style="margin:2px 0 12px">{chip_html}</div>'
-            f'<div class="grid owm-grid">{"".join(cards)}</div>'
-            f'<script>function owFilter(reg){{var cs=document.querySelectorAll(".owm-grid .ow-card");for(var i=0;i<cs.length;i++){{var rr=cs[i].getAttribute("data-region");cs[i].style.display=(reg==="all"||rr===reg)?"":"none";}}var ch=document.querySelectorAll("[data-owreg]");for(var k=0;k<ch.length;k++){{ch[k].classList.toggle("on",ch[k].getAttribute("data-owreg")===reg);}}}}</script>')
+            f'<div class="airchips" style="margin:2px 0 12px">{"".join(chips)}</div>'
+            f'<div class="panel">{"".join(rows)}</div>'
+            f'<script>function owFilter(reg){{var rs=document.querySelectorAll(".owr");for(var i=0;i<rs.length;i++){{var rr=rs[i].getAttribute("data-region");rs[i].style.display=(reg==="all"||rr===reg)?"":"none";}}var ch=document.querySelectorAll("[data-owreg]");for(var k=0;k<ch.length;k++){{ch[k].classList.toggle("on",ch[k].getAttribute("data-owreg")===reg);}}}}</script>')
+
+
+def oneway_lastminute(oneway, market, limit=8):
+    soon = sorted([o for o in oneway if (o.get("cc") or "").upper() != "US"], key=lambda o: o.get("depart", ""))
+    rows, _ = oneway_rows_block(soon, market, limit, "lm")
+    if not rows:
+        return ""
+    return f'<div class="panel">{"".join(rows)}</div>'
 
 
 def body_market(market, hist, cards, lastmin, oneway):
@@ -2699,8 +2776,8 @@ def body_market(market, hist, cards, lastmin, oneway):
   {context_banner(Q_INDICES)}
   <div class="indices">{index_cards(market, hist)}</div>
   {oneway_market(oneway, market)}
-  <div class="sec-head"><h2>&#9889; Last-minute getaways</h2><span><a href="lastminute.html">see all &rarr;</a></span></div>
-  <div class="panel">{lastminute_html(lastmin, 8)}</div>
+  <div class="sec-head"><h2>&#9889; Last-minute one-ways</h2><span>cheapest one-ways leaving soon</span></div>
+  {oneway_lastminute(oneway, market, 8)}
 </div>"""
 
 
