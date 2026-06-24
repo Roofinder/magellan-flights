@@ -2269,6 +2269,58 @@ def featured_pool(market):
     return pool if pool else market
 
 
+def oneway_winner(oneway, market):
+    """Today's Biggest Winner as a ONE-WAY deal (round-trip only via add-return)."""
+    by_code = {}
+    for m in market:
+        c = m["code"]
+        if c not in by_code or m["price"] < by_code[c]["price"]:
+            by_code[c] = m
+    best = None  # (ratio, one-way, rt) — pick the fare furthest below its typical
+    cheapest = None
+    for o in oneway:
+        if (o.get("cc") or "").upper() == "US":
+            continue
+        if cheapest is None:
+            cheapest = (o, by_code.get(o["code"]))
+        rt_o = by_code.get(o["code"])
+        try:
+            typ_o = float(rt_o["price"]) * 0.62 if rt_o and rt_o.get("price") else 0
+            if typ_o > 0:
+                ratio = float(o["price"]) / typ_o
+                if best is None or ratio < best[0]:
+                    best = (ratio, o, rt_o)
+        except Exception:
+            continue
+    if best:
+        w, rt = best[1], best[2]
+    elif cheapest:
+        w, rt = cheapest
+    else:
+        return ""
+    price = float(w["price"]); code = w["code"]
+    typ = (float(rt["price"]) * 0.62) if (rt and rt.get("price")) else 0
+    c, v = "g", "Low"
+    if typ:
+        if price > typ * 1.10:
+            c, v = "r", "High"
+        elif price > typ * 0.90:
+            c, v = "y", "Typical"
+    palette = {"g": ("rgba(39,208,122,.15)", "var(--green)"),
+               "y": ("rgba(231,185,78,.15)", "var(--gold)"),
+               "r": ("rgba(255,94,94,.15)", "var(--red)")}
+    bg, col = palette[c]
+    rtnote = f' &middot; round-trip ${float(rt["price"]):,.0f} with a return' if rt else ''
+    return (f'<a class="winner" data-lp data-o="{html.escape(w["origin"], quote=True)}" data-d="{code}" data-ow="1" href="blog.html">'
+            f'<span class="winner-badge">&#9733; Today&rsquo;s Biggest Winner</span>'
+            f'<div class="winner-main"><div class="winner-city">{html.escape(w["name"])}</div>'
+            f'<div class="winner-route">One-way from {html.escape(w["origin"])} &middot; {html.escape(w["depart"])} &middot; <span style="color:var(--gold)">live price at booking</span>{rtnote}</div></div>'
+            f'<div class="winner-right"><span class="winner-price">${price:,.0f}</span>'
+            f'<span style="color:var(--muted);font-size:13px">one-way</span>'
+            f'<span class="winner-off" style="background:{bg};color:{col}">{v}</span></div>'
+            f'<span class="winner-cta">Read the Daily Guide &rarr;</span></a>')
+
+
 def winner_highlight(market):
     ranked = sorted(featured_pool(market), key=lambda m: signal_for(m["price"], m["benchmark"])[1], reverse=True)
     if not ranked:
@@ -2413,9 +2465,8 @@ def body_home(market, hist, cards, lastmin, oneway, summary):
   </div>
   <p class="stat-note">{market_pulse(market)} &middot; tracked fares, refreshed through the day</p>
   <div class="summary" data-sec="summary">{summary}</div>
-  <section class="home-sec">{winner_highlight(market)}</section>
+  <section class="home-sec">{oneway_winner(oneway, market)}</section>
   <div id="deals">{ow_section}</div>
-  {flash_section}
   <p class="finehint" style="text-align:center;margin-top:14px">These are recently-tracked fares &mdash; tap any deal to see today&rsquo;s live price and book on Aviasales.</p>
   <div class="home-sec" style="text-align:center">
     <a class="btn-primary" href="market.html">See the full Market &rarr;</a>
