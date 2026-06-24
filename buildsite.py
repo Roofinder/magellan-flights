@@ -462,6 +462,7 @@ HOTEL_NIGHT = {"SE Asia": 40, "E Asia": 110, "S Asia": 35, "W Europe": 140,
                "Caribbean": 160, "Oceania": 140, "Middle East": 120, "Africa": 85,
                "USA": 140, "Canada": 130}
 ESIM_COST = 15
+VERIFIED_ISO = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")  # build time = verify time
 HIST_SERIES = {}  # {code: [price per day, oldest..newest]} — filled in main()
 FEATURED_VERIFIED = {}  # {code: True} — featured deals cross-checked vs Skyscanner
 
@@ -1032,6 +1033,13 @@ def city_options(home):
     return "".join(opts)
 
 
+def verified_tag():
+    """Freshness stamp; JS turns it into 'verified Xh ago' client-side so it stays
+    accurate on the static page."""
+    return (f'<div class="pr-fresh" data-verified="{VERIFIED_ISO}">'
+            f'<i class="dotc"></i><span>verified just now</span></div>')
+
+
 def card_html(m):
     code = m["code"]
     _, pct = signal_for(m["price"], m["benchmark"])
@@ -1066,6 +1074,7 @@ def card_html(m):
         <p style="font-size:11px;color:var(--muted);margin:-11px 0 8px;letter-spacing:.03em">&#9678; vs. the <b style="color:var(--gold);font-weight:600">Standard Meridian</b> &middot; historical baseline</p>
         <button class="live-btn" onclick="liveCard(this)">&#8635; check live price</button>
         {price_bar(code, m['price'], m['benchmark'])}
+        {verified_tag()}
         <div class="cardmeta">{spark}</div>
         <p class="trip">A week here &asymp; <b>${wk:,}</b> <span>(flight ${m['price']:,.0f} &middot; hotel ~${hn}/nt &times;7 &middot; eSIM ${ESIM_COST})</span></p>
         {fx}
@@ -1307,6 +1316,16 @@ CSS = r"""<style>
   .pr-verdict{ font-weight:700; } .pr-verdict.g{ color:var(--green); } .pr-verdict.y{ color:var(--gold); } .pr-verdict.r{ color:var(--red); }
   .pr-fresh{ font-size:11px; color:var(--muted); margin:0 0 10px; }
   .pr-fresh .dotc{ display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--green); margin-right:6px; vertical-align:middle; }
+  .ow-card .ow-top{ display:flex; align-items:center; gap:8px; margin-bottom:4px; }
+  .ow-card .ow-from{ color:var(--muted); font-size:12.5px; }
+  .ow-card .ow-date{ color:var(--muted); font-size:13px; margin:2px 0 0; }
+  .ow-unit{ color:var(--muted); font-size:12.5px; font-weight:600; }
+  .addret{ margin:6px 0 0; background:transparent; border:1px solid var(--line); color:var(--ink); font-size:13px; font-weight:600; padding:9px; border-radius:9px; cursor:pointer; width:100%; }
+  .addret:hover{ border-color:var(--gold); color:var(--gold); }
+  .owret{ display:none; margin-top:10px; border-top:1px dashed var(--line); padding-top:10px; }
+  .owret.show{ display:block; }
+  .owret-lab{ color:var(--muted); font-size:12px; }
+  .owret-rp{ font-size:17px; font-weight:700; color:var(--ink); margin:2px 0 8px; } .owret-rp span{ color:var(--muted); font-size:12px; font-weight:600; }
   .star{ background:none; border:0; cursor:pointer; font-size:19px; color:#b9bec7; line-height:1; padding:0; }
   .star.on{ color:var(--gold); }
   .mini-book{ background:var(--blue); color:#fff; text-decoration:none; font-size:13px; font-weight:600; padding:6px 13px; border-radius:7px; }
@@ -1833,6 +1852,11 @@ function buildOWPage(){ var box=document.getElementById('owpage'); if(!box) retu
 }
 function setOWMode(m){ OWMODE=m; buildOWPage(); }
 function toggleOWR(r){ if(r==='all'){ OWPSEL=[]; } else { var i=OWPSEL.indexOf(r); if(i<0)OWPSEL.push(r); else OWPSEL.splice(i,1); } buildOWPage(); }
+function toggleOwRet(code){ var el=document.getElementById('owret-'+code); if(el) el.classList.toggle('show'); }
+document.addEventListener('click', function(e){ var b=e.target.closest && e.target.closest('[data-owret]'); if(b){ toggleOwRet(b.getAttribute('data-owret')); } });
+function mfRel(iso){var t=new Date(iso).getTime();if(isNaN(t))return'';var s=Math.max(0,(Date.now()-t)/1000);if(s<5400)return'verified '+Math.max(1,Math.round(s/60))+'m ago';if(s<86400)return'verified '+Math.round(s/3600)+'h ago';return'verified '+Math.round(s/86400)+'d ago';}
+function mfFresh(){var ns=document.querySelectorAll('.pr-fresh[data-verified]');for(var i=0;i<ns.length;i++){var sp=ns[i].querySelector('span');if(sp)sp.textContent=mfRel(ns[i].getAttribute('data-verified'));}}
+mfFresh();
 function flipCard(btn){ var f=btn.closest('.flip'); if(f) f.classList.toggle('flipped'); }
 function fmtRate(r){ return r>=100?Math.round(r).toLocaleString():(r>=10?r.toFixed(1):r.toFixed(2)); }
 function loadFX(){ fetch('https://open.er-api.com/v6/latest/USD').then(function(r){return r.json();}).then(function(d){
@@ -2262,6 +2286,84 @@ def winner_highlight(market):
             f'<span class="winner-cta">Read the Daily Guide &rarr;</span></a>')
 
 
+def oneway_bar(price, typ):
+    """Price-position bar for a one-way fare, using a baseline `typ` derived from
+    the destination's round-trip benchmark."""
+    try:
+        price = float(price); typ = float(typ)
+    except Exception:
+        return ""
+    if typ <= 0:
+        return ""
+    lo, hi = typ * 0.60, typ * 1.40
+    if hi <= lo:
+        return ""
+    frac = max(2.0, min(98.0, (price - lo) / (hi - lo) * 100))
+    tfrac = max(0.0, min(100.0, (typ - lo) / (hi - lo) * 100))
+    if price <= typ * 0.90:
+        c, v = "g", "Low — great deal"
+    elif price <= typ * 1.10:
+        c, v = "y", "Typical price"
+    else:
+        c, v = "r", "High right now"
+    return (f'<div class="prange"><span class="pr-cap"></span>'
+            f'<span class="pr-line"><span class="pr-typ" style="left:{tfrac:.0f}%"></span>'
+            f'<span class="pr-dot {c}" style="left:{frac:.0f}%"></span></span>'
+            f'<span class="pr-cap"></span></div>'
+            f'<div class="pr-lab"><span>${lo:,.0f} low</span>'
+            f'<span class="pr-verdict {c}">{v}</span><span>${hi:,.0f} high</span></div>')
+
+
+def oneway_card(o, rt):
+    code = o["code"]; price = float(o["price"])
+    typ = (float(rt["price"]) * 0.62) if (rt and rt.get("price")) else 0
+    bar = oneway_bar(price, typ)
+    link = html.escape(o["link"], quote=True)
+    ret_html = ""; addret = ""
+    if rt:
+        rtlink = html.escape(rt.get("booking_link") or rt.get("link", ""), quote=True)
+        try:
+            rtprice = float(rt["price"])
+        except Exception:
+            rtprice = 0
+        ret_html = (f'<div class="owret" id="owret-{code}"><div class="owret-lab">Round-trip there &amp; back</div>'
+                    f'<div class="owret-rp">${rtprice:,.0f} <span>round-trip</span></div>'
+                    f'<a class="book" href="{rtlink}" target="_blank" rel="noopener">See round-trip price &rarr;</a></div>')
+        addret = f'<button class="addret" type="button" data-owret="{code}">+ add return</button>'
+    return (f'<article class="card ow-card" data-lp data-o="{html.escape(o["origin"], quote=True)}" data-c="{code}" data-ow="1">'
+            f'<div class="ow-top">{flag_img(code)}<span class="ow-from">one-way from {html.escape(o["origin"])}</span></div>'
+            f'<h3 class="dest">{html.escape(o["name"])}</h3>'
+            f'<p class="ow-date">{html.escape(o["depart"])} &middot; one-way</p>'
+            f'<p class="price">${price:,.0f} <span class="ow-unit">one-way</span></p>'
+            f'{bar}{verified_tag()}{addret}{ret_html}'
+            f'<a class="book" href="{link}" target="_blank" rel="noopener">See live price &rarr;</a>'
+            f'</article>')
+
+
+def oneway_board(oneway, market, limit=8):
+    by_code = {}
+    for m in market:
+        c = m["code"]
+        if c not in by_code or m["price"] < by_code[c]["price"]:
+            by_code[c] = m
+    seen = set(); cards = []
+    for o in oneway:
+        if (o.get("cc") or "").upper() == "US":
+            continue
+        if o["code"] in seen:
+            continue
+        seen.add(o["code"])
+        cards.append(oneway_card(o, by_code.get(o["code"])))
+        if len(cards) >= limit:
+            break
+    if not cards:
+        return ""
+    return (f'<section class="home-sec"><div class="sec-head">'
+            f'<h2>✈️ One-way Voyages</h2>'
+            f'<span>cheap one-way fares to anywhere &middot; add a return any time</span></div>'
+            f'<div class="grid">{"".join(cards)}</div></section>')
+
+
 def body_home(market, hist, cards, lastmin, oneway, summary):
     labels = [("summary", "Market summary"), ("indices", "Fare indices"),
               ("movers", "Biggest movers"), ("deals", "Cheapest trips"),
@@ -2273,8 +2375,9 @@ def body_home(market, hist, cards, lastmin, oneway, summary):
     if top4:
         fcards = "\n".join(card_html(m) for m in top4)
         flash_section = (f'<section class="home-sec"><div class="sec-head">'
-                         f'<h2>&#128293; Today&rsquo;s top deals</h2><span>the 4 biggest price drops right now</span></div>'
+                         f'<h2>&#9851; Round-trip deals</h2><span>there &amp; back &middot; or add a return to any one-way above</span></div>'
                          f'<div class="grid">{fcards}</div></section>')
+    ow_section = oneway_board(oneway, market)
     nroutes = len(market)
     noneway = len(oneway)
     try:
@@ -2306,7 +2409,8 @@ def body_home(market, hist, cards, lastmin, oneway, summary):
   <p class="stat-note">{market_pulse(market)} &middot; tracked fares, refreshed through the day</p>
   <div class="summary" data-sec="summary">{summary}</div>
   <section class="home-sec">{winner_highlight(market)}</section>
-  <div id="deals">{flash_section}</div>
+  <div id="deals">{ow_section}</div>
+  {flash_section}
   <p class="finehint" style="text-align:center;margin-top:14px">These are recently-tracked fares &mdash; tap any deal to see today&rsquo;s live price and book on Aviasales.</p>
   <div class="home-sec" style="text-align:center">
     <a class="btn-primary" href="market.html">See the full Market &rarr;</a>
