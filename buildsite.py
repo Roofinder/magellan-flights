@@ -1924,7 +1924,7 @@ function liveCard(btn){
     if(!f){ btn.disabled=false; btn.innerHTML=orig; return; }
     var pe=c.querySelector('.price'); var oldp=pe?parseInt((pe.textContent||'').replace(/[^0-9]/g,''),10):0;
     var np=Math.round(f.price);
-    if(pe){ var was=pe.querySelector('.was'); pe.innerHTML='$'+np.toLocaleString()+(was?' ':''); if(was) pe.appendChild(was); }
+    if(pe){ var was=pe.querySelector('.was'); var unit=pe.querySelector('.ow-unit'); pe.innerHTML='$'+np.toLocaleString(); if(was){ pe.appendChild(document.createTextNode(' ')); pe.appendChild(was); } if(unit){ pe.appendChild(document.createTextNode(' ')); pe.appendChild(unit); } }
     var bk=c.querySelector('.book'); if(bk&&f.link) bk.href=f.link;
     var up=(oldp&&np>oldp); var s=document.createElement('span'); s.className=up?'live-up':'live-ok';
     s.innerHTML=up?('&#9650; live &middot; now $'+np.toLocaleString()):('&#10003; live &middot; $'+np.toLocaleString());
@@ -2334,11 +2334,12 @@ def oneway_card(o, rt):
                     f'<div class="owret-rp">${rtprice:,.0f} <span>round-trip</span></div>'
                     f'<a class="book" href="{rtlink}" target="_blank" rel="noopener">See round-trip price &rarr;</a></div>')
         addret = f'<button class="addret" type="button" data-owret="{code}">+ add return</button>'
-    return (f'<article class="card ow-card" data-lp data-o="{html.escape(o["origin"], quote=True)}" data-c="{code}" data-ow="1">'
+    return (f'<article class="card ow-card" data-region="{continent_of(code)}" data-lp data-o="{html.escape(o["origin"], quote=True)}" data-c="{code}" data-dep="{html.escape(o["depart"], quote=True)}" data-ow="1">'
             f'<div class="ow-top">{flag_img(code)}<span class="ow-from">one-way from {html.escape(o["origin"])}</span></div>'
             f'<h3 class="dest">{html.escape(o["name"])}</h3>'
             f'<p class="ow-date">{html.escape(o["depart"])} &middot; one-way</p>'
             f'<p class="price">${price:,.0f} <span class="ow-unit">one-way</span></p>'
+            f'<button class="live-btn" onclick="liveCard(this)">&#8635; check live price</button>'
             f'{bar}{verified_tag()}{addret}{ret_html}'
             f'<a class="book" href="{link}" target="_blank" rel="noopener">See live price &rarr;</a>'
             f'</article>')
@@ -2607,43 +2608,48 @@ def body_blog(market):
   {guide_link}
   <p class="finehint" style="text-align:center;margin-top:18px">Updated daily with whichever destination has the biggest price drop. Prices are recently-tracked fares &mdash; your live price is confirmed when you book on Aviasales. Safety and visa notes are general guidance for US travelers &mdash; verify official sources before booking.</p>
 </div>"""
+def oneway_market(oneway, market, limit=30):
+    by_code = {}
+    for m in market:
+        c = m["code"]
+        if c not in by_code or m["price"] < by_code[c]["price"]:
+            by_code[c] = m
+    seen = set(); cards = []; regions = set()
+    for o in oneway:
+        if (o.get("cc") or "").upper() == "US":
+            continue
+        if o["code"] in seen:
+            continue
+        seen.add(o["code"])
+        regions.add(continent_of(o["code"]))
+        cards.append(oneway_card(o, by_code.get(o["code"])))
+        if len(cards) >= limit:
+            break
+    if not cards:
+        return ""
+    order = ["Americas", "Europe", "Asia", "Middle East", "Africa", "Oceania", "Other"]
+    chips = ['<button class="airchip on" data-owreg="all" onclick="owFilter(\'all\')">All</button>']
+    for r in order:
+        if r in regions:
+            chips.append(f'<button class="airchip" data-owreg="{r}" onclick="owFilter(\'{r}\')">{r}</button>')
+    chip_html = "".join(chips)
+    return (f'<div class="sec-head" id="deals"><h2>\u2708\ufe0f One-way Voyages</h2>'
+            f'<span>cheap one-way fares to anywhere &middot; add a return any time</span></div>'
+            f'<div class="airchips" style="margin:2px 0 12px">{chip_html}</div>'
+            f'<div class="grid owm-grid">{"".join(cards)}</div>'
+            f'<script>function owFilter(reg){{var cs=document.querySelectorAll(".owm-grid .ow-card");for(var i=0;i<cs.length;i++){{var rr=cs[i].getAttribute("data-region");cs[i].style.display=(reg==="all"||rr===reg)?"":"none";}}var ch=document.querySelectorAll("[data-owreg]");for(var k=0;k<ch.length;k++){{ch[k].classList.toggle("on",ch[k].getAttribute("data-owreg")===reg);}}}}</script>')
+
+
 def body_market(market, hist, cards, lastmin, oneway):
     return f"""<div class="wrap">
-  <div class="pagehead"><h1>The Market</h1><p>The full board &mdash; one-way voyages first, then region indices, biggest movers, cheapest round-trips and last-minute getaways.</p></div>
+  <div class="pagehead"><h1>The Market</h1><p>The full board &mdash; the cheapest one-way fares to anywhere, region fare indices and last-minute getaways. Add a return to any deal.</p></div>
   <div class="summary">{market_pulse(market)}</div>
-  {oneway_board(oneway, market)}
   <div class="sec-head" id="market"><h2>Fare indices</h2><span>avg vs. the Standard Meridian, by region</span></div>
   {context_banner(Q_INDICES)}
   <div class="indices">{index_cards(market, hist)}</div>
-  <div class="sec-head"><h2>Today's biggest movers</h2><span>sharpest drops vs. each route&rsquo;s typical price</span></div>
-  {context_banner(Q_MOVERS)}
-  <div id="mv-chips" class="airchips" style="margin:2px 0 10px">
-    <button class="airchip on" data-mv="all" onclick="mvFilter('all')">All</button>
-    <button class="airchip" data-mv="Asia" onclick="mvFilter('Asia')">Asia</button>
-    <button class="airchip" data-mv="Europe" onclick="mvFilter('Europe')">Europe</button>
-    <button class="airchip" data-mv="Americas" onclick="mvFilter('Americas')">Americas</button>
-    <button class="airchip" data-mv="Middle East" onclick="mvFilter('Middle East')">Middle East</button>
-    <button class="airchip" data-mv="Oceania" onclick="mvFilter('Oceania')">Oceania</button>
-    <button class="airchip" data-mv="Africa" onclick="mvFilter('Africa')">Africa</button>
-  </div>
-  <div id="mv-head" class="mv-head"><span style="font-size:12px;color:var(--muted);margin-right:auto">Sort &rarr;</span><button class="mv-sortbtn" data-k="price" onclick="mvSort('price')">Price <span class="mv-ar">&#8597;</span></button><button class="mv-sortbtn on" data-k="pct" onclick="mvSort('pct')">% off <span class="mv-ar">&#9660;</span></button></div>
-  <div class="panel"><div id="movers-list">{movers_html(market)}</div></div>
-  <button id="mv-more" class="mv-more" onclick="mvToggleMore()" style="display:none"></button>
-  <script>
-  var MV_REGION='all', MV_SORT='pct', MV_EXPANDED=false, MV_DIR={{price:'asc', pct:'desc'}};
-  function mvFilter(reg){{ MV_REGION=reg; var lim=MV_EXPANDED?9999:5; var rows=document.querySelectorAll('#movers-list .mv-row'); var shown=0, matched=0; for(var i=0;i<rows.length;i++){{ var rr=rows[i].getAttribute('data-region'); var m=(reg==='all')||(rr===reg); if(m){{ matched++; if(shown<lim){{ rows[i].style.display=''; shown++; }} else {{ rows[i].style.display='none'; }} }} else {{ rows[i].style.display='none'; }} }} var chips=document.querySelectorAll('#mv-chips .airchip'); for(var k=0;k<chips.length;k++){{ chips[k].classList.toggle('on', chips[k].getAttribute('data-mv')===reg); }} var more=document.getElementById('mv-more'); if(more){{ if(matched>5){{ more.style.display='block'; more.innerHTML=MV_EXPANDED?('Show less &#9652;'):('Show all '+matched+' &#9662;'); }} else {{ more.style.display='none'; }} }} }}
-  function mvNum(el,sel){{ var n=el.querySelector(sel); if(!n) return 0; var v=parseInt((n.textContent||'').replace(/[^0-9]/g,''),10); return isNaN(v)?0:v; }}
-  function mvArrows(){{ var btns=document.querySelectorAll('#mv-head .mv-sortbtn'); for(var i=0;i<btns.length;i++){{ var k=btns[i].getAttribute('data-k'); var ar=btns[i].querySelector('.mv-ar'); if(k===MV_SORT){{ btns[i].classList.add('on'); ar.innerHTML=(MV_DIR[k]==='asc')?'&#9650;':'&#9660;'; }} else {{ btns[i].classList.remove('on'); ar.innerHTML='&#8597;'; }} }} }}
-  function mvSort(key){{ if(MV_SORT===key){{ MV_DIR[key]=(MV_DIR[key]==='asc')?'desc':'asc'; }} MV_SORT=key; var dir=MV_DIR[key]; var sel=(key==='price')?'.mv-price':'.down'; var box=document.getElementById('movers-list'); var rows=[].slice.call(box.querySelectorAll('.mv-row')); rows.sort(function(a,b){{ var av=mvNum(a,sel), bv=mvNum(b,sel); return dir==='asc'?(av-bv):(bv-av); }}); for(var r=0;r<rows.length;r++){{ box.appendChild(rows[r]); }} mvArrows(); mvFilter(MV_REGION); }}
-  function mvToggleMore(){{ MV_EXPANDED=!MV_EXPANDED; mvFilter(MV_REGION); }}
-  mvArrows(); mvFilter('all'); setTimeout(function(){{ mvFilter(MV_REGION); }}, 60); window.addEventListener('load', function(){{ mvFilter(MV_REGION); }});
-  </script>
-  <div class="sec-head" id="deals"><h2>Today's cheapest trips</h2><span>tap to book</span></div>
-  <div class="grid">{cards}</div>
+  {oneway_market(oneway, market)}
   <div class="sec-head"><h2>&#9889; Last-minute getaways</h2><span><a href="lastminute.html">see all &rarr;</a></span></div>
   <div class="panel">{lastminute_html(lastmin, 8)}</div>
-  <div class="sec-head"><h2>One-way deals</h2><span><a href="explore.html">one-way explorer &rarr;</a></span></div>
-  <div class="panel">{oneway_html(oneway, 8)}</div>
 </div>"""
 
 
