@@ -1587,6 +1587,10 @@ CSS = r"""<style>
   .section-head-lg{ text-align:center; max-width:620px; margin:60px auto 24px; }
   .section-head-lg h2{ font-size:24px; margin:0 0 8px; letter-spacing:-.01em; }
   .section-head-lg p{ margin:0; color:var(--muted); font-size:14.5px; line-height:1.6; }
+  .why-sig{ display:inline-flex; align-items:center; gap:8px; font-weight:700; font-size:13px; }
+  .why-dot{ width:12px; height:12px; border-radius:50%; display:inline-block; }
+  .why-dot.g{ background:var(--green); } .why-dot.y{ background:var(--gold); } .why-dot.r{ background:var(--red); }
+  .readnote{ text-align:center; color:var(--muted); font-size:13.5px; line-height:1.6; max-width:620px; margin:18px auto 0; }
   .mission{ max-width:760px; margin:60px auto 0; text-align:center; }
   .mission .astro{ margin:0 auto 6px; }
   .mission h2{ font-size:24px; margin:6px 0 12px; letter-spacing:-.01em; }
@@ -2416,12 +2420,13 @@ def body_home(market, hist, cards, lastmin, oneway, summary):
     <a class="btn-primary" href="market.html">See the full Market &rarr;</a>
     <p style="color:var(--muted);font-size:13.5px;margin:14px auto 0;max-width:560px">Fare indices, every biggest mover, today&rsquo;s cheapest trips, last-minute getaways and one-way deals &mdash; the whole board lives on the <a href="market.html" style="color:var(--gold)">Market</a> tab.</p>
   </div>
-  <div class="section-head-lg"><h2>How we flag a deal</h2><p>Every route is measured against its own price history &mdash; its Standard Meridian.</p></div>
+  <div class="section-head-lg"><h2>How to read a price</h2><p>Every fare is measured against this route&rsquo;s own price history &mdash; its Standard Meridian. The colored bar on each deal shows where today&rsquo;s price sits.</p></div>
   <div class="why">
-    <div class="why-card"><span class="sig s-book">BOOK</span><h3 style="margin-top:12px">20%+ below typical</h3><p>A genuinely rare low for this route. If the trip works, book it &mdash; prices this far down don&rsquo;t last.</p></div>
-    <div class="why-card"><span class="sig s-watch">WATCH</span><h3 style="margin-top:12px">8&ndash;20% below typical</h3><p>A good price, a little under the route&rsquo;s normal range. Worth watching for a deeper drop.</p></div>
-    <div class="why-card"><span class="sig s-wait">WAIT</span><h3 style="margin-top:12px">Near or above typical</h3><p>Around the usual price or higher. History suggests it&rsquo;s likely to fall &mdash; hold off for now.</p></div>
+    <div class="why-card"><span class="why-sig"><span class="why-dot g"></span>Low</span><h3 style="margin-top:12px">A great deal</h3><p>Well below this route&rsquo;s typical price &mdash; a genuinely good moment to book.</p></div>
+    <div class="why-card"><span class="why-sig"><span class="why-dot y"></span>Typical</span><h3 style="margin-top:12px">A fair price</h3><p>Around the route&rsquo;s usual range. Fine to book, though a dip may still come.</p></div>
+    <div class="why-card"><span class="why-sig"><span class="why-dot r"></span>High</span><h3 style="margin-top:12px">Above normal</h3><p>Higher than this route usually runs. History suggests it&rsquo;s likely to fall &mdash; worth waiting.</p></div>
   </div>
+  <p class="readnote">Prices refresh several times a day, and each fare&rsquo;s live price is confirmed when you book on Aviasales &mdash; the figures here are a guide from recent history, so the deal you see is the deal you get.</p>
   <section class="mission">
     <div class="astro lg" style="width:58px">{ASTRO_SVG}</div>
     <h2>Why &ldquo;Magellan&rdquo;?</h2>
@@ -2604,12 +2609,13 @@ def body_blog(market):
 </div>"""
 def body_market(market, hist, cards, lastmin, oneway):
     return f"""<div class="wrap">
-  <div class="pagehead"><h1>The Market</h1><p>The full board &mdash; region indices, biggest movers, today&rsquo;s cheapest trips, last-minute getaways and one-way deals.</p></div>
+  <div class="pagehead"><h1>The Market</h1><p>The full board &mdash; one-way voyages first, then region indices, biggest movers, cheapest round-trips and last-minute getaways.</p></div>
   <div class="summary">{market_pulse(market)}</div>
+  {oneway_board(oneway, market)}
   <div class="sec-head" id="market"><h2>Fare indices</h2><span>avg vs. the Standard Meridian, by region</span></div>
   {context_banner(Q_INDICES)}
   <div class="indices">{index_cards(market, hist)}</div>
-  <div class="sec-head"><h2>Today's biggest movers</h2><span>signal: book / watch / wait</span></div>
+  <div class="sec-head"><h2>Today's biggest movers</h2><span>sharpest drops vs. each route&rsquo;s typical price</span></div>
   {context_banner(Q_MOVERS)}
   <div id="mv-chips" class="airchips" style="margin:2px 0 10px">
     <button class="airchip on" data-mv="all" onclick="mvFilter('all')">All</button>
