@@ -2745,27 +2745,47 @@ def oneway_row(o, rt, pfx="m"):
             f'</div>{ret_html}</div>')
 
 
-def oneway_rows_block(rows_data, market, limit, pfx="m"):
+def oneway_rows_block(rows_data, market, limit, pfx="m", per_region=0):
     by_code = {}
     for m in market:
         c = m["code"]
         if c not in by_code or m["price"] < by_code[c]["price"]:
             by_code[c] = m
-    seen = set(); out = []; regions = set()
+    seen = set(); cand = []
     for o in rows_data:
         if (o.get("cc") or "").upper() == "US":
             continue
-        if o["code"] in seen:
+        code = o["code"]
+        if code in seen:
             continue
-        seen.add(o["code"]); regions.add(continent_of(o["code"]))
+        reg = continent_of(code)
+        if reg == "Other":
+            continue
+        seen.add(code); cand.append((reg, o))
+    if per_region:
+        groups = {}
+        order = []
+        for reg, o in cand:
+            if reg not in groups:
+                groups[reg] = []; order.append(reg)
+            groups[reg].append(o)
+        picked = []
+        for reg in order:
+            for o in groups[reg][:per_region]:
+                picked.append((reg, o))
+        picked.sort(key=lambda x: float(x[1]["price"]))
+        cand = picked
+    out = []; regions = set()
+    for reg, o in cand:
+        regions.add(reg)
         out.append(oneway_row(o, by_code.get(o["code"]), pfx))
-        if len(out) >= limit:
+        if limit and len(out) >= limit:
             break
     return out, regions
 
 
 def oneway_market(oneway, market, limit=30):
-    rows, regions = oneway_rows_block(oneway, market, limit, "m")
+    rows, regions = oneway_rows_block(oneway, market, 60, "m", per_region=10)
     if not rows:
         return ""
     order = ["Americas", "Europe", "Asia", "Middle East", "Africa", "Oceania", "Other"]
