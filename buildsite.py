@@ -580,35 +580,36 @@ def price_range(code, price):
     return (lo, hi)
 
 
-def price_bar(code, price):
-    """The price-position signal: where today's fare sits on this route's own
-    low->high price history. Returns HTML for a track with end-caps, a faint
-    'typical' tick, and a green/yellow/red dot, plus a one-line verdict. Replaces
-    the old BOOK/WATCH/WAIT label. Shows a soft 'building history' state until a
-    route has enough logged prices to judge."""
+def price_bar(code, price, benchmark=0):
+    """The price-position signal: where today's fare sits between this route's
+    low and high, anchored on its baseline (the Standard Meridian / benchmark) so
+    a colored signal shows immediately and sharpens as price history accumulates.
+    Returns HTML for a track with end-caps, a faint 'typical' tick and a
+    green/yellow/red dot, plus a one-line verdict. Replaces BOOK/WATCH/WAIT."""
     try:
         price = float(price)
     except Exception:
         return ""
-    series = sorted(list(HIST_SERIES.get(code, [])) + [price])
-    n = len(series)
-    if n < 4:
-        return ('<div class="prange"><span class="pr-cap"></span>'
-                '<span class="pr-line"></span><span class="pr-cap"></span></div>'
-                '<div class="pr-lab"><span>building price history…</span></div>')
-    lo = series[int(n * 0.10)]
-    hi = series[min(n - 1, int(n * 0.90))]
-    typ = series[n // 2]
+    try:
+        benchmark = float(benchmark)
+    except Exception:
+        benchmark = 0.0
+    hist = [p for p in HIST_SERIES.get(code, []) if p and p > 0]
+    pool = sorted([p for p in (hist + [price, benchmark]) if p and p > 0])
+    if len(pool) < 2:
+        return ""
+    lo, hi = pool[0], pool[-1]
     if hi <= lo:
         return ""
+    typ = benchmark if benchmark > 0 else pool[len(pool) // 2]
     frac = max(2.0, min(98.0, (price - lo) / (hi - lo) * 100))
     tfrac = max(0.0, min(100.0, (typ - lo) / (hi - lo) * 100))
-    if price > typ * 1.10:
-        c, v = "r", "High right now"
-    elif price > typ * 0.90:
+    if price <= typ * 0.90:
+        c, v = "g", "Low — great deal"
+    elif price <= typ * 1.10:
         c, v = "y", "Typical price"
     else:
-        c, v = "g", "Low — great deal"
+        c, v = "r", "High right now"
     return (f'<div class="prange"><span class="pr-cap"></span>'
             f'<span class="pr-line"><span class="pr-typ" style="left:{tfrac:.0f}%"></span>'
             f'<span class="pr-dot {c}" style="left:{frac:.0f}%"></span></span>'
@@ -1064,7 +1065,7 @@ def card_html(m):
         <p class="price">${m['price']:,.0f} <span class="was" title="The Standard Meridian — this route's historical baseline fare">${m['benchmark']:,.0f}</span></p>
         <p style="font-size:11px;color:var(--muted);margin:-11px 0 8px;letter-spacing:.03em">&#9678; vs. the <b style="color:var(--gold);font-weight:600">Standard Meridian</b> &middot; historical baseline</p>
         <button class="live-btn" onclick="liveCard(this)">&#8635; check live price</button>
-        {price_bar(code, m['price'])}
+        {price_bar(code, m['price'], m['benchmark'])}
         <div class="cardmeta">{spark}</div>
         <p class="trip">A week here &asymp; <b>${wk:,}</b> <span>(flight ${m['price']:,.0f} &middot; hotel ~${hn}/nt &times;7 &middot; eSIM ${ESIM_COST})</span></p>
         {fx}
