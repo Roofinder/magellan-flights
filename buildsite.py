@@ -2187,7 +2187,8 @@ Q_INDICES = ('<span class="cb-em">Charting the unknown paths.</span> Each index 
 def featured_pool(market):
     """Routes trustworthy enough to feature — corroborated by recent history.
     Falls back to the whole board if nothing qualifies (early days)."""
-    pool = [m for m in market if corroborated(m["code"], m["price"])]
+    pool = [m for m in market
+            if corroborated(m["code"], m["price"]) or FEATURED_VERIFIED.get(m["code"])]
     return pool if pool else market
 
 

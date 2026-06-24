@@ -33,19 +33,51 @@ cfg = json.load(open(os.path.join(HERE, "config.json"), encoding="utf-8"))
 RKEY = os.environ.get("RAPIDAPI_KEY") or cfg.get("rapidapi_key", "")
 RAPID_HOST = os.environ.get("RAPIDAPI_HOST", "sky-scrapper.p.rapidapi.com")
 
-FEATURED_N = int(os.environ.get("FEATURED_N", "3"))   # how many top deals to check
+FEATURED_N = int(os.environ.get("FEATURED_N", "1"))   # free tier: just the #1 winner (bump if on a paid plan)
 NEAR = 0.15                                           # within 15% => "verified"
 PHANTOM_BELOW = 0.80                                  # cache < 80% of Skyscanner => replace
 RUN_HOUR = int(os.environ.get("VERIFY_HOUR", "1"))    # only run at this UTC hour...
 FORCE = os.environ.get("FORCE_VERIFY") == "1"         # ...unless forced
+ATTEMPTS = int(os.environ.get("SKY_ATTEMPTS", "1"))   # don't retry on free tier (retries burn quota)
+
+# --- free-tier call budget: RapidAPI Basic "Air Scraper" = 20 requests/MONTH, HARD limit.
+# We persist a monthly counter + last-run date in data/sky_calls.json (committed by the
+# Action) so we (a) never exceed the cap and (b) only verify every few days. ---
+CALLS_FILE = os.path.join(DATA, "sky_calls.json")
+MONTHLY_CAP = int(os.environ.get("SKY_CALL_CAP", "18"))    # safety margin under 20
+EVERY_DAYS = int(os.environ.get("VERIFY_EVERY_DAYS", "3"))  # min days between real runs
+_MONTH = datetime.date.today().strftime("%Y-%m")
+
+def _budget_load():
+    try:
+        b = json.load(open(CALLS_FILE, encoding="utf-8"))
+    except Exception:
+        b = {}
+    if b.get("month") != _MONTH:           # new month -> reset the counter
+        b = {"month": _MONTH, "calls": 0, "last_run": ""}
+    b.setdefault("calls", 0); b.setdefault("last_run", "")
+    return b
+
+def _budget_save(b):
+    try:
+        json.dump(b, open(CALLS_FILE, "w", encoding="utf-8"))
+    except Exception:
+        pass
+
+_budget = _budget_load()
 
 
 def _get(path, params):
+    # Enforce the monthly hard cap: once we've spent our quota, make no more calls.
+    if _budget["calls"] >= MONTHLY_CAP:
+        return None
+    _budget["calls"] += 1
+    _budget_save(_budget)
     url = f"https://{RAPID_HOST}{path}?" + up.urlencode(params)
     req = ur.Request(url)
     req.add_header("x-rapidapi-key", RKEY)
     req.add_header("x-rapidapi-host", RAPID_HOST)
-    for _ in range(3):
+    for _ in range(ATTEMPTS):
         try:
             with ur.urlopen(req, timeout=30) as z:
                 return json.load(z)
@@ -113,17 +145,26 @@ def _sky_price(origin, dest, dep, ret):
     }
     if ret:
         params["returnDate"] = ret
-    j = _get("/api/v2/flights/searchFlights", params)
-    try:
-        its = j.get("data", {}).get("itineraries", []) if isinstance(j, dict) else []
-        prices = []
-        for it in its:
-            raw = (it.get("price", {}) or {}).get("raw")
-            if raw:
-                prices.append(float(raw))
-        return min(prices) if prices else None
-    except Exception:
-        return None
+    # The Sky-Scrapper listing has shipped searchFlights under both /api/v1 and
+    # /api/v2 over time, and the free tier doesn't always expose both. Try the
+    # configured path(s) in order and use the first that returns real prices.
+    paths = [p for p in (os.environ.get("SKY_SEARCH_PATH"),
+                         "/api/v1/flights/searchFlights",
+                         "/api/v2/flights/searchFlights") if p]
+    for path in paths:
+        j = _get(path, params)
+        try:
+            its = j.get("data", {}).get("itineraries", []) if isinstance(j, dict) else []
+            prices = []
+            for it in its:
+                raw = (it.get("price", {}) or {}).get("raw")
+                if raw:
+                    prices.append(float(raw))
+            if prices:
+                return min(prices)
+        except Exception:
+            continue
+    return None
 
 
 def main():
@@ -135,6 +176,19 @@ def main():
     if not FORCE and datetime.datetime.utcnow().hour != RUN_HOUR:
         print(f"verify_featured: not the daily verify hour (UTC {RUN_HOUR}); keeping previous result.")
         return  # leave existing featured_verified.json untouched
+
+    if not FORCE and _budget.get("last_run"):
+        try:
+            last = datetime.date.fromisoformat(_budget["last_run"])
+            if (datetime.date.today() - last).days < EVERY_DAYS:
+                print(f"verify_featured: last run {_budget['last_run']} (< {EVERY_DAYS}d ago); "
+                      f"skipping to conserve the {MONTHLY_CAP}/mo quota.")
+                return
+        except Exception:
+            pass
+    if _budget["calls"] >= MONTHLY_CAP:
+        print(f"verify_featured: monthly call cap ({MONTHLY_CAP}) already reached; skipping.")
+        return
 
     rows = list(csv.DictReader(open(SNAP, encoding="utf-8")))
     fields = list(rows[0].keys()) if rows else []
@@ -176,8 +230,11 @@ def main():
             w = csv.DictWriter(fp, fieldnames=fields)
             w.writeheader(); w.writerows(rows)
     json.dump(verified, open(OUT, "w", encoding="utf-8"))
+    _budget["last_run"] = datetime.date.today().isoformat()
+    _budget_save(_budget)
     print(f"verify_featured: checked {len(featured)}, verified {len(verified)}, "
-          f"corrected {corrected} phantom price(s).")
+          f"corrected {corrected} phantom price(s). Calls this month: "
+          f"{_budget['calls']}/{MONTHLY_CAP}.")
 
 
 if __name__ == "__main__":
