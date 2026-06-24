@@ -41,11 +41,12 @@ jobs:
           python lastminute.py --international || true
           python homebase.py || true
 
-      - name: Re-price for accuracy (round-trip + one-way + featured cross-check)
+      - name: Re-price for accuracy (round-trip + one-way + top-down validate + featured cross-check)
         env:
           RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
         run: |
           python reprice.py
+          python validate_deals.py || true
           python reprice_oneway.py || true
           python verify_featured.py || true
 
@@ -64,7 +65,7 @@ jobs:
           git config user.name "magellan-bot"
           git config user.email "actions@users.noreply.github.com"
           git add -A -- '*.html' favicon.svg favicon-32.png favicon-48.png favicon-96.png apple-touch-icon.png sitemap.xml robots.txt llms.txt og-image.png
-          git add -f data/pricehistory.csv data/market_latest.csv data/sky_ids.json 2>/dev/null || true
+          git add -f data/pricehistory.csv data/market_latest.csv data/sky_ids.json data/sky_calls.json data/featured_verified.json 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No changes to publish."
           else
