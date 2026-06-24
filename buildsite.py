@@ -580,6 +580,43 @@ def price_range(code, price):
     return (lo, hi)
 
 
+def price_bar(code, price):
+    """The price-position signal: where today's fare sits on this route's own
+    low->high price history. Returns HTML for a track with end-caps, a faint
+    'typical' tick, and a green/yellow/red dot, plus a one-line verdict. Replaces
+    the old BOOK/WATCH/WAIT label. Shows a soft 'building history' state until a
+    route has enough logged prices to judge."""
+    try:
+        price = float(price)
+    except Exception:
+        return ""
+    series = sorted(list(HIST_SERIES.get(code, [])) + [price])
+    n = len(series)
+    if n < 4:
+        return ('<div class="prange"><span class="pr-cap"></span>'
+                '<span class="pr-line"></span><span class="pr-cap"></span></div>'
+                '<div class="pr-lab"><span>building price history…</span></div>')
+    lo = series[int(n * 0.10)]
+    hi = series[min(n - 1, int(n * 0.90))]
+    typ = series[n // 2]
+    if hi <= lo:
+        return ""
+    frac = max(2.0, min(98.0, (price - lo) / (hi - lo) * 100))
+    tfrac = max(0.0, min(100.0, (typ - lo) / (hi - lo) * 100))
+    if price > typ * 1.10:
+        c, v = "r", "High right now"
+    elif price > typ * 0.90:
+        c, v = "y", "Typical price"
+    else:
+        c, v = "g", "Low — great deal"
+    return (f'<div class="prange"><span class="pr-cap"></span>'
+            f'<span class="pr-line"><span class="pr-typ" style="left:{tfrac:.0f}%"></span>'
+            f'<span class="pr-dot {c}" style="left:{frac:.0f}%"></span></span>'
+            f'<span class="pr-cap"></span></div>'
+            f'<div class="pr-lab"><span>${lo:,.0f} low</span>'
+            f'<span class="pr-verdict {c}">{v}</span><span>${hi:,.0f} high</span></div>')
+
+
 def sparkline_svg(series, w=84, h=22):
     if not series:
         return ""
@@ -1027,7 +1064,8 @@ def card_html(m):
         <p class="price">${m['price']:,.0f} <span class="was" title="The Standard Meridian — this route's historical baseline fare">${m['benchmark']:,.0f}</span></p>
         <p style="font-size:11px;color:var(--muted);margin:-11px 0 8px;letter-spacing:.03em">&#9678; vs. the <b style="color:var(--gold);font-weight:600">Standard Meridian</b> &middot; historical baseline</p>
         <button class="live-btn" onclick="liveCard(this)">&#8635; check live price</button>
-        <div class="cardmeta"><span class="sig {hcls}">{hlabel}</span>{spark}</div>
+        {price_bar(code, m['price'])}
+        <div class="cardmeta">{spark}</div>
         <p class="trip">A week here &asymp; <b>${wk:,}</b> <span>(flight ${m['price']:,.0f} &middot; hotel ~${hn}/nt &times;7 &middot; eSIM ${ESIM_COST})</span></p>
         {fx}
         <a class="book" href="{link}" target="_blank" rel="noopener">See live price &rarr;</a>
@@ -1258,6 +1296,16 @@ CSS = r"""<style>
   .sig{ font-size:12px; font-weight:700; padding:3px 10px; border-radius:7px; }
   .s-book{ background:var(--green-bg); color:var(--green); } .s-watch{ background:var(--amber-bg); color:var(--amber); }
   .s-wait{ background:#eef0f3; color:var(--muted); }
+  .prange{ display:flex; align-items:center; gap:6px; margin:10px 0 0; }
+  .pr-cap{ width:2px; height:11px; background:var(--line); border-radius:2px; flex:none; }
+  .pr-line{ position:relative; flex:1; height:4px; background:#1b2330; border-radius:3px; }
+  .pr-typ{ position:absolute; top:-3px; width:2px; height:10px; background:var(--muted); opacity:.5; transform:translateX(-50%); }
+  .pr-dot{ position:absolute; top:50%; width:12px; height:12px; border-radius:50%; border:2px solid var(--card); transform:translate(-50%,-50%); }
+  .pr-dot.g{ background:var(--green); } .pr-dot.y{ background:var(--gold); } .pr-dot.r{ background:var(--red); }
+  .pr-lab{ display:flex; justify-content:space-between; font-size:11px; color:var(--muted); margin:5px 0 8px; }
+  .pr-verdict{ font-weight:700; } .pr-verdict.g{ color:var(--green); } .pr-verdict.y{ color:var(--gold); } .pr-verdict.r{ color:var(--red); }
+  .pr-fresh{ font-size:11px; color:var(--muted); margin:0 0 10px; }
+  .pr-fresh .dotc{ display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--green); margin-right:6px; vertical-align:middle; }
   .star{ background:none; border:0; cursor:pointer; font-size:19px; color:#b9bec7; line-height:1; padding:0; }
   .star.on{ color:var(--gold); }
   .mini-book{ background:var(--blue); color:#fff; text-decoration:none; font-size:13px; font-weight:600; padding:6px 13px; border-radius:7px; }
