@@ -2499,8 +2499,8 @@ def body_home(market, hist, cards, lastmin, oneway, summary):
   <div class="lander-glow"></div>
   <div class="lander-inner">
     <span class="eyebrow">&#9788; The world is closer than you think</span>
-    <h1>Find the world&rsquo;s cheapest flights <span class="g">from anywhere.</span></h1>
-    <p class="lead">Magellan Flights tracks the cheapest flights from the USA to anywhere on earth, every single day &mdash; and flags the moment a fare drops below its normal price. Real, bookable deals, refreshed through the day, so you book at the low.</p>
+    <h1>The cheapest <span class="g">one-way flights</span> from the USA.</h1>
+    <p class="lead">Magellan Flights tracks the cheapest one-way fares from the USA to anywhere on earth, every single day &mdash; and flags the moment a fare drops below its normal price. Go one-way for less, and add a return whenever you want it.</p>
     <div class="cta-row">
       <a class="btn-primary" href="#deals">Explore today&rsquo;s deals</a>
       <a class="btn-ghost" href="world.html">Anywhere &rarr; Anywhere</a>
@@ -2905,7 +2905,7 @@ renderOrigs(); renderChips(); exToBind(); exSearch();
 
 def body_lastminute(lm):
     return f"""<div class="wrap">
-  <div class="pagehead"><h1>&#9889; Last-minute getaways</h1><p>Cheapest round-trips leaving soon, from anywhere in the USA. Filter by region &mdash; tap one or several (USA for domestic).</p></div>
+  <div class="pagehead"><h1>&#9889; Last-minute one-ways</h1><p>Cheapest one-way fares leaving soon, from anywhere in the USA. Filter by region &mdash; tap one or several (USA for domestic).</p></div>
   <div class="airchips" style="margin:6px 0 16px;">{region_chip_bar("data-lmr", "toggleLMR")}</div>
   <div class="panel"><div id="lmlist"></div></div>
 </div>"""
