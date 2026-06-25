@@ -3182,7 +3182,8 @@ def body_rtw(world):
                'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/>'
                '<path d="m15.6 8.4-2.1 5.1-5.1 2.1 2.1-5.1 5.1-2.1z"/></svg>')
 
-    shell = """<div class="wrap">
+    shell = """<style>.mf-ledger{margin-top:14px;background:#0e141d;border:1px solid #1d2735;border-radius:12px;padding:14px}.mf-totals{display:flex;gap:12px;flex-wrap:wrap}.mf-tot{flex:1;min-width:150px;background:#121a26;border:1px solid #1d2735;border-radius:10px;padding:10px 12px}.mf-tot .mf-lbl{display:block;font-size:12px;color:var(--muted)}.mf-tot .mf-val{font-size:22px;font-weight:700}.mf-tot .mf-sub{display:block;font-size:11px;color:var(--muted);margin-top:2px}.mf-conf{border-color:rgba(39,208,122,.45)}.mf-conf .mf-val{color:#27d07a}.mf-save{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}.mf-save input{flex:1;min-width:180px;background:#121a26;border:1px solid #1d2735;border-radius:8px;color:#fff;padding:8px 10px;font:inherit}.rtw-confwrap{display:flex;align-items:center;gap:6px;margin-top:6px}.rtw-bk{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);cursor:pointer}.rtw-bp{width:84px;background:#121a26;border:1px solid #1d2735;border-radius:6px;color:#fff;padding:3px 6px;font:inherit}.rtw-bp:disabled{opacity:.4}.mf-trips-h{font-size:12px;color:var(--muted);margin:14px 0 4px}.mf-trip{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 0;border-top:1px solid #1d2735}.mf-trip-nm{font-weight:600}.mf-trip-meta{font-size:12px;color:var(--muted)}.mf-mini{padding:3px 10px;font-size:12px}</style>
+<div class="wrap">
   <div class="pagehead"><h1>__COMPASS__ Ferdinand&rsquo;s World Loop</h1>
   <p>Five centuries after Magellan circled the globe, build your own cheapest way to do it today &mdash; one cheap one-way at a time. Set your start, stops, regions and budget, and we&rsquo;ll find the lowest-cost real loop our tracker can assemble right now.</p></div>
   <div class="tl-card">
@@ -3301,7 +3302,9 @@ function legRow(a,b,i){
     +RHUBS[b].fl+'<span class="rtw-city">'+RHUBS[b].n+'</span></div>'
     +'<div class="rtw-legright"><span class="rtw-legprice">$'+price.toLocaleString()+'</span>'
     +'<span class="rtw-legunit">one-way</span>'
-    +'<a class="mini-book" href="'+link+'" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a></div></div>'
+    +'<a class="mini-book" href="'+link+'" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a>'
+    +'<span class="rtw-confwrap"><label class="rtw-bk"><input type="checkbox" data-key="'+a+'>'+b+'" data-est="'+price+'" onchange="mfToggle(this)"'+(MFCONF[a+">"+b]!=null?' checked':'')+'> Booked</label>'
+    +'<input type="number" class="rtw-bp" data-key="'+a+'>'+b+'" value="'+(MFCONF[a+">"+b]!=null?MFCONF[a+">"+b]:price)+'"'+(MFCONF[a+">"+b]!=null?'':' disabled')+' onchange="mfPrice(this)" oninput="mfPrice(this)"></span></div></div>'
     +legDetail(b);
 }
 function shareBar(total, startName){
@@ -3316,7 +3319,8 @@ function render(best, opts){
   var out=go("rtw-out");
   if(!best){ out.innerHTML='<div class="wl-hint">No full loop with these settings &mdash; try more regions, a higher budget, fewer stops, or remove the &ldquo;must include&rdquo; city.</div>'; return; }
   var r=best.route, legs="", first=RLEGS[r[0]+">"+r[1]];
-  for(var i=0;i<r.length-1;i++){ legs+=legRow(r[i],r[i+1],i+1); }
+  MFLEGS=[]; mfEstTotal=best.total;
+  for(var i=0;i<r.length-1;i++){ var _k=r[i]+">"+r[i+1]; MFLEGS.push({key:_k, est:(RLEGS[_k]||{}).p||0}); legs+=legRow(r[i],r[i+1],i+1); }
   var stops=r.length-2, flights=r.length-1, startName=RHUBS[r[0]].n;
   var _places=best.tour?(r.length-2):stops; var pace = (opts && opts.weeks && _places>0) ? (' &middot; ~'+Math.max(1,Math.round(opts.weeks*7/_places))+' nights per stop') : "";
   var note = (opts && opts.budget && best.total>opts.budget)
@@ -3332,14 +3336,39 @@ function render(best, opts){
     +'<div class="rtw-hero-sub">'+sub+'</div></div>'
     +note
     +'<div class="rtw-route">'+legs+'</div>'
+    +mfLedger(best.total, r.length-1)
     +'<div class="blog-cta"><a class="btn-primary" href="'+(first?first.l:"#")+'" target="_blank" rel="noopener">Start the loop &mdash; book leg 1 &rarr;</a></div>'
     +shareBar(best.total, startName);
+  mfRecalc(); mfRenderTrips();
 }
 window.rtwStopsLab=function(){ go("rtw-stops-lab").textContent=go("rtw-stops").value; };
 function fillMust(scope){ var sel=go("rtw-must"); if(!sel) return; var cur=sel.value; var codes=[]; if(scope!=="WORLD" && REGIONS[scope]){ codes=REGIONS[scope].h.slice(); } else { for(var h in RHUBS){ if(RUS.indexOf(h)<0) codes.push(h); } } codes=codes.filter(function(h){ return RHUBS[h]; }); codes.sort(function(a,b){ var an=RHUBS[a].n, bn=RHUBS[b].n; return an<bn?-1:(an>bn?1:0); }); var html='<option value="">Any &mdash; no requirement</option>'; for(var i=0;i<codes.length;i++){ var c=codes[i]; html+='<option value="'+c+'">'+RHUBS[c].n+'</option>'; } sel.innerHTML=html; sel.value=(codes.indexOf(cur)>=0)?cur:""; }
 window.rtwScope=function(){ var scope=go("rtw-scope")?go("rtw-scope").value:"WORLD", world=(scope==="WORLD"); var dw=go("rtw-dir-wrap"), sw=go("rtw-start-wrap"), rw=go("rtw-regions-wrap"); if(dw) dw.style.display=world?"":"none"; if(sw) sw.style.display=""; if(rw) rw.style.display=world?"":"none"; var cap=go("rtw-stops-cap"); if(cap) cap.textContent=world?"Stops":"Cities"; fillMust(scope); };
 window.rtwToggleCont=function(btn){ btn.classList.toggle("on"); rtwBuild(); };
 window.rtwCopy=function(btn){ try{ navigator.clipboard.writeText(location.href); }catch(e){} var t=btn.textContent; btn.textContent="Copied!"; setTimeout(function(){ btn.textContent=t; },1500); };
+var MFCONF={}, MFLEGS=[], mfEstTotal=0;
+function mfConfTotal(){ var t=0,n=0; for(var i=0;i<MFLEGS.length;i++){ var k=MFLEGS[i].key; if(MFCONF[k]!=null){ t+=(+MFCONF[k]||0); n++; } } return {t:t,n:n}; }
+function mfLedger(total, nlegs){
+  return '<div class="mf-ledger"><div class="mf-totals">'
+    +'<div class="mf-tot"><span class="mf-lbl">Estimated</span><span class="mf-val">$'+total.toLocaleString()+'</span><span class="mf-sub">tracked fares &middot; confirm on Aviasales</span></div>'
+    +'<div class="mf-tot mf-conf"><span class="mf-lbl">Confirmed so far</span><span class="mf-val" id="mf-confval">$0</span><span class="mf-sub" id="mf-confsub">0 of '+nlegs+' legs booked</span></div></div>'
+    +'<div class="mf-save"><input type="text" id="mf-name" placeholder="Name this trip (e.g. My RTW 2026)" maxlength="60">'
+    +'<button class="airchip" onclick="mfSave()">Save trip</button>'
+    +'<button class="airchip" onclick="rtwCopy(this)">Copy trip link</button></div>'
+    +'<div id="mf-trips"></div></div>';
+}
+function mfRecalc(){ var c=mfConfTotal(); var v=go("mf-confval"), sb=go("mf-confsub"); if(v) v.textContent="$"+c.t.toLocaleString(); if(sb) sb.textContent=c.n+" of "+MFLEGS.length+" legs booked"; }
+function mfQbp(key){ try{ return go("rtw-out").querySelector('.rtw-bp[data-key="'+key+'"]'); }catch(e){ return null; } }
+window.mfToggle=function(cb){ var key=cb.getAttribute("data-key"); var inp=mfQbp(key); if(cb.checked){ var v=inp?(+inp.value|| +cb.getAttribute("data-est")||0):(+cb.getAttribute("data-est")||0); MFCONF[key]=v; if(inp) inp.disabled=false; } else { delete MFCONF[key]; if(inp) inp.disabled=true; } mfPersist(); mfRecalc(); };
+window.mfPrice=function(inp){ var key=inp.getAttribute("data-key"); if(MFCONF[key]!=null){ MFCONF[key]=(+inp.value||0); mfPersist(); mfRecalc(); } };
+function mfPersist(){ try{ localStorage.setItem("mfCurConf", JSON.stringify(MFCONF)); }catch(e){} }
+function mfLoadConf(){ try{ var x=localStorage.getItem("mfCurConf"); MFCONF=x?JSON.parse(x):{}; }catch(e){ MFCONF={}; } }
+function mfGetTrips(){ try{ var x=localStorage.getItem("mfTrips"); return x?JSON.parse(x):[]; }catch(e){ return []; } }
+function mfEsc(x){ return (x||"").replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }); }
+window.mfSave=function(){ var el=go("mf-name"); var nm=(el&&el.value||"").trim(); if(!nm) nm="My trip"; var trips=mfGetTrips(); trips.unshift({id:Date.now(), name:nm, url:location.href, est:mfEstTotal, conf:JSON.parse(JSON.stringify(MFCONF)), legs:MFLEGS.map(function(l){return l.key;}), ts:Date.now()}); trips=trips.slice(0,20); try{ localStorage.setItem("mfTrips", JSON.stringify(trips)); }catch(e){} if(el) el.value=""; mfRenderTrips(); };
+window.mfDelete=function(id){ var trips=mfGetTrips().filter(function(t){ return t.id!=id; }); try{ localStorage.setItem("mfTrips", JSON.stringify(trips)); }catch(e){} mfRenderTrips(); };
+window.mfLoad=function(id){ var t=mfGetTrips().filter(function(x){ return x.id==id; })[0]; if(!t) return; try{ localStorage.setItem("mfCurConf", JSON.stringify(t.conf||{})); }catch(e){} location.href=t.url; };
+function mfRenderTrips(){ var el=go("mf-trips"); if(!el) return; var trips=mfGetTrips(); if(!trips.length){ el.innerHTML=""; return; } var h='<div class="mf-trips-h">My saved trips</div>'; for(var i=0;i<trips.length;i++){ var t=trips[i]; h+='<div class="mf-trip"><span class="mf-trip-nm">'+mfEsc(t.name)+'</span><span class="mf-trip-meta">$'+((t.est||0)).toLocaleString()+' &middot; '+((t.legs&&t.legs.length)||0)+' legs</span><button class="airchip mf-mini" onclick="mfLoad('+t.id+')">Load</button><button class="airchip mf-mini" onclick="mfDelete('+t.id+')">Delete</button></div>'; } el.innerHTML=h; }
 function regionsOn(){ var out=[]; var chips=go("rtw-conts").querySelectorAll("[data-rcont]"); for(var i=0;i<chips.length;i++){ if(chips[i].classList.contains("on")) out.push(chips[i].getAttribute("data-rcont")); } return out; }
 function updateURL(){
   var p={scope:go("rtw-scope")?go("rtw-scope").value:"WORLD", start:go("rtw-start").value, dir:go("rtw-dir").value, stops:go("rtw-stops").value,
@@ -3372,6 +3401,7 @@ window.rtwBuild=function(){
   render(best, {budget:budget, weeks:weeks, regionName:regionName});
 };
 function rtwInit(){
+  mfLoadConf();
   var qs; try{ qs=new URLSearchParams(location.search); }catch(e){ qs=null; }
   if(qs){
     if(qs.get("scope") && go("rtw-scope")) go("rtw-scope").value=qs.get("scope");
