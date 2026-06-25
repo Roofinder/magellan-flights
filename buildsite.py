@@ -1171,9 +1171,13 @@ CSS = r"""<style>
          --blue:#e7b94e; --blue-d:#d2a23a; --green:#27d07a; --green-bg:rgba(39,208,122,.14);
          --red:#ff5e5e; --amber:#e7b94e; --amber-bg:rgba(231,185,78,.14); --ink2:#070a10; --gold:#e7b94e; }
   *{ box-sizing:border-box; }
+  .hicon{ width:1em; height:1em; display:inline-block; vertical-align:-0.13em; margin-right:.38em; flex:0 0 auto; }
   body{ margin:0; background:var(--bg); color:var(--ink);
         font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; line-height:1.6; }
   a{ color:inherit; }
+  /* --- Night sky over ocean backdrop (rendered image) --- */
+  .seascape{ position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background:#02060c url("seascape.jpg") center center / cover no-repeat; background-attachment:fixed; }
   .ticker{ overflow:hidden; background:var(--ink2); border-bottom:1px solid #1d2941; }
   .ticker.ow{ background:#0e1a2e; }
   .ticker-track{ display:inline-flex; white-space:nowrap; animation:scrollL 70s linear infinite; }
@@ -2130,6 +2134,7 @@ def top_chrome(active, market):
         nav.append(f'<a class="{cls}" href="{href}">{label}</a>')
     nav_html = "".join(nav)
     return f"""<body>
+<div class="seascape" aria-hidden="true"></div>
 <div id="astro-splash"><div class="intro-stage">{INTRO_SVG}</div></div>
 <script>(function(){{var s=document.getElementById('astro-splash');if(!s)return;
 if(sessionStorage.getItem('mf_intro')){{s.parentNode.removeChild(s);return;}}
@@ -2516,7 +2521,7 @@ def oneway_board(oneway, market, limit=8):
     if not cards:
         return ""
     return (f'<section class="home-sec"><div class="sec-head">'
-            f'<h2>✈️ One-way Voyages</h2>'
+            f'<h2><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5c.8 0 1.3 1.1 1.3 2.6v3.7l7.2 4.1v1.9l-7.2-2.1v3.6l1.9 1.4v1.5L12 18.5l-3.2 1.2v-1.5l1.9-1.4v-3.6L3.5 14.8v-1.9l7.2-4.1V5.1C10.7 3.6 11.2 2.5 12 2.5z"/></svg> One-way Voyages</h2>'
             f'<span>cheap one-way fares to anywhere &middot; add a return any time</span></div>'
             f'<div class="grid">{"".join(cards)}</div></section>')
 
@@ -2552,7 +2557,7 @@ def body_home(market, hist, cards, lastmin, oneway, summary):
     <div class="cta-row">
       <a class="btn-primary" href="#deals">Explore today&rsquo;s deals</a>
       <a class="btn-ghost" href="explore.html">Search any route</a>
-      <a class="btn-ghost" href="around-the-world.html">&#9973; Around the World</a>
+      <a class="btn-ghost" href="around-the-world.html"><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m15.6 8.4-2.1 5.1-5.1 2.1 2.1-5.1 5.1-2.1z"/></svg> Around the World</a>
     </div>
     <p class="trust">Free, forever &middot; fares tracked through the day &middot; live price confirmed when you book on Aviasales</p>
   </div>
@@ -2886,7 +2891,7 @@ def oneway_market(oneway, market, limit=30):
         if r in regions:
             chips.append(f'<button class="airchip" data-owreg="{r}" onclick="owFilter(\'{r}\')">{r}</button>')
     chips_html = "".join(chips).replace('onclick="owFilter(', 'onclick="owSetReg(')
-    return (f'<div class="sec-head" id="deals"><h2>✈️ One-way Voyages</h2>'
+    return (f'<div class="sec-head" id="deals"><h2><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5c.8 0 1.3 1.1 1.3 2.6v3.7l7.2 4.1v1.9l-7.2-2.1v3.6l1.9 1.4v1.5L12 18.5l-3.2 1.2v-1.5l1.9-1.4v-3.6L3.5 14.8v-1.9l7.2-4.1V5.1C10.7 3.6 11.2 2.5 12 2.5z"/></svg> One-way Voyages</h2>'
             f'<span>cheap one-way fares to anywhere &middot; add a return any time</span></div>'
             f'<div class="airchips" style="margin:2px 0 10px">{chips_html}</div>'
             f'<div class="owm-bar"><input type="text" id="ow-q" placeholder="Search a city…" oninput="owApply()" autocomplete="off">'
@@ -2914,7 +2919,7 @@ def body_market(market, hist, cards, lastmin, oneway):
   {context_banner(Q_INDICES)}
   <div class="indices">{index_cards(market, hist)}</div>
   {oneway_market(oneway, market)}
-  <div class="sec-head"><h2>&#9889; Last-minute one-ways</h2><span>cheapest one-ways leaving soon</span></div>
+  <div class="sec-head"><h2><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.2v5l3.2 2"/></svg> Last-minute one-ways</h2><span>cheapest one-ways leaving soon</span></div>
   {oneway_lastminute(oneway, market, 8)}
 </div>"""
 
@@ -3005,7 +3010,7 @@ def round_the_world(world, min_stops=3, max_stops=5, gap_min=35, gap_max=175):
 def body_rtw(world):
     trip = round_the_world(world)
     if not trip:
-        return ('<div class="wrap"><div class="pagehead"><h1>&#9973; Ferdinand&rsquo;s World Loop</h1>'
+        return ('<div class="wrap"><div class="pagehead"><h1><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m15.6 8.4-2.1 5.1-5.1 2.1 2.1-5.1 5.1-2.1z"/></svg> Ferdinand&rsquo;s World Loop</h1>'
                 '<p>We couldn&rsquo;t assemble a full around-the-world loop from today&rsquo;s fares &mdash; '
                 'check back after the next refresh, or explore one-way deals on the '
                 '<a href="market.html" style="color:var(--gold)">Market</a>.</p></div></div>')
@@ -3022,7 +3027,7 @@ def body_rtw(world):
     legs_html = "".join(rows)
     first_link = html.escape(trip['legs'][0]['link'], quote=True)
     return f"""<div class="wrap">
-  <div class="pagehead"><h1>&#9973; Ferdinand&rsquo;s World Loop</h1>
+  <div class="pagehead"><h1><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m15.6 8.4-2.1 5.1-5.1 2.1 2.1-5.1 5.1-2.1z"/></svg> Ferdinand&rsquo;s World Loop</h1>
   <p>Five centuries after Magellan circled the globe, here&rsquo;s the cheapest way to do it today &mdash; one cheap one-way at a time. This is the lowest-cost real loop our tracker can build right now: {trip['stops']} stops, {trip['flights']} flights, starting and finishing in {html.escape(trip['start_name'])}, all one-way.</p></div>
   <div class="rtw-hero"><div class="rtw-hero-label">Around the world today from</div>
     <div class="rtw-hero-price">${trip['total']:,.0f}</div>
@@ -3068,7 +3073,7 @@ def body_explore():
       <div style="display:flex;flex-direction:column;gap:5px"><span style="font-size:12px;color:var(--muted)">Trip</span><div class="airchips"><button class="airchip" id="ex-rt-rt" onclick="exSetTrip('round')">Round-trip</button><button class="airchip on" id="ex-rt-ow" onclick="exSetTrip('oneway')">One-way</button></div></div>
       <button class="btn-primary tl-go" onclick="exSearch()">Find deals</button>
     </div>
-    <div id="ex-when" style="margin:8px 0 2px"><span style="font-size:12px;color:var(--muted);margin-right:6px">When (anywhere mode):</span><span class="airchips" style="display:inline-flex"><button class="airchip on" id="ex-wh-any" onclick="exSetWhen('any')">Anytime</button><button class="airchip" id="ex-wh-soon" onclick="exSetWhen('soon')">&#9889; Soon</button></span></div>
+    <div id="ex-when" style="margin:8px 0 2px"><span style="font-size:12px;color:var(--muted);margin-right:6px">When (anywhere mode):</span><span class="airchips" style="display:inline-flex"><button class="airchip on" id="ex-wh-any" onclick="exSetWhen('any')">Anytime</button><button class="airchip" id="ex-wh-soon" onclick="exSetWhen('soon')"><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.2v5l3.2 2"/></svg> Soon</button></span></div>
     <div id="ex-regions" class="airchips" style="margin:6px 0 12px"></div>
     <div class="panel"><div id="ex-out"><div class="wl-hint">Add your home airport(s) and hit &ldquo;Find deals.&rdquo;</div></div></div>
   </div>
@@ -3117,7 +3122,7 @@ renderOrigs(); renderChips(); exToBind(); exSearch();
 
 def body_lastminute(lm):
     return f"""<div class="wrap">
-  <div class="pagehead"><h1>&#9889; Last-minute one-ways</h1><p>Cheapest one-way fares leaving soon, from anywhere in the USA. Filter by region &mdash; tap one or several (USA for domestic).</p></div>
+  <div class="pagehead"><h1><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.2v5l3.2 2"/></svg> Last-minute one-ways</h1><p>Cheapest one-way fares leaving soon, from anywhere in the USA. Filter by region &mdash; tap one or several (USA for domestic).</p></div>
   <div class="airchips" style="margin:6px 0 16px;">{region_chip_bar("data-lmr", "toggleLMR")}</div>
   <div class="panel"><div id="lmlist"></div></div>
 </div>"""
@@ -3137,7 +3142,7 @@ def body_airports(home):
   <div class="sec-head"><h2>Deals from your airport</h2><span>tap &#9734; to watch</span></div>
   <div class="airchips" style="margin:6px 0 8px;">
     <button class="airchip on" data-act="any" onclick="setACMode('any')">Cheapest anytime</button>
-    <button class="airchip" data-act="lm" onclick="setACMode('lm')">&#9889; Last-minute this week</button>
+    <button class="airchip" data-act="lm" onclick="setACMode('lm')"><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.2v5l3.2 2"/></svg> Last-minute this week</button>
   </div>
   <div class="airchips" style="margin:0 0 14px;">{region_chip_bar("data-acr", "toggleACR")}</div>
   <div class="panel"><div id="citydeals"></div>
@@ -3155,7 +3160,7 @@ def body_world(world):
   <div class="citybar"><select id="world-origin" onchange="selWorldOrigin(this.value)">{opts}</select></div>
   <div class="airchips" style="margin:4px 0 8px;">
     <button class="airchip on" data-wt="any" onclick="setWorldMode('any')">Cheapest fares</button>
-    <button class="airchip" data-wt="lm" onclick="setWorldMode('lm')">&#9889; Last-minute</button>
+    <button class="airchip" data-wt="lm" onclick="setWorldMode('lm')"><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.2v5l3.2 2"/></svg> Last-minute</button>
   </div>
   <div class="airchips" style="margin:0 0 14px;">{region_chip_bar("data-wr", "toggleWR")}</div>
   <div class="panel"><div id="worldlist"></div></div>
