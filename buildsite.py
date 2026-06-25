@@ -213,6 +213,10 @@ SEO = {
         "Cheap Flights by Departure City — Live Deals | Magellan Flights",
         "Find the cheapest flights from your home airport. Live, bookable fares "
         "from 25 major US cities to everywhere they fly, updated daily."),
+    "around-the-world.html": (
+        "Cheapest Around-the-World Flights — Build Your Loop | Magellan Flights",
+        "Build the cheapest around-the-world trip from live one-way fares: set your start, "
+        "stops, regions and direction (east or west). Real, bookable fares, refreshed daily."),
 }
 
 # Questions AI assistants and Google's "People also ask" love to answer.
@@ -4686,7 +4690,13 @@ def write_seo_files(pages):
                + "\n".join(urls) + "\n</urlset>\n")
     with open(os.path.join(SITE_DIR, "sitemap.xml"), "w", encoding="utf-8") as f:
         f.write(sitemap)
-    robots = (f"User-agent: *\nAllow: /\n\nSitemap: {BASE_URL}/sitemap.xml\n")
+    _ai_bots = ["GPTBot", "OAI-SearchBot", "ChatGPT-User", "PerplexityBot", "Perplexity-User",
+               "ClaudeBot", "Claude-Web", "Google-Extended", "Applebot-Extended", "CCBot"]
+    _ai_block = "".join(f"User-agent: {bot}\nAllow: /\n\n" for bot in _ai_bots)
+    robots = (f"User-agent: *\nAllow: /\n\n"
+              "# AI answer engines are welcome to read and cite our pages.\n"
+              f"{_ai_block}"
+              f"Sitemap: {BASE_URL}/sitemap.xml\n")
     with open(os.path.join(SITE_DIR, "robots.txt"), "w", encoding="utf-8") as f:
         f.write(robots)
 
@@ -4696,7 +4706,7 @@ def write_seo_files(pages):
              "Magellan Flights tracks the cheapest flights from the USA every day, "
              "like a stock market, so travelers book at the low. Every fare is real "
              "and links to booking.", "", "## Key pages"]
-    for fn in ["index.html", "market.html", "explore.html",
+    for fn in ["index.html", "market.html", "explore.html", "around-the-world.html", "cheap-flights.html",
                "lastminute.html", "airports.html", "guides.html"]:
         if fn in SEO:
             t, desc = SEO[fn]
