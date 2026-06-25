@@ -2965,6 +2965,7 @@ def body_market(market, hist, cards, lastmin, oneway):
   <div class="sec-head" id="market"><h2>Fare indices</h2><span>avg vs. the Standard Meridian, by region</span></div>
   {context_banner(Q_INDICES)}
   <div class="indices">{index_cards(market, hist)}</div>
+  <p class="finehint" style="text-align:center;margin:2px 0 14px">See the bigger picture &mdash; <a href="cheap-flight-index.html" style="color:var(--gold);font-weight:600">the Magellan Cheap Flight Index</a>: the cheapest places to fly from the USA right now, by region and by airport.</p>
   {oneway_market(oneway, market)}
   <div class="sec-head"><h2><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.2v5l3.2 2"/></svg> Last-minute one-ways</h2><span>cheapest one-ways leaving soon</span></div>
   {oneway_lastminute(oneway, market, 8)}
