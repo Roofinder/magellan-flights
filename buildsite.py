@@ -113,7 +113,7 @@ FOOTER_NAV = [
                       ("around-the-world.html", "Around the World"),
                       ("cheap-flights.html", "Cheap flights by airport")]),
     ("Learn", [("city-guides.html", "City guides"), ("guides.html", "Guides &amp; tips"),
-               ("blog.html", "Today&rsquo;s Daily Guide"), ("essentials.html", "Travel kit")]),
+               ("blog.html", "Today&rsquo;s Daily Guide"), ("cheap-flight-index.html", "Cheap Flight Index"), ("essentials.html", "Travel kit")]),
     ("Your trips", [("watchlist.html", "My bucket list"), ("index.html#alerts", "Get free price alerts"),
                ("consultant.html", "Hire a consultant")]),
 ]
@@ -217,6 +217,11 @@ SEO = {
         "Cheapest Around-the-World Flights — Build Your Loop | Magellan Flights",
         "Build the cheapest around-the-world trip from live one-way fares: set your start, "
         "stops, regions and direction (east or west). Real, bookable fares, refreshed daily."),
+    "cheap-flight-index.html": (
+        "The Cheap Flight Index — Cheapest Places to Fly from the USA | Magellan Flights",
+        "A live data study of the cheapest real fares from US airports right now: cheapest "
+        "international destinations, cheapest US airports to fly abroad from, and how far below "
+        "normal today's deals are. Updated daily, free to cite."),
 }
 
 # Questions AI assistants and Google's "People also ask" love to answer.
@@ -401,6 +406,19 @@ def head_seo(active, full_title, description, market=None):
                           "thumbnailUrl": f"https://i.ytimg.com/vi/{vid}/hqdefault.jpg",
                           "embedUrl": f"https://www.youtube.com/embed/{vid}",
                           "uploadDate": datetime.now().strftime("%Y-%m-%d")})
+    if active == "cheap-flight-index.html":
+        graph.append({"@type": "Dataset", "name": f"{BRAND} Cheap Flight Index",
+                      "description": "Live data on the cheapest real, bookable fares from US airports to destinations worldwide, updated daily.",
+                      "url": url, "creator": {"@id": BASE_URL + "/#org"},
+                      "isAccessibleForFree": True, "dateModified": datetime.now().strftime("%Y-%m-%d")})
+        graph.append({"@type": "Article", "headline": "The Magellan Cheap Flight Index",
+                      "description": "The cheapest places to fly from the USA right now, from live fare data.",
+                      "dateModified": datetime.now().strftime("%Y-%m-%d"),
+                      "author": {"@id": BASE_URL + "/#org"}, "publisher": {"@id": BASE_URL + "/#org"},
+                      "mainEntityOfPage": {"@id": url + "#webpage"}})
+        graph.append({"@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Guides", "item": BASE_URL + "/guides.html"},
+            {"@type": "ListItem", "position": 2, "name": "Cheap Flight Index", "item": url}]})
     rt_by = globals().get("ROUTE_BY_FILE", {})
     if active in rt_by:
         p = rt_by[active]
@@ -1197,6 +1215,13 @@ CSS = r"""<style>
   body{ margin:0; background:var(--bg); color:var(--ink);
         font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; line-height:1.6; }
   a{ color:inherit; }
+  .cfi-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:18px 0 8px; }
+  .cfi-stat{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 18px; }
+  .cfi-num{ font-size:30px; font-weight:700; color:var(--gold); line-height:1.1; }
+  .cfi-lab{ font-size:13px; color:var(--muted); margin-top:6px; }
+  .cfi-reggrid{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px 26px; }
+  .cfi-reg h3{ font-size:15px; margin:8px 0 4px; color:var(--ink); }
+  @media(max-width:680px){ .cfi-grid{ grid-template-columns:repeat(2,1fr); } .cfi-reggrid{ grid-template-columns:1fr; } }
   .rtw-controls{ display:flex; gap:18px; flex-wrap:wrap; align-items:flex-end; }
   .rtw-ctl{ display:flex; flex-direction:column; gap:5px; font-size:12px; color:var(--muted); }
   .rtw-ctl select, .rtw-ctl input[type=range]{ min-width:200px; background:#0e141d; color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:8px 10px; }
@@ -4550,6 +4575,152 @@ def body_route(p, market, today):
 
 
 
+
+# --------------------------------------------------------------------------- #
+# The Magellan Cheap Flight Index — a living data study built from live fares.
+# Designed as a citable, linkable PR asset (refreshes with the daily build).
+# --------------------------------------------------------------------------- #
+_CFI_DOMESTIC = ("usa", "united states", "puerto rico", "u.s. virgin islands",
+                 "us virgin islands", "guam", "u.s.", " u.s")
+
+
+def _cfi_intl(name):
+    n = str(name).strip().lower()
+    return not any(n.endswith(s) for s in _CFI_DOMESTIC)
+
+
+def _cfi_sav(r):
+    b = r.get("benchmark") or 0
+    try:
+        return (b - r["price"]) / b * 100 if b > 0 else 0.0
+    except Exception:
+        return 0.0
+
+
+def _cfi_dcity(name):
+    return str(name).split(",")[0]
+
+
+def body_cflindex(market, today):
+    import statistics as _st
+    rows = [r for r in market if r.get("price")]
+    n = len(rows)
+    if n < 10:
+        return ('<div class="wrap"><div class="pagehead"><h1>The Magellan Cheap Flight Index</h1>'
+                '<p>The index updates after the next data refresh &mdash; check back shortly.</p></div></div>')
+    prices = [r["price"] for r in rows]
+    med = int(_st.median(prices)); avg = int(_st.mean(prices))
+    intls = [r for r in rows if _cfi_intl(r["name"])]
+    cheapest_intl = min(intls, key=lambda r: r["price"]) if intls else None
+    cheapest_all = min(rows, key=lambda r: r["price"])
+    below = [r for r in rows if (r.get("benchmark") or 0) > 0 and r["price"] < r["benchmark"]]
+    pct_below = round(100 * len(below) / n)
+    big = max(rows, key=_cfi_sav)
+    big_sav = round(_cfi_sav(big))
+    avg_below = round(_st.mean([_cfi_sav(r) for r in below])) if below else 0
+    deep = [r for r in rows if _cfi_sav(r) >= 15]
+
+    def origin_city(o):
+        return AIRPORT_NAMES.get(o, o).split(",")[0]
+
+    # headline stat grid
+    stats = [
+        (f"${cheapest_intl['price']:,.0f}", f"cheapest international fare<br><b>{html.escape(_cfi_dcity(cheapest_intl['name']))}</b> from {cheapest_intl['origin']}") if cheapest_intl else None,
+        (f"${med:,}", "median fare across all tracked routes"),
+        (f"{pct_below}%", "of routes are below their normal price"),
+        (f"{big_sav}%", f"biggest discount today<br><b>{html.escape(_cfi_dcity(big['name']))}</b>"),
+        (f"{n:,}", f"routes tracked from {len(set(r['origin'] for r in rows))} US airports"),
+        (f"${cheapest_all['price']:,.0f}", f"cheapest fare anywhere<br><b>{html.escape(_cfi_dcity(cheapest_all['name']))}</b> from {cheapest_all['origin']}"),
+    ]
+    stat_html = "".join(
+        f'<div class="cfi-stat"><div class="cfi-num">{v}</div><div class="cfi-lab">{lab}</div></div>'
+        for s in stats if s for v, lab in [s])
+
+    # cheapest international destinations (top 12)
+    intl_sorted = sorted(intls, key=lambda r: r["price"])[:12]
+    intl_rows = "".join(
+        f'<tr><td class="dt-dest">{flag_img(r["code"], "flag")} {html.escape(_cfi_dcity(r["name"]))} '
+        f'<span class="dt-code">{r["code"]}</span></td><td class="dt-dates">from {r["origin"]}</td>'
+        f'<td class="dt-price">${r["price"]:,.0f}</td>'
+        f'<td>{("&minus;"+str(round(_cfi_sav(r)))+"%") if _cfi_sav(r) >= 1 else "&mdash;"}</td></tr>'
+        for r in intl_sorted)
+    intl_table = ('<table class="deal-table"><thead><tr><th>Destination</th><th>From</th>'
+                  '<th>Price</th><th>vs normal</th></tr></thead><tbody>' + intl_rows + '</tbody></table>')
+
+    # cheapest US airports to fly abroad from (rank origins by cheapest intl fare)
+    by_o = {}
+    for r in intls:
+        o = r["origin"]
+        if o not in by_o or r["price"] < by_o[o]["price"]:
+            by_o[o] = r
+    air_sorted = sorted(by_o.values(), key=lambda r: r["price"])[:12]
+    air_rows = "".join(
+        f'<tr><td>{i}</td><td class="dt-dest"><b>{html.escape(origin_city(r["origin"]))}</b> '
+        f'<span class="dt-code">{r["origin"]}</span></td>'
+        f'<td class="dt-dates">{html.escape(_cfi_dcity(r["name"]))}</td>'
+        f'<td class="dt-price">${r["price"]:,.0f}</td></tr>'
+        for i, r in enumerate(air_sorted, 1))
+    air_table = ('<table class="deal-table"><thead><tr><th>#</th><th>US airport</th>'
+                 '<th>Cheapest abroad</th><th>Price</th></tr></thead><tbody>' + air_rows + '</tbody></table>')
+
+    # cheapest by region
+    from collections import defaultdict as _dd
+    reg = _dd(list)
+    for r in rows:
+        reg[continent_of(r["code"])].append(r)
+    region_order = ["Europe", "Asia", "SE Asia", "E Asia", "S Asia", "Caribbean", "C America",
+                    "S America", "Oceania", "Middle East", "Africa", "N America"]
+    seen_r = []
+    reg_blocks = []
+    for rg in region_order + [k for k in reg if k not in region_order]:
+        if rg not in reg or rg in seen_r or rg == "Other":
+            continue
+        seen_r.append(rg)
+        top = sorted(reg[rg], key=lambda r: r["price"])[:3]
+        if not top:
+            continue
+        items = "".join(
+            f'<li>{flag_img(r["code"], "flag")} {html.escape(_cfi_dcity(r["name"]))} '
+            f'&mdash; <b>${r["price"]:,.0f}</b> <span class="dt-dates">from {r["origin"]}</span></li>'
+            for r in top)
+        reg_blocks.append(f'<div class="cfi-reg"><h3>{html.escape(rg)}</h3><ul class="blog-list">{items}</ul></div>')
+    region_html = '<div class="cfi-reggrid">' + "".join(reg_blocks) + '</div>'
+
+    cite_url = BASE_URL + "/cheap-flight-index.html"
+    return f"""<div class="wrap blog-wrap">
+  <nav class="crumbs"><a href="guides.html">Guides</a> &rsaquo; Cheap Flight Index</nav>
+  <div class="blog-eyebrow">Data study &middot; updated {today}</div>
+  <h1 class="blog-title">The Magellan Cheap Flight Index</h1>
+  <div class="art-meta">Updated {today} &middot; live data &middot; {BRAND}</div>
+  <p class="art-lede">Every day we track the cheapest real, bookable fares from {len(set(r['origin'] for r in rows))} US airports to hundreds of destinations worldwide. This index turns that live data into a snapshot of what it actually costs to fly out of the USA right now &mdash; and where the deals are. Free to cite with a link.</p>
+  <div class="cfi-grid">{stat_html}</div>
+
+  <section class="blog-sec"><h2>Cheapest international destinations from the USA right now</h2>
+  <p>The lowest current fares to destinations abroad, across all tracked US origins.</p>{intl_table}</section>
+
+  <section class="blog-sec"><h2>Cheapest US airports to fly abroad from</h2>
+  <p>Ranked by each city&rsquo;s single cheapest international fare available today.</p>{air_table}</section>
+
+  <section class="blog-sec"><h2>Cheapest destinations by region</h2>{region_html}</section>
+
+  <section class="blog-sec"><h2>How big are today&rsquo;s deals?</h2>
+  <p>Of {n:,} tracked routes, <b>{pct_below}%</b> are currently priced below their normal range. Among those, fares sit about <b>{avg_below}% below</b> typical on average, and <b>{len(deep)}</b> routes are 15% or more below normal &mdash; the genuine deals worth grabbing.</p></section>
+
+  <section class="blog-sec"><h2>Methodology</h2>
+  <p>Figures come from {BRAND}&rsquo;s live fare tracker, which checks the cheapest real, bookable round-trip and one-way fares from major US airports several times a day. &ldquo;Normal price&rdquo; is each route&rsquo;s tracked baseline; a fare is &ldquo;below normal&rdquo; when it&rsquo;s under that baseline. Prices are in USD and change constantly &mdash; this page reflects the most recent refresh on {today}.</p></section>
+
+  <div class="art-answer"><div class="aa-label">Cite this study</div>
+  <p>Source: <b>{BRAND} Cheap Flight Index</b>, {today}. <a href="{cite_url}">{cite_url}</a>. Free to reference with a link back.</p></div>
+
+  <section class="blog-sec"><h2>Explore the live data</h2><ul class="blog-list">
+  <li><a href="market.html">Today&rsquo;s full cheap-flight board</a></li>
+  <li><a href="explore.html">Search cheap flights from your airport</a></li>
+  <li><a href="around-the-world.html">Build the cheapest around-the-world trip</a></li>
+  <li><a href="guides.html">Flight deal guides &amp; tips</a></li></ul></section>
+</div>"""
+
+
+
 def main():
     market = read_snapshot()
     if not market:
@@ -4600,6 +4771,7 @@ def main():
         "essentials.html": ("Travel essentials", body_essentials()),
         "guides.html": ("Guides", body_guides(market)),
         "cheap-flights.html": ("By airport", body_money_hub(MONEY_PAGES)),
+        "cheap-flight-index.html": ("Cheap Flight Index", body_cflindex(market, today)),
         "city-guides.html": ("City guides", body_cityguide_hub(CITY_GUIDES, market)),
     }
 
@@ -4668,7 +4840,7 @@ def write_seo_files(pages):
     # Rough priority: home highest, then the deal boards, then helper pages.
     prio = {"index.html": "1.0", "market.html": "0.9", "world.html": "0.8",
             "explore.html": "0.8", "lastminute.html": "0.8", "cheap-flights.html": "0.8",
-            "city-guides.html": "0.8", "guides.html": "0.7", "blog.html": "0.7",
+            "city-guides.html": "0.8", "cheap-flight-index.html": "0.8", "guides.html": "0.7", "blog.html": "0.7",
             "airports.html": "0.6"}
     article_files = set(globals().get("ARTICLE_BY_FILE", {}))
     money_files = set(globals().get("MONEY_BY_FILE", {}))
@@ -4706,7 +4878,7 @@ def write_seo_files(pages):
              "Magellan Flights tracks the cheapest flights from the USA every day, "
              "like a stock market, so travelers book at the low. Every fare is real "
              "and links to booking.", "", "## Key pages"]
-    for fn in ["index.html", "market.html", "explore.html", "around-the-world.html", "cheap-flights.html",
+    for fn in ["index.html", "market.html", "explore.html", "around-the-world.html", "cheap-flights.html", "cheap-flight-index.html",
                "lastminute.html", "airports.html", "guides.html"]:
         if fn in SEO:
             t, desc = SEO[fn]
