@@ -1456,6 +1456,8 @@ CSS = r"""<style>
   .owr-price{ display:flex; align-items:baseline; gap:5px; white-space:nowrap; }
   .owr-price .mv-price{ font-size:16px; }
   .ow-unit{ color:var(--muted); font-size:11.5px; font-weight:600; }
+  .owr-pct{ font-size:11.5px; font-weight:700; white-space:nowrap; }
+  .owr-pct.good{ color:var(--green); } .owr-pct.bad{ color:var(--red); } .owr-pct.meh{ color:var(--muted); font-weight:600; }
   .addret-sm{ background:transparent; border:1px solid var(--line); color:var(--ink); font-size:12px; font-weight:600; padding:6px 11px; border-radius:7px; cursor:pointer; white-space:nowrap; }
   .addret-sm:hover{ border-color:var(--gold); color:var(--gold); }
   .owr .owret{ display:none; padding:0 16px 12px 49px; }
@@ -2908,6 +2910,15 @@ def oneway_row(o, rt, pfx="m"):
     code = o["code"]; price = float(o["price"])
     typ = (float(rt["price"]) * 0.62) if (rt and rt.get("price")) else 0
     bar = oneway_minibar(price, typ)
+    pctbadge = ""
+    if typ and typ > 0:
+        d = (typ - price) / typ * 100
+        if d >= 8:
+            pctbadge = f'<span class="owr-pct good">&#9660; {d:.0f}% below typical</span>'
+        elif d <= -8:
+            pctbadge = f'<span class="owr-pct bad">&#9650; {abs(d):.0f}% above typical</span>'
+        else:
+            pctbadge = '<span class="owr-pct meh">about typical</span>'
     link = html.escape(o["link"], quote=True)
     addret = ""; ret_html = ""
     if rt:
@@ -2927,6 +2938,7 @@ def oneway_row(o, rt, pfx="m"):
             f'<div class="mv-air">one-way from {html.escape(o["origin"])}</div>{verified_tag()}</div></div>'
             f'<div class="mv-right">{bar}'
             f'<div class="owr-price"><span class="mv-price">${price:,.0f}</span> <span class="ow-unit">one-way</span></div>'
+            f'{pctbadge}'
             f'{addret}'
             f'<a class="mini-book" href="{link}" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a></div>'
             f'</div>{ret_html}</div>')
