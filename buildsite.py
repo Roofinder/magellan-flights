@@ -2975,6 +2975,7 @@ def body_market(market, hist, cards, lastmin, oneway):
 WORLD_HUBS = {
     "JFK":"New York","LAX":"Los Angeles","MIA":"Miami","ORD":"Chicago","SFO":"San Francisco",
     "BOS":"Boston","ATL":"Atlanta","SEA":"Seattle","YTO":"Toronto","YVR":"Vancouver",
+    "DTW":"Detroit","IAH":"Houston","DEN":"Denver","DFW":"Dallas","TPA":"Tampa","HNL":"Honolulu","PHX":"Phoenix","LAS":"Las Vegas",
     "LON":"London","PAR":"Paris","FRA":"Frankfurt","AMS":"Amsterdam","MAD":"Madrid","BCN":"Barcelona",
     "FCO":"Rome","IST":"Istanbul","LIS":"Lisbon","DUB":"Dublin","ZRH":"Zurich","VIE":"Vienna",
     "CPH":"Copenhagen","MUC":"Munich","ATH":"Athens",
@@ -2985,7 +2986,7 @@ WORLD_HUBS = {
     "MEX":"Mexico City","GRU":"Sao Paulo","BOG":"Bogota","EZE":"Buenos Aires","LIM":"Lima",
     "JNB":"Johannesburg","CAI":"Cairo","NBO":"Nairobi","CMN":"Casablanca",
 }
-RTW_US_STARTS = ["JFK","LAX","MIA","ORD","SFO","BOS","ATL","SEA"]
+RTW_US_STARTS = ["JFK","LAX","MIA","ORD","SFO","BOS","ATL","SEA","DTW","IAH","DEN","DFW","TPA","HNL","PHX","LAS"]
 
 
 def round_the_world(world, min_stops=3, max_stops=5, gap_min=35, gap_max=175):
