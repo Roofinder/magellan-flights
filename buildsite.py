@@ -1334,11 +1334,19 @@ CSS = r"""<style>
     .ticker-toggle{ font-size:11px; padding:5px 8px; }
   }
   @media(max-width:620px){
-    .mv-row{ flex-wrap:wrap; align-items:flex-start; row-gap:6px; }
+    .mv-row{ flex-wrap:wrap; align-items:flex-start; row-gap:8px; padding:12px 14px; }
     .mv-dest{ flex:1 1 100%; }
-    .mv-right{ flex:1 1 100%; justify-content:flex-start; flex-wrap:wrap; gap:8px 14px; }
-    .owr .mv-right{ padding-left:40px; }
+    .mv-right{ flex:1 1 100%; justify-content:flex-start; align-items:center; flex-wrap:wrap; gap:8px 12px; padding-left:0; margin-top:2px; }
+    .mv-right .minibar{ order:1; }
+    .mv-right .owr-price{ order:2; }
+    .mv-right .addret-sm{ order:3; }
+    .mv-right .mini-book{ order:4; flex:1 1 100%; text-align:center; font-size:13px; padding:9px 12px; margin-top:2px; }
+    .mb-track{ width:60px; }
     .owr .owret{ padding-left:16px; }
+    body{ padding-bottom:76px; }
+    #chatbtn{ width:48px; height:48px; bottom:14px; right:14px; }
+    #chatbtn .chat-ic{ width:20px; height:20px; }
+    .bw-toggle{ bottom:14px; left:14px; transform:scale(.9); }
   }
   .minibar{ display:flex; align-items:center; gap:8px; }
   .mb-track{ position:relative; width:74px; height:4px; background:#1b2330; border-radius:3px; flex:none; }
@@ -2364,14 +2372,14 @@ def oneway_winner(oneway, market):
                "r": ("rgba(255,94,94,.15)", "var(--red)")}
     bg, col = palette[c]
     rtnote = f' &middot; round-trip ${float(rt["price"]):,.0f} with a return' if rt else ''
-    return (f'<a class="winner" data-lp data-o="{html.escape(w["origin"], quote=True)}" data-d="{code}" data-ow="1" href="blog.html">'
+    return (f'<a class="winner" data-o="{html.escape(w["origin"], quote=True)}" data-d="{code}" data-ow="1" href="{html.escape(w["link"], quote=True)}" target="_blank" rel="noopener">'
             f'<span class="winner-badge">&#9733; Today&rsquo;s Biggest Winner</span>'
             f'<div class="winner-main"><div class="winner-city">{html.escape(w["name"])}</div>'
             f'<div class="winner-route">One-way from {html.escape(w["origin"])} &middot; {html.escape(w["depart"])} &middot; <span style="color:var(--gold)">live price at booking</span>{rtnote}</div></div>'
             f'<div class="winner-right"><span class="winner-price">${price:,.0f}</span>'
             f'<span style="color:var(--muted);font-size:13px">one-way</span>'
             f'<span class="winner-off" style="background:{bg};color:{col}">{v}</span></div>'
-            f'<span class="winner-cta">Read the Daily Guide &rarr;</span></a>')
+            f'<span class="winner-cta">See live price on Aviasales &rarr;</span></a>')
 
 
 def winner_highlight(market):
