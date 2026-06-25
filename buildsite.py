@@ -115,7 +115,7 @@ FOOTER_NAV = [
                       ("cheap-flights.html", "Cheap flights by airport")]),
     ("Learn", [("city-guides.html", "City guides"), ("guides.html", "Guides &amp; tips"),
                ("blog.html", "Today&rsquo;s Daily Guide"), ("cheap-flight-index.html", "Cheap Flight Index"), ("essentials.html", "Travel kit")]),
-    ("Your trips", [("watchlist.html", "My bucket list"), ("index.html#alerts", "Get free price alerts"),
+    ("Your trips", [("watchlist.html", "My bucket list"), ("newsletter.html", "Free newsletter"),
                ("consultant.html", "Hire a consultant")]),
 ]
 
@@ -223,6 +223,10 @@ SEO = {
         "A live data study of the cheapest real fares from US airports right now: cheapest "
         "international destinations, cheapest US airports to fly abroad from, and how far below "
         "normal today's deals are. Updated daily, free to cite."),
+    "newsletter.html": (
+        "Free Cheap-Flight Newsletter — Weekly Deal Drop | Magellan Flights",
+        "Join the free Magellan Flights newsletter: the week's cheapest real, bookable flights "
+        "from the USA plus a featured trip, every week. No spam, unsubscribe anytime."),
 }
 
 # Questions AI assistants and Google's "People also ask" love to answer.
@@ -2220,7 +2224,7 @@ window.addEventListener('load',function(){{setTimeout(done, rm?700:2700);}});}})
 <header>
   <div class="bar">
     <a class="logo" href="index.html"><span class="mark">{LOGO_SVG}</span>{BRAND}</a>
-    <nav class="nav">{nav_html}<a class="nav-star" href="watchlist.html" title="My bucket list" aria-label="My bucket list">&#9733;</a><a class="nav-cta" href="index.html#alerts">Get free alerts</a><button type="button" class="ticker-toggle" onclick="toggleTickers()" title="Hide or show the price ticker" aria-label="Toggle ticker"><span class="tt-ar">&#9650;</span> Ticker</button></nav>
+    <nav class="nav">{nav_html}<a class="nav-star" href="watchlist.html" title="My bucket list" aria-label="My bucket list">&#9733;</a><a class="nav-cta" href="newsletter.html">Newsletter</a><button type="button" class="ticker-toggle" onclick="toggleTickers()" title="Hide or show the price ticker" aria-label="Toggle ticker"><span class="tt-ar">&#9650;</span> Ticker</button></nav>
   </div>
 </header>
 <script>
@@ -2250,7 +2254,7 @@ def site_footer(today):
     <div class="ft-brand">
       <a class="logo" href="index.html"><span class="mark">{LOGO_SVG}</span>{BRAND}</a>
       <p class="ft-tag">The cheapest flights from the USA to anywhere on earth &mdash; tracked every day, judged against their own price history.</p>
-      <a class="nav-cta ft-cta" href="index.html#alerts">Get free price alerts</a>
+      <a class="nav-cta ft-cta" href="newsletter.html">Join the free newsletter</a>
     </div>
     <nav class="ft-links">{cols_html}</nav>
   </div>
@@ -5044,6 +5048,78 @@ def body_region_tour(m, world, today):
 </div>"""
 
 
+
+# --------------------------------------------------------------------------- #
+# Newsletter — dedicated signup/landing page + a deals RSS feed that the email
+# platform (Beehiiv) can auto-send a weekly digest from. Form posts to the
+# interim capture endpoint until the Beehiiv embed is wired in (one-line swap).
+# --------------------------------------------------------------------------- #
+def newsletter_rss(market):
+    items = sorted(market, key=lambda m: m.get("price", 1e9))[:15]
+    now = datetime.now().strftime("%a, %d %b %Y %H:%M:%S +0000")
+    parts = ['<?xml version="1.0" encoding="UTF-8"?>',
+             '<rss version="2.0"><channel>',
+             f'<title>{BRAND} — Today\'s Cheapest Flights</title>',
+             f'<link>{BASE_URL}/</link>',
+             '<description>The cheapest real, bookable flights from the USA, refreshed daily.</description>',
+             f'<lastBuildDate>{now}</lastBuildDate>']
+    for m in items:
+        city = html.escape(str(m.get("name", "")).split(",")[0])
+        link = html.escape(m.get("link", BASE_URL), quote=True)
+        price = m.get("price", 0)
+        parts.append(
+            f'<item><title>{city} from ${price:,.0f} (from {m.get("origin","")})</title>'
+            f'<link>{link}</link>'
+            f'<description>Cheap one-way to {city} — ${price:,.0f} from {m.get("origin","")}, '
+            f'departing {html.escape(str(m.get("depart","")))}. Real, bookable fare tracked by {BRAND}.</description>'
+            f'<guid isPermaLink="false">{m.get("origin","")}-{m.get("code","")}-{price:.0f}</guid>'
+            f'<pubDate>{now}</pubDate></item>')
+    parts.append('</channel></rss>')
+    return "\n".join(parts)
+
+
+def body_newsletter(market):
+    sample = sorted(market, key=lambda m: m.get("price", 1e9))[:5]
+    sample_rows = "".join(
+        f'<li>{flag_img(m["code"], "flag")} {html.escape(str(m["name"]).split(",")[0])} '
+        f'&mdash; <b>${m["price"]:,.0f}</b> <span class="dt-dates">from {m["origin"]}</span></li>'
+        for m in sample)
+    faqs = [
+        ("Is the newsletter free?", "Yes, completely free. We may earn a commission when you book through our links, at no extra cost to you."),
+        ("How often will I hear from you?", "Once a week — a short digest of the biggest price drops and one featured trip. No spam, ever."),
+        ("What's in each issue?", "The week's cheapest real, bookable fares from the USA, the single biggest discount, and a featured around-the-world or continent trip."),
+        ("Can I unsubscribe anytime?", "Of course — one click in any email and you're off the list, no hard feelings."),
+    ]
+    faq_html = "".join(f'<details class="art-q"><summary>{html.escape(q)}</summary><p>{html.escape(a)}</p></details>'
+                       for q, a in faqs)
+    return f"""<div class="wrap" style="max-width:720px">
+  <div class="pagehead"><h1>The cheapest escapes, in your inbox</h1>
+  <p>Join the free {BRAND} newsletter and get the week&rsquo;s best flight deals from the USA &mdash; the biggest price drops, mistake-fare-level lows, and a featured trip to dream on &mdash; delivered every week. No spam, unsubscribe anytime.</p></div>
+  <div class="signup" style="margin:0 0 22px"><div class="signup-inner">
+    <h2>Get the weekly deal drop</h2>
+    <p>Free forever &middot; one email a week &middot; real, bookable fares.</p>
+    <form class="form" action="{FORM_ACTION}" method="POST" onsubmit="return fakeSubmit(event)">
+      <input type="hidden" name="list" value="newsletter">
+      <input type="hidden" name="_subject" value="New newsletter subscriber">
+      <input type="email" name="email" placeholder="you@email.com" required>
+      <button type="submit">Join free</button>
+    </form>
+    <div class="ok" id="ok">&#10003; You&rsquo;re on the list! Check your inbox to confirm.</div>
+  </div></div>
+  <div class="blog-sec"><h2>What you get every week</h2>
+  <ul class="blog-list">
+    <li><b>The biggest price drops</b> from across the USA &mdash; real fares, below their normal price.</li>
+    <li><b>One featured trip</b> &mdash; a cheap around-the-world loop or a continent trip you can actually book.</li>
+    <li><b>The one-way tricks</b> most travelers miss, in plain English.</li>
+    <li><b>Zero spam</b> &mdash; one email a week, unsubscribe in a click.</li>
+  </ul></div>
+  <div class="blog-sec"><h2>A peek at this week&rsquo;s deals</h2>
+  <ul class="blog-list">{sample_rows}</ul>
+  <p style="font-size:13px;color:var(--muted)">A sample of what lands in your inbox &mdash; see the full board on the <a href="market.html" style="color:var(--gold)">Market</a>.</p></div>
+  <div class="blog-sec"><h2>Frequently asked questions</h2>{faq_html}</div>
+</div>"""
+
+
 def main():
     market = read_snapshot()
     if not market:
@@ -5089,6 +5165,7 @@ def main():
         "blog.html": ("Daily Guide", body_blog(market, oneway)),
         "around-the-world.html": ("Ferdinand's World Loop", body_rtw(world)),
         "consultant.html": ("Hire a Trip Consultant", body_consultant()),
+        "newsletter.html": ("Free Newsletter", body_newsletter(market)),
         "lastminute.html": ("Last-minute", body_lastminute(lastmin)),
         "airports.html": ("Captain's Log", body_airports(home)),
         "watchlist.html": ("Watchlist", body_watchlist(market)),
@@ -5159,6 +5236,8 @@ def main():
                  + [g["fname"] for g in CITY_GUIDES]
                  + [p["fname"] for p in ROUTE_PAGES]
                  + [m["slug"] + ".html" for m in REGION_TOURS])
+    with open(os.path.join(SITE_DIR, "deals.xml"), "w", encoding="utf-8") as f:
+        f.write(newsletter_rss(market))
     write_seo_files(all_files)
     print(f"Built {len(pages)} pages + {len(ARTICLES)} articles + {len(MONEY_PAGES)} money pages "
           f"+ {len(CITY_GUIDES)} city guides + {len(ROUTE_PAGES)} route pages + sitemap/robots -> {SITE_DIR}  "
@@ -5174,7 +5253,7 @@ def write_seo_files(pages):
     # Rough priority: home highest, then the deal boards, then helper pages.
     prio = {"index.html": "1.0", "market.html": "0.9", "world.html": "0.8",
             "explore.html": "0.8", "lastminute.html": "0.8", "cheap-flights.html": "0.8",
-            "city-guides.html": "0.8", "cheap-flight-index.html": "0.8", "guides.html": "0.7", "blog.html": "0.7",
+            "city-guides.html": "0.8", "cheap-flight-index.html": "0.8", "newsletter.html": "0.7", "guides.html": "0.7", "blog.html": "0.7",
             "airports.html": "0.6"}
     article_files = set(globals().get("ARTICLE_BY_FILE", {}))
     money_files = set(globals().get("MONEY_BY_FILE", {}))
@@ -5213,7 +5292,7 @@ def write_seo_files(pages):
              "Magellan Flights tracks the cheapest flights from the USA every day, "
              "like a stock market, so travelers book at the low. Every fare is real "
              "and links to booking.", "", "## Key pages"]
-    for fn in ["index.html", "market.html", "explore.html", "around-the-world.html", "cheap-flights.html", "cheap-flight-index.html",
+    for fn in ["index.html", "market.html", "explore.html", "around-the-world.html", "cheap-flights.html", "cheap-flight-index.html", "newsletter.html",
                "lastminute.html", "airports.html", "guides.html"]:
         if fn in SEO:
             t, desc = SEO[fn]
