@@ -111,6 +111,7 @@ NAV = [("index.html", "Home"), ("market.html", "Market"), ("explore.html", "Expl
 FOOTER_NAV = [
     ("Browse fares", [("market.html", "The Market"), ("explore.html", "Explore &amp; search"),
                       ("around-the-world.html", "Around the World"),
+                      ("cheap-europe-tour.html", "Continent tours"),
                       ("cheap-flights.html", "Cheap flights by airport")]),
     ("Learn", [("city-guides.html", "City guides"), ("guides.html", "Guides &amp; tips"),
                ("blog.html", "Today&rsquo;s Daily Guide"), ("cheap-flight-index.html", "Cheap Flight Index"), ("essentials.html", "Travel kit")]),
@@ -263,6 +264,10 @@ def _seo_for(active, fallback_title):
     rt = globals().get("ROUTE_BY_FILE", {})
     if active in rt:
         return (rt[active]["title"], rt[active]["description"])
+    rtour = globals().get("REGION_TOUR_BY_FILE", {})
+    if active in rtour:
+        m = rtour[active]
+        return (f"Cheap {m['name']} Tour \u2014 Multi-City Flights | {BRAND}", f"Build the cheapest multi-city {m['name']} tour from live one-way fares \u2014 a real, bookable loop refreshed daily. See the route, prices and best time to go.")
     if active in SEO:
         return SEO[active]
     return (f"{fallback_title} | {BRAND}", TAGLINE)
@@ -419,6 +424,20 @@ def head_seo(active, full_title, description, market=None):
         graph.append({"@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "Guides", "item": BASE_URL + "/guides.html"},
             {"@type": "ListItem", "position": 2, "name": "Cheap Flight Index", "item": url}]})
+    rtour_by = globals().get("REGION_TOUR_BY_FILE", {})
+    if active in rtour_by:
+        m = rtour_by[active]
+        graph.append({"@type": "Article", "headline": f"Cheap {m['name']} Tour",
+                      "description": f"The cheapest multi-city {m['name']} tour from live one-way fares.",
+                      "dateModified": datetime.now().strftime("%Y-%m-%d"),
+                      "author": {"@id": BASE_URL + "/#org"}, "publisher": {"@id": BASE_URL + "/#org"},
+                      "mainEntityOfPage": {"@id": url + "#webpage"}})
+        graph.append({"@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Around the World", "item": BASE_URL + "/around-the-world.html"},
+            {"@type": "ListItem", "position": 2, "name": f"{m['name']} tour", "item": url}]})
+        graph.append({"@type": "FAQPage", "mainEntity": [
+            {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a5}}
+            for q, a5 in region_tour_faqs(m, None)]})
     rt_by = globals().get("ROUTE_BY_FILE", {})
     if active in rt_by:
         p = rt_by[active]
@@ -4854,6 +4873,163 @@ def body_cflindex(market, today):
 
 
 
+
+# --------------------------------------------------------------------------- #
+# Static "Cheapest <Continent> Tour" SEO pages — server-rendered from live fares
+# with the same greedy regional-circuit engine as the interactive builder.
+# --------------------------------------------------------------------------- #
+RTW_HUB_INFO2 = {
+    "LON": ("Apr-Jun & Sep", "Visa-free, up to 6 months"),
+    "PAR": ("Apr-Jun & Sep-Oct", "Visa-free, 90 days (Schengen)"),
+    "TYO": ("Mar-May & Oct-Nov", "Visa-free, 90 days"),
+    "ZRH": ("May-Sep", "Visa-free, 90 days (Schengen)"),
+    "VIE": ("Apr-Oct", "Visa-free, 90 days (Schengen)"),
+    "MUC": ("May-Sep", "Visa-free, 90 days (Schengen)"),
+    "AUH": ("Nov-Mar", "Visa on arrival, 30 days"),
+    "CGK": ("May-Sep (dry season)", "Visa on arrival, 30 days"),
+    "YTO": ("May-Oct", "eTA required"), "YVR": ("Jun-Sep", "eTA required"),
+}
+
+REGION_TOURS = [
+    {"key": "EUROPE", "name": "Europe", "slug": "cheap-europe-tour", "n": 4,
+     "hubs": ["LON","PAR","FRA","AMS","MAD","BCN","FCO","IST","LIS","DUB","ZRH","VIE","CPH","MUC","ATH"],
+     "intro": "Hop between Europe's great cities on cheap one-way fares &mdash; a multi-city tour for the price most people pay for one round-trip."},
+    {"key": "ASIA", "name": "Asia", "slug": "cheap-asia-tour", "n": 4,
+     "hubs": ["SIN","BKK","HKG","TYO","ICN","DEL","BOM","KUL","TPE","MNL","CGK","SGN"],
+     "intro": "From street-food capitals to temple cities, string together a cheap multi-city Asia tour using the lowest one-way fares we track."},
+    {"key": "LATAM", "name": "Latin America", "slug": "cheap-latin-america-tour", "n": 4,
+     "hubs": ["MEX","GRU","BOG","EZE","LIM"],
+     "intro": "Tour Latin America's biggest cities &mdash; Mexico City, Bogot&aacute;, Lima, S&atilde;o Paulo, Buenos Aires &mdash; on the cheapest one-ways we can find."},
+    {"key": "AFRME", "name": "Africa & the Middle East", "slug": "cheap-africa-middle-east-tour", "n": 4,
+     "hubs": ["JNB","CAI","NBO","CMN","DXB","DOH","AUH","TLV"],
+     "intro": "From the pyramids to the Gulf's gleaming hubs, build a cheap multi-city Africa &amp; Middle East tour from live one-way fares."},
+]
+REGION_TOUR_BY_FILE = {}
+
+
+def _hub_detail(code):
+    best = BEST_TIME.get(code, "") or RTW_HUB_INFO2.get(code, ("", ""))[0]
+    visa = DEST_INFO.get(code, {}).get("visa", "") or RTW_HUB_INFO2.get(code, ("", ""))[1]
+    blurb = CITY_GUIDE.get(code, {}).get("overview", "")
+    gfile = next((g["fname"] for g in CITY_GUIDES if g["code"] == code), "")
+    return best, visa, blurb, gfile
+
+
+def region_tour(world, hub_list, n_cities):
+    hubset = set(hub_list)
+    leg = {}
+    for r in world:
+        a, b = r.get("o"), r.get("c")
+        if a in hubset and b in hubset and a != b:
+            if (a, b) not in leg or r["price"] < leg[(a, b)]["price"]:
+                leg[(a, b)] = r
+    pool = [h for h in hub_list if any((h, x) in leg for x in hub_list) and any((x, h) in leg for x in hub_list)]
+    if len(pool) < 2:
+        return None
+    n = min(n_cities, len(pool))
+    best = None
+    for s in pool:
+        route = [s]; used = {s}; cur = s; total = 0; legs = []; ok = True
+        for _ in range(n - 1):
+            nb = None; nbL = None
+            for c in pool:
+                if c in used:
+                    continue
+                L = leg.get((cur, c))
+                if L and (nbL is None or L["price"] < nbL["price"]):
+                    nbL = L; nb = c
+            if nb is None:
+                ok = False; break
+            route.append(nb); used.add(nb); legs.append(nbL); total += nbL["price"]; cur = nb
+        if not ok:
+            continue
+        back = leg.get((cur, s))
+        if not back:
+            continue
+        legs.append(back); total += back["price"]
+        if best is None or total < best[0]:
+            best = (total, route + [s], legs)
+    if not best:
+        return None
+    total, route, legs = best
+    out = []
+    for i in range(len(route) - 1):
+        a, b = route[i], route[i + 1]; L = legs[i]
+        out.append({"from": a, "from_name": WORLD_HUBS.get(a, a), "to": b, "to_name": WORLD_HUBS.get(b, b),
+                    "price": L["price"], "link": L.get("link", ""), "depart": L.get("depart", "")})
+    return {"total": total, "cities": len(route) - 1, "route": route, "legs": out}
+
+
+def region_tour_faqs(m, trip):
+    name = m["name"]
+    cost = f"${trip['total']:,.0f}" if trip else "varies by season"
+    return [
+        (f"How much does it cost to tour {name}?",
+         f"Right now the cheapest {trip['cities'] if trip else 4}-city {name} loop we can build from live "
+         f"one-way fares is about {cost} in flights. It changes daily as fares move &mdash; this page refreshes "
+         f"with the current low."),
+        (f"What's the cheapest way to tour {name}?",
+         "Fly one-way between cities instead of booking separate round-trips. Chaining cheap one-ways into a loop "
+         "is almost always cheaper, and it's exactly what this tool finds."),
+        (f"Can I build my own {name} tour?",
+         f"Yes &mdash; use the interactive builder to set the number of cities, your budget, and a must-visit "
+         f"city, then share your route."),
+    ]
+
+
+def body_region_tour(m, world, today):
+    trip = region_tour(world, m["hubs"], m["n"])
+    builder = f'around-the-world.html?scope={m["key"]}'
+    if not trip:
+        return (f'<div class="wrap blog-wrap"><div class="pagehead"><h1>Cheap {html.escape(m["name"])} Tour</h1>'
+                f'<p>We couldn&rsquo;t assemble a full {html.escape(m["name"])} loop from today&rsquo;s fares &mdash; '
+                f'try the <a href="{builder}" style="color:var(--gold)">interactive builder</a> or check back after the '
+                f'next refresh.</p></div></div>')
+    rows = []
+    for i, l in enumerate(trip["legs"], 1):
+        best, visa, blurb, gfile = _hub_detail(l["to"])
+        meta = []
+        if best:
+            meta.append("Best time: " + html.escape(best))
+        if visa:
+            meta.append(html.escape(visa))
+        g = f' <a href="{gfile}" style="color:var(--gold)">city guide &rarr;</a>' if gfile else ""
+        blurb_html = ('<span class="rtw-blurb">' + html.escape(blurb[:170]) + '</span> ') if blurb else ""
+        meta_html = ('<span class="rtw-meta">' + " &middot; ".join(meta) + '</span>') if meta else ""
+        detail = ('<div class="rtw-detail">' + blurb_html + meta_html + g + '</div>') if (blurb or meta or g) else ""
+        lk = html.escape(l["link"], quote=True)
+        rows.append(
+            f'<div class="rtw-leg"><span class="rtw-num">{i}</span>'
+            f'<div class="rtw-cities">{flag_img(l["from"])}<span class="rtw-city">{html.escape(l["from_name"])}</span>'
+            f'<span class="rtw-arrow">&rarr;</span>{flag_img(l["to"])}<span class="rtw-city">{html.escape(l["to_name"])}</span></div>'
+            f'<div class="rtw-legright"><span class="rtw-legprice">${l["price"]:,.0f}</span>'
+            f'<span class="rtw-legunit">one-way</span>'
+            f'<a class="mini-book" href="{lk}" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a></div></div>'
+            + detail)
+    first_link = html.escape(trip["legs"][0]["link"], quote=True)
+    faq_items = "".join(f'<details class="art-q"><summary>{html.escape(q)}</summary><p>{html.escape(a)}</p></details>'
+                        for q, a in region_tour_faqs(m, trip))
+    others = [x for x in REGION_TOURS if x["key"] != m["key"]]
+    other_links = "".join(f'<li><a href="{x["slug"]}.html">Cheap {html.escape(x["name"])} tour</a></li>' for x in others)
+    return f"""<div class="wrap blog-wrap">
+  <nav class="crumbs"><a href="around-the-world.html">Around the World</a> &rsaquo; {html.escape(m['name'])} tour</nav>
+  <div class="blog-eyebrow">Multi-city tour &middot; updated {today}</div>
+  <h1 class="blog-title">Cheap {html.escape(m['name'])} Tour</h1>
+  <div class="art-meta">Updated {today} &middot; live fares &middot; {BRAND}</div>
+  <p class="art-lede">{m['intro']}</p>
+  <div class="rtw-hero"><div class="rtw-hero-label">Tour {html.escape(m['name'])} from</div>
+    <div class="rtw-hero-price">${trip['total']:,.0f}</div>
+    <div class="rtw-hero-sub">{len(trip['legs'])} one-way flights &middot; {trip['cities']} cities &middot; a loop through {html.escape(m['name'])}</div></div>
+  <div class="rtw-route">{"".join(rows)}</div>
+  <div class="blog-cta"><a class="btn-primary" href="{first_link}" target="_blank" rel="noopener">Start the tour &mdash; book leg 1 &rarr;</a>
+    <a class="btn-ghost" href="{builder}">Customize this tour &rarr;</a></div>
+  <section class="blog-sec"><h2>Getting there</h2><p>This is the in-region flying cost. To reach {html.escape(m['name'])} from the USA, find the cheapest gateway fare on the <a href="explore.html" style="color:var(--gold)">Explore</a> page, then start the loop.</p></section>
+  <section class="blog-sec"><h2>Frequently asked questions</h2>{faq_items}</section>
+  <section class="blog-sec"><h2>More tours</h2><ul class="blog-list">{other_links}<li><a href="around-the-world.html">Build a full around-the-world loop</a></li></ul></section>
+  <p class="finehint" style="text-align:center;margin-top:18px">Tours are built from recently-tracked one-way fares and refresh daily; each leg&rsquo;s live price is confirmed on Aviasales. Build your own pace, budget and must-visit city in the <a href="{builder}" style="color:var(--gold)">interactive builder</a>.</p>
+</div>"""
+
+
 def main():
     market = read_snapshot()
     if not market:
@@ -4876,7 +5052,7 @@ def main():
             for d in c.get(key, []):
                 d["t"] = lm_tags(d.get("cc", ""))
     hist = index_history()
-    global HIST_SERIES, FEATURED_VERIFIED, MONEY_PAGES, MONEY_BY_FILE, ROUTE_PAGES, ROUTE_BY_FILE
+    global HIST_SERIES, FEATURED_VERIFIED, MONEY_PAGES, MONEY_BY_FILE, ROUTE_PAGES, ROUTE_BY_FILE, REGION_TOUR_BY_FILE
     HIST_SERIES = read_history_series()
     try:
         FEATURED_VERIFIED = json.load(open(os.path.join(DATA_DIR, "featured_verified.json"), encoding="utf-8"))
@@ -4886,6 +5062,7 @@ def main():
     MONEY_BY_FILE = {p["fname"]: p for p in MONEY_PAGES}
     ROUTE_PAGES = route_targets(market)
     ROUTE_BY_FILE = {p["fname"]: p for p in ROUTE_PAGES}
+    REGION_TOUR_BY_FILE = {m["slug"] + ".html": m for m in REGION_TOURS}
     today = datetime.now().strftime("%B %d, %Y")
     summary = market_summary(market)
     cards_src = sorted(market, key=lambda m: signal_for(m["price"], m["benchmark"])[1], reverse=True)[:8]
@@ -4946,6 +5123,11 @@ def main():
                           oneway, onewaylm, home, lastmin, world, worldlm, today)
         with open(os.path.join(SITE_DIR, p["fname"]), "w", encoding="utf-8") as f:
             f.write(doc)
+    for m in REGION_TOURS:
+        doc = render_page(m["slug"] + ".html", f"Cheap {m['name']} Tour", body_region_tour(m, world, today), market,
+                          oneway, onewaylm, home, lastmin, world, worldlm, today)
+        with open(os.path.join(SITE_DIR, m["slug"] + ".html"), "w", encoding="utf-8") as f:
+            f.write(doc)
 
     # Evergreen per-city guide pages (deal + video + travel guide).
     for g in CITY_GUIDES:
@@ -4957,7 +5139,8 @@ def main():
     all_files = (list(pages) + [a["slug"] + ".html" for a in ARTICLES]
                  + [p["fname"] for p in MONEY_PAGES]
                  + [g["fname"] for g in CITY_GUIDES]
-                 + [p["fname"] for p in ROUTE_PAGES])
+                 + [p["fname"] for p in ROUTE_PAGES]
+                 + [m["slug"] + ".html" for m in REGION_TOURS])
     write_seo_files(all_files)
     print(f"Built {len(pages)} pages + {len(ARTICLES)} articles + {len(MONEY_PAGES)} money pages "
           f"+ {len(CITY_GUIDES)} city guides + {len(ROUTE_PAGES)} route pages + sitemap/robots -> {SITE_DIR}  "
@@ -4978,14 +5161,15 @@ def write_seo_files(pages):
     article_files = set(globals().get("ARTICLE_BY_FILE", {}))
     money_files = set(globals().get("MONEY_BY_FILE", {}))
     route_files = set(globals().get("ROUTE_BY_FILE", {}))
+    tour_files = set(globals().get("REGION_TOUR_BY_FILE", {}))
     cityguide_files = set(globals().get("CITYGUIDE_BY_FILE", {}))
     urls = []
     for fname in pages:
         loc = BASE_URL + "/" + ("" if fname == "index.html" else fname)
         cf = ("monthly" if fname in article_files
-              else "weekly" if fname in cityguide_files or fname in route_files else "daily")
+              else "weekly" if fname in cityguide_files or fname in route_files or fname in tour_files else "daily")
         dp = ("0.6" if fname in article_files or fname in route_files
-              else "0.7" if fname in money_files or fname in cityguide_files else "0.5")
+              else "0.7" if fname in money_files or fname in cityguide_files or fname in tour_files else "0.5")
         urls.append(
             f"  <url>\n    <loc>{loc}</loc>\n    <lastmod>{lastmod}</lastmod>\n"
             f"    <changefreq>{cf}</changefreq>\n"
@@ -5021,6 +5205,10 @@ def write_seo_files(pages):
         lines += ["", "## Guides"]
         for a in ARTICLES:
             lines.append(f"- [{a['h1']}]({BASE_URL}/{a['slug']}.html): {a['description']}")
+    if REGION_TOURS:
+        lines += ["", "## Continent tours"]
+        for m in REGION_TOURS:
+            lines.append(f"- [Cheap {m['name']} Tour]({BASE_URL}/{m['slug']}.html): The cheapest multi-city {m['name']} tour, built from live one-way fares.")
     lines.append("")
     with open(os.path.join(SITE_DIR, "llms.txt"), "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
