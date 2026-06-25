@@ -3018,9 +3018,83 @@ def oneway_lastminute(oneway, market, limit=8):
     return f'<div class="panel">{"".join(rows)}</div>'
 
 
+DAILY_WINNER = None
+
+
+def compute_daily_winner(market, series):
+    """Route with the biggest % discount vs its OWN historical average."""
+    best = None
+    for m in market:
+        code = m.get("code")
+        try:
+            price = float(m["price"])
+        except (TypeError, ValueError, KeyError):
+            continue
+        hist = series.get(code, [])
+        if len(hist) < 3:
+            continue
+        avg = sum(hist) / len(hist)
+        if avg <= 0:
+            continue
+        disc = (avg - price) / avg * 100
+        if disc < 5:
+            continue
+        if best is None or disc > best["disc"]:
+            best = {"code": code, "name": m.get("name", code), "origin": m.get("origin", ""),
+                    "price": price, "avg": avg, "disc": disc, "link": m.get("link", "")}
+    return best
+
+
+def update_winners_log(winner, days=14):
+    """Append today's winner to a rolling JSON log (one entry per date), newest first."""
+    today = datetime.now().strftime("%Y-%m-%d")
+    path = os.path.join(HERE, "winners.json")
+    log = []
+    try:
+        log = json.load(open(path, encoding="utf-8"))
+        if not isinstance(log, list):
+            log = []
+    except Exception:
+        log = []
+    log = [w for w in log if w.get("date") != today]
+    if winner:
+        log.insert(0, {"date": today, "code": winner["code"], "name": winner["name"],
+                       "origin": winner["origin"], "price": round(winner["price"]),
+                       "avg": round(winner["avg"]), "disc": round(winner["disc"]),
+                       "link": winner.get("link", "")})
+    log = log[:days]
+    try:
+        json.dump(log, open(path, "w", encoding="utf-8"), ensure_ascii=False)
+    except Exception:
+        pass
+    return log
+
+
+def winner_highlight_html():
+    w = DAILY_WINNER
+    if not w:
+        return ""
+    fl = flag_img(w["code"])
+    link = html.escape(w.get("link", ""), quote=True)
+    book = (f'<a class="book" href="{link}" target="_blank" rel="noopener" style="font-size:13px;padding:7px 14px">See live price &rarr;</a>'
+            if link else f'<a class="book" href="explore.html" style="font-size:13px;padding:7px 14px">Find it &rarr;</a>')
+    return (
+        '<div style="background:var(--card);border:1px solid var(--gold);border-radius:12px;padding:14px 16px;margin:0 0 16px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px">'
+        '<div style="display:flex;flex-direction:column;gap:2px;flex:1;min-width:210px">'
+        '<span style="font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)">Today&rsquo;s biggest winner</span>'
+        f'<span style="font-size:16px;font-weight:700">{fl} {html.escape(w["name"])} <span style="color:var(--muted);font-weight:500;font-size:13px">one-way from {html.escape(w["origin"])}</span></span>'
+        f'<span style="font-size:13px;color:var(--muted)"><b style="color:var(--green)">{w["disc"]:.0f}% below</b> its average of ${w["avg"]:,.0f}</span>'
+        '</div>'
+        '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px">'
+        f'<span style="font-size:22px;font-weight:800">${w["price"]:,.0f}</span>{book}'
+        '</div></div>'
+    )
+
+
 def body_market(market, hist, cards, lastmin, oneway):
     return f"""<div class="wrap">
   <div class="pagehead"><h1>The Market</h1><p>The full board &mdash; the cheapest one-way fares to anywhere, region fare indices and last-minute getaways. Add a return to any deal.</p></div>
+  {winner_highlight_html()}
   <div class="summary">{market_pulse(market)}</div>
   <div class="sec-head" id="market"><h2>Fare indices</h2><span>avg vs. the Standard Meridian, by region</span></div>
   {context_banner(Q_INDICES)}
@@ -5209,8 +5283,10 @@ def main():
             for d in c.get(key, []):
                 d["t"] = lm_tags(d.get("cc", ""))
     hist = index_history()
-    global HIST_SERIES, FEATURED_VERIFIED, MONEY_PAGES, MONEY_BY_FILE, ROUTE_PAGES, ROUTE_BY_FILE, REGION_TOUR_BY_FILE
+    global HIST_SERIES, FEATURED_VERIFIED, MONEY_PAGES, MONEY_BY_FILE, ROUTE_PAGES, ROUTE_BY_FILE, REGION_TOUR_BY_FILE, DAILY_WINNER
     HIST_SERIES = read_history_series()
+    DAILY_WINNER = compute_daily_winner(market, HIST_SERIES)
+    update_winners_log(DAILY_WINNER)
     try:
         FEATURED_VERIFIED = json.load(open(os.path.join(DATA_DIR, "featured_verified.json"), encoding="utf-8"))
     except Exception:
