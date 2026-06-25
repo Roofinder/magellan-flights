@@ -1175,9 +1175,6 @@ CSS = r"""<style>
   body{ margin:0; background:var(--bg); color:var(--ink);
         font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; line-height:1.6; }
   a{ color:inherit; }
-  /* --- Night sky over ocean backdrop (rendered image) --- */
-  .seascape{ position:fixed; inset:0; z-index:-1; pointer-events:none;
-    background:#02060c url("seascape.jpg") center center / cover no-repeat; background-attachment:fixed; }
   .ticker{ overflow:hidden; background:var(--ink2); border-bottom:1px solid #1d2941; }
   .ticker.ow{ background:#0e1a2e; }
   .ticker-track{ display:inline-flex; white-space:nowrap; animation:scrollL 70s linear infinite; }
@@ -1803,7 +1800,7 @@ function render(){
 }
 function dealRow(o,d){ var on=WF.indexOf(o+'|'+d.code)>=0;
   return '<div class="mv-row" data-lp data-o="'+o+'" data-d="'+d.code+'" data-ow="0"><button class="star'+(on?' on':'')+'" onclick="toggleFlight(\''+o+'\',\''+d.code+'\')">'+(on?'&#9733;':'&#9734;')+'</button>'
-  + '<div class="mv-dest"><span class="emoji">&#9992;</span>'
+  + '<div class="mv-dest"><span class="flag flag-na" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/></svg></span>'
   + '<div><div class="mv-name">'+d.name+'</div><div class="mv-air">round-trip from '+o+' &middot; '+d.depart+' &rarr; '+d['return']+'</div></div></div>'
   + '<div class="mv-right"><span class="mv-price">$'+d.price.toLocaleString()+'</span>'
   + '<a class="mini-book" href="'+d.link+'" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a></div></div>'; }
@@ -1817,7 +1814,7 @@ function renderAirportWatch(){ var box=document.getElementById('airwatch'), hint
   box.innerHTML=WF.map(function(key){ var p=key.split('|'), o=p[0], c=p[1]; var d=findDeal(o,c);
     if(d) return dealRow(o,d);
     return '<div class="mv-row"><button class="star on" onclick="toggleFlight(\''+o+'\',\''+c+'\')">&#9733;</button>'
-      + '<div class="mv-dest"><span class="emoji">&#9992;</span><div><div class="mv-name">'+c+'</div>'
+      + '<div class="mv-dest"><span class="flag flag-na" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/></svg></span><div><div class="mv-name">'+c+'</div>'
       + '<div class="mv-air">from '+o+' &middot; no current price — check back</div></div></div></div>'; }).join('');
 }
 function addCity(){ var s=document.getElementById('city-pick'); if(!s) return; var v=s.value;
@@ -1838,7 +1835,7 @@ function renderCities(){ var chips=document.getElementById('citychips'), deals=d
   var label = ACMODE==='lm' ? '— last-minute this week' : '— cheapest anytime';
   deals.innerHTML=valid.map(function(c){
     var arr=(HOME[c][key]||[]).filter(function(d){ return regMatch(d, ACSEL); });
-    var h='<div class="grouphdr">'+(ACMODE==='lm'?'&#9889; ':'')+'From '+HOME[c].name+' ('+c+') '+label+'</div>';
+    var h='<div class="grouphdr">'+''+'From '+HOME[c].name+' ('+c+') '+label+'</div>';
     h += arr.length ? arr.map(function(d){ return dealRow(c,d); }).join('')
                     : '<div class="wl-hint">No '+(ACMODE==='lm'?'last-minute ':'')+'deals for this selection.</div>';
     return h; }).join('');
@@ -1917,7 +1914,7 @@ function applyLayout(){ HSECS.forEach(function(s){ var el=document.querySelector
   if(el) el.style.display = secOn(s)?'':'none'; var cb=document.getElementById('cb-'+s); if(cb) cb.checked=secOn(s); }); }
 function toggleSec(s){ HL[s]=!secOn(s); localStorage.setItem('fs_home_layout', JSON.stringify(HL)); applyLayout(); }
 function toggleCustomize(){ var p=document.getElementById('customizer'); if(p) p.style.display=(p.style.display==='block')?'none':'block'; }
-function lmItem(d){ return '<div class="mv-row" data-lp data-o="'+d.o+'" data-d="'+d.c+'" data-ow="0"><div class="mv-dest"><span class="emoji">&#9889;</span>'
+function lmItem(d){ return '<div class="mv-row" data-lp data-o="'+d.o+'" data-d="'+d.c+'" data-ow="0"><div class="mv-dest"><span class="flag flag-na" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/></svg></span>'
   + '<div><div class="mv-name">'+d.n+'</div><div class="mv-air">round-trip from '+d.o+' &middot; '+d.dep+' &rarr; '+d.ret+'</div></div></div>'
   + '<div class="mv-right"><span class="mv-price">$'+d.p.toLocaleString()+'</span>'
   + '<a class="mini-book" href="'+d.l+'" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a></div></div>'; }
@@ -1934,7 +1931,7 @@ function toggleLMR(r){ if(r==='all'){ LMSEL=[]; } else { var i=LMSEL.indexOf(r);
 var OWMODE='6m'; var OWPSEL=[];
 function owData(){ return OWMODE==='lm' ? OWLM : OW; }
 function owMatch(d){ return OWPSEL.length===0 || (d.t && d.t.some(function(t){ return OWPSEL.indexOf(t)>=0; })); }
-function owpItem(d){ return '<div class="mv-row" data-lp data-o="'+d.o+'" data-d="'+d.c+'" data-ow="1"><div class="mv-dest"><span class="emoji">&#9992;</span>'
+function owpItem(d){ return '<div class="mv-row" data-lp data-o="'+d.o+'" data-d="'+d.c+'" data-ow="1"><div class="mv-dest"><span class="flag flag-na" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/></svg></span>'
   + '<div><div class="mv-name">'+d.n+'</div><div class="mv-air">one-way from '+d.o+(d.dep?(' &middot; '+d.dep):'')+'</div></div></div>'
   + '<div class="mv-right"><span class="mv-price">$'+d.p.toLocaleString()+'</span>'
   + '<a class="mini-book" href="'+d.l+'" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a></div></div>'; }
@@ -1959,7 +1956,7 @@ function loadFX(){ fetch('https://open.er-api.com/v6/latest/USD').then(function(
   if(d&&d.rates){ FX=d.rates; document.querySelectorAll('[data-cur]').forEach(function(el){ var c=el.dataset.cur;
     if(FX[c]) el.textContent='$1 ≈ '+fmtRate(FX[c])+' '+c; }); } }).catch(function(){}); }
 var WSEL=[]; var WORG='all'; var WMODE='any';
-function worldItem(x){ return '<div class="mv-row" data-lp data-o="'+x.o+'" data-d="'+x.c+'" data-ow="1"><div class="mv-dest"><span class="emoji">&#9992;</span>'
+function worldItem(x){ return '<div class="mv-row" data-lp data-o="'+x.o+'" data-d="'+x.c+'" data-ow="1"><div class="mv-dest"><span class="flag flag-na" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/></svg></span>'
   + '<div><div class="mv-name">'+x.n+'</div><div class="mv-air">one-way: '+x.on+' ('+x.o+') &rarr; '+x.c+' &middot; '+x.dep+'</div></div></div>'
   + '<div class="mv-right"><span class="mv-price">$'+x.p.toLocaleString()+'</span>'
   + '<a class="mini-book" href="'+x.l+'" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a></div></div>'; }
@@ -2053,7 +2050,7 @@ function tlRow(f, oneway){
   var price='$'+Number(f.price).toLocaleString();
   var dep=(f.departure_at||'').slice(0,10);
   var sub=f.origin_airport+' → '+f.destination_airport+' &middot; '+dep+(oneway?'':(f.return_at?(' → '+(f.return_at||'').slice(0,10)):''));
-  return '<div class="mv-row"><div class="mv-dest"><span class="emoji">&#9992;</span><div><div class="mv-name">'+f.destination_airport+'</div><div class="mv-air">'+sub+'</div></div></div><div class="mv-right">'+owMini(p,typ)+'<span class="mv-price"><span class="lp-dot" title="Freshest tracked fare — your live, bookable price is confirmed on Aviasales"></span>'+price+'</span><a class="mini-book" href="'+f.link+'" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a></div></div>';
+  return '<div class="mv-row"><div class="mv-dest"><span class="flag flag-na" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/></svg></span><div><div class="mv-name">'+f.destination_airport+'</div><div class="mv-air">'+sub+'</div></div></div><div class="mv-right">'+owMini(p,typ)+'<span class="mv-price"><span class="lp-dot" title="Freshest tracked fare — your live, bookable price is confirmed on Aviasales"></span>'+price+'</span><a class="mini-book" href="'+f.link+'" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a></div></div>';
 }
 function tlTrip(){
   var o=(document.getElementById('tl-origin').value||'').trim().toUpperCase();
@@ -2134,7 +2131,6 @@ def top_chrome(active, market):
         nav.append(f'<a class="{cls}" href="{href}">{label}</a>')
     nav_html = "".join(nav)
     return f"""<body>
-<div class="seascape" aria-hidden="true"></div>
 <div id="astro-splash"><div class="intro-stage">{INTRO_SVG}</div></div>
 <script>(function(){{var s=document.getElementById('astro-splash');if(!s)return;
 if(sessionStorage.getItem('mf_intro')){{s.parentNode.removeChild(s);return;}}
@@ -2161,7 +2157,7 @@ function toggleTickers(){{ var off=document.body.classList.toggle('tickers-off')
 WIDGET_HTML = """<aside id="bucket-widget" class="bucket-widget"><div class="bw-head">&#9733; My Bucket List</div><div id="bw-list"></div></aside>
 <button class="bw-toggle" onclick="document.body.classList.toggle('bw-open')">&#9733;<span id="bw-count"></span></button>
 <script>
-window.renderBucket=function(){ var list=[]; try{ list=JSON.parse(localStorage.getItem('mf_bucket')||'[]'); }catch(e){} var cnt=document.getElementById('bw-count'); if(cnt) cnt.textContent=list.length?(' '+list.length):''; var w=document.getElementById('bw-list'); if(w){ w.innerHTML = list.length ? list.map(function(f,i){ return '<div class="bw-row"><a href="'+f.link+'" target="_blank" rel="noopener"><b>'+f.o+' &rarr; '+f.d+'</b><span>$'+(f.price||0).toLocaleString()+(f.ow?' one-way':'')+'</span><small>'+(f.date||'')+(f.ret?(' &rarr; '+f.ret):'')+'</small></a><button class="bw-x" title="remove" onclick="bucketRemove('+i+')">&times;</button></div>'; }).join('') : '<div class="bw-empty">Star &#9734; any deal on Explore to save it here.</div>'; } var pg=document.getElementById('bucket-page'); if(pg){ pg.innerHTML = list.length ? ('<div class="panel">'+list.map(function(f,i){ return '<div class="mv-row" data-lp data-o="'+f.o+'" data-d="'+f.d+'" data-ow="'+(f.ow?'1':'0')+'"><div class="mv-dest"><span class="emoji">&#9992;</span><div><div class="mv-name">'+f.o+' &rarr; '+f.d+'</div><div class="mv-air">'+(f.date||'')+(f.ret?(' &rarr; '+f.ret):'')+(f.ow?' &middot; one-way':' &middot; round-trip')+'</div></div></div><div class="mv-right"><span class="mv-price">$'+(f.price||0).toLocaleString()+'</span><a class="mini-book" href="'+f.link+'" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a><button class="star on" title="remove" onclick="bucketRemove('+i+')">&#9733;</button></div></div>'; }).join('')+'</div>') : '<div class="wl-hint">No saved flights yet. Star &#9734; any deal on the <a href="explore.html">Explore</a> page to add it to your bucket list.</div>'; } };
+window.renderBucket=function(){ var list=[]; try{ list=JSON.parse(localStorage.getItem('mf_bucket')||'[]'); }catch(e){} var cnt=document.getElementById('bw-count'); if(cnt) cnt.textContent=list.length?(' '+list.length):''; var w=document.getElementById('bw-list'); if(w){ w.innerHTML = list.length ? list.map(function(f,i){ return '<div class="bw-row"><a href="'+f.link+'" target="_blank" rel="noopener"><b>'+f.o+' &rarr; '+f.d+'</b><span>$'+(f.price||0).toLocaleString()+(f.ow?' one-way':'')+'</span><small>'+(f.date||'')+(f.ret?(' &rarr; '+f.ret):'')+'</small></a><button class="bw-x" title="remove" onclick="bucketRemove('+i+')">&times;</button></div>'; }).join('') : '<div class="bw-empty">Star &#9734; any deal on Explore to save it here.</div>'; } var pg=document.getElementById('bucket-page'); if(pg){ pg.innerHTML = list.length ? ('<div class="panel">'+list.map(function(f,i){ return '<div class="mv-row" data-lp data-o="'+f.o+'" data-d="'+f.d+'" data-ow="'+(f.ow?'1':'0')+'"><div class="mv-dest"><span class="flag flag-na" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/></svg></span><div><div class="mv-name">'+f.o+' &rarr; '+f.d+'</div><div class="mv-air">'+(f.date||'')+(f.ret?(' &rarr; '+f.ret):'')+(f.ow?' &middot; one-way':' &middot; round-trip')+'</div></div></div><div class="mv-right"><span class="mv-price">$'+(f.price||0).toLocaleString()+'</span><a class="mini-book" href="'+f.link+'" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a><button class="star on" title="remove" onclick="bucketRemove('+i+')">&#9733;</button></div></div>'; }).join('')+'</div>') : '<div class="wl-hint">No saved flights yet. Star &#9734; any deal on the <a href="explore.html">Explore</a> page to add it to your bucket list.</div>'; } };
 window.bucketRemove=function(i){ var list=[]; try{ list=JSON.parse(localStorage.getItem('mf_bucket')||'[]'); }catch(e){} list.splice(i,1); localStorage.setItem('mf_bucket',JSON.stringify(list)); window.renderBucket(); };
 window.addEventListener('load', window.renderBucket);
 </script>"""
@@ -2335,7 +2331,7 @@ def body_trip():
 (function(){
 var CC = __CCJS__;
 var BM = __BMJS__;
-function owFlag(d){ var cc=(CC[d]||'').toLowerCase(); return cc ? '<img class="flag" src="https://flagcdn.com/'+cc+'.svg" alt="" width="30" height="21" loading="lazy">' : '<span class="emoji">&#9992;</span>'; }
+function owFlag(d){ var cc=(CC[d]||'').toLowerCase(); return cc ? '<img class="flag" src="https://flagcdn.com/'+cc+'.svg" alt="" width="30" height="21" loading="lazy">' : '<span class="flag flag-na" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/></svg></span>'; }
 function owMini(price, typ){ if(!typ||typ<=0) return ''; var lo=typ*0.6, hi=typ*1.4; if(hi<=lo) return ''; var frac=Math.max(2,Math.min(98,(price-lo)/(hi-lo)*100)); var c,v; if(price<=typ*0.9){c='g';v='Low';}else if(price<=typ*1.1){c='y';v='Typical';}else{c='r';v='High';} return '<div class="minibar"><div class="mb-track"><span class="mb-dot '+c+'" style="left:'+Math.round(frac)+'%"></span></div><span class="mb-lab '+c+'">'+v+'</span></div>'; }
 var GROUPS={'SE Asia':'TH VN ID SG MY PH KH LA MM BN TL','E Asia':'JP KR CN TW HK MO MN','S Asia':'IN LK NP PK BD MV BT AF','C Asia':'KZ UZ KG TJ TM','W Europe':'FR GB DE NL BE IE ES PT IT CH AT LU MC AD LI MT','Nordic':'SE NO DK FI IS','E Europe':'PL CZ HU RO BG GR HR RS SK SI UA EE LV LT AL BA MK ME MD BY RU CY','S America':'BR AR CL CO PE EC UY PY BO VE GF SR GY','C America':'MX GT BZ SV HN NI CR PA','Caribbean':'DO JM BS CU HT PR TT BB AW CW GP MQ KY BM AG LC GD VC DM KN TC VG AI MS SX BQ','Oceania':'AU NZ FJ PF NC WS TO VU PG CK GU','Middle East':'AE QA SA IL JO TR LB KW BH OM IR IQ YE SY','Africa':'ZA EG MA KE ET NG GH TZ SN CI TN DZ UG RW MU SC NA BW ZW MZ AO CM GA','Canada':'CA'};
 function tagsFor(code){ var c=CC[code]; if(!c) return ['Abroad']; if(c==='US') return ['USA']; var t=[]; for(var g in GROUPS){ if((' '+GROUPS[g]+' ').indexOf(' '+c+' ')>=0){ t.push(g); if(g==='SE Asia'||g==='E Asia'||g==='S Asia'||g==='C Asia') t.push('Asia'); break; } } if(c!=='CA') t.push('Abroad'); return t; }
@@ -2347,7 +2343,7 @@ window.jRemove=function(){ JRNY.pop(); JREG='all'; jRender(); jOptions(); };
 function jOrigin(){ return JRNY.length? JRNY[JRNY.length-1].d : (go('j-origin').value||'RDU').trim().toUpperCase(); }
 function jAfter(){ if(!JRNY.length) return go('j-date').value||''; var last=JRNY[JRNY.length-1]; var n=parseInt(go('j-nights').value,10); if(isNaN(n))n=0; var dt=new Date(last.date+'T00:00:00'); dt.setDate(dt.getDate()+n); return dt.toISOString().slice(0,10); }
 function jRenderChips(){ var box=go('j-regions'); box.innerHTML=REGIONS.map(function(r){ var lab=r==='all'?'All':r; return '<button class="airchip'+(JREG===r?' on':'')+'" data-r="'+r+'">'+lab+'</button>'; }).join(''); }
-window.jOptions=function(){ var o=jOrigin(); var out=go('j-options'); if(!/^[A-Z]{3}$/.test(o)){ out.innerHTML='<div class="wl-hint">Enter a 3-letter starting airport (e.g. RDU).</div>'; return; } var after=jAfter(); out.innerHTML='<div class="wl-hint">Finding onward flights from '+o+(after?(' on/after '+after):'')+'&hellip;</div>'; var months=[]; if(after){ var bd=new Date(after+'T00:00:00'); if(!isNaN(bd)){ for(var k=0;k<2;k++){ var dt=new Date(bd.getFullYear(), bd.getMonth()+k, 1); months.push(dt.getFullYear()+'-'+('0'+(dt.getMonth()+1)).slice(-2)); } } } var urls = months.length ? months.map(function(m){ return '/api/search?origin='+o+'&one_way=true&sorting=price&limit=1000&departure_at='+m; }) : ['/api/search?origin='+o+'&one_way=true&sorting=price&limit=1000']; Promise.all(urls.map(function(u){ return fetch(u).then(function(r){return r.json();}).then(function(j){ return (j&&j.data)||[]; }).catch(function(){ return []; }); })).then(function(arrs){ var data=[]; arrs.forEach(function(a){ data=data.concat(a); }); var visited={}; JRNY.forEach(function(l){visited[l.d]=1;}); visited[o]=1; var best={}; data.forEach(function(f){ var d=f.destination_airport; if(!d||visited[d]) return; if(JREG!=='all' && tagsFor(d).indexOf(JREG)<0) return; var dt=(f.departure_at||'').slice(0,10); if(after && dt && dt<after) return; if(!best[d]||f.price<best[d].price) best[d]=f; }); var list=Object.keys(best).map(function(k){return best[k];}); list.sort(function(a,b){return a.price-b.price;}); JOPTS=list.slice(0,60); if(!JOPTS.length){ out.innerHTML='<div class="wl-hint">No '+(JREG==='all'?'':JREG+' ')+'flights found onward from '+o+(after?(' on/after '+after):'')+'. Try another region'+(after?' or an earlier date':'')+'.</div>'; return; } out.innerHTML=JOPTS.map(function(f,i){ var d=f.destination_airport, dt=(f.departure_at||'').slice(0,10), p=Math.round(f.price); return '<div class="mv-row"><div class="mv-dest"><span class="emoji">&#9992;</span><div><div class="mv-name">'+d+'</div><div class="mv-air">'+o+' &rarr; '+d+' &middot; '+dt+'</div></div></div><div class="mv-right"><span class="mv-price"><span class="lp-dot" title="Freshest tracked fare — your live, bookable price is confirmed on Aviasales"></span>$'+p.toLocaleString()+'</span><button class="mini-book" style="border:0;cursor:pointer" onclick="jAdd('+i+')">Add hop</button></div></div>'; }).join(''); }).catch(function(){ out.innerHTML='<div class="wl-hint">Couldn&rsquo;t load hops &mdash; try again.</div>'; }); };
+window.jOptions=function(){ var o=jOrigin(); var out=go('j-options'); if(!/^[A-Z]{3}$/.test(o)){ out.innerHTML='<div class="wl-hint">Enter a 3-letter starting airport (e.g. RDU).</div>'; return; } var after=jAfter(); out.innerHTML='<div class="wl-hint">Finding onward flights from '+o+(after?(' on/after '+after):'')+'&hellip;</div>'; var months=[]; if(after){ var bd=new Date(after+'T00:00:00'); if(!isNaN(bd)){ for(var k=0;k<2;k++){ var dt=new Date(bd.getFullYear(), bd.getMonth()+k, 1); months.push(dt.getFullYear()+'-'+('0'+(dt.getMonth()+1)).slice(-2)); } } } var urls = months.length ? months.map(function(m){ return '/api/search?origin='+o+'&one_way=true&sorting=price&limit=1000&departure_at='+m; }) : ['/api/search?origin='+o+'&one_way=true&sorting=price&limit=1000']; Promise.all(urls.map(function(u){ return fetch(u).then(function(r){return r.json();}).then(function(j){ return (j&&j.data)||[]; }).catch(function(){ return []; }); })).then(function(arrs){ var data=[]; arrs.forEach(function(a){ data=data.concat(a); }); var visited={}; JRNY.forEach(function(l){visited[l.d]=1;}); visited[o]=1; var best={}; data.forEach(function(f){ var d=f.destination_airport; if(!d||visited[d]) return; if(JREG!=='all' && tagsFor(d).indexOf(JREG)<0) return; var dt=(f.departure_at||'').slice(0,10); if(after && dt && dt<after) return; if(!best[d]||f.price<best[d].price) best[d]=f; }); var list=Object.keys(best).map(function(k){return best[k];}); list.sort(function(a,b){return a.price-b.price;}); JOPTS=list.slice(0,60); if(!JOPTS.length){ out.innerHTML='<div class="wl-hint">No '+(JREG==='all'?'':JREG+' ')+'flights found onward from '+o+(after?(' on/after '+after):'')+'. Try another region'+(after?' or an earlier date':'')+'.</div>'; return; } out.innerHTML=JOPTS.map(function(f,i){ var d=f.destination_airport, dt=(f.departure_at||'').slice(0,10), p=Math.round(f.price); return '<div class="mv-row"><div class="mv-dest"><span class="flag flag-na" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/></svg></span><div><div class="mv-name">'+d+'</div><div class="mv-air">'+o+' &rarr; '+d+' &middot; '+dt+'</div></div></div><div class="mv-right"><span class="mv-price"><span class="lp-dot" title="Freshest tracked fare — your live, bookable price is confirmed on Aviasales"></span>$'+p.toLocaleString()+'</span><button class="mini-book" style="border:0;cursor:pointer" onclick="jAdd('+i+')">Add hop</button></div></div>'; }).join(''); }).catch(function(){ out.innerHTML='<div class="wl-hint">Couldn&rsquo;t load hops &mdash; try again.</div>'; }); };
 window.jAdd=function(i){ var f=JOPTS[i]; if(!f) return; JRNY.push({o:jOrigin(),d:f.destination_airport,date:(f.departure_at||'').slice(0,10),price:Math.round(f.price),link:f.link}); JREG='all'; jRender(); jOptions(); };
 function jRender(){ var has=JRNY.length>0; go('j-summary').style.display=has?'flex':'none'; go('j-removebtn').style.display=has?'inline-block':'none'; go('j-nightsrow').style.display=has?'flex':'none'; go('j-curlabel').style.display='block'; go('j-regions').style.display='flex'; var start=(go('j-origin').value||'RDU').trim().toUpperCase(); var html='<span class="j-stop start">'+(JRNY.length?JRNY[0].o:start)+'</span>'; var total=0; JRNY.forEach(function(l){ total+=l.price; html+='<span class="j-arrow">&rarr;</span><a class="j-stop" href="'+l.link+'" target="_blank" rel="noopener" title="'+l.date+'">'+l.d+'<small>$'+l.price.toLocaleString()+'</small></a>'; }); go('j-itin').innerHTML=html; go('j-total').textContent='$'+total.toLocaleString(); var cur=jOrigin(); if(has){ go('j-staylabel').textContent='Staying in '+JRNY[JRNY.length-1].d+' —'; go('j-curlabel').textContent='Cheapest onward hops from '+cur+':'; } else { go('j-curlabel').textContent='Cheapest first hops from '+cur+':'; } jRenderChips(); }
 var rbox=go('j-regions'); if(rbox){ rbox.addEventListener('click', function(e){ var b=e.target.closest('[data-r]'); if(b){ JREG=b.getAttribute('data-r'); jRenderChips(); jOptions(); } }); }
@@ -2785,9 +2781,9 @@ def body_blog(market, oneway):
   <section class="blog-sec"><h2>&#128200; Price trend</h2><div class="blog-spark">{spark}</div><p>{verdict}</p></section>
   <section class="blog-sec"><h2>&#128205; Top things to do</h2>{todo_block}</section>
   <section class="blog-sec"><h2>&#9654;&#65039; Watch a tour</h2>{watch_html}</section>
-  <section class="blog-sec"><h2>&#128737; Is it safe?</h2><p>{html.escape(info['safe'])}. As anywhere, watch your belongings in crowds and tourist areas. Visa for US passports: {html.escape(info['visa'])}. Always check your government&rsquo;s current travel advisory before you go.</p></section>
-  <section class="blog-sec"><h2>&#128220; A bit of history</h2><p>{html.escape(history) if g else history}</p></section>
-  <section class="blog-sec"><h2>&#127757; Culture &amp; language</h2><p>{html.escape(culture) if g else culture}</p><p class="blog-lang"><b>Language:</b> {html.escape(info['lang'])} &middot; <b>English spoken:</b> {html.escape(info['eng'])}</p></section>
+  <section class="blog-sec"><h2>Is it safe?</h2><p>{html.escape(info['safe'])}. As anywhere, watch your belongings in crowds and tourist areas. Visa for US passports: {html.escape(info['visa'])}. Always check your government&rsquo;s current travel advisory before you go.</p></section>
+  <section class="blog-sec"><h2>A bit of history</h2><p>{html.escape(history) if g else history}</p></section>
+  <section class="blog-sec"><h2>Culture &amp; language</h2><p>{html.escape(culture) if g else culture}</p><p class="blog-lang"><b>Language:</b> {html.escape(info['lang'])} &middot; <b>English spoken:</b> {html.escape(info['eng'])}</p></section>
   <div class="blog-cta"><a class="btn-primary" href="{link}" target="_blank" rel="noopener">Grab the {html.escape(cityshort)} deal &rarr;</a><a class="btn-ghost" href="explore.html">Find your own deal</a></div>
   {guide_link}
   <p class="finehint" style="text-align:center;margin-top:18px">Updated daily with the standout one-way fare from our tracker. Prices are recently-tracked fares &mdash; your live price is confirmed when you book on Aviasales. Safety and visa notes are general guidance for US travelers &mdash; verify official sources before booking.</p>
@@ -3040,21 +3036,21 @@ def body_rtw(world):
 
 def body_consultant():
     return f"""<div class="wrap" style="max-width:720px">
-  <div class="pagehead"><h1>&#129517; Hire a Trip Consultant</h1>
-  <p>Tell me where you want to go &mdash; or just your budget and rough dates &mdash; and I&rsquo;ll design the cheapest possible trip and <b>guarantee the best deals</b>: smart one-way routing, round-the-world loops, and fares most people never find. Save hours of searching and often hundreds on flights.</p></div>
-  <div class="rtw-hero" style="padding:20px"><div class="rtw-hero-label">My fee</div><div class="rtw-hero-price" style="font-size:34px">10% of your trip</div><div class="rtw-hero-sub">and I guarantee the best deals I can find &mdash; so the savings more than cover it.</div></div>
+  <div class="pagehead"><h1>Hire a Trip Consultant</h1>
+  <p>Tell us where you want to go &mdash; or just your budget and rough dates &mdash; and we&rsquo;ll design the cheapest possible trip and <b>guarantee the best deals</b>: smart one-way routing, round-the-world loops, and fares most people never find. Save hours of searching and often hundreds on flights.</p></div>
+  <div class="rtw-hero" style="padding:20px"><div class="rtw-hero-label">Our fee</div><div class="rtw-hero-price" style="font-size:34px">10% of your trip</div><div class="rtw-hero-sub">and we guarantee the best deals we can find &mdash; so the savings more than cover it.</div></div>
   <div class="panel" style="padding:24px">
     <form class="form" style="flex-direction:column;max-width:none;align-items:stretch;gap:12px" action="{FORM_ACTION}" method="POST" onsubmit="return fakeSubmit(event)">
       <input type="hidden" name="_subject" value="New trip-consultation request">
       <input type="hidden" name="type" value="consultation">
       <input type="text" name="name" placeholder="Your name" required>
       <input type="email" name="email" placeholder="you@email.com" required>
-      <textarea name="message" rows="5" required placeholder="Where do you want to go, roughly when, and your budget? Round-the-world? One country? A few cities? I&rsquo;ll take it from there." style="background:#0e141d;color:var(--ink);border:1px solid var(--line);border-radius:9px;padding:12px 14px;font-size:15px;font-family:inherit;resize:vertical"></textarea>
+      <textarea name="message" rows="5" required placeholder="Where do you want to go, roughly when, and your budget? Round-the-world? One country? A few cities? We&rsquo;ll take it from there." style="background:#0e141d;color:var(--ink);border:1px solid var(--line);border-radius:9px;padding:12px 14px;font-size:15px;font-family:inherit;resize:vertical"></textarea>
       <button type="submit">Send my trip request</button>
     </form>
-    <div class="ok" id="ok">&#10003; Got it &mdash; I&rsquo;ll get back to you by email with a plan and a quote.</div>
+    <div class="ok" id="ok">&#10003; Got it &mdash; we&rsquo;ll get back to you by email with a plan and a quote.</div>
   </div>
-  <div class="blog-sec" style="margin-top:24px"><h2>What you get</h2><ul class="blog-list"><li>A custom itinerary with the cheapest routing, specific flights and dates</li><li>A best-deal guarantee &mdash; I surface one-way and round-the-world fares most sites never show</li><li>Direct booking links so you book the exact fares yourself</li></ul></div>
+  <div class="blog-sec" style="margin-top:24px"><h2>What you get</h2><ul class="blog-list"><li>A custom itinerary with the cheapest routing, specific flights and dates</li><li>A best-deal guarantee &mdash; we surface one-way and round-the-world fares most sites never show</li><li>Direct booking links so you book the exact fares yourself</li></ul></div>
   <p class="finehint" style="text-align:center;margin-top:18px">No obligation to ask. Fee is 10% of your trip cost, charged only once you&rsquo;re happy with the plan.</p>
 </div>"""
 
@@ -3104,7 +3100,7 @@ window.exSearch=function(){ var ow=(EX_TRIP==='oneway'?'true':'false'); var to=(
   go('ex-out').innerHTML='<div class="wl-hint">Finding the cheapest '+(EX_TRIP==='oneway'?'one-way':'round-trip')+' fares from '+EX_ORIG.join(', ')+'&hellip;</div>'; var origset={}; EX_ORIG.forEach(function(o){origset[o]=1;}); var calls2=EX_ORIG.map(function(o){ return fetch('/api/search?origin='+o+'&one_way='+ow+'&sorting=price&limit=600').then(function(r){return r.json();}).then(function(j){ return (j&&j.data)||[]; }).catch(function(){ return []; }); }); Promise.all(calls2).then(function(arrs){ var best={}; arrs.forEach(function(data){ data.forEach(function(f){ var d=f.destination_airport; if(!d||origset[d]) return; if(!best[d]||f.price<best[d].price) best[d]=f; }); }); EX_DATA=Object.keys(best).map(function(k){return best[k];}).sort(function(a,b){return a.price-b.price;}); exFilter(); }).catch(function(){ go('ex-out').innerHTML='<div class="wl-hint">Couldn&rsquo;t load deals &mdash; try again.</div>'; }); };
 function exFilter(){ var now=new Date(); var soon=new Date(); soon.setDate(soon.getDate()+16); var rows=EX_DATA.filter(function(f){ if(EX_REG!=='all' && tagsFor(f.destination_airport).indexOf(EX_REG)<0) return false; if(EX_WHEN==='soon'){ var dp=new Date((f.departure_at||'').slice(0,10)+'T00:00:00'); if(isNaN(dp)||dp<now||dp>soon) return false; } return true; }); EX_SHOWN=rows.slice(0,40); exRender(); }
 var BM = __BMJS__;
-function owFlag(d){ var cc=(CC[d]||'').toLowerCase(); return cc ? '<img class="flag" src="https://flagcdn.com/'+cc+'.svg" alt="" width="30" height="21" loading="lazy">' : '<span class="emoji">&#9992;</span>'; }
+function owFlag(d){ var cc=(CC[d]||'').toLowerCase(); return cc ? '<img class="flag" src="https://flagcdn.com/'+cc+'.svg" alt="" width="30" height="21" loading="lazy">' : '<span class="flag flag-na" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/></svg></span>'; }
 function owMini(price, typ){ if(!typ||typ<=0) return ''; var lo=typ*0.6, hi=typ*1.4; if(hi<=lo) return ''; var frac=Math.max(2,Math.min(98,(price-lo)/(hi-lo)*100)); var c,v; if(price<=typ*0.9){c='g';v='Low';}else if(price<=typ*1.1){c='y';v='Typical';}else{c='r';v='High';} return '<div class="minibar"><div class="mb-track"><span class="mb-dot '+c+'" style="left:'+Math.round(frac)+'%"></span></div><span class="mb-lab '+c+'">'+v+'</span></div>'; }
 var NAMES = __NAMESJS__;
 var EX_TO_CODE='';
@@ -4206,9 +4202,9 @@ def body_cityguide(g, market, today):
         f'<a class="share-btn" target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u={su}">Facebook</a>'
         f'<a class="share-btn" target="_blank" rel="noopener" href="https://api.whatsapp.com/send?text={share_txt}%20{su}">WhatsApp</a>'
         f'<a class="share-btn" target="_blank" rel="noopener" href="mailto:?subject={quote_plus("Cheap flights to "+city)}&body={share_txt}%20{su}">Email</a></div>')
-    hist_block = (f'<section class="blog-sec"><h2>&#128220; A bit of history</h2><p>{html.escape(history)}</p></section>'
+    hist_block = (f'<section class="blog-sec"><h2>A bit of history</h2><p>{html.escape(history)}</p></section>'
                   if history else "")
-    cult_block = (f'<section class="blog-sec"><h2>&#127757; Culture &amp; language</h2><p>{html.escape(culture)}</p>'
+    cult_block = (f'<section class="blog-sec"><h2>Culture &amp; language</h2><p>{html.escape(culture)}</p>'
                   f'<p class="blog-lang"><b>Language:</b> {html.escape(info.get("lang","—"))} &middot; '
                   f'<b>English spoken:</b> {html.escape(info.get("eng","—"))}</p></section>') if culture else ""
     return f"""<div class="wrap blog-wrap">
@@ -4218,11 +4214,11 @@ def body_cityguide(g, market, today):
   <div class="art-meta">Updated {today} &middot; live fares &middot; {BRAND}</div>
   <div class="art-answer"><div class="aa-label">Quick answer</div><p>{cheapest_line} Below: a quick video, when to go, what to do, safety and culture.</p></div>
   {deal_block}
-  <section class="blog-sec"><h2>&#9654;&#65039; Watch: {html.escape(city)} in a couple of minutes</h2>{watch}</section>
+  <section class="blog-sec"><h2>Watch: {html.escape(city)} in a couple of minutes</h2>{watch}</section>
   <section class="blog-sec"><h2>The overview</h2><p>{html.escape(overview)}</p></section>
-  <section class="blog-sec"><h2>&#128205; Top things to do in {html.escape(city)}</h2>{todo_block}</section>
-  <section class="blog-sec"><h2>&#128197; Best time to visit</h2><p>The sweet spot for {html.escape(city)} is generally <b>{html.escape(best)}</b> &mdash; and the cheapest fares often land just outside peak season.</p></section>
-  <section class="blog-sec"><h2>&#128737; Is it safe?</h2><p>{html.escape(info.get('safe','Check the latest travel advisory'))}. Watch your belongings in crowds and tourist areas, and check your government&rsquo;s current advisory before you go. Visa for US passports: {html.escape(info.get('visa','check entry requirements'))}.</p></section>
+  <section class="blog-sec"><h2>Top things to do in {html.escape(city)}</h2>{todo_block}</section>
+  <section class="blog-sec"><h2>Best time to visit</h2><p>The sweet spot for {html.escape(city)} is generally <b>{html.escape(best)}</b> &mdash; and the cheapest fares often land just outside peak season.</p></section>
+  <section class="blog-sec"><h2>Is it safe?</h2><p>{html.escape(info.get('safe','Check the latest travel advisory'))}. Watch your belongings in crowds and tourist areas, and check your government&rsquo;s current advisory before you go. Visa for US passports: {html.escape(info.get('visa','check entry requirements'))}.</p></section>
   {hist_block}
   {cult_block}
   {share}
