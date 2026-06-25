@@ -40,6 +40,10 @@ HOMEBASE = os.path.join(DATA_DIR, "homebase.json")
 EMOJI = {code: emoji for code, name, emoji, bench in dg.DESTINATIONS}
 BEST_TIME = dg.BEST_TIME
 DEST_INFO = dg.DEST_INFO
+try:
+    AIRPORT_NAMES = json.load(open(os.path.join(HERE, "airport_names.json"), encoding="utf-8"))
+except Exception:
+    AIRPORT_NAMES = {}
 
 CODE_COUNTRY = {
     "BKK": "th", "DPS": "id", "HKT": "th", "SGN": "vn", "HAN": "vn", "NRT": "jp",
@@ -247,6 +251,9 @@ def _seo_for(active, fallback_title):
     cg = globals().get("CITYGUIDE_BY_FILE", {})
     if active in cg:
         return (cg[active]["title"], cg[active]["description"])
+    rt = globals().get("ROUTE_BY_FILE", {})
+    if active in rt:
+        return (rt[active]["title"], rt[active]["description"])
     if active in SEO:
         return SEO[active]
     return (f"{fallback_title} | {BRAND}", TAGLINE)
@@ -390,6 +397,17 @@ def head_seo(active, full_title, description, market=None):
                           "thumbnailUrl": f"https://i.ytimg.com/vi/{vid}/hqdefault.jpg",
                           "embedUrl": f"https://www.youtube.com/embed/{vid}",
                           "uploadDate": datetime.now().strftime("%Y-%m-%d")})
+    rt_by = globals().get("ROUTE_BY_FILE", {})
+    if active in rt_by:
+        p = rt_by[active]
+        graph.append({"@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Cheap flights",
+             "item": BASE_URL + "/cheap-flights.html"},
+            {"@type": "ListItem", "position": 2, "name": p["h1"], "item": url}]})
+        graph.append({"@type": "FAQPage", "mainEntity": [
+            {"@type": "Question", "name": q,
+             "acceptedAnswer": {"@type": "Answer", "text": a4}}
+            for q, a4 in route_faqs(p)]})
     blob = json.dumps({"@context": "https://schema.org", "@graph": graph},
                       ensure_ascii=False)
     tags.append(f'<script type="application/ld+json">{blob}</script>')
@@ -1175,6 +1193,10 @@ CSS = r"""<style>
   body{ margin:0; background:var(--bg); color:var(--ink);
         font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; line-height:1.6; }
   a{ color:inherit; }
+  .rtw-controls{ display:flex; gap:18px; flex-wrap:wrap; align-items:flex-end; }
+  .rtw-ctl{ display:flex; flex-direction:column; gap:5px; font-size:12px; color:var(--muted); }
+  .rtw-ctl select, .rtw-ctl input[type=range]{ min-width:200px; background:#0e141d; color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:8px 10px; }
+  .rtw-ctl b{ color:var(--gold); }
   .ticker{ overflow:hidden; background:var(--ink2); border-bottom:1px solid #1d2941; }
   .ticker.ow{ background:#0e1a2e; }
   .ticker-track{ display:inline-flex; white-space:nowrap; animation:scrollL 70s linear infinite; }
@@ -3004,34 +3026,170 @@ def round_the_world(world, min_stops=3, max_stops=5, gap_min=35, gap_max=175):
 
 
 def body_rtw(world):
+    # --- cheapest hub-to-hub one-way legs (a,b both world hubs) ---
+    leg = {}
+    for r in world:
+        a, b = r.get("o"), r.get("c")
+        if a in WORLD_HUBS and b in WORLD_HUBS and a != b:
+            if (a, b) not in leg or r["price"] < leg[(a, b)]["price"]:
+                leg[(a, b)] = r
+    try:
+        coords = json.load(open(os.path.join(HERE, "airport_coords.json"), encoding="utf-8"))
+    except Exception:
+        coords = {}
+    HUBS = {}
+    for h, nm in WORLD_HUBS.items():
+        if h in coords and isinstance(coords[h], list):
+            HUBS[h] = {"n": nm, "lon": coords[h][1], "cont": continent_of(h), "fl": flag_img(h)}
+    LEGS = {f"{a}>{b}": {"p": round(L["price"]), "l": L.get("link", ""), "d": L.get("depart", "")}
+            for (a, b), L in leg.items() if a in HUBS and b in HUBS}
+    conts = sorted({HUBS[h]["cont"] for h in HUBS if h not in RTW_US_STARTS})
+    start_opts = ('<option value="AUTO">Auto &mdash; cheapest start</option>'
+                  + "".join(f'<option value="{h}">{html.escape(WORLD_HUBS[h])} ({h})</option>'
+                            for h in RTW_US_STARTS if h in HUBS))
+    cont_chips = "".join(f'<button type="button" class="airchip on" data-rcont="{html.escape(c, quote=True)}" '
+                         f'onclick="rtwToggleCont(this)">{html.escape(c)}</button>' for c in conts)
+
+    # --- server-rendered default loop (SEO + no-JS fallback) ---
     trip = round_the_world(world)
-    if not trip:
-        return ('<div class="wrap"><div class="pagehead"><h1><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m15.6 8.4-2.1 5.1-5.1 2.1 2.1-5.1 5.1-2.1z"/></svg> Ferdinand&rsquo;s World Loop</h1>'
-                '<p>We couldn&rsquo;t assemble a full around-the-world loop from today&rsquo;s fares &mdash; '
-                'check back after the next refresh, or explore one-way deals on the '
-                '<a href="market.html" style="color:var(--gold)">Market</a>.</p></div></div>')
-    rows = []
-    for i, l in enumerate(trip["legs"], 1):
-        link = html.escape(l["link"], quote=True)
-        rows.append(
-            f'<div class="rtw-leg"><span class="rtw-num">{i}</span>'
-            f'<div class="rtw-cities">{flag_img(l["from"])}<span class="rtw-city">{html.escape(l["from_name"])}</span>'
-            f'<span class="rtw-arrow">&rarr;</span>{flag_img(l["to"])}<span class="rtw-city">{html.escape(l["to_name"])}</span></div>'
-            f'<div class="rtw-legright"><span class="rtw-legprice">${l["price"]:,.0f}</span>'
-            f'<span class="rtw-legunit">one-way</span>'
-            f'<a class="mini-book" href="{link}" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a></div></div>')
-    legs_html = "".join(rows)
-    first_link = html.escape(trip['legs'][0]['link'], quote=True)
-    return f"""<div class="wrap">
-  <div class="pagehead"><h1><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m15.6 8.4-2.1 5.1-5.1 2.1 2.1-5.1 5.1-2.1z"/></svg> Ferdinand&rsquo;s World Loop</h1>
-  <p>Five centuries after Magellan circled the globe, here&rsquo;s the cheapest way to do it today &mdash; one cheap one-way at a time. This is the lowest-cost real loop our tracker can build right now: {trip['stops']} stops, {trip['flights']} flights, starting and finishing in {html.escape(trip['start_name'])}, all one-way.</p></div>
-  <div class="rtw-hero"><div class="rtw-hero-label">Around the world today from</div>
-    <div class="rtw-hero-price">${trip['total']:,.0f}</div>
-    <div class="rtw-hero-sub">{trip['flights']} one-way flights &middot; {trip['stops']} stops &middot; ~4 weeks &middot; loops back to {html.escape(trip['start_name'])}</div></div>
-  <div class="rtw-route">{legs_html}</div>
-  <div class="blog-cta"><a class="btn-primary" href="{first_link}" target="_blank" rel="noopener">Start the loop &mdash; book leg 1 &rarr;</a><a class="btn-ghost" href="explore.html">Plan your own route</a></div>
-  <p class="finehint" style="text-align:center;margin-top:18px">Today&rsquo;s cheapest loop from recently-tracked one-way fares &mdash; geography won&rsquo;t always be textbook-perfect, and each leg&rsquo;s live price is confirmed when you book on Aviasales. Pace and dates are illustrative; build your exact trip on the <a href="explore.html" style="color:var(--gold)">Explore</a> tab.</p>
-</div>"""
+    if trip:
+        rows = []
+        for i, l in enumerate(trip["legs"], 1):
+            lk = html.escape(l["link"], quote=True)
+            rows.append(
+                f'<div class="rtw-leg"><span class="rtw-num">{i}</span>'
+                f'<div class="rtw-cities">{flag_img(l["from"])}<span class="rtw-city">{html.escape(l["from_name"])}</span>'
+                f'<span class="rtw-arrow">&rarr;</span>{flag_img(l["to"])}<span class="rtw-city">{html.escape(l["to_name"])}</span></div>'
+                f'<div class="rtw-legright"><span class="rtw-legprice">${l["price"]:,.0f}</span>'
+                f'<span class="rtw-legunit">one-way</span>'
+                f'<a class="mini-book" href="{lk}" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a></div></div>')
+        first_link = html.escape(trip["legs"][0]["link"], quote=True)
+        default_html = (
+            f'<div class="rtw-hero"><div class="rtw-hero-label">Around the world from</div>'
+            f'<div class="rtw-hero-price">${trip["total"]:,.0f}</div>'
+            f'<div class="rtw-hero-sub">{trip["flights"]} one-way flights &middot; {trip["stops"]} stops &middot; '
+            f'loops back to {html.escape(trip["start_name"])}</div></div>'
+            f'<div class="rtw-route">{"".join(rows)}</div>'
+            f'<div class="blog-cta"><a class="btn-primary" href="{first_link}" target="_blank" rel="noopener">'
+            f'Start the loop &mdash; book leg 1 &rarr;</a></div>')
+    else:
+        default_html = ('<div class="wl-hint">We couldn&rsquo;t assemble a full loop from today&rsquo;s fares. '
+                        'Try different settings, or browse one-way deals on the '
+                        '<a href="market.html" style="color:var(--gold)">Market</a>.</div>')
+
+    COMPASS = ('<svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" '
+               'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/>'
+               '<path d="m15.6 8.4-2.1 5.1-5.1 2.1 2.1-5.1 5.1-2.1z"/></svg>')
+
+    shell = """<div class="wrap">
+  <div class="pagehead"><h1>__COMPASS__ Ferdinand&rsquo;s World Loop</h1>
+  <p>Five centuries after Magellan circled the globe, build your own cheapest way to do it today &mdash; one cheap one-way at a time. Set where you start, how many stops, and which parts of the world to pass through, and we&rsquo;ll find the lowest-cost real loop our tracker can assemble right now.</p></div>
+  <div class="tl-card">
+    <div class="rtw-controls">
+      <label class="rtw-ctl"><span>Start from</span>
+        <select id="rtw-start" onchange="rtwBuild()">__START_OPTS__</select></label>
+      <label class="rtw-ctl"><span>Direction</span>
+        <select id="rtw-dir" onchange="rtwBuild()"><option value="BOTH">Either &mdash; cheapest</option><option value="W">Westward (Magellan&rsquo;s way)</option><option value="E">Eastward</option></select></label>
+      <label class="rtw-ctl"><span>Stops <b id="rtw-stops-lab">3</b></span>
+        <input type="range" id="rtw-stops" min="2" max="5" value="3" oninput="rtwStopsLab();rtwBuild()"></label>
+    </div>
+    <div class="rtw-ctl" style="margin-top:6px"><span style="font-size:12px;color:var(--muted)">Pass through (tap to include/skip regions)</span>
+      <div class="airchips" id="rtw-conts" style="margin-top:6px">__CONT_CHIPS__</div></div>
+  </div>
+  <div id="rtw-out">__DEFAULT__</div>
+  <p class="finehint" style="text-align:center;margin-top:18px">Loops are built from recently-tracked one-way fares &mdash; geography won&rsquo;t always be textbook-perfect, and each leg&rsquo;s live price is confirmed when you book on Aviasales. No full loop for some combinations &mdash; widen the regions or change the stop count. Want a hand? <a href="consultant.html" style="color:var(--gold)">Hire a consultant</a>.</p>
+</div>
+<script>
+/* Interactive cheapest-circumnavigation builder. Runs an eastward DP over tracked
+   hub-to-hub one-way fares entirely in the browser (free, no backend).
+   FUTURE/AI: to add natural-language planning, POST the user's text + RHUBS/RLEGS
+   to an LLM endpoint and have it return {start, stops, regions}, then call rtwBuild(). */
+(function(){
+var RHUBS = __HUBS__;
+var RLEGS = __LEGS__;
+var RUS = __US__;
+var GMIN=35, GMAX=175;
+function go(id){ return document.getElementById(id); }
+function legP(a,b){ var k=RLEGS[a+">"+b]; return k?k.p:null; }
+function relLon(start, dir){ var l0=RHUBS[start].lon, r={}; for(var h in RHUBS){ var d=RHUBS[h].lon-l0; if(dir==="W") d=-d; r[h]=((d)%360+360)%360; } return r; }
+function buildLoop(start, nStops, allowed, dir){
+  if(!RHUBS[start]) return null;
+  var rel=relLon(start, dir);
+  var cand=[]; for(var h in RHUBS){ if(h===start||rel[h]<=0) continue; if(allowed && !allowed[RHUBS[h].cont]) continue; cand.push(h); }
+  cand.sort(function(a,b){ return rel[a]-rel[b]; });
+  var dp={};
+  cand.forEach(function(h){ if(rel[h]>=GMIN&&rel[h]<=GMAX){ var p=legP(start,h); if(p!=null) dp[h+"|1"]={c:p,prev:null}; } });
+  for(var k=2;k<=nStops;k++){
+    cand.forEach(function(h){
+      var best=null;
+      cand.forEach(function(p){
+        if(rel[p]>=rel[h]) return; var gap=rel[h]-rel[p]; if(gap<GMIN||gap>GMAX) return;
+        var d=dp[p+"|"+(k-1)]; if(!d) return; var lp=legP(p,h); if(lp==null) return;
+        var c=d.c+lp; if(best==null||c<best.c) best={c:c,prev:p};
+      });
+      if(best) dp[h+"|"+k]=best;
+    });
+  }
+  var best=null;
+  cand.forEach(function(h){
+    var d=dp[h+"|"+nStops]; if(!d) return; var fg=360-rel[h]; if(fg<GMIN||fg>GMAX) return;
+    var lp=legP(h,start); if(lp==null) return; var total=d.c+lp;
+    if(best==null||total<best.total){
+      var path=[h], ch=h, ck=nStops;
+      while(dp[ch+"|"+ck].prev!=null){ var pp=dp[ch+"|"+ck].prev; path.push(pp); ch=pp; ck--; }
+      path.reverse(); best={total:total, route:[start].concat(path).concat([start])};
+    }
+  });
+  return best;
+}
+function legRow(a,b,i){
+  var k=RLEGS[a+">"+b]; var price=k?k.p:0; var link=k?k.l:"#";
+  return '<div class="rtw-leg"><span class="rtw-num">'+i+'</span><div class="rtw-cities">'
+    +RHUBS[a].fl+'<span class="rtw-city">'+RHUBS[a].n+'</span><span class="rtw-arrow">&rarr;</span>'
+    +RHUBS[b].fl+'<span class="rtw-city">'+RHUBS[b].n+'</span></div>'
+    +'<div class="rtw-legright"><span class="rtw-legprice">$'+price.toLocaleString()+'</span>'
+    +'<span class="rtw-legunit">one-way</span>'
+    +'<a class="mini-book" href="'+link+'" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a></div></div>';
+}
+function render(best){
+  var out=go("rtw-out");
+  if(!best){ out.innerHTML='<div class="wl-hint">No full loop with these settings &mdash; try more regions or a different stop count.</div>'; return; }
+  var r=best.route, legs="", first=RLEGS[r[0]+">"+r[1]];
+  for(var i=0;i<r.length-1;i++){ legs+=legRow(r[i],r[i+1],i+1); }
+  var stops=r.length-2, flights=r.length-1, startName=RHUBS[r[0]].n;
+  out.innerHTML='<div class="rtw-hero"><div class="rtw-hero-label">Around the world from</div>'
+    +'<div class="rtw-hero-price">$'+best.total.toLocaleString()+'</div>'
+    +'<div class="rtw-hero-sub">'+flights+' one-way flights &middot; '+stops+' stops &middot; heading '+(best.dir==="W"?'west':'east')+' &middot; loops back to '+startName+'</div></div>'
+    +'<div class="rtw-route">'+legs+'</div>'
+    +'<div class="blog-cta"><a class="btn-primary" href="'+(first?first.l:"#")+'" target="_blank" rel="noopener">Start the loop &mdash; book leg 1 &rarr;</a></div>';
+}
+window.rtwStopsLab=function(){ go("rtw-stops-lab").textContent=go("rtw-stops").value; };
+window.rtwToggleCont=function(btn){ btn.classList.toggle("on"); rtwBuild(); };
+window.rtwBuild=function(){
+  var nStops=parseInt(go("rtw-stops").value,10);
+  var allowed={}; var any=false;
+  var chips=go("rtw-conts").querySelectorAll("[data-rcont]");
+  for(var i=0;i<chips.length;i++){ if(chips[i].classList.contains("on")){ allowed[chips[i].getAttribute("data-rcont")]=true; any=true; } }
+  if(!any) allowed=null;
+  var start=go("rtw-start").value;
+  var dir=go("rtw-dir").value;
+  var dirs = dir==="BOTH" ? ["E","W"] : [dir];
+  var starts = start==="AUTO" ? RUS : [start];
+  var best=null;
+  starts.forEach(function(s){ dirs.forEach(function(dd){ var x=buildLoop(s,nStops,allowed,dd); if(x&&(best==null||x.total<best.total)){ x.dir=dd; best=x; } }); });
+  render(best);
+};
+rtwBuild();
+})();
+</script>"""
+    return (shell
+            .replace("__COMPASS__", COMPASS)
+            .replace("__START_OPTS__", start_opts)
+            .replace("__CONT_CHIPS__", cont_chips)
+            .replace("__DEFAULT__", default_html)
+            .replace("__HUBS__", json.dumps(HUBS))
+            .replace("__LEGS__", json.dumps(LEGS))
+            .replace("__US__", json.dumps([h for h in RTW_US_STARTS if h in HUBS])))
 
 
 def body_consultant():
@@ -4016,6 +4174,13 @@ def body_moneypage(p, today):
         f'<details class="art-q"><summary>{html.escape(q)}</summary><p>{html.escape(a)}</p></details>'
         for q, a in money_faqs(p))
     faq_html = f'<section class="blog-sec"><h2>Frequently asked questions</h2>{faq_items}</section>'
+    route_links = [q for q in globals().get("ROUTE_PAGES", []) if q["origin"] == p["code"]]
+    routes_html = ""
+    if route_links:
+        routes_html = ('<section class="blog-sec"><h2>Popular routes from ' + html.escape(p["city"]) +
+                       '</h2><ul class="blog-list">' + "".join(
+                           f'<li><a href="{q["fname"]}">Cheap flights from {html.escape(q["ocity"])} to {html.escape(q["dcity"])}</a></li>'
+                           for q in route_links[:12]) + "</ul></section>")
     others = [q for q in MONEY_PAGES if q["code"] != p["code"]][:8]
     others_html = (
         '<section class="blog-sec"><h2>Cheap flights from other cities</h2>'
@@ -4038,6 +4203,7 @@ def body_moneypage(p, today):
   {cta}
   {table}
   {lm_html}
+  {routes_html}
   {faq_html}
   {others_html}
 </div>"""
@@ -4246,6 +4412,140 @@ def body_cityguide_hub(guides, market):
 </div>"""
 
 
+
+# --------------------------------------------------------------------------- #
+# Programmatic origin->destination route pages, built from real tracked fares
+# (market_latest). Quality-gated to destinations we have guide data for, so each
+# page has a real fare + best time + things to do + visa info (not thin).
+# To widen the surface later, expand CITY_GUIDE / dealsgen DEST_INFO coverage.
+# --------------------------------------------------------------------------- #
+ROUTE_PAGES = []
+ROUTE_BY_FILE = {}
+
+
+def _city_country(name):
+    parts = [x.strip() for x in str(name).split(",")]
+    return parts[0], (parts[-1] if len(parts) > 1 else "")
+
+
+def route_targets(market):
+    out, seen = [], set()
+    for r in market:
+        code = r.get("code"); origin = r.get("origin")
+        if not code or not origin:
+            continue
+        if code not in CITY_GUIDE and code not in BEST_TIME:   # quality gate
+            continue
+        oname = AIRPORT_NAMES.get(origin, origin); ocity = oname.split(",")[0]
+        dcity, dcountry = _city_country(r.get("name", code))
+        slug = f"cheap-flights-from-{_slugify(ocity)}-to-{_slugify(dcity)}"
+        if slug in seen:
+            slug = f"{slug}-{code.lower()}"
+        seen.add(slug)
+        try:
+            price = float(r.get("price", 0))
+        except Exception:
+            price = 0.0
+        out.append({**r, "ocity": ocity, "dcity": dcity, "dcountry": dcountry, "price": price,
+                    "slug": slug, "fname": slug + ".html",
+                    "title": f"Cheap Flights from {ocity} to {dcity} ({code}) | {BRAND}",
+                    "description": (f"Cheapest flights from {ocity} ({origin}) to {dcity}: a real, "
+                                    f"bookable fare from ${price:,.0f}, plus the best time to visit. "
+                                    f"Updated daily."),
+                    "h1": f"Cheap flights from {ocity} to {dcity}"})
+    return out
+
+
+def route_faqs(p):
+    best = BEST_TIME.get(p["code"], ""); info = DEST_INFO.get(p["code"], {})
+    faqs = [
+        (f"How much is a flight from {p['ocity']} to {p['dcity']}?",
+         f"The cheapest fare we're tracking from {p['ocity']} ({p['origin']}) to {p['dcity']} is "
+         f"${p['price']:,.0f}, departing {p.get('depart','')}. Fares move daily, so this page "
+         f"refreshes with the current low."),
+        (f"Are these {p['ocity']} to {p['dcity']} fares real and bookable?",
+         "Yes. Every fare is re-checked against live pricing and links to a secure booking page "
+         "for that exact flight."),
+    ]
+    if best:
+        faqs.append((f"When is the cheapest time to fly to {p['dcity']}?",
+                     f"The sweet spot for {p['dcity']} is generally {best} - and the cheapest fares "
+                     f"often land just outside peak season."))
+    if info.get("visa"):
+        faqs.append((f"Do US citizens need a visa for {p['dcountry'] or p['dcity']}?",
+                     f"{info.get('visa')}. Always confirm current entry requirements before you book."))
+    return faqs
+
+
+def body_route(p, market, today):
+    code = p["code"]; link = html.escape(p.get("link", ""), quote=True)
+    try:
+        sav = int(float(p.get("savings_pct", 0)))
+    except Exception:
+        sav = 0
+    if sav >= 12:
+        deal_line = f"about <b>{sav}% below</b> its typical price"
+    elif sav <= -12:
+        deal_line = "running a touch <b>above</b> its usual price"
+    else:
+        deal_line = "around its <b>typical</b> price"
+    bar = price_bar(code, p["price"], p.get("benchmark", 0))
+    dates = html.escape(p.get("depart", ""))
+    if p.get("return"):
+        dates += " &rarr; " + html.escape(p.get("return", ""))
+    cg = CITY_GUIDE.get(code, {}); info = DEST_INFO.get(code, {}); best = BEST_TIME.get(code, "")
+    about = (f'<section class="blog-sec"><h2>About {html.escape(p["dcity"])}</h2>'
+             f'<p>{html.escape(cg["overview"])}</p></section>') if cg.get("overview") else ""
+    besttime = (f'<section class="blog-sec"><h2>Best time to visit {html.escape(p["dcity"])}</h2>'
+                f'<p>The sweet spot is generally <b>{html.escape(best)}</b> &mdash; and the cheapest '
+                f'fares often land just outside peak season.</p></section>') if best else ""
+    todo = ('<section class="blog-sec"><h2>Top things to do in ' + html.escape(p["dcity"]) +
+            '</h2><ul class="blog-list">' + "".join(f"<li>{html.escape(t)}</li>" for t in cg["todo"][:5]) +
+            "</ul></section>") if cg.get("todo") else ""
+    bits = []
+    if info.get("safe"):
+        bits.append(html.escape(info["safe"]))
+    if info.get("lang"):
+        bits.append("Language: " + html.escape(info["lang"]))
+    if info.get("visa"):
+        bits.append("Visa for US passports: " + html.escape(info["visa"]))
+    safe = (f'<section class="blog-sec"><h2>Good to know</h2><p>{". ".join(bits)}.</p></section>') if bits else ""
+    faq_items = "".join(f'<details class="art-q"><summary>{html.escape(q)}</summary><p>{html.escape(a)}</p></details>'
+                        for q, a in route_faqs(p))
+    faq_html = f'<section class="blog-sec"><h2>Frequently asked questions</h2>{faq_items}</section>'
+    links = []
+    mp = next((q for q in MONEY_PAGES if q["code"] == p["origin"]), None)
+    if mp:
+        links.append(f'<li><a href="{mp["fname"]}">All cheap flights from {html.escape(p["ocity"])} ({p["origin"]})</a></li>')
+    cgp = next((g for g in CITY_GUIDES if g["code"] == code), None)
+    if cgp:
+        links.append(f'<li><a href="{cgp["fname"]}">{html.escape(p["dcity"])} travel guide</a></li>')
+    related = [q for q in ROUTE_PAGES if q["code"] != code and (q["origin"] == p["origin"] or q["dcity"] == p["dcity"])][:6]
+    for q in related:
+        links.append(f'<li><a href="{q["fname"]}">Cheap flights from {html.escape(q["ocity"])} to {html.escape(q["dcity"])}</a></li>')
+    links.append('<li><a href="around-the-world.html">Build a round-the-world trip</a></li>')
+    links_html = '<section class="blog-sec"><h2>Keep exploring</h2><ul class="blog-list">' + "".join(links) + '</ul></section>'
+    cta = (f'<div class="art-cta"><div class="art-cta-txt"><b>See it live:</b> this '
+           f'{html.escape(p["ocity"])}&ndash;{html.escape(p["dcity"])} fare is re-checked against live '
+           f'pricing and links straight to booking.</div>'
+           f'<a class="book" href="{link}" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a></div>')
+    return f"""<div class="wrap blog-wrap">
+  <nav class="crumbs"><a href="cheap-flights.html">Cheap flights</a> &rsaquo; {html.escape(p['ocity'])} to {html.escape(p['dcity'])}</nav>
+  <div class="blog-eyebrow">Route</div>
+  <h1 class="blog-title">{html.escape(p['h1'])}</h1>
+  <div class="art-meta">Updated {today} &middot; live fare &middot; {BRAND}</div>
+  <div class="art-answer"><div class="aa-label">Quick answer</div>
+    <p>The cheapest flight from <b>{html.escape(p['ocity'])} ({p['origin']})</b> to <b>{html.escape(p['dcity'])} ({code})</b> we&rsquo;re tracking is
+    <b>${p['price']:,.0f}</b>, {deal_line}, departing {dates or 'soon'}. It&rsquo;s real and bookable &mdash; refreshed daily.</p></div>
+  {('<div class="blog-spark">'+bar+'</div>') if bar else ''}
+  {cta}
+  {about}{besttime}{todo}{safe}
+  {faq_html}
+  {links_html}
+</div>"""
+
+
+
 def main():
     market = read_snapshot()
     if not market:
@@ -4268,7 +4568,7 @@ def main():
             for d in c.get(key, []):
                 d["t"] = lm_tags(d.get("cc", ""))
     hist = index_history()
-    global HIST_SERIES, FEATURED_VERIFIED, MONEY_PAGES, MONEY_BY_FILE
+    global HIST_SERIES, FEATURED_VERIFIED, MONEY_PAGES, MONEY_BY_FILE, ROUTE_PAGES, ROUTE_BY_FILE
     HIST_SERIES = read_history_series()
     try:
         FEATURED_VERIFIED = json.load(open(os.path.join(DATA_DIR, "featured_verified.json"), encoding="utf-8"))
@@ -4276,6 +4576,8 @@ def main():
         FEATURED_VERIFIED = {}
     MONEY_PAGES = money_targets(home)
     MONEY_BY_FILE = {p["fname"]: p for p in MONEY_PAGES}
+    ROUTE_PAGES = route_targets(market)
+    ROUTE_BY_FILE = {p["fname"]: p for p in ROUTE_PAGES}
     today = datetime.now().strftime("%B %d, %Y")
     summary = market_summary(market)
     cards_src = sorted(market, key=lambda m: signal_for(m["price"], m["benchmark"])[1], reverse=True)[:8]
@@ -4330,6 +4632,11 @@ def main():
                           oneway, onewaylm, home, lastmin, world, worldlm, today)
         with open(os.path.join(SITE_DIR, p["fname"]), "w", encoding="utf-8") as f:
             f.write(doc)
+    for p in ROUTE_PAGES:
+        doc = render_page(p["fname"], p["h1"], body_route(p, market, today), market,
+                          oneway, onewaylm, home, lastmin, world, worldlm, today)
+        with open(os.path.join(SITE_DIR, p["fname"]), "w", encoding="utf-8") as f:
+            f.write(doc)
 
     # Evergreen per-city guide pages (deal + video + travel guide).
     for g in CITY_GUIDES:
@@ -4340,10 +4647,11 @@ def main():
 
     all_files = (list(pages) + [a["slug"] + ".html" for a in ARTICLES]
                  + [p["fname"] for p in MONEY_PAGES]
-                 + [g["fname"] for g in CITY_GUIDES])
+                 + [g["fname"] for g in CITY_GUIDES]
+                 + [p["fname"] for p in ROUTE_PAGES])
     write_seo_files(all_files)
     print(f"Built {len(pages)} pages + {len(ARTICLES)} articles + {len(MONEY_PAGES)} money pages "
-          f"+ {len(CITY_GUIDES)} city guides + sitemap/robots -> {SITE_DIR}  "
+          f"+ {len(CITY_GUIDES)} city guides + {len(ROUTE_PAGES)} route pages + sitemap/robots -> {SITE_DIR}  "
           f"({len(market)} routes, {len(oneway)} one-ways, {len(home)} home airports)")
 
 
@@ -4360,13 +4668,14 @@ def write_seo_files(pages):
             "airports.html": "0.6"}
     article_files = set(globals().get("ARTICLE_BY_FILE", {}))
     money_files = set(globals().get("MONEY_BY_FILE", {}))
+    route_files = set(globals().get("ROUTE_BY_FILE", {}))
     cityguide_files = set(globals().get("CITYGUIDE_BY_FILE", {}))
     urls = []
     for fname in pages:
         loc = BASE_URL + "/" + ("" if fname == "index.html" else fname)
         cf = ("monthly" if fname in article_files
-              else "weekly" if fname in cityguide_files else "daily")
-        dp = ("0.6" if fname in article_files
+              else "weekly" if fname in cityguide_files or fname in route_files else "daily")
+        dp = ("0.6" if fname in article_files or fname in route_files
               else "0.7" if fname in money_files or fname in cityguide_files else "0.5")
         urls.append(
             f"  <url>\n    <loc>{loc}</loc>\n    <lastmod>{lastmod}</lastmod>\n"
