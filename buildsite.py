@@ -110,7 +110,8 @@ FOOTER_NAV = [
                       ("trip.html", "Journey Builder")]),
     ("Learn", [("city-guides.html", "City guides"), ("guides.html", "Guides &amp; tips"),
                ("blog.html", "Today&rsquo;s Daily Guide"), ("essentials.html", "Travel kit")]),
-    ("Your trips", [("watchlist.html", "My bucket list"), ("index.html#alerts", "Get free price alerts")]),
+    ("Your trips", [("watchlist.html", "My bucket list"), ("index.html#alerts", "Get free price alerts"),
+               ("consultant.html", "Hire a consultant")]),
 ]
 
 
@@ -3007,6 +3008,27 @@ def body_rtw(world):
 </div>"""
 
 
+def body_consultant():
+    return f"""<div class="wrap" style="max-width:720px">
+  <div class="pagehead"><h1>&#129517; Hire a Trip Consultant</h1>
+  <p>Tell me where you want to go &mdash; or just your budget and rough dates &mdash; and I&rsquo;ll design the cheapest possible trip and <b>guarantee the best deals</b>: smart one-way routing, round-the-world loops, and fares most people never find. Save hours of searching and often hundreds on flights.</p></div>
+  <div class="rtw-hero" style="padding:20px"><div class="rtw-hero-label">My fee</div><div class="rtw-hero-price" style="font-size:34px">10% of your trip</div><div class="rtw-hero-sub">and I guarantee the best deals I can find &mdash; so the savings more than cover it.</div></div>
+  <div class="panel" style="padding:24px">
+    <form class="form" style="flex-direction:column;max-width:none;align-items:stretch;gap:12px" action="{FORM_ACTION}" method="POST" onsubmit="return fakeSubmit(event)">
+      <input type="hidden" name="_subject" value="New trip-consultation request">
+      <input type="hidden" name="type" value="consultation">
+      <input type="text" name="name" placeholder="Your name" required>
+      <input type="email" name="email" placeholder="you@email.com" required>
+      <textarea name="message" rows="5" required placeholder="Where do you want to go, roughly when, and your budget? Round-the-world? One country? A few cities? I&rsquo;ll take it from there." style="background:#0e141d;color:var(--ink);border:1px solid var(--line);border-radius:9px;padding:12px 14px;font-size:15px;font-family:inherit;resize:vertical"></textarea>
+      <button type="submit">Send my trip request</button>
+    </form>
+    <div class="ok" id="ok">&#10003; Got it &mdash; I&rsquo;ll get back to you by email with a plan and a quote.</div>
+  </div>
+  <div class="blog-sec" style="margin-top:24px"><h2>What you get</h2><ul class="blog-list"><li>A custom itinerary with the cheapest routing, specific flights and dates</li><li>A best-deal guarantee &mdash; I surface one-way and round-the-world fares most sites never show</li><li>Direct booking links so you book the exact fares yourself</li></ul></div>
+  <p class="finehint" style="text-align:center;margin-top:18px">No obligation to ask. Fee is 10% of your trip cost, charged only once you&rsquo;re happy with the plan.</p>
+</div>"""
+
+
 def body_explore():
     return """<div class="wrap">
   <div class="pagehead"><h1>Explore</h1><p>Two ways to search: leave <b>To</b> empty to see the cheapest deals to <b>anywhere</b> from your home airport(s) &mdash; or type a destination (e.g. BKK, HNL) to track a <b>specific route</b> and see every fare we have for it. Add several home airports and we&rsquo;ll find the cheapest across all of them. Star any deal to save it.</p></div>
@@ -4088,7 +4110,8 @@ def main():
         "trip.html": ("Journey", body_trip()),
         "explore.html": ("Explore", body_explore()),
         "blog.html": ("Daily Guide", body_blog(market, oneway)),
-        "around-the-world.html": ("Ferdinand's Trip Around the World", body_rtw(world)),
+        "around-the-world.html": ("Ferdinand's World Loop", body_rtw(world)),
+        "consultant.html": ("Hire a Trip Consultant", body_consultant()),
         "lastminute.html": ("Last-minute", body_lastminute(lastmin)),
         "airports.html": ("Captain's Log", body_airports(home)),
         "watchlist.html": ("Watchlist", body_watchlist(market)),
