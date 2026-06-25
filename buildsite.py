@@ -146,6 +146,7 @@ def lm_tags(cc):
 
 # ---- Connect these later (see HOSTING.md) -------------------------------- #
 FORM_ACTION = "https://formspree.io/f/mojoqrgn"
+BEEHIIV_URL = "https://daltons-newsletter-44b474.beehiiv.com/"
 BRAND = "Magellan Flights"
 TAGLINE = "The cheapest flights from the USA, tracked like a market - every day."
 
@@ -1170,12 +1171,8 @@ SIGNUP = """
 <section class="signup" id="alerts">
   <div class="signup-inner">
     <h2>Never miss a deal</h2>
-    <p>Get the best flight deals from the USA sent to your inbox. Free to join.</p>
-    <form class="form" action="__FORM_ACTION__" method="POST" onsubmit="return fakeSubmit(event)">
-      <input type="email" name="email" placeholder="you@email.com" required>
-      <button type="submit">Get free alerts</button>
-    </form>
-    <div class="ok" id="ok">&#10003; You're on the list! Check your inbox to confirm.</div>
+    <p>Get the week&rsquo;s biggest flight-price drops from the USA, free in your inbox.</p>
+    <a class="book" href="newsletter.html" style="display:inline-block;font-size:16px;padding:12px 28px;margin-top:6px">Join the free newsletter &rarr;</a>
   </div>
 </section>"""
 
@@ -5098,13 +5095,8 @@ def body_newsletter(market):
   <div class="signup" style="margin:0 0 22px"><div class="signup-inner">
     <h2>Get the weekly deal drop</h2>
     <p>Free forever &middot; one email a week &middot; real, bookable fares.</p>
-    <form class="form" action="{FORM_ACTION}" method="POST" onsubmit="return fakeSubmit(event)">
-      <input type="hidden" name="list" value="newsletter">
-      <input type="hidden" name="_subject" value="New newsletter subscriber">
-      <input type="email" name="email" placeholder="you@email.com" required>
-      <button type="submit">Join free</button>
-    </form>
-    <div class="ok" id="ok">&#10003; You&rsquo;re on the list! Check your inbox to confirm.</div>
+    <a class="book" href="{BEEHIIV_URL}" target="_blank" rel="noopener" style="display:inline-block;font-size:16px;padding:12px 26px">Join free &rarr;</a>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:10px">Opens our secure signup &mdash; takes 10 seconds, unsubscribe anytime.</p>
   </div></div>
   <div class="blog-sec"><h2>What you get every week</h2>
   <ul class="blog-list">
