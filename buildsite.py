@@ -147,6 +147,11 @@ def lm_tags(cc):
 # ---- Connect these later (see HOSTING.md) -------------------------------- #
 FORM_ACTION = "https://formspree.io/f/mojoqrgn"
 BEEHIIV_URL = "https://daltons-newsletter-44b474.beehiiv.com/"
+# Reusable "join the newsletter" CTA for the bottom of content pages (articles + city guides).
+NL_CTA = ('<div class="art-cta nl-cta"><div class="art-cta-txt">'
+          '<b>Get these deals in your inbox.</b> The week&rsquo;s biggest flight-price '
+          'drops from the USA &mdash; free, every week.</div>'
+          '<a class="book" href="newsletter.html">Join the free newsletter &rarr;</a></div>')
 BRAND = "Magellan Flights"
 TAGLINE = "The cheapest flights from the USA, tracked like a market - every day."
 
@@ -4248,6 +4253,7 @@ def body_article(a, market):
   {faq_html}
   {cta}
   {rel_html}
+  {NL_CTA}
 </div>"""
     st = _live_stats(market)
     return (out.replace("{LIVE_ROUTES}", st["routes"])
@@ -4580,6 +4586,7 @@ def body_cityguide(g, market, today):
   <section class="blog-sec"><h2>Frequently asked questions</h2>{faq_items}</section>
   <div class="blog-cta"><a class="btn-primary" href="{html.escape(deal['link'], quote=True) if deal else 'explore.html'}" {'target="_blank" rel="noopener"' if deal else ''}>{'Grab the '+city+' deal &rarr;' if deal else 'Find your own deal &rarr;'}</a><a class="btn-ghost" href="index.html#alerts">Get price-drop alerts</a></div>
   <section class="blog-sec"><h2>More city guides</h2><ul class="blog-list">{others_html}</ul></section>
+  {NL_CTA}
   <p class="finehint" style="text-align:center;margin-top:8px">Prices are recently-tracked fares &mdash; your live, bookable price is confirmed on Aviasales. Safety and visa notes are general guidance for US travelers; verify official sources before booking.</p>
 </div>"""
 
