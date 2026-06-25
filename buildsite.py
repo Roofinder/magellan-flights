@@ -1705,6 +1705,31 @@ CSS = r"""<style>
   .share-btn:hover{ border-color:var(--gold); color:var(--gold); }
 </style>"""
 
+POPUP_JS = r"""<script>
+/* Open Aviasales (affiliate) links as a pop-out window so Magellan stays in the background. */
+(function(){
+  function popout(url){
+    var w=Math.min(1180,(screen.availWidth||1180)), h=Math.min(840,(screen.availHeight||840));
+    var lx=Math.round(((screen.availWidth||w)-w)/2+(screen.availLeft||0));
+    var ty=Math.round(((screen.availHeight||h)-h)/2+(screen.availTop||0));
+    var feat='popup=yes,scrollbars=yes,resizable=yes,width='+w+',height='+h+',left='+lx+',top='+ty;
+    var win;
+    try{ win=window.open(url,'mfBook',feat); }catch(e){ win=null; }
+    if(win){ try{ win.focus(); }catch(e){} return true; }
+    return false;
+  }
+  document.addEventListener('click', function(ev){
+    if(ev.defaultPrevented) return;
+    if(ev.button!==0 || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+    var a=ev.target.closest ? ev.target.closest('a[href]') : null;
+    if(!a) return;
+    var href=a.getAttribute('href')||'';
+    if(href.indexOf('aviasales.com')===-1) return;
+    if(popout(a.href)) ev.preventDefault();
+  }, true);
+})();
+</script>"""
+
 SCRIPT = r"""<script>
 var ASTRO='__ASTRO__';
 var ACO = __ACOJS__;
@@ -2211,7 +2236,7 @@ def render_page(active, title, body, market, oneway, onewaylm, home, lm, world, 
             f'<link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">\n'
             f'<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">\n'
             f'<link rel="apple-touch-icon" href="apple-touch-icon.png">\n'
-            f'{CSS}\n</head>\n{top_chrome(active, market)}\n{body}\n{CHAT_HTML}\n{WIDGET_HTML}\n{foot}\n{script}\n</body>\n</html>').replace("__CCJS__", _cc).replace("__BMJS__", _bm).replace("__NAMESJS__", _names)
+            f'{CSS}\n</head>\n{top_chrome(active, market)}\n{body}\n{CHAT_HTML}\n{WIDGET_HTML}\n{foot}\n{script}\n{POPUP_JS}\n</body>\n</html>').replace("__CCJS__", _cc).replace("__BMJS__", _bm).replace("__NAMESJS__", _names)
 
 
 # --------------------------------------------------------------------------- #
