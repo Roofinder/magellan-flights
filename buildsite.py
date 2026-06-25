@@ -2650,40 +2650,66 @@ CITY_GUIDE = {
 }
 
 
-def body_blog(market):
-    ranked = sorted(featured_pool(market), key=lambda m: signal_for(m["price"], m["benchmark"])[1], reverse=True)
-    if not ranked:
+def body_blog(market, oneway):
+    by_code = {}
+    for m in market:
+        c = m["code"]
+        if c not in by_code or m["price"] < by_code[c]["price"]:
+            by_code[c] = m
+    best = None; cheapest = None
+    for o in oneway:
+        if (o.get("cc") or "").upper() == "US":
+            continue
+        if cheapest is None:
+            cheapest = (o, by_code.get(o["code"]))
+        rt_o = by_code.get(o["code"])
+        try:
+            typ_o = float(rt_o["price"]) * 0.62 if (rt_o and rt_o.get("price")) else 0
+            if typ_o > 0:
+                ratio = float(o["price"]) / typ_o
+                if best is None or ratio < best[0]:
+                    best = (ratio, o, rt_o)
+        except Exception:
+            continue
+    if best:
+        win, rt = best[1], best[2]
+    elif cheapest:
+        win, rt = cheapest
+    else:
         return '<div class="wrap"><div class="pagehead"><h1>Daily Guide</h1><p>No deals to feature yet today.</p></div></div>'
-    win = ranked[0]
-    code = win["code"]
-    sig, pct = signal_for(win["price"], win["benchmark"])
+    code = win["code"]; name = win["name"]; price = float(win["price"]); link = html.escape(win["link"], quote=True)
+    typ = (float(rt["price"]) * 0.62) if (rt and rt.get("price")) else 0
+    rtprice = float(rt["price"]) if (rt and rt.get("price")) else 0
+    cc2, vv = "g", "Low — great deal"
+    if typ:
+        if price > typ * 1.10:
+            cc2, vv = "r", "High right now"
+        elif price > typ * 0.90:
+            cc2, vv = "y", "Typical price"
+    pal = {"g": ("rgba(39,208,122,.15)", "var(--green)"), "y": ("rgba(231,185,78,.15)", "var(--gold)"), "r": ("rgba(255,94,94,.15)", "var(--red)")}
+    pbg, pcol = pal[cc2]
     g = CITY_GUIDE.get(code)
     info = DEST_INFO.get(code, {"lang": "the local language", "eng": "varies", "visa": "Check entry requirements for US passports", "safe": "Check your government's latest travel advisory", "note": "Verify details before booking"})
-    name = win["name"]
-    link = html.escape(win["link"], quote=True)
-    best = BEST_TIME.get(code, "year-round")
-    dates = f'{html.escape(win.get("depart",""))} &rarr; {html.escape(win.get("return",""))}' if win.get("return") else html.escape(win.get("depart",""))
+    best_time = BEST_TIME.get(code, "year-round")
     if g:
         overview = g["overview"]; history = g["history"]; culture = g["culture"]
         todo = "".join(f"<li>{html.escape(t)}</li>" for t in g["todo"])
     else:
-        overview = f"{html.escape(name)} is today's standout deal from our tracker. We don't have a full guide written for it yet, but here are the essentials to help you decide."
+        overview = f"{html.escape(name)} is today's standout one-way deal from our tracker. We don't have a full guide written for it yet, but here are the essentials to help you decide."
         history = "We're still writing the full history for this destination — check back soon."
         culture = f"Locals speak {html.escape(info['lang'])}. {html.escape(info['note'])}."
         todo = "<li>Explore the historic center and main squares</li><li>Try the regional cuisine and markets</li><li>Visit the top museums and landmarks</li><li>Take a popular day-trip nearby</li>"
     todo_block = f"<ul class='blog-list'>{todo}</ul>" if todo else ""
     series = HIST_SERIES.get(code, [])
     spark = sparkline_svg(series)
-    if len(series) >= 2:
-        lo = min(series)
-        if win["price"] <= lo:
-            verdict = f"We&rsquo;ve tracked {len(series)} days of fares to {html.escape(name.split(',')[0])} &mdash; today&rsquo;s ${win['price']:,.0f} is the <b>lowest we&rsquo;ve logged</b>. Strong time to book."
-        else:
-            verdict = f"Tracked {len(series)} days. Today&rsquo;s ${win['price']:,.0f} sits above the ${lo:,.0f} low we&rsquo;ve seen &mdash; it may dip again, so watch it."
+    if typ and price <= typ * 0.90:
+        verdict = f"At <b>${price:,.0f} one-way</b>, this is running well below the usual fare for this route &mdash; a strong time to grab it. Want the trip home too? Add a return for about ${rtprice:,.0f}."
+    elif typ:
+        verdict = f"Today&rsquo;s <b>${price:,.0f} one-way</b> is around the usual range for this route. You can add a return any time for about ${rtprice:,.0f}."
     else:
-        verdict = "We just started logging this route &mdash; the trend line fills in a little more every day."
+        verdict = f"Today&rsquo;s standout one-way fare is <b>${price:,.0f}</b>. We track this route&rsquo;s prices daily, so the trend fills in a little more over time."
     cityshort = name.split(",")[0].strip()
-    cg_fname = next((g["fname"] for g in CITY_GUIDES if g["code"] == code), None)
+    cg_fname = next((gg["fname"] for gg in CITY_GUIDES if gg["code"] == code), None)
     guide_link = (f'<p style="text-align:center;margin-top:8px"><a href="{cg_fname}" '
                   f'style="color:var(--gold);font-weight:600">&rarr; Open the full {html.escape(cityshort)} '
                   f'travel guide</a></p>') if cg_fname else ""
@@ -2700,13 +2726,14 @@ def body_blog(market):
                       f'<span class="bv-play">&#9654;</span><span class="bv-text">A <b>{html.escape(cityshort)}</b> video guide is on the way &mdash; '
                       f'<b style="color:var(--gold)">subscribe</b> so you don&rsquo;t miss it.</span></a>')
     else:
-        watch_html = '<div class="blog-soon">&#127909; Video guide coming soon</div>' 
+        watch_html = '<div class="blog-soon">&#127909; Video guide coming soon</div>'
+    rtnote = f' &middot; round-trip ${rtprice:,.0f} with a return' if (rt and rtprice) else ''
     return f"""<div class="wrap blog-wrap">
-  <div class="blog-eyebrow">&#9733; Today&rsquo;s Biggest Winner &middot; biggest price drop on the board</div>
+  <div class="blog-eyebrow">&#9733; Today&rsquo;s Biggest Winner &middot; best one-way deal on the board</div>
   <h1 class="blog-title">{html.escape(name)}</h1>
-  <div class="blog-deal" data-lp data-o="{html.escape(win['origin'], quote=True)}" data-d="{win['code']}" data-ow="{0 if win.get('return') else 1}">
-    <div><div class="blog-deal-label">Round-trip from {html.escape(win['origin'])}</div><div class="blog-deal-dates">{dates} &middot; best time to go: {html.escape(best)}</div></div>
-    <div class="blog-deal-right"><span class="blog-price">${win['price']:,.0f}</span><span class="blog-was">was ~${win['benchmark']:,.0f}</span><span class="sig s-book">{sig} &middot; {pct:.0f}% off</span><a class="book" href="{link}" target="_blank" rel="noopener">See live price &amp; book &rarr;</a></div>
+  <div class="blog-deal" data-lp data-o="{html.escape(win['origin'], quote=True)}" data-d="{code}" data-ow="1">
+    <div><div class="blog-deal-label">One-way from {html.escape(win['origin'])}</div><div class="blog-deal-dates">{html.escape(win.get('depart',''))} &middot; one-way &middot; best time to go: {html.escape(best_time)}{rtnote}</div></div>
+    <div class="blog-deal-right"><span class="blog-price">${price:,.0f}</span><span class="blog-was">one-way</span><span class="winner-off" style="background:{pbg};color:{pcol}">{vv}</span><a class="book" href="{link}" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a></div>
   </div>
   <section class="blog-sec"><h2>The overview</h2><p>{html.escape(overview) if g else overview}</p></section>
   <section class="blog-sec"><h2>&#128200; Price trend</h2><div class="blog-spark">{spark}</div><p>{verdict}</p></section>
@@ -2715,10 +2742,11 @@ def body_blog(market):
   <section class="blog-sec"><h2>&#128737; Is it safe?</h2><p>{html.escape(info['safe'])}. As anywhere, watch your belongings in crowds and tourist areas. Visa for US passports: {html.escape(info['visa'])}. Always check your government&rsquo;s current travel advisory before you go.</p></section>
   <section class="blog-sec"><h2>&#128220; A bit of history</h2><p>{html.escape(history) if g else history}</p></section>
   <section class="blog-sec"><h2>&#127757; Culture &amp; language</h2><p>{html.escape(culture) if g else culture}</p><p class="blog-lang"><b>Language:</b> {html.escape(info['lang'])} &middot; <b>English spoken:</b> {html.escape(info['eng'])}</p></section>
-  <div class="blog-cta"><a class="btn-primary" href="{link}" target="_blank" rel="noopener">Grab the {html.escape(name.split(',')[0])} deal &rarr;</a><a class="btn-ghost" href="explore.html">Find your own deal</a></div>
+  <div class="blog-cta"><a class="btn-primary" href="{link}" target="_blank" rel="noopener">Grab the {html.escape(cityshort)} deal &rarr;</a><a class="btn-ghost" href="explore.html">Find your own deal</a></div>
   {guide_link}
-  <p class="finehint" style="text-align:center;margin-top:18px">Updated daily with whichever destination has the biggest price drop. Prices are recently-tracked fares &mdash; your live price is confirmed when you book on Aviasales. Safety and visa notes are general guidance for US travelers &mdash; verify official sources before booking.</p>
+  <p class="finehint" style="text-align:center;margin-top:18px">Updated daily with the standout one-way fare from our tracker. Prices are recently-tracked fares &mdash; your live price is confirmed when you book on Aviasales. Safety and visa notes are general guidance for US travelers &mdash; verify official sources before booking.</p>
 </div>"""
+
 def oneway_minibar(price, typ):
     try:
         price = float(price); typ = float(typ)
@@ -3930,7 +3958,7 @@ def main():
         "world.html": ("World", body_world(world)),
         "trip.html": ("Journey", body_trip()),
         "explore.html": ("Explore", body_explore()),
-        "blog.html": ("Daily Guide", body_blog(market)),
+        "blog.html": ("Daily Guide", body_blog(market, oneway)),
         "lastminute.html": ("Last-minute", body_lastminute(lastmin)),
         "airports.html": ("Captain's Log", body_airports(home)),
         "watchlist.html": ("Watchlist", body_watchlist(market)),
