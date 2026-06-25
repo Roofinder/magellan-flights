@@ -83,6 +83,9 @@ REGIONS = {
     "Africa": ["CAI", "CMN", "JNB", "NBO"],
 }
 
+# Continents used for the fare indices (Middle East kept separate from Asia).
+INDEX_REGIONS = ["Asia", "Europe", "Middle East", "Americas", "Oceania", "Africa"]
+
 _GROUPS = {
     "SE Asia": "TH VN ID SG MY PH KH LA MM BN TL".split(),
     "E Asia": "JP KR CN TW HK MO MN".split(),
@@ -865,11 +868,13 @@ def index_history():
                 continue
     series = defaultdict(list)
     for d in sorted(per_date):
-        codes = per_date[d]
-        for reg, rcodes in REGIONS.items():
-            vals = [codes[c] for c in rcodes if c in codes]
-            if vals:
-                series[reg].append((d, sum(vals) / len(vals)))
+        buckets = defaultdict(list)
+        for c, p in per_date[d].items():
+            reg = continent_of(c)
+            if reg in INDEX_REGIONS:
+                buckets[reg].append(p)
+        for reg, vals in buckets.items():
+            series[reg].append((d, sum(vals) / len(vals)))
     return series
 
 
@@ -994,13 +999,48 @@ def market_summary(market):
             f"{html.escape(top['name'])}, down {toppct:.0f}%. {nbook} routes flagging BOOK.")
 
 
+def index_sparkline(series):
+    """Tiny pure-SVG line chart of a region's average-price history (time x, price y)."""
+    if not series or len(series) < 2:
+        return '<div class="idx-chart-empty">History chart builds as more days are logged.</div>'
+    vals = [v for _, v in series]
+    lo, hi = min(vals), max(vals)
+    rng = (hi - lo) or 1.0
+    W, H, PL, PR, PT, PB = 280.0, 78.0, 4.0, 4.0, 12.0, 4.0
+    n = len(series)
+    xs = [PL + i * (W - PL - PR) / (n - 1) for i in range(n)]
+    ys = [(H - PB) - (v - lo) / rng * (H - PT - PB) for v in vals]
+    line = "M" + " L".join(f"{xs[i]:.1f},{ys[i]:.1f}" for i in range(n))
+    area = (f"M{xs[0]:.1f},{H - PB:.1f} " + " ".join(f"L{xs[i]:.1f},{ys[i]:.1f}" for i in range(n))
+            + f" L{xs[-1]:.1f},{H - PB:.1f} Z")
+    def _fmt(d):
+        try:
+            return datetime.strptime(d, "%Y-%m-%d").strftime("%b %d")
+        except Exception:
+            return d
+    return (
+        f'<svg class="idx-chart" viewBox="0 0 280 78" preserveAspectRatio="none" role="img" aria-label="price history">'
+        f'<path d="{area}" fill="rgba(231,185,78,.13)"/>'
+        f'<path d="{line}" fill="none" stroke="#e7b94e" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>'
+        f'<text x="6" y="11" fill="#7e90ad" font-size="9">${hi:,.0f}</text>'
+        f'<text x="6" y="{H - 2:.0f}" fill="#7e90ad" font-size="9">${lo:,.0f}</text>'
+        f'</svg>'
+        f'<div class="idx-chart-x"><span>{_fmt(series[0][0])}</span><span>{_fmt(series[-1][0])}</span></div>'
+    )
+
+
 def index_cards(market, hist):
+    by_reg = defaultdict(list)
+    for m in market:
+        reg = continent_of(m["code"])
+        if reg in INDEX_REGIONS:
+            by_reg[reg].append(m)
     cards = []
-    for reg, codes in REGIONS.items():
-        prices = [m["price"] for m in market if m["code"] in codes]
-        if not prices:
+    for reg in INDEX_REGIONS:
+        rows = by_reg.get(reg, [])
+        if not rows:
             continue
-        avg = sum(prices) / len(prices)
+        avg = sum(m["price"] for m in rows) / len(rows)
         move = '<span class="idx-move new">today</span>'
         series = hist.get(reg, [])
         if len(series) >= 2:
@@ -1010,9 +1050,18 @@ def index_cards(market, hist):
                 move = f'<span class="idx-move {cl}">{ar}${abs(diff):,.0f} vs yest</span>'
             else:
                 move = '<span class="idx-move flat">flat</span>'
-        cards.append(f'<div class="idx"><p class="idx-name">{reg} index</p>'
-                     f'<p class="idx-val">${avg:,.0f}</p>'
-                     f'<p class="idx-sub">avg of {len(prices)} routes &middot; {move}</p></div>')
+        const_rows = "".join(
+            f'<li><span>{html.escape(m.get("name", m["code"]))} '
+            f'<span class="idx-c-from">from {html.escape(m["origin"])}</span></span>'
+            f'<span>${m["price"]:,.0f}</span></li>'
+            for m in sorted(rows, key=lambda x: x["price"]))
+        constituents = (f'<details class="idx-const"><summary>What&rsquo;s in this index ({len(rows)} routes)</summary>'
+                        f'<ul>{const_rows}</ul></details>')
+        cards.append(
+            f'<div class="idx"><div class="idx-top"><p class="idx-name">{reg} index</p>{move}</div>'
+            f'<p class="idx-val">${avg:,.0f}</p>'
+            f'<p class="idx-sub">avg of {len(rows)} tracked routes</p>'
+            f'{index_sparkline(series)}{constituents}</div>')
     return "".join(cards)
 
 
@@ -1370,7 +1419,17 @@ CSS = r"""<style>
   .pagehead{ padding:26px 0 2px; } .pagehead h1{ font-size:26px; margin:0 0 4px; } .pagehead p{ margin:0; color:var(--muted); }
   .sec-head{ display:flex; align-items:baseline; justify-content:space-between; margin:26px 0 12px; gap:10px; flex-wrap:wrap; }
   .sec-head h2{ font-size:20px; margin:0; } .sec-head span{ font-size:13px; color:var(--muted); }
-  .indices{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; }
+  .indices{ display:grid; grid-template-columns:repeat(auto-fit,minmax(248px,1fr)); gap:12px; }
+  .idx-top{ display:flex; justify-content:space-between; align-items:baseline; gap:8px; }
+  .idx-chart{ display:block; width:100%; height:auto; margin-top:8px; }
+  .idx-chart-x{ display:flex; justify-content:space-between; font-size:10px; color:#7e90ad; margin-top:1px; }
+  .idx-chart-empty{ font-size:11px; color:#7e90ad; margin-top:8px; }
+  .idx-const{ margin-top:10px; font-size:12px; }
+  .idx-const summary{ cursor:pointer; color:var(--gold); font-weight:600; list-style:revert; }
+  .idx-const ul{ list-style:none; margin:8px 0 0; padding:0; max-height:190px; overflow:auto; }
+  .idx-const li{ display:flex; justify-content:space-between; gap:10px; padding:4px 0; border-top:1px solid rgba(255,255,255,.08); }
+  .idx-const li span:last-child{ font-variant-numeric:tabular-nums; color:#fff; white-space:nowrap; }
+  .idx-c-from{ color:#7e90ad; font-size:11px; }
   .idx{ background:var(--ink2); border-radius:12px; padding:14px 16px; color:#fff; }
   .idx-name{ margin:0; font-size:13px; color:#9fb0cc; } .idx-val{ margin:4px 0 0; font-size:24px; font-weight:700; }
   .idx-sub{ margin:2px 0 0; font-size:12px; color:#7e90ad; }
