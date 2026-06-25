@@ -51,12 +51,25 @@ GLOBAL_ORIGINS = {
     "LIM": "Lima",
     # Africa
     "JNB": "Johannesburg", "CAI": "Cairo", "NBO": "Nairobi", "CMN": "Casablanca",
+    # Popular leisure & secondary destinations
+    "DLM": "Dalaman", "AYT": "Antalya", "BJV": "Bodrum", "SPU": "Split",
+    "DBV": "Dubrovnik", "NAP": "Naples", "VCE": "Venice", "CTA": "Catania",
+    "NCE": "Nice", "AGP": "Malaga", "PMI": "Palma de Mallorca", "IBZ": "Ibiza",
+    "OPO": "Porto", "FAO": "Faro", "SKG": "Thessaloniki", "HER": "Heraklion",
+    "JTR": "Santorini", "JMK": "Mykonos", "RHO": "Rhodes", "HRG": "Hurghada",
+    "SSH": "Sharm el-Sheikh", "RAK": "Marrakech", "CPT": "Cape Town", "ZNZ": "Zanzibar",
+    "MRU": "Mauritius", "SEZ": "Seychelles", "MLE": "Maldives", "CMB": "Colombo",
+    "KTM": "Kathmandu", "GOI": "Goa", "HKT": "Phuket", "KBV": "Krabi",
+    "CNX": "Chiang Mai", "DAD": "Da Nang", "DPS": "Bali", "CEB": "Cebu",
+    "ZQN": "Queenstown", "PPT": "Tahiti", "CUN": "Cancun", "PUJ": "Punta Cana",
+    "AUA": "Aruba", "SJU": "San Juan", "CTG": "Cartagena", "CUZ": "Cusco",
+    "UIO": "Quito",
 }
 
 # Major destinations to GUARANTEE coverage from every hub (incl. US long-haul),
 # which the cheapest-fare cache alone never reaches.
 WORLD_DESTS = ("JFK LAX MIA ORD SFO DTW IAH DEN DFW TPA HNL PHX LAS RDU CLT MCO BNA CMH YTO MEX GRU BOG LIM LON PAR FCO FRA MAD IST "
-               "DXB DOH SIN BKK HKG TYO ICN DEL SYD JNB CAI").split()
+               "DXB DOH SIN BKK HKG TYO ICN DEL SYD JNB CAI DLM AYT BJV SPU DBV NAP VCE CTA NCE AGP PMI IBZ OPO FAO SKG HER JTR JMK RHO HRG SSH RAK CPT ZNZ MRU SEZ MLE CMB KTM GOI HKT KBV CNX DAD DPS CEB ZQN PPT CUN PUJ AUA SJU CTG CUZ UIO").split()
 
 
 def main():

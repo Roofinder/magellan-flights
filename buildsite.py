@@ -3122,6 +3122,14 @@ WORLD_HUBS = {
     "SYD":"Sydney","MEL":"Melbourne","AKL":"Auckland",
     "MEX":"Mexico City","GRU":"Sao Paulo","BOG":"Bogota","EZE":"Buenos Aires","LIM":"Lima",
     "JNB":"Johannesburg","CAI":"Cairo","NBO":"Nairobi","CMN":"Casablanca",
+    "DLM":"Dalaman","AYT":"Antalya","BJV":"Bodrum","SPU":"Split","DBV":"Dubrovnik","NAP":"Naples",
+    "VCE":"Venice","CTA":"Catania","NCE":"Nice","AGP":"Malaga","PMI":"Palma de Mallorca","IBZ":"Ibiza",
+    "OPO":"Porto","FAO":"Faro","SKG":"Thessaloniki","HER":"Heraklion","JTR":"Santorini","JMK":"Mykonos",
+    "RHO":"Rhodes","HRG":"Hurghada","SSH":"Sharm el-Sheikh","RAK":"Marrakech","CPT":"Cape Town","ZNZ":"Zanzibar",
+    "MRU":"Mauritius","SEZ":"Seychelles","MLE":"Maldives","CMB":"Colombo","KTM":"Kathmandu","GOI":"Goa",
+    "HKT":"Phuket","KBV":"Krabi","CNX":"Chiang Mai","DAD":"Da Nang","DPS":"Bali","CEB":"Cebu",
+    "ZQN":"Queenstown","PPT":"Tahiti","CUN":"Cancun","PUJ":"Punta Cana","AUA":"Aruba","SJU":"San Juan",
+    "CTG":"Cartagena","CUZ":"Cusco","UIO":"Quito",
 }
 RTW_US_STARTS = ["JFK","LAX","MIA","ORD","SFO","BOS","ATL","SEA","DTW","IAH","DEN","DFW","TPA","HNL","PHX","LAS","RDU","CLT","MCO","BNA","CMH"]
 
@@ -3238,9 +3246,8 @@ def body_rtw(world):
         gfile = next((g["fname"] for g in CITY_GUIDES if g["code"] == h), "")
         if best or visa or blurb or gfile:
             RDEST[h] = {"b": best, "v": visa, "g": gfile, "d": (blurb[:170] + ("..." if len(blurb) > 170 else "")) if blurb else ""}
-    must_opts = ('<option value="">Any &mdash; no requirement</option>'
-                 + "".join(f'<option value="{h}">{html.escape(WORLD_HUBS[h])}</option>'
-                           for h in sorted(HUBS, key=lambda x: WORLD_HUBS[x]) if h not in RTW_US_STARTS))
+    must_opts = "".join(f'<option value="{html.escape(WORLD_HUBS[h], quote=True)}"></option>'
+                        for h in sorted(HUBS, key=lambda x: WORLD_HUBS[x]) if h not in RTW_US_STARTS)
 
     # --- server-rendered default loop (SEO + no-JS fallback) ---
     trip = round_the_world(world)
@@ -3292,7 +3299,7 @@ def body_rtw(world):
       <label class="rtw-ctl"><span>Max budget (optional)</span>
         <input type="number" id="rtw-budget" min="0" step="50" placeholder="e.g. 1500" oninput="rtwBuild()"></label>
       <label class="rtw-ctl"><span>Must include</span>
-        <select id="rtw-must" onchange="rtwBuild()">__MUST_OPTS__</select></label>
+        <input id="rtw-must" list="rtw-must-dl" placeholder="Any &mdash; type a city" oninput="rtwBuild()" autocomplete="off"><datalist id="rtw-must-dl">__MUST_OPTS__</datalist></label>
       <label class="rtw-ctl"><span>Trip length (weeks, optional)</span>
         <input type="number" id="rtw-weeks" min="1" max="20" placeholder="e.g. 4" oninput="rtwBuild()"></label>
     </div>
@@ -3433,7 +3440,8 @@ function render(best, opts){
   mfRecalc(); mfRenderTrips();
 }
 window.rtwStopsLab=function(){ go("rtw-stops-lab").textContent=go("rtw-stops").value; };
-function fillMust(scope){ var sel=go("rtw-must"); if(!sel) return; var cur=sel.value; var codes=[]; if(scope!=="WORLD" && REGIONS[scope]){ codes=REGIONS[scope].h.slice(); } else { for(var h in RHUBS){ if(RUS.indexOf(h)<0) codes.push(h); } } codes=codes.filter(function(h){ return RHUBS[h]; }); codes.sort(function(a,b){ var an=RHUBS[a].n, bn=RHUBS[b].n; return an<bn?-1:(an>bn?1:0); }); var html='<option value="">Any &mdash; no requirement</option>'; for(var i=0;i<codes.length;i++){ var c=codes[i]; html+='<option value="'+c+'">'+RHUBS[c].n+'</option>'; } sel.innerHTML=html; sel.value=(codes.indexOf(cur)>=0)?cur:""; }
+function fillMust(scope){ var dl=go("rtw-must-dl"); if(!dl) return; var inp=go("rtw-must"); var cur=inp?inp.value:""; var codes=[]; if(scope!=="WORLD" && REGIONS[scope]){ codes=REGIONS[scope].h.slice(); } else { for(var h in RHUBS){ if(RUS.indexOf(h)<0) codes.push(h); } } codes=codes.filter(function(h){ return RHUBS[h]; }); codes.sort(function(a,b){ var an=RHUBS[a].n, bn=RHUBS[b].n; return an<bn?-1:(an>bn?1:0); }); var html=""; var ok={}; for(var i=0;i<codes.length;i++){ var nm=RHUBS[codes[i]].n||""; ok[nm.toLowerCase()]=1; html+='<option value="'+nm.replace(/"/g,"&quot;")+'"></option>'; } dl.innerHTML=html; if(inp && cur && !ok[cur.toLowerCase()]) inp.value=""; }
+function mustCode(){ var inp=go("rtw-must"); if(!inp) return ""; var v=(inp.value||"").trim().toLowerCase(); if(!v) return ""; for(var h in RHUBS){ if((RHUBS[h].n||"").toLowerCase()===v) return h; } return ""; }
 window.rtwScope=function(){ var scope=go("rtw-scope")?go("rtw-scope").value:"WORLD", world=(scope==="WORLD"); var dw=go("rtw-dir-wrap"), sw=go("rtw-start-wrap"), rw=go("rtw-regions-wrap"); if(dw) dw.style.display=world?"":"none"; if(sw) sw.style.display=""; if(rw) rw.style.display=world?"":"none"; var cap=go("rtw-stops-cap"); if(cap) cap.textContent=world?"Stops":"Cities"; fillMust(scope); };
 window.rtwToggleCont=function(btn){ btn.classList.toggle("on"); rtwBuild(); };
 window.rtwCopy=function(btn){ try{ navigator.clipboard.writeText(location.href); }catch(e){} var t=btn.textContent; btn.textContent="Copied!"; setTimeout(function(){ btn.textContent=t; },1500); };
@@ -3469,7 +3477,7 @@ function updateURL(){
 }
 window.rtwBuild=function(){
   var nStops=parseInt(go("rtw-stops").value,10);
-  var mustH=go("rtw-must").value||"";
+  var mustH=mustCode();
   var budget=parseInt(go("rtw-budget").value,10); if(isNaN(budget)||budget<=0) budget=0;
   var weeks=parseInt(go("rtw-weeks").value,10); if(isNaN(weeks)||weeks<=0) weeks=0;
   var scope=go("rtw-scope")?go("rtw-scope").value:"WORLD";
