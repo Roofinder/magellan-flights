@@ -2691,6 +2691,18 @@ YT_VIDEOS = {}
 
 
 CITY_GUIDE = {
+    "ANC": {"overview": "Anchorage is the gateway to Alaska — a city ringed by mountains and water, minutes from glaciers, fjords and some of the best wildlife viewing on the continent.",
+            "todo": ["See glaciers on a Kenai Fjords cruise", "Ride the Alaska Railroad toward Denali", "Spot moose, bears and bald eagles", "Drive the scenic Seward Highway", "Chase the northern lights (Sep–Mar)"],
+            "history": "Founded as a railroad construction camp in 1915, Anchorage grew with the military and the 1968 oil boom into Alaska’s largest city and the hub for exploring the 49th state.",
+            "culture": "Alaska blends frontier spirit with deep Alaska Native heritage; the outdoors is the culture here, with hiking, fishing and aurora-watching woven into daily life."},
+    "GOH": {"overview": "Nuuk is the world’s smallest capital — a colorful town on Greenland’s southwest coast, surrounded by ice-flecked fjords, whales and the raw Arctic.",
+            "todo": ["Cruise the Nuuk Fjord past icebergs", "Watch for humpback whales", "Visit the Greenland National Museum", "Hike Lille Malene for big views", "Experience Inuit food and culture"],
+            "history": "Founded in 1728 by missionary Hans Egede, Nuuk grew from a small colony into the capital of Greenland, an autonomous territory within the Kingdom of Denmark.",
+            "culture": "Greenlandic (Kalaallisut) and Danish are spoken, and Inuit traditions — kayaking, hunting and drum dancing — remain central to a modern Arctic society."},
+    "SJO": {"overview": "San Jose is the laid-back capital of Costa Rica and the launch pad for the country’s volcanoes, cloud forests, beaches and famous ‘pura vida’ way of life.",
+            "todo": ["Day-trip to Poás or Irazú volcano", "Zipline a cloud forest", "Raft the Pacuare River", "Tour Central Valley coffee farms", "Spot sloths, toucans and monkeys"],
+            "history": "San Jose became Costa Rica’s capital in 1823; coffee wealth built its theaters and boulevards, in a country that famously abolished its army in 1948.",
+            "culture": "Costa Ricans (‘Ticos’) are known for warmth and the ‘pura vida’ philosophy; the country is a global eco-tourism leader, protecting a quarter of its land as parks and reserves."},
     "SJU": {"overview": "San Juan blends 500 years of Spanish-colonial history with Caribbean beaches and salsa-filled nights — and as part of the US, no passport is needed for Americans.",
             "todo": ["Wander the blue-cobblestone streets of Old San Juan", "Tour the clifftop forts El Morro and Castillo San Cristobal", "Relax on Condado and Isla Verde beaches", "Kayak the bioluminescent bay in nearby Fajardo", "Day-trip into El Yunque rainforest"],
             "history": "Founded in 1521, San Juan is one of the oldest European-settled cities in the Americas. Its massive fortifications were built by Spain to guard the gateway to the New World and are now a UNESCO World Heritage Site.",
@@ -3009,6 +3021,7 @@ WORLD_HUBS = {
     "BOS":"Boston","ATL":"Atlanta","SEA":"Seattle","YTO":"Toronto","YVR":"Vancouver",
     "DTW":"Detroit","IAH":"Houston","DEN":"Denver","DFW":"Dallas","TPA":"Tampa","HNL":"Honolulu","PHX":"Phoenix","LAS":"Las Vegas",
     "RDU":"Raleigh","CLT":"Charlotte","MCO":"Orlando","BNA":"Nashville","CMH":"Columbus",
+    "ANC":"Anchorage","GOH":"Nuuk","KEF":"Reykjavik","SJO":"San Jose",
     "LON":"London","PAR":"Paris","FRA":"Frankfurt","AMS":"Amsterdam","MAD":"Madrid","BCN":"Barcelona",
     "FCO":"Rome","IST":"Istanbul","LIS":"Lisbon","DUB":"Dublin","ZRH":"Zurich","VIE":"Vienna",
     "CPH":"Copenhagen","MUC":"Munich","ATH":"Athens",
@@ -3175,7 +3188,7 @@ def body_rtw(world):
   <div class="tl-card">
     <div class="rtw-controls">
       <label class="rtw-ctl"><span>Scope</span>
-        <select id="rtw-scope" onchange="rtwScope();rtwBuild()"><option value="WORLD">Whole world (full loop)</option><option value="EUROPE">Europe trip</option><option value="ASIA">Asia trip</option><option value="LATAM">Latin America trip</option><option value="AFRME">Africa &amp; Middle East trip</option></select></label>
+        <select id="rtw-scope" onchange="rtwScope();rtwBuild()"><option value="WORLD">Whole world (full loop)</option><option value="EUROPE">Europe trip</option><option value="ASIA">Asia trip</option><option value="LATAM">Latin America trip</option><option value="AFRME">Africa &amp; Middle East trip</option><option value="NORTHAM">North America trip</option></select></label>
       <label class="rtw-ctl" id="rtw-start-wrap"><span>Start from</span>
         <select id="rtw-start" onchange="rtwBuild()">__START_OPTS__</select></label>
       <label class="rtw-ctl" id="rtw-dir-wrap"><span>Direction</span>
@@ -3245,7 +3258,8 @@ var REGIONS={
   "EUROPE":{name:"Europe", h:["LON","PAR","FRA","AMS","MAD","BCN","FCO","IST","LIS","DUB","ZRH","VIE","CPH","MUC","ATH"]},
   "ASIA":{name:"Asia", h:["SIN","BKK","HKG","TYO","ICN","DEL","BOM","KUL","TPE","MNL","CGK","SGN"]},
   "LATAM":{name:"Latin America", h:["MEX","GRU","BOG","EZE","LIM"]},
-  "AFRME":{name:"Africa & the Middle East", h:["JNB","CAI","NBO","CMN","DXB","DOH","AUH","TLV"]}
+  "AFRME":{name:"Africa & the Middle East", h:["JNB","CAI","NBO","CMN","DXB","DOH","AUH","TLV"]},
+  "NORTHAM":{name:"North America", h:["ANC","YVR","YTO","SEA","SFO","DEN","ORD","MIA","MEX","SJO","KEF","GOH"]}
 };
 function buildTour(hubList, nCities, mustH, usStart){
   var pool=[]; for(var i=0;i<hubList.length;i++){ if(RHUBS[hubList[i]]) pool.push(hubList[i]); }
@@ -4444,6 +4458,9 @@ CITY_META = {
     "BCN": ("Barcelona", "Spain", "barcelona"),
     "CTG": ("Cartagena", "Colombia", "cartagena"),
     "MDE": ("Medellin", "Colombia", "medellin"),
+    "ANC": ("Anchorage", "Alaska, USA", "anchorage"),
+    "GOH": ("Nuuk", "Greenland", "nuuk"),
+    "SJO": ("San Jose", "Costa Rica", "san-jose"),
 }
 
 
@@ -4918,6 +4935,9 @@ REGION_TOURS = [
     {"key": "AFRME", "name": "Africa & the Middle East", "slug": "cheap-africa-middle-east-trip", "n": 4,
      "hubs": ["JNB","CAI","NBO","CMN","DXB","DOH","AUH","TLV"],
      "intro": "From the pyramids to the Gulf's gleaming hubs, build a cheap multi-city Africa &amp; Middle East tour from live one-way fares."},
+    {"key": "NORTHAM", "name": "North America", "slug": "cheap-north-america-trip", "n": 4,
+     "hubs": ["ANC","YVR","YTO","SEA","SFO","DEN","ORD","MIA","MEX","SJO","KEF","GOH"],
+     "intro": "From Alaska’s glaciers to Iceland’s volcanoes and Costa Rica’s cloud forests, string together a cheap multi-city North America &amp; North Atlantic trip on the lowest one-way fares we track."},
 ]
 REGION_TOUR_BY_FILE = {}
 
