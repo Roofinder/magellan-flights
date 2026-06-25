@@ -102,7 +102,7 @@ REGION_BTNS = ["all", "USA", "Abroad", "Asia", "SE Asia", "E Asia", "S Asia",
 # Primary nav — kept to five clear destinations. Secondary pages live in the
 # grouped footer (FOOTER_NAV) so nothing is lost and everything stays crawlable.
 NAV = [("index.html", "Home"), ("market.html", "Market"), ("explore.html", "Explore"),
-       ("guides.html", "Guides"), ("cheap-flights.html", "By airport")]
+       ("around-the-world.html", "Around the World"), ("guides.html", "Guides"), ("cheap-flights.html", "By airport")]
 
 FOOTER_NAV = [
     ("Browse fares", [("market.html", "The Market"), ("explore.html", "Explore anywhere"),
@@ -1320,6 +1320,20 @@ CSS = r"""<style>
   .owm-bar input::placeholder{ color:var(--muted); }
   .owm-sort{ background:var(--card); border:1px solid var(--line); color:var(--ink); font-size:13px; font-weight:600; padding:9px 14px; border-radius:9px; cursor:pointer; white-space:nowrap; }
   .owm-sort:hover{ border-color:var(--gold); color:var(--gold); }
+  .rtw-hero{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:26px; text-align:center; margin:18px 0 22px; }
+  .rtw-hero-label{ color:var(--muted); font-size:13.5px; letter-spacing:.04em; }
+  .rtw-hero-price{ font-size:48px; font-weight:800; color:var(--gold); line-height:1.1; margin:6px 0; }
+  .rtw-hero-sub{ color:var(--muted); font-size:13.5px; }
+  .rtw-route{ display:flex; flex-direction:column; gap:10px; }
+  .rtw-leg{ display:flex; align-items:center; gap:14px; background:var(--card); border:1px solid var(--line); border-radius:13px; padding:13px 16px; flex-wrap:wrap; }
+  .rtw-num{ width:26px; height:26px; flex:none; border-radius:50%; background:#1b2330; color:var(--gold); font-weight:700; font-size:13px; display:flex; align-items:center; justify-content:center; }
+  .rtw-cities{ display:flex; align-items:center; gap:9px; flex:1; min-width:0; flex-wrap:wrap; }
+  .rtw-city{ font-weight:600; font-size:15px; }
+  .rtw-arrow{ color:var(--gold); font-size:16px; }
+  .rtw-legright{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .rtw-legprice{ font-size:18px; font-weight:800; color:var(--gold); }
+  .rtw-legunit{ color:var(--muted); font-size:12px; font-weight:600; }
+  @media(max-width:620px){ .rtw-legright{ width:100%; justify-content:flex-start; padding-left:40px; } }
   .ac-wrap{ position:relative; }
   .ac-drop{ display:none; position:absolute; top:100%; left:0; z-index:40; background:var(--card); border:1px solid var(--line); border-radius:10px; margin-top:5px; min-width:260px; max-height:300px; overflow:auto; box-shadow:0 10px 30px rgba(0,0,0,.35); }
   .ac-item{ padding:9px 13px; cursor:pointer; font-size:14px; color:var(--ink); display:flex; justify-content:space-between; gap:12px; align-items:center; }
@@ -2512,6 +2526,7 @@ def body_home(market, hist, cards, lastmin, oneway, summary):
     <div class="cta-row">
       <a class="btn-primary" href="#deals">Explore today&rsquo;s deals</a>
       <a class="btn-ghost" href="world.html">Anywhere &rarr; Anywhere</a>
+      <a class="btn-ghost" href="around-the-world.html">&#9973; Around the World</a>
     </div>
     <p class="trust">Free, forever &middot; fares tracked through the day &middot; live price confirmed when you book on Aviasales</p>
   </div>
@@ -2875,6 +2890,120 @@ def body_market(market, hist, cards, lastmin, oneway):
   {oneway_market(oneway, market)}
   <div class="sec-head"><h2>&#9889; Last-minute one-ways</h2><span>cheapest one-ways leaving soon</span></div>
   {oneway_lastminute(oneway, market, 8)}
+</div>"""
+
+
+
+WORLD_HUBS = {
+    "JFK":"New York","LAX":"Los Angeles","MIA":"Miami","ORD":"Chicago","SFO":"San Francisco",
+    "BOS":"Boston","ATL":"Atlanta","SEA":"Seattle","YTO":"Toronto","YVR":"Vancouver",
+    "LON":"London","PAR":"Paris","FRA":"Frankfurt","AMS":"Amsterdam","MAD":"Madrid","BCN":"Barcelona",
+    "FCO":"Rome","IST":"Istanbul","LIS":"Lisbon","DUB":"Dublin","ZRH":"Zurich","VIE":"Vienna",
+    "CPH":"Copenhagen","MUC":"Munich","ATH":"Athens",
+    "DXB":"Dubai","DOH":"Doha","AUH":"Abu Dhabi","TLV":"Tel Aviv",
+    "SIN":"Singapore","BKK":"Bangkok","HKG":"Hong Kong","TYO":"Tokyo","ICN":"Seoul","DEL":"Delhi",
+    "BOM":"Mumbai","KUL":"Kuala Lumpur","TPE":"Taipei","MNL":"Manila","CGK":"Jakarta","SGN":"Ho Chi Minh",
+    "SYD":"Sydney","MEL":"Melbourne","AKL":"Auckland",
+    "MEX":"Mexico City","GRU":"Sao Paulo","BOG":"Bogota","EZE":"Buenos Aires","LIM":"Lima",
+    "JNB":"Johannesburg","CAI":"Cairo","NBO":"Nairobi","CMN":"Casablanca",
+}
+RTW_US_STARTS = ["JFK","LAX","MIA","ORD","SFO","BOS","ATL","SEA"]
+
+
+def round_the_world(world, min_stops=3, max_stops=5, gap_min=35, gap_max=175):
+    try:
+        coords = json.load(open(os.path.join(HERE, "airport_coords.json"), encoding="utf-8"))
+    except Exception:
+        return None
+    leg = {}
+    for r in world:
+        a, b = r.get("o"), r.get("c")
+        if a in WORLD_HUBS and b in WORLD_HUBS and a != b:
+            if (a, b) not in leg or r["price"] < leg[(a, b)]["price"]:
+                leg[(a, b)] = r
+    lon = {h: coords[h][1] for h in WORLD_HUBS if h in coords and isinstance(coords[h], list)}
+    hubs = [h for h in WORLD_HUBS if h in lon]
+    best = None
+    for start in RTW_US_STARTS:
+        if start not in lon:
+            continue
+        rel = {h: ((lon[h] - lon[start]) % 360) for h in hubs}
+        cand = sorted([h for h in hubs if h != start and 0 < rel[h] < 360], key=lambda h: rel[h])
+        dp = {}
+        for h in cand:
+            if gap_min <= rel[h] <= gap_max and (start, h) in leg:
+                dp[(h, 1)] = (leg[(start, h)]["price"], None)
+        for k in range(2, max_stops + 1):
+            for h in cand:
+                bestp = None
+                for p in cand:
+                    if rel[p] >= rel[h]:
+                        continue
+                    gap = rel[h] - rel[p]
+                    if not (gap_min <= gap <= gap_max):
+                        continue
+                    if (p, k - 1) not in dp or (p, h) not in leg:
+                        continue
+                    cost = dp[(p, k - 1)][0] + leg[(p, h)]["price"]
+                    if bestp is None or cost < bestp[0]:
+                        bestp = (cost, p)
+                if bestp:
+                    dp[(h, k)] = bestp
+        for k in range(min_stops, max_stops + 1):
+            for h in cand:
+                if (h, k) not in dp:
+                    continue
+                final_gap = 360 - rel[h]
+                if not (gap_min <= final_gap <= gap_max) or (h, start) not in leg:
+                    continue
+                total = dp[(h, k)][0] + leg[(h, start)]["price"]
+                if best is None or total < best[0]:
+                    path = [h]; cur_h, cur_k = h, k
+                    while dp[(cur_h, cur_k)][1] is not None:
+                        p = dp[(cur_h, cur_k)][1]; path.append(p); cur_h, cur_k = p, cur_k - 1
+                    path.reverse()
+                    best = (total, [start] + path + [start])
+    if not best:
+        return None
+    total, route = best
+    legs = []
+    for i in range(len(route) - 1):
+        a, b = route[i], route[i + 1]
+        L = leg[(a, b)]
+        legs.append({"from": a, "from_name": WORLD_HUBS[a], "to": b, "to_name": WORLD_HUBS[b],
+                     "price": L["price"], "link": L.get("link", ""), "depart": L.get("depart", "")})
+    return {"start": route[0], "start_name": WORLD_HUBS[route[0]], "total": total,
+            "stops": len(route) - 2, "flights": len(legs), "legs": legs}
+
+
+def body_rtw(world):
+    trip = round_the_world(world)
+    if not trip:
+        return ('<div class="wrap"><div class="pagehead"><h1>&#9973; Ferdinand&rsquo;s World Loop</h1>'
+                '<p>We couldn&rsquo;t assemble a full around-the-world loop from today&rsquo;s fares &mdash; '
+                'check back after the next refresh, or explore one-way deals on the '
+                '<a href="market.html" style="color:var(--gold)">Market</a>.</p></div></div>')
+    rows = []
+    for i, l in enumerate(trip["legs"], 1):
+        link = html.escape(l["link"], quote=True)
+        rows.append(
+            f'<div class="rtw-leg"><span class="rtw-num">{i}</span>'
+            f'<div class="rtw-cities">{flag_img(l["from"])}<span class="rtw-city">{html.escape(l["from_name"])}</span>'
+            f'<span class="rtw-arrow">&rarr;</span>{flag_img(l["to"])}<span class="rtw-city">{html.escape(l["to_name"])}</span></div>'
+            f'<div class="rtw-legright"><span class="rtw-legprice">${l["price"]:,.0f}</span>'
+            f'<span class="rtw-legunit">one-way</span>'
+            f'<a class="mini-book" href="{link}" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a></div></div>')
+    legs_html = "".join(rows)
+    first_link = html.escape(trip['legs'][0]['link'], quote=True)
+    return f"""<div class="wrap">
+  <div class="pagehead"><h1>&#9973; Ferdinand&rsquo;s World Loop</h1>
+  <p>Five centuries after Magellan circled the globe, here&rsquo;s the cheapest way to do it today &mdash; one cheap one-way at a time. This is the lowest-cost real loop our tracker can build right now: {trip['stops']} stops, {trip['flights']} flights, starting and finishing in {html.escape(trip['start_name'])}, all one-way.</p></div>
+  <div class="rtw-hero"><div class="rtw-hero-label">Around the world today from</div>
+    <div class="rtw-hero-price">${trip['total']:,.0f}</div>
+    <div class="rtw-hero-sub">{trip['flights']} one-way flights &middot; {trip['stops']} stops &middot; ~4 weeks &middot; loops back to {html.escape(trip['start_name'])}</div></div>
+  <div class="rtw-route">{legs_html}</div>
+  <div class="blog-cta"><a class="btn-primary" href="{first_link}" target="_blank" rel="noopener">Start the loop &mdash; book leg 1 &rarr;</a><a class="btn-ghost" href="world.html">Plan your own route</a></div>
+  <p class="finehint" style="text-align:center;margin-top:18px">Today&rsquo;s cheapest loop from recently-tracked one-way fares &mdash; geography won&rsquo;t always be textbook-perfect, and each leg&rsquo;s live price is confirmed when you book on Aviasales. Pace and dates are illustrative; build your exact trip on the <a href="world.html" style="color:var(--gold)">Anywhere &rarr; Anywhere</a> tab.</p>
 </div>"""
 
 
@@ -3959,6 +4088,7 @@ def main():
         "trip.html": ("Journey", body_trip()),
         "explore.html": ("Explore", body_explore()),
         "blog.html": ("Daily Guide", body_blog(market, oneway)),
+        "around-the-world.html": ("Ferdinand's Trip Around the World", body_rtw(world)),
         "lastminute.html": ("Last-minute", body_lastminute(lastmin)),
         "airports.html": ("Captain's Log", body_airports(home)),
         "watchlist.html": ("Watchlist", body_watchlist(market)),
