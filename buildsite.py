@@ -3002,6 +3002,7 @@ WORLD_HUBS = {
     "JFK":"New York","LAX":"Los Angeles","MIA":"Miami","ORD":"Chicago","SFO":"San Francisco",
     "BOS":"Boston","ATL":"Atlanta","SEA":"Seattle","YTO":"Toronto","YVR":"Vancouver",
     "DTW":"Detroit","IAH":"Houston","DEN":"Denver","DFW":"Dallas","TPA":"Tampa","HNL":"Honolulu","PHX":"Phoenix","LAS":"Las Vegas",
+    "RDU":"Raleigh","CLT":"Charlotte","MCO":"Orlando","BNA":"Nashville","CMH":"Columbus",
     "LON":"London","PAR":"Paris","FRA":"Frankfurt","AMS":"Amsterdam","MAD":"Madrid","BCN":"Barcelona",
     "FCO":"Rome","IST":"Istanbul","LIS":"Lisbon","DUB":"Dublin","ZRH":"Zurich","VIE":"Vienna",
     "CPH":"Copenhagen","MUC":"Munich","ATH":"Athens",
@@ -3012,7 +3013,7 @@ WORLD_HUBS = {
     "MEX":"Mexico City","GRU":"Sao Paulo","BOG":"Bogota","EZE":"Buenos Aires","LIM":"Lima",
     "JNB":"Johannesburg","CAI":"Cairo","NBO":"Nairobi","CMN":"Casablanca",
 }
-RTW_US_STARTS = ["JFK","LAX","MIA","ORD","SFO","BOS","ATL","SEA","DTW","IAH","DEN","DFW","TPA","HNL","PHX","LAS"]
+RTW_US_STARTS = ["JFK","LAX","MIA","ORD","SFO","BOS","ATL","SEA","DTW","IAH","DEN","DFW","TPA","HNL","PHX","LAS","RDU","CLT","MCO","BNA","CMH"]
 
 
 def round_the_world(world, min_stops=3, max_stops=5, gap_min=35, gap_max=175):
@@ -3240,23 +3241,28 @@ var REGIONS={
   "LATAM":{name:"Latin America", h:["MEX","GRU","BOG","EZE","LIM"]},
   "AFRME":{name:"Africa & the Middle East", h:["JNB","CAI","NBO","CMN","DXB","DOH","AUH","TLV"]}
 };
-function buildTour(hubList, nCities, mustH){
+function buildTour(hubList, nCities, mustH, usStart){
   var pool=[]; for(var i=0;i<hubList.length;i++){ if(RHUBS[hubList[i]]) pool.push(hubList[i]); }
-  if(pool.length<nCities) nCities=pool.length;
-  if(pool.length<2) return null;
+  if(pool.length<1) return null;
+  if(nCities>pool.length) nCities=pool.length;
+  var starts = (usStart && usStart!=="AUTO" && RHUBS[usStart]) ? [usStart] : RUS;
   var best=null;
-  pool.forEach(function(s){
-    var route=[s], used={}; used[s]=1; var cur=s, total=0, ok=true;
-    for(var step=1; step<nCities; step++){
-      var nb=null, nbp=null;
-      pool.forEach(function(c){ if(used[c]) return; var p=legP(cur,c); if(p==null) return; if(nbp==null||p<nbp){ nbp=p; nb=c; } });
-      if(nb==null){ ok=false; break; }
-      route.push(nb); used[nb]=1; total+=nbp; cur=nb;
-    }
-    if(!ok) return;
-    var back=legP(cur,s); if(back==null) return; total+=back;
-    if(mustH && route.indexOf(mustH)<0) return;
-    if(best==null||total<best.total){ best={total:total, route:route.concat([s]), tour:true}; }
+  starts.forEach(function(s){
+    if(!RHUBS[s]) return;
+    pool.forEach(function(entry){
+      var inP=legP(s,entry); if(inP==null) return;
+      var route=[entry], used={}; used[entry]=1; var cur=entry, total=inP, ok=true;
+      for(var step=1; step<nCities; step++){
+        var nb=null, nbp=null;
+        pool.forEach(function(c){ if(used[c]) return; var p=legP(cur,c); if(p==null) return; if(nbp==null||p<nbp){ nbp=p; nb=c; } });
+        if(nb==null){ ok=false; break; }
+        route.push(nb); used[nb]=1; total+=nbp; cur=nb;
+      }
+      if(!ok) return;
+      var outP=legP(cur,s); if(outP==null) return; total+=outP;
+      if(mustH && route.indexOf(mustH)<0) return;
+      if(best==null||total<best.total){ best={total:total, route:[s].concat(route).concat([s]), tour:true}; }
+    });
   });
   return best;
 }
@@ -3292,14 +3298,14 @@ function render(best, opts){
   var r=best.route, legs="", first=RLEGS[r[0]+">"+r[1]];
   for(var i=0;i<r.length-1;i++){ legs+=legRow(r[i],r[i+1],i+1); }
   var stops=r.length-2, flights=r.length-1, startName=RHUBS[r[0]].n;
-  var _places=best.tour?(r.length-1):stops; var pace = (opts && opts.weeks && _places>0) ? (' &middot; ~'+Math.max(1,Math.round(opts.weeks*7/_places))+' nights per stop') : "";
+  var _places=best.tour?(r.length-2):stops; var pace = (opts && opts.weeks && _places>0) ? (' &middot; ~'+Math.max(1,Math.round(opts.weeks*7/_places))+' nights per stop') : "";
   var note = (opts && opts.budget && best.total>opts.budget)
     ? '<div class="rtw-note">This is the cheapest loop with these settings &mdash; <b>$'+best.total.toLocaleString()+'</b>, a little above your $'+opts.budget.toLocaleString()+' cap. Try more stops, more regions, or raise the cap.</div>'
     : "";
   var isTour=best.tour, rn=(opts&&opts.regionName)||"the region";
   var heroLabel=isTour?('Trip around '+rn+' from'):'Around the world from';
   var sub=isTour
-    ? ((r.length-1)+' flights &middot; '+(r.length-1)+' cities'+pace+' &middot; a loop through '+rn)
+    ? ((r.length-1)+' flights &middot; '+(r.length-2)+' cities in '+rn+pace+' &middot; round-trip from '+startName)
     : (flights+' one-way flights &middot; '+stops+' stops &middot; heading '+(best.dir==="W"?'west':'east')+pace+' &middot; loops back to '+startName);
   out.innerHTML='<div class="rtw-hero"><div class="rtw-hero-label">'+heroLabel+'</div>'
     +'<div class="rtw-hero-price">$'+best.total.toLocaleString()+'</div>'
@@ -3310,7 +3316,7 @@ function render(best, opts){
     +shareBar(best.total, startName);
 }
 window.rtwStopsLab=function(){ go("rtw-stops-lab").textContent=go("rtw-stops").value; };
-window.rtwScope=function(){ var scope=go("rtw-scope")?go("rtw-scope").value:"WORLD", world=(scope==="WORLD"); var dw=go("rtw-dir-wrap"), sw=go("rtw-start-wrap"), rw=go("rtw-regions-wrap"); if(dw) dw.style.display=world?"":"none"; if(sw) sw.style.display=world?"":"none"; if(rw) rw.style.display=world?"":"none"; var cap=go("rtw-stops-cap"); if(cap) cap.textContent=world?"Stops":"Cities"; };
+window.rtwScope=function(){ var scope=go("rtw-scope")?go("rtw-scope").value:"WORLD", world=(scope==="WORLD"); var dw=go("rtw-dir-wrap"), sw=go("rtw-start-wrap"), rw=go("rtw-regions-wrap"); if(dw) dw.style.display=world?"":"none"; if(sw) sw.style.display=""; if(rw) rw.style.display=world?"":"none"; var cap=go("rtw-stops-cap"); if(cap) cap.textContent=world?"Stops":"Cities"; };
 window.rtwToggleCont=function(btn){ btn.classList.toggle("on"); rtwBuild(); };
 window.rtwCopy=function(btn){ try{ navigator.clipboard.writeText(location.href); }catch(e){} var t=btn.textContent; btn.textContent="Copied!"; setTimeout(function(){ btn.textContent=t; },1500); };
 function regionsOn(){ var out=[]; var chips=go("rtw-conts").querySelectorAll("[data-rcont]"); for(var i=0;i<chips.length;i++){ if(chips[i].classList.contains("on")) out.push(chips[i].getAttribute("data-rcont")); } return out; }
@@ -3329,7 +3335,8 @@ window.rtwBuild=function(){
   var best=null, regionName="";
   if(scope!=="WORLD" && REGIONS[scope]){
     regionName=REGIONS[scope].name;
-    best=buildTour(REGIONS[scope].h, nStops, mustH);
+    var rs=go("rtw-start")?go("rtw-start").value:"AUTO";
+    best=buildTour(REGIONS[scope].h, nStops, mustH, rs);
     if(best) best.dir=null;
   } else {
     var on=regionsOn(); var allowed=null;
@@ -4916,39 +4923,45 @@ def _hub_detail(code):
 
 
 def region_tour(world, hub_list, n_cities):
-    hubset = set(hub_list)
+    allhubs = set(hub_list) | set(RTW_US_STARTS)
     leg = {}
     for r in world:
         a, b = r.get("o"), r.get("c")
-        if a in hubset and b in hubset and a != b:
+        if a in allhubs and b in allhubs and a != b:
             if (a, b) not in leg or r["price"] < leg[(a, b)]["price"]:
                 leg[(a, b)] = r
-    pool = [h for h in hub_list if any((h, x) in leg for x in hub_list) and any((x, h) in leg for x in hub_list)]
-    if len(pool) < 2:
+    pool = [h for h in hub_list if any((h, x) in leg for x in hub_list) or any((x, h) in leg for x in hub_list)]
+    if len(pool) < 1:
         return None
     n = min(n_cities, len(pool))
+    starts = [s for s in RTW_US_STARTS if s in allhubs]
     best = None
-    for s in pool:
-        route = [s]; used = {s}; cur = s; total = 0; legs = []; ok = True
-        for _ in range(n - 1):
-            nb = None; nbL = None
-            for c in pool:
-                if c in used:
-                    continue
-                L = leg.get((cur, c))
-                if L and (nbL is None or L["price"] < nbL["price"]):
-                    nbL = L; nb = c
-            if nb is None:
-                ok = False; break
-            route.append(nb); used.add(nb); legs.append(nbL); total += nbL["price"]; cur = nb
-        if not ok:
-            continue
-        back = leg.get((cur, s))
-        if not back:
-            continue
-        legs.append(back); total += back["price"]
-        if best is None or total < best[0]:
-            best = (total, route + [s], legs)
+    for s in starts:
+        for entry in pool:
+            inL = leg.get((s, entry))
+            if not inL:
+                continue
+            route = [entry]; used = {entry}; cur = entry; total = inL["price"]; legs = [inL]; ok = True
+            for _ in range(n - 1):
+                nb = None; nbL = None
+                for c in pool:
+                    if c in used:
+                        continue
+                    L = leg.get((cur, c))
+                    if L and (nbL is None or L["price"] < nbL["price"]):
+                        nbL = L; nb = c
+                if nb is None:
+                    ok = False; break
+                route.append(nb); used.add(nb); legs.append(nbL); total += nbL["price"]; cur = nb
+            if not ok:
+                continue
+            outL = leg.get((cur, s))
+            if not outL:
+                continue
+            legs.append(outL); total += outL["price"]
+            full = [s] + route + [s]
+            if best is None or total < best[0]:
+                best = (total, full, legs)
     if not best:
         return None
     total, route, legs = best
@@ -4957,7 +4970,8 @@ def region_tour(world, hub_list, n_cities):
         a, b = route[i], route[i + 1]; L = legs[i]
         out.append({"from": a, "from_name": WORLD_HUBS.get(a, a), "to": b, "to_name": WORLD_HUBS.get(b, b),
                     "price": L["price"], "link": L.get("link", ""), "depart": L.get("depart", "")})
-    return {"total": total, "cities": len(route) - 1, "route": route, "legs": out}
+    return {"total": total, "cities": len(route) - 2, "route": route, "legs": out,
+            "start": route[0], "start_name": WORLD_HUBS.get(route[0], route[0])}
 
 
 def region_tour_faqs(m, trip):
@@ -5019,11 +5033,11 @@ def body_region_tour(m, world, today):
   <p class="art-lede">{m['intro']}</p>
   <div class="rtw-hero"><div class="rtw-hero-label">Trip around {html.escape(m['name'])} from</div>
     <div class="rtw-hero-price">${trip['total']:,.0f}</div>
-    <div class="rtw-hero-sub">{len(trip['legs'])} one-way flights &middot; {trip['cities']} cities &middot; a loop through {html.escape(m['name'])}</div></div>
+    <div class="rtw-hero-sub">{len(trip['legs'])} one-way flights &middot; {trip['cities']} cities in {html.escape(m['name'])} &middot; round-trip from {html.escape(trip['start_name'])}</div></div>
   <div class="rtw-route">{"".join(rows)}</div>
   <div class="blog-cta"><a class="btn-primary" href="{first_link}" target="_blank" rel="noopener">Start the trip &mdash; book leg 1 &rarr;</a>
     <a class="btn-ghost" href="{builder}">Customize this trip &rarr;</a></div>
-  <section class="blog-sec"><h2>Getting there</h2><p>This is the in-region flying cost. To reach {html.escape(m['name'])} from the USA, find the cheapest gateway fare on the <a href="explore.html" style="color:var(--gold)">Explore</a> page, then start the loop.</p></section>
+  <section class="blog-sec"><h2>How this trip works</h2><p>This total is the full round-trip from <b>{html.escape(trip['start_name'])}</b> ({trip['start']}) &mdash; we fly you into {html.escape(m['name'])}, hop between {trip['cities']} cities on cheap one-ways, and fly you home. Want a different home airport? Pick yours in the <a href="{builder}" style="color:var(--gold)">builder</a>.</p></section>
   <section class="blog-sec"><h2>Frequently asked questions</h2>{faq_items}</section>
   <section class="blog-sec"><h2>More trips</h2><ul class="blog-list">{other_links}<li><a href="around-the-world.html">Build a full around-the-world loop</a></li></ul></section>
   <p class="finehint" style="text-align:center;margin-top:18px">Trips are built from recently-tracked one-way fares and refresh daily; each leg&rsquo;s live price is confirmed on Aviasales. Build your own pace, budget and must-visit city in the <a href="{builder}" style="color:var(--gold)">interactive builder</a>.</p>

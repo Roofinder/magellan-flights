@@ -32,6 +32,7 @@ GLOBAL_ORIGINS = {
     "SFO": "San Francisco", "BOS": "Boston", "ATL": "Atlanta", "SEA": "Seattle",
     "YTO": "Toronto", "YVR": "Vancouver",
     "DTW": "Detroit", "IAH": "Houston", "DEN": "Denver", "DFW": "Dallas", "TPA": "Tampa", "HNL": "Honolulu", "PHX": "Phoenix", "LAS": "Las Vegas",
+    "RDU": "Raleigh", "CLT": "Charlotte", "MCO": "Orlando", "BNA": "Nashville", "CMH": "Columbus",
     # Europe
     "LON": "London", "PAR": "Paris", "FRA": "Frankfurt", "AMS": "Amsterdam",
     "MAD": "Madrid", "BCN": "Barcelona", "FCO": "Rome", "IST": "Istanbul",
@@ -54,7 +55,7 @@ GLOBAL_ORIGINS = {
 
 # Major destinations to GUARANTEE coverage from every hub (incl. US long-haul),
 # which the cheapest-fare cache alone never reaches.
-WORLD_DESTS = ("JFK LAX MIA ORD SFO DTW IAH DEN DFW TPA HNL PHX LAS YTO MEX GRU BOG LIM LON PAR FCO FRA MAD IST "
+WORLD_DESTS = ("JFK LAX MIA ORD SFO DTW IAH DEN DFW TPA HNL PHX LAS RDU CLT MCO BNA CMH YTO MEX GRU BOG LIM LON PAR FCO FRA MAD IST "
                "DXB DOH SIN BKK HKG TYO ICN DEL SYD JNB CAI").split()
 
 
