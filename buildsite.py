@@ -105,9 +105,9 @@ NAV = [("index.html", "Home"), ("market.html", "Market"), ("explore.html", "Expl
        ("around-the-world.html", "Around the World"), ("guides.html", "Guides"), ("cheap-flights.html", "By airport")]
 
 FOOTER_NAV = [
-    ("Browse fares", [("market.html", "The Market"), ("explore.html", "Explore anywhere"),
-                      ("world.html", "Anywhere &rarr; Anywhere"), ("cheap-flights.html", "Cheap flights by airport"),
-                      ("trip.html", "Journey Builder")]),
+    ("Browse fares", [("market.html", "The Market"), ("explore.html", "Explore &amp; search"),
+                      ("around-the-world.html", "Around the World"),
+                      ("cheap-flights.html", "Cheap flights by airport")]),
     ("Learn", [("city-guides.html", "City guides"), ("guides.html", "Guides &amp; tips"),
                ("blog.html", "Today&rsquo;s Daily Guide"), ("essentials.html", "Travel kit")]),
     ("Your trips", [("watchlist.html", "My bucket list"), ("index.html#alerts", "Get free price alerts"),
@@ -2551,7 +2551,7 @@ def body_home(market, hist, cards, lastmin, oneway, summary):
     <p class="lead">Magellan Flights tracks the cheapest one-way fares from the USA to anywhere on earth, every single day &mdash; and flags the moment a fare drops below its normal price. Go one-way for less, and add a return whenever you want it.</p>
     <div class="cta-row">
       <a class="btn-primary" href="#deals">Explore today&rsquo;s deals</a>
-      <a class="btn-ghost" href="world.html">Anywhere &rarr; Anywhere</a>
+      <a class="btn-ghost" href="explore.html">Search any route</a>
       <a class="btn-ghost" href="around-the-world.html">&#9973; Around the World</a>
     </div>
     <p class="trust">Free, forever &middot; fares tracked through the day &middot; live price confirmed when you book on Aviasales</p>
@@ -3028,8 +3028,8 @@ def body_rtw(world):
     <div class="rtw-hero-price">${trip['total']:,.0f}</div>
     <div class="rtw-hero-sub">{trip['flights']} one-way flights &middot; {trip['stops']} stops &middot; ~4 weeks &middot; loops back to {html.escape(trip['start_name'])}</div></div>
   <div class="rtw-route">{legs_html}</div>
-  <div class="blog-cta"><a class="btn-primary" href="{first_link}" target="_blank" rel="noopener">Start the loop &mdash; book leg 1 &rarr;</a><a class="btn-ghost" href="world.html">Plan your own route</a></div>
-  <p class="finehint" style="text-align:center;margin-top:18px">Today&rsquo;s cheapest loop from recently-tracked one-way fares &mdash; geography won&rsquo;t always be textbook-perfect, and each leg&rsquo;s live price is confirmed when you book on Aviasales. Pace and dates are illustrative; build your exact trip on the <a href="world.html" style="color:var(--gold)">Anywhere &rarr; Anywhere</a> tab.</p>
+  <div class="blog-cta"><a class="btn-primary" href="{first_link}" target="_blank" rel="noopener">Start the loop &mdash; book leg 1 &rarr;</a><a class="btn-ghost" href="explore.html">Plan your own route</a></div>
+  <p class="finehint" style="text-align:center;margin-top:18px">Today&rsquo;s cheapest loop from recently-tracked one-way fares &mdash; geography won&rsquo;t always be textbook-perfect, and each leg&rsquo;s live price is confirmed when you book on Aviasales. Pace and dates are illustrative; build your exact trip on the <a href="explore.html" style="color:var(--gold)">Explore</a> tab.</p>
 </div>"""
 
 
@@ -3056,7 +3056,7 @@ def body_consultant():
 
 def body_explore():
     return """<div class="wrap">
-  <div class="pagehead"><h1>Explore</h1><p>Two ways to search: leave <b>To</b> empty to see the cheapest deals to <b>anywhere</b> from your home airport(s) &mdash; or type a destination (e.g. BKK, HNL) to track a <b>specific route</b> and see every fare we have for it. Add several home airports and we&rsquo;ll find the cheapest across all of them. Star any deal to save it.</p></div>
+  <div class="pagehead"><h1>Explore</h1><p>Plan a specific trip. Add your home airport(s) and we&rsquo;ll find the cheapest one-ways to <b>anywhere</b> &mdash; or type a destination to track a <b>specific route</b> and see every fare we have for it. Add several airports and we compare across all of them. Just want to browse the cheapest deals? That&rsquo;s the <a href="market.html" style="color:var(--gold)">Market</a>.</p></div>
   <div class="tl-card">
     <div class="tl-form" style="align-items:flex-end">
       <div style="display:flex;flex-direction:column;gap:5px">
@@ -3072,7 +3072,7 @@ def body_explore():
     <div id="ex-regions" class="airchips" style="margin:6px 0 12px"></div>
     <div class="panel"><div id="ex-out"><div class="wl-hint">Add your home airport(s) and hit &ldquo;Find deals.&rdquo;</div></div></div>
   </div>
-  <p class="finehint" style="text-align:center">Live fares from Aviasales. Star &#9734; a deal to add it to your Bucket List. Want to chain multiple stops into one trip? Use the <a href="trip.html" style="color:var(--gold)">Journey</a> tab.</p>
+  <p class="finehint" style="text-align:center">Live fares from Aviasales. Star &#9734; a deal to add it to your Bucket List. Want to chain multiple stops into one trip? Try <a href="around-the-world.html" style="color:var(--gold)">Around the World</a>.</p>
 </div>
 <script>
 (function(){
@@ -3081,7 +3081,7 @@ var GROUPS={'SE Asia':'TH VN ID SG MY PH KH LA MM BN TL','E Asia':'JP KR CN TW H
 function tagsFor(code){ var c=CC[code]; if(!c) return ['Abroad']; if(c==='US') return ['USA']; var t=[]; for(var g in GROUPS){ if((' '+GROUPS[g]+' ').indexOf(' '+c+' ')>=0){ t.push(g); if(g==='SE Asia'||g==='E Asia'||g==='S Asia'||g==='C Asia') t.push('Asia'); break; } } if(c!=='CA') t.push('Abroad'); return t; }
 var REGIONS=['all','USA','Abroad','Asia','SE Asia','E Asia','S Asia','W Europe','E Europe','Nordic','S America','C America','Caribbean','Oceania','Middle East','Africa','Canada'];
 function go(id){ return document.getElementById(id); }
-var EX_TRIP='oneway', EX_WHEN='any', EX_REG='all', EX_DATA=[], EX_SHOWN=[], EX_ORIG=['RDU'], EX_P2P=false;
+var EX_TRIP='oneway', EX_WHEN='any', EX_REG='all', EX_DATA=[], EX_SHOWN=[], EX_ORIG=[], EX_P2P=false;
 function bucket(){ try{ return JSON.parse(localStorage.getItem('mf_bucket')||'[]'); }catch(e){ return []; } }
 function saved(id){ return bucket().some(function(x){ return x.id===id; }); }
 function renderOrigs(){ var box=go('ex-origs'); if(!box) return; box.innerHTML=EX_ORIG.map(function(c){ return '<button class="airchip on" data-o="'+c+'" title="remove">'+c+' &times;</button>'; }).join(''); }
@@ -3089,7 +3089,7 @@ window.exAddOrig=function(){ var v=(go('ex-add').value||'').trim().toUpperCase()
 window.exSetTrip=function(t){ EX_TRIP=t; go('ex-rt-rt').classList.toggle('on',t==='round'); go('ex-rt-ow').classList.toggle('on',t==='oneway'); exSearch(); };
 window.exSetWhen=function(w){ EX_WHEN=w; go('ex-wh-any').classList.toggle('on',w==='any'); go('ex-wh-soon').classList.toggle('on',w==='soon'); if(!EX_P2P) exFilter(); };
 function renderChips(){ go('ex-regions').innerHTML=REGIONS.map(function(r){ var lab=r==='all'?'All':r; return '<button class="airchip'+(EX_REG===r?' on':'')+'" data-r="'+r+'">'+lab+'</button>'; }).join(''); }
-window.exSearch=function(){ if(!EX_ORIG.length){ EX_ORIG=['RDU']; renderOrigs(); } var ow=(EX_TRIP==='oneway'?'true':'false'); var to=(EX_TO_CODE||resolveTo(go('ex-to').value)).toUpperCase(); var when=''; EX_P2P=/^[A-Z]{3}$/.test(to); go('ex-regions').style.display=EX_P2P?'none':'flex'; go('ex-when').style.display=EX_P2P?'none':'block';
+window.exSearch=function(){ var ow=(EX_TRIP==='oneway'?'true':'false'); var to=(EX_TO_CODE||resolveTo(go('ex-to').value)).toUpperCase(); var when=''; if(!EX_ORIG.length){ go('ex-regions').style.display='none'; go('ex-when').style.display='none'; go('ex-out').innerHTML='<div class="wl-hint">'+(to?('Add at least one <b>From</b> airport to search fares to '+to+'.'):'Add your home airport(s) above &mdash; then optionally a destination &mdash; and hit Find deals.')+'</div>'; return; } EX_P2P=/^[A-Z]{3}$/.test(to); go('ex-regions').style.display=EX_P2P?'none':'flex'; go('ex-when').style.display=EX_P2P?'none':'block';
   if(EX_P2P){
     go('ex-out').innerHTML='<div class="wl-hint">Finding '+(EX_TRIP==='oneway'?'one-way':'round-trip')+' fares to '+to+' from '+EX_ORIG.join(', ')+(when?(' around '+when):'')+'&hellip;</div>';
     var calls=EX_ORIG.map(function(o){ return fetch('/api/search?origin='+o+'&destination='+to+'&one_way='+ow+'&sorting=route&limit=100').then(function(r){return r.json();}).then(function(j){ return (j&&j.data)||[]; }).catch(function(){ return []; }); });
@@ -3109,7 +3109,7 @@ function exToBind(){ var d=document.getElementById('ex-to-ac'); if(d && !d._boun
 function exRender(){ var out=go('ex-out'); if(!EX_SHOWN.length){ out.innerHTML='<div class="wl-hint">'+(EX_P2P?'No fares found for that route/date. Try clearing the date or switching trip type.':'No fares match those filters. Try another region or Anytime.')+'</div>'; return; } var multi=EX_ORIG.length>1; out.innerHTML=EX_SHOWN.map(function(f,i){ var d=f.destination_airport, dp=(f.departure_at||'').slice(0,10), rt=(f.return_at||'').slice(0,10), p=Math.round(f.price); var typ=(BM&&BM[d])?BM[d]*(EX_TRIP==="oneway"?0.62:1):0; var oo=f.origin_airport; var id=oo+d+dp; var on=saved(id)?' on':''; var star=saved(id)?'&#9733;':'&#9734;'; var sub=oo+' &rarr; '+d+' &middot; '+dp+(EX_TRIP==='round'&&rt?(' &rarr; '+rt):''); var title=EX_P2P?dp:(d+(multi?('<span style="display:inline-block;background:#0e141d;border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:11px;color:var(--gold);margin-left:8px">from '+oo+'</span>'):'')); return '<div class="mv-row"><button class="star'+on+'" onclick="exSave(this,'+i+')">'+star+'</button><div class="mv-dest">'+owFlag(d)+'<div class="mv-destcol"><div class="mv-name">'+title+'</div><div class="mv-air">'+sub+'</div><div class="pr-fresh"><i class="dotc"></i><span>tracked now</span></div></div></div><div class="mv-right"><span class="mv-price"><span class="lp-dot" title="Freshest tracked fare — your live, bookable price is confirmed on Aviasales"></span>$'+p.toLocaleString()+'</span> <span class="ow-unit">'+(EX_TRIP==="oneway"?"one-way":"round-trip")+'</span><a class="mini-book" href="'+f.link+'" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a></div></div>'; }).join(''); }
 window.exSave=function(btn,i){ var f=EX_SHOWN[i]; if(!f) return; var list=bucket(); var id=f.origin_airport+f.destination_airport+(f.departure_at||'').slice(0,10); var idx=-1; for(var k=0;k<list.length;k++){ if(list[k].id===id){ idx=k; break; } } if(idx>=0){ list.splice(idx,1); btn.classList.remove('on'); btn.innerHTML='&#9734;'; } else { list.push({id:id,o:f.origin_airport,d:f.destination_airport,date:(f.departure_at||'').slice(0,10),ret:(f.return_at||'').slice(0,10),price:Math.round(f.price),link:f.link,ow:EX_TRIP==='oneway'?1:0}); btn.classList.add('on'); btn.innerHTML='&#9733;'; } localStorage.setItem('mf_bucket',JSON.stringify(list)); if(window.renderBucket) window.renderBucket(); };
 var rb=go('ex-regions'); if(rb){ rb.addEventListener('click', function(e){ var b=e.target.closest('[data-r]'); if(b){ EX_REG=b.getAttribute('data-r'); renderChips(); exFilter(); } }); }
-var ob=go('ex-origs'); if(ob){ ob.addEventListener('click', function(e){ var b=e.target.closest('[data-o]'); if(!b) return; var c=b.getAttribute('data-o'); EX_ORIG=EX_ORIG.filter(function(x){return x!==c;}); if(!EX_ORIG.length) EX_ORIG=['RDU']; renderOrigs(); exSearch(); }); }
+var ob=go('ex-origs'); if(ob){ ob.addEventListener('click', function(e){ var b=e.target.closest('[data-o]'); if(!b) return; var c=b.getAttribute('data-o'); EX_ORIG=EX_ORIG.filter(function(x){return x!==c;}); renderOrigs(); exSearch(); }); }
 renderOrigs(); renderChips(); exToBind(); exSearch();
 })();
 </script>"""
@@ -3269,7 +3269,7 @@ ARTICLES = [
              "<li><b>Stay flexible by a day or two</b> &mdash; midweek departures are cheaper.</li>"
              "<li><b>Book when it dips below normal</b>, not on a magic weekday.</li></ul>"
              "<p>Flying overseas? The windows shift a little &mdash; browse our "
-             "<a href='world.html'>international deal board</a> to see them move in real time. "
+             "<a href='market.html'>international deal board</a> to see them move in real time. "
              "And if a booked fare changes on you, the U.S. DOT&rsquo;s "
              "<a href=\"https://www.transportation.gov/airconsumer\" target=\"_blank\" "
              "rel=\"noopener\">aviation consumer protection</a> office sets the rules on "
@@ -3306,7 +3306,7 @@ ARTICLES = [
                       "best time to buy international plane tickets", "how many months ahead to book international flights"],
         "kicker": "Booking timing",
         "published": "2026-06-22", "updated": "2026-06-22", "read_min": 6,
-        "money_href": "world.html", "money_label": "today's cheapest international fares",
+        "money_href": "market.html", "money_label": "today's cheapest international fares",
         "lede": "Book an international flight too early and you overpay for the airline's peace of "
                 "mind. Too late and you're funding their next jet. The good news: the sweet spot is "
                 "wider than the internet makes it sound — here's where it actually sits, and how "
@@ -3346,7 +3346,7 @@ ARTICLES = [
              "international fare is actually a deal or just a number. Right now the standout on the "
              "board is <b>{LIVE_TOPCITY}</b>, about <b>{LIVE_TOPPCT}% below</b> its usual price. "
              "Watch international routes move in real time on our "
-             "<a href='world.html'>anywhere-to-anywhere board</a>.</p>"),
+             "<a href='market.html'>deal board</a>.</p>"),
             ("A simple plan to book at the low",
              "<ul class='blog-list'>"
              "<li><b>Start watching early</b> — around 8 months out for peak trips, 4 for off-peak.</li>"
@@ -3384,7 +3384,7 @@ ARTICLES = [
                       "cheapest time to fly to europe from usa", "off season travel to europe"],
         "kicker": "Where & when",
         "published": "2026-06-22", "updated": "2026-06-22", "read_min": 6,
-        "money_href": "world.html", "money_label": "today's cheapest fares to Europe",
+        "money_href": "market.html", "money_label": "today's cheapest fares to Europe",
         "lede": "Europe in summer is gorgeous, crowded, and brutally overpriced to fly to. The "
                 "secret most travelers miss: the exact same cities cost a fraction in the months "
                 "just before and after — with shorter lines and better hotel rates thrown in. "
@@ -3422,7 +3422,7 @@ ARTICLES = [
              "<b>{LIVE_ROUTES} routes</b>, so you can see the off-season dip happen in real time "
              "rather than taking our word for it. The cheapest “month” is really the day a "
              "specific route drops below its normal range — watch for it on our "
-             "<a href='world.html'>live board</a> and book when it does.</p>"),
+             "<a href='market.html'>live board</a> and book when it does.</p>"),
             ("How to lock in the lowest Europe fare",
              "<ul class='blog-list'>"
              "<li><b>Travel off-peak or shoulder</b> — the single biggest lever.</li>"
@@ -3801,7 +3801,7 @@ ARTICLES = [
              "<li><b>Confirm you could still make the payments</b> if your income dipped for a "
              "month.</li>"
              "<li><b>Lower the price first</b> &mdash; start from a fare that&rsquo;s already "
-             "below normal on the <a href='world.html'>international board</a> so "
+             "below normal on the <a href='market.html'>international board</a> so "
              "there&rsquo;s less to finance at all.</li></ul>"
              "<p>Used carefully, on a fare you grabbed at a low, financing is a convenience. "
              "Used to reach a trip you can&rsquo;t really afford, it&rsquo;s an expensive way "
@@ -4024,7 +4024,7 @@ def body_moneypage(p, today):
     cta = ('<div class="art-cta"><div class="art-cta-txt"><b>Heads up:</b> these fares move fast. '
            'Every price here is re-checked against live pricing and links straight to a secure '
            'booking page &mdash; if you see one you love, grab it.</div>'
-           '<a class="book" href="world.html">Explore everywhere &rarr;</a></div>')
+           '<a class="book" href="explore.html">Explore everywhere &rarr;</a></div>')
     return f"""<div class="wrap blog-wrap">
   <nav class="crumbs"><a href="cheap-flights.html">Cheap flights</a> &rsaquo; from {html.escape(p['city'])}</nav>
   <div class="blog-eyebrow">Departure city</div>
@@ -4283,8 +4283,6 @@ def main():
     pages = {
         "index.html": ("Home", body_home(market, hist, cards, lastmin, oneway, summary)),
         "market.html": ("Market", body_market(market, hist, cards, lastmin, oneway)),
-        "world.html": ("World", body_world(world)),
-        "trip.html": ("Journey", body_trip()),
         "explore.html": ("Explore", body_explore()),
         "blog.html": ("Daily Guide", body_blog(market, oneway)),
         "around-the-world.html": ("Ferdinand's World Loop", body_rtw(world)),
@@ -4303,6 +4301,19 @@ def main():
         doc = render_page(fname, title, body, market, oneway, onewaylm, home, lastmin, world, worldlm, today)
         with open(os.path.join(SITE_DIR, fname), "w", encoding="utf-8") as f:
             f.write(doc)
+
+    # Retired pages -> redirect stubs (old links + SEO survive; not in sitemap).
+    REDIRECTS = {"world.html": "explore.html", "trip.html": "around-the-world.html"}
+    for old_f, target in REDIRECTS.items():
+        stub = ("<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n"
+                "<title>Redirecting\u2026</title>\n"
+                f"<link rel=\"canonical\" href=\"{BASE_URL}/{target}\">\n"
+                f"<meta http-equiv=\"refresh\" content=\"0; url={target}\">\n"
+                "<meta name=\"robots\" content=\"noindex\">\n"
+                f"<script>location.replace(\"{target}\");</script>\n"
+                f"</head>\n<body>Redirecting to <a href=\"{target}\">{target}</a>\u2026</body>\n</html>")
+        with open(os.path.join(SITE_DIR, old_f), "w", encoding="utf-8") as f:
+            f.write(stub)
 
     # Evergreen blog articles (one page per cluster).
     for a in ARTICLES:
@@ -4375,7 +4386,7 @@ def write_seo_files(pages):
              "Magellan Flights tracks the cheapest flights from the USA every day, "
              "like a stock market, so travelers book at the low. Every fare is real "
              "and links to booking.", "", "## Key pages"]
-    for fn in ["index.html", "market.html", "world.html", "explore.html",
+    for fn in ["index.html", "market.html", "explore.html",
                "lastminute.html", "airports.html", "guides.html"]:
         if fn in SEO:
             t, desc = SEO[fn]
