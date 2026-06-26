@@ -82,5 +82,10 @@ jobs:
             echo "No changes to publish."
           else
             git commit -m "Auto refresh: accurate fares + rebuild ($(date -u +%Y-%m-%dT%H:%MZ))"
-            git push
+            for i in 1 2 3 4 5; do
+              git push origin HEAD:main && break
+              echo "Push rejected (race) - rebasing and retrying ($i)..."
+              git pull --rebase --autostash origin main || true
+              sleep 3
+            done
           fi
