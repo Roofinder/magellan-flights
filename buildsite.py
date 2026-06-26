@@ -184,7 +184,7 @@ SEO = {
         "A live board of the cheapest round-trip flights from the USA, with "
         "price history and how far below normal each fare is. Updated daily."),
     "world.html": (
-        "Cheapest Flights Anywhere to Anywhere | Magellan Flights",
+        "Cheapest One-Way Flights Worldwide | Magellan Flights",
         "Explore the cheapest flights between 50 global hubs — anywhere to "
         "anywhere. Compare live fares and find the best-value route today."),
     "explore.html": (
@@ -2702,16 +2702,6 @@ def oneway_card(o, rt):
     bar = oneway_bar(price, typ)
     link = html.escape(o["link"], quote=True)
     ret_html = ""; addret = ""
-    if rt:
-        rtlink = html.escape(rt.get("booking_link") or rt.get("link", ""), quote=True)
-        try:
-            rtprice = float(rt["price"])
-        except Exception:
-            rtprice = 0
-        ret_html = (f'<div class="owret" id="owret-{code}"><div class="owret-lab">Round-trip there &amp; back</div>'
-                    f'<div class="owret-rp">${rtprice:,.0f} <span>round-trip</span></div>'
-                    f'<a class="book" href="{rtlink}" target="_blank" rel="noopener">See round-trip price &rarr;</a></div>')
-        addret = f'<button class="addret" type="button" data-owret="{code}">+ add return</button>'
     return (f'<article class="card ow-card" data-region="{continent_of(code)}" data-lp data-o="{html.escape(o["origin"], quote=True)}" data-c="{code}" data-dep="{html.escape(o["depart"], quote=True)}" data-ow="1">'
             f'<div class="ow-top">{flag_img(code)}<span class="ow-from">one-way from {html.escape(o["origin"])}</span></div>'
             f'<h3 class="dest">{html.escape(o["name"])}</h3>'
@@ -2742,7 +2732,7 @@ def oneway_board(oneway, market, limit=8):
         return ""
     return (f'<section class="home-sec"><div class="sec-head">'
             f'<h2><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5c.8 0 1.3 1.1 1.3 2.6v3.7l7.2 4.1v1.9l-7.2-2.1v3.6l1.9 1.4v1.5L12 18.5l-3.2 1.2v-1.5l1.9-1.4v-3.6L3.5 14.8v-1.9l7.2-4.1V5.1C10.7 3.6 11.2 2.5 12 2.5z"/></svg> One-way Voyages</h2>'
-            f'<span>cheap one-way fares to anywhere &middot; add a return any time</span></div>'
+            f'<span>cheap one-way fares to anywhere</span></div>'
             f'<div class="grid">{"".join(cards)}</div></section>')
 
 
@@ -2757,7 +2747,7 @@ def body_home(market, hist, cards, lastmin, oneway, summary):
     if top4:
         fcards = "\n".join(card_html(m) for m in top4)
         flash_section = (f'<section class="home-sec"><div class="sec-head">'
-                         f'<h2>&#9851; Round-trip deals</h2><span>there &amp; back &middot; or add a return to any one-way above</span></div>'
+                         f'<h2>&#9851; Round-trip deals</h2><span>there &amp; back</span></div>'
                          f'<div class="grid">{fcards}</div></section>')
     ow_section = oneway_board(oneway, market)
     nroutes = len(market)
@@ -2772,8 +2762,8 @@ def body_home(market, hist, cards, lastmin, oneway, summary):
   <div class="lander-glow"></div>
   <div class="lander-inner">
     <span class="eyebrow">&#9788; The world is closer than you think</span>
-    <h1>The cheapest <span class="g">one-way flights</span> from the USA.</h1>
-    <p class="lead">Magellan Flights tracks the cheapest one-way fares from the USA to anywhere on earth, every single day &mdash; and flags the moment a fare drops below its normal price. Go one-way for less, and add a return whenever you want it.</p>
+    <h1>The cheapest <span class="g">one-way flights</span> &mdash; from the US and abroad.</h1>
+    <p class="lead">Magellan Flights tracks the cheapest one-way fares from the USA to anywhere on earth, every single day &mdash; and flags the moment a fare drops below its normal price. Go one-way for less.</p>
     <div class="cta-row">
       <a class="btn-primary" href="#deals">Explore today&rsquo;s deals</a>
       <a class="btn-ghost" href="explore.html">Search any route</a>
@@ -2981,9 +2971,9 @@ def body_blog(market, oneway):
     series = HIST_SERIES.get(code, [])
     spark = sparkline_svg(series)
     if typ and price <= typ * 0.90:
-        verdict = f"At <b>${price:,.0f} one-way</b>, this is running well below the usual fare for this route &mdash; a strong time to grab it. Want the trip home too? Add a return for about ${rtprice:,.0f}."
+        verdict = f"At <b>${price:,.0f} one-way</b>, this is running well below the usual fare for this route &mdash; a strong time to grab it."
     elif typ:
-        verdict = f"Today&rsquo;s <b>${price:,.0f} one-way</b> is around the usual range for this route. You can add a return any time for about ${rtprice:,.0f}."
+        verdict = f"Today&rsquo;s <b>${price:,.0f} one-way</b> is around the usual range for this route."
     else:
         verdict = f"Today&rsquo;s standout one-way fare is <b>${price:,.0f}</b>. We track this route&rsquo;s prices daily, so the trend fills in a little more over time."
     cityshort = name.split(",")[0].strip()
@@ -3062,18 +3052,8 @@ def oneway_row(o, rt, pfx="m"):
             pctbadge = '<span class="owr-pct meh">about typical</span>'
     link = html.escape(o["link"], quote=True)
     addret = ""; ret_html = ""
-    if rt:
-        rtlink = html.escape(rt.get("booking_link") or rt.get("link", ""), quote=True)
-        try:
-            rtprice = float(rt["price"])
-        except Exception:
-            rtprice = 0
-        addret = f'<button class="addret-sm" type="button" data-owret="{pfx}-{code}">+ return</button>'
-        ret_html = (f'<div class="owret" id="owret-{pfx}-{code}"><span class="owret-lab">Round-trip there &amp; back:</span> '
-                    f'<span class="owret-rp">${rtprice:,.0f}</span> '
-                    f'<a class="owret-link" href="{rtlink}" target="_blank" rel="noopener">see round-trip &rarr;</a></div>')
     pct_attr = f' data-pct="{dpct:.1f}"' if dpct is not None else ""
-    return (f'<div class="owr" data-region="{continent_of(code)}" data-price="{price:.0f}"{pct_attr}>'
+    return (f'<div class="owr" data-region="{continent_of(code)}" data-price="{price:.0f}" data-month="{(o.get("depart") or "")[:7]}"{pct_attr}>'
             f'<div class="mv-row" data-lp data-o="{html.escape(o["origin"], quote=True)}" data-c="{code}" data-dep="{html.escape(o["depart"], quote=True)}" data-ow="1">'
             f'<button class="star" data-code="{code}" aria-label="watch">&#9734;</button>'
             f'<div class="mv-dest">{flag_img(code)}<div class="mv-destcol"><div class="mv-name">{html.escape(o["name"])}</div>'
@@ -3176,9 +3156,10 @@ def oneway_market(oneway, market, limit=30):
     head = ('<div class="sec-head" id="deals"><h2><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5c.8 0 1.3 1.1 1.3 2.6v3.7l7.2 4.1v1.9l-7.2-2.1v3.6l1.9 1.4v1.5L12 18.5l-3.2 1.2v-1.5l1.9-1.4v-3.6L3.5 14.8v-1.9l7.2-4.1V5.1C10.7 3.6 11.2 2.5 12 2.5z"/></svg> One-way Voyages</h2>'
             f'<span>{ncountries} countries &middot; {ncities} cheap one-way fares &middot; tap a country to see its cities</span></div>')
     chips_html = f'<div class="airchips" style="margin:2px 0 10px">{"".join(chips)}</div>'
-    searchbar = ('<div class="owm-bar"><input type="text" id="ow-q" placeholder="Search a country or city\u2026" oninput="owApply()" autocomplete="off"></div>')
+    searchbar = ('<div class="owm-bar"><input type="text" id="ow-q" placeholder="Search a country or city\u2026" oninput="owApply()" autocomplete="off">'
+                 '<select id="ow-month" onchange="owApply()" style="background:#0e141d;color:var(--ink);border:1px solid var(--line);border-radius:9px;padding:9px 12px;font:inherit"><option value="">Any month</option></select></div>')
     panel = f'<div class="panel owm-panel">{"".join(body)}</div>'
-    return head + chips_html + searchbar + panel + '<script>var OW_REG="all";function owSetReg(r){OW_REG=r;var ch=document.querySelectorAll(\'[data-owreg]\');for(var k=0;k<ch.length;k++){ch[k].classList.toggle(\'on\',ch[k].getAttribute(\'data-owreg\')===r);}owApply();}function owApply(){var q=((document.getElementById(\'ow-q\')||{}).value||\'\').toLowerCase();var cs=document.querySelectorAll(\'.owm-panel .owc\');var shown={};for(var i=0;i<cs.length;i++){var reg=cs[i].getAttribute(\'data-region\');var ctry=cs[i].getAttribute(\'data-country\')||\'\';var cities=cs[i].getAttribute(\'data-cities\')||\'\';var hit=(q===\'\'||ctry.indexOf(q)>=0||cities.indexOf(q)>=0);var ok=(OW_REG===\'all\'||reg===OW_REG)&&hit;cs[i].style.display=ok?\'\':\'none\';if(ok){shown[reg]=1;if(q&&hit){cs[i].open=true;}else if(!q){cs[i].open=false;}}}var hs=document.querySelectorAll(\'.owm-panel .owc-reg\');for(var h=0;h<hs.length;h++){var rg=hs[h].getAttribute(\'data-reg\');hs[h].style.display=((OW_REG===\'all\'||rg===OW_REG)&&shown[rg])?\'\':\'none\';}}</script>'
+    return head + chips_html + searchbar + panel + """<script>var OW_REG="all";function owMonthFill(){var sel=document.getElementById('ow-month');if(!sel)return;var now=new Date();var mn=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];var h='<option value="">Any month</option>';for(var k=0;k<10;k++){var dt=new Date(now.getFullYear(),now.getMonth()+k,1);var v=dt.getFullYear()+'-'+('0'+(dt.getMonth()+1)).slice(-2);h+='<option value="'+v+'">'+mn[dt.getMonth()]+' '+dt.getFullYear()+'</option>';}sel.innerHTML=h;}function owSetReg(r){OW_REG=r;var ch=document.querySelectorAll('[data-owreg]');for(var k=0;k<ch.length;k++){ch[k].classList.toggle('on',ch[k].getAttribute('data-owreg')===r);}owApply();}function owApply(){var q=((document.getElementById('ow-q')||{}).value||'').toLowerCase();var mo=(document.getElementById('ow-month')||{}).value||'';var cs=document.querySelectorAll('.owm-panel .owc');var shown={};for(var i=0;i<cs.length;i++){var c=cs[i];var reg=c.getAttribute('data-region');var ctry=c.getAttribute('data-country')||'';var cities=c.getAttribute('data-cities')||'';var hit=(q===''||ctry.indexOf(q)>=0||cities.indexOf(q)>=0);var regOk=(OW_REG==='all'||reg===OW_REG)&&hit;if(!regOk){c.style.display='none';continue;}var rows=c.querySelectorAll('.owr');var vis=0;for(var jj=0;jj<rows.length;jj++){var m=rows[jj].getAttribute('data-month')||'';var rok=(!mo||m===mo);rows[jj].style.display=rok?'':'none';if(rok)vis++;}if(vis){c.style.display='';shown[reg]=1;c.open=(!!mo||!!q);}else{c.style.display='none';}}var hs=document.querySelectorAll('.owm-panel .owc-reg');for(var hh=0;hh<hs.length;hh++){var rg=hs[hh].getAttribute('data-reg');hs[hh].style.display=((OW_REG==='all'||rg===OW_REG)&&shown[rg])?'':'none';}}owMonthFill();</script>"""
 
 
 def oneway_lastminute(oneway, market, limit=8):
@@ -3264,7 +3245,7 @@ def winner_highlight_html():
 
 def body_market(market, hist, cards, lastmin, oneway):
     return f"""<div class="wrap">
-  <div class="pagehead"><h1>The Market</h1><p>The full board &mdash; the cheapest one-way fares to anywhere, region fare indices and last-minute getaways. Add a return to any deal.</p></div>
+  <div class="pagehead"><h1>The Market</h1><p>The full board &mdash; the cheapest one-way fares to anywhere, region fare indices and last-minute getaways.</p></div>
   {winner_highlight_html()}
   <div class="summary">{market_pulse(market)}</div>
   <div class="sec-head" id="market"><h2>Fare indices</h2><span>avg vs. the Standard Meridian, by region</span></div>
@@ -3763,15 +3744,15 @@ def body_explore():
   <div class="tl-card">
     <div class="tl-form" style="align-items:flex-end">
       <div style="display:flex;flex-direction:column;gap:5px">
-        <span style="font-size:12px;color:var(--muted)">From (add one or more airports)</span>
-        <div style="display:flex;gap:6px"><input id="ex-add" maxlength="3" placeholder="e.g. CLT" autocomplete="off" style="width:96px;background:#0e141d;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:9px 10px" onkeydown="if(event.key==='Enter'){exAddOrig();return false;}"><button class="airchip" onclick="exAddOrig()">+ Add airport</button></div>
+        <span style="font-size:12px;color:var(--muted)">From &mdash; any airport, US or abroad</span>
+        <div style="display:flex;gap:6px"><input id="ex-add" maxlength="3" placeholder="e.g. CLT, BKK, LHR" autocomplete="off" style="width:96px;background:#0e141d;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:9px 10px" onkeydown="if(event.key==='Enter'){exAddOrig();return false;}"><button class="airchip" onclick="exAddOrig()">+ Add airport</button></div>
         <div id="ex-origs" class="airchips"></div>
       </div>
       <label style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--muted)">To (optional)<div class="ac-wrap"><input id="ex-to" placeholder="Search a city or leave blank for anywhere" autocomplete="off" oninput="exToAC()" style="width:230px;background:#0e141d;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:9px 10px" onkeydown="if(event.key==='Enter'){document.getElementById('ex-to-ac').style.display='none';exSearch();return false;}"><div id="ex-to-ac" class="ac-drop"></div></div></label>
       
       <button class="btn-primary tl-go" onclick="exSearch()">Find deals</button>
     </div>
-    <div id="ex-when" style="margin:8px 0 2px"><span style="font-size:12px;color:var(--muted);margin-right:6px">When (anywhere mode):</span><span class="airchips" style="display:inline-flex"><button class="airchip on" id="ex-wh-any" onclick="exSetWhen('any')">Anytime</button><button class="airchip" id="ex-wh-soon" onclick="exSetWhen('soon')"><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.2v5l3.2 2"/></svg> Soon</button></span></div>
+    <div id="ex-when" style="margin:8px 0 2px"><span style="font-size:12px;color:var(--muted);margin-right:6px">When:</span><span class="airchips" style="display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap"><button class="airchip on" id="ex-wh-any" onclick="exSetWhen('any')">Anytime</button><select id="ex-wh-month" onchange="exSetMonth(this.value)" style="background:#0e141d;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:7px 9px;font:inherit"><option value="">Flexible month…</option></select><input type="date" id="ex-wh-date" onchange="exSetDate(this.value)" style="background:#0e141d;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:7px 9px;font:inherit"></span></div>
     <div id="ex-regions" class="airchips" style="margin:6px 0 12px"></div>
     <div class="panel"><div id="ex-out"><div class="wl-hint">Add your home airport(s) and hit &ldquo;Find deals.&rdquo;</div></div></div>
   </div>
@@ -3784,22 +3765,25 @@ var GROUPS={'SE Asia':'TH VN ID SG MY PH KH LA MM BN TL','E Asia':'JP KR CN TW H
 function tagsFor(code){ var c=CC[code]; if(!c) return ['Abroad']; if(c==='US') return ['USA']; var t=[]; for(var g in GROUPS){ if((' '+GROUPS[g]+' ').indexOf(' '+c+' ')>=0){ t.push(g); if(g==='SE Asia'||g==='E Asia'||g==='S Asia'||g==='C Asia') t.push('Asia'); break; } } if(c!=='CA') t.push('Abroad'); return t; }
 var REGIONS=['all','USA','Abroad','Asia','SE Asia','E Asia','S Asia','W Europe','E Europe','Nordic','S America','C America','Caribbean','Oceania','Middle East','Africa','Canada'];
 function go(id){ return document.getElementById(id); }
-var EX_TRIP='oneway', EX_WHEN='any', EX_REG='all', EX_DATA=[], EX_SHOWN=[], EX_ORIG=[], EX_P2P=false;
+var EX_TRIP='oneway', EX_WHEN='any', EX_REG='all', EX_DATA=[], EX_SHOWN=[], EX_ORIG=[], EX_P2P=false, EX_DATE='';
 function bucket(){ try{ return JSON.parse(localStorage.getItem('mf_bucket')||'[]'); }catch(e){ return []; } }
 function saved(id){ return bucket().some(function(x){ return x.id===id; }); }
 function renderOrigs(){ var box=go('ex-origs'); if(!box) return; box.innerHTML=EX_ORIG.map(function(c){ return '<button class="airchip on" data-o="'+c+'" title="remove">'+c+' &times;</button>'; }).join(''); }
 window.exAddOrig=function(){ var v=(go('ex-add').value||'').trim().toUpperCase(); if(!/^[A-Z]{3}$/.test(v)){ go('ex-add').focus(); return; } if(EX_ORIG.indexOf(v)<0) EX_ORIG.push(v); go('ex-add').value=''; renderOrigs(); exSearch(); };
 window.exSetTrip=function(t){ EX_TRIP=t; go('ex-rt-rt').classList.toggle('on',t==='round'); go('ex-rt-ow').classList.toggle('on',t==='oneway'); exSearch(); };
-window.exSetWhen=function(w){ EX_WHEN=w; go('ex-wh-any').classList.toggle('on',w==='any'); go('ex-wh-soon').classList.toggle('on',w==='soon'); if(!EX_P2P) exFilter(); };
+window.exSetWhen=function(w){ EX_WHEN='any'; EX_DATE=''; var ms=go('ex-wh-month'); if(ms) ms.value=''; var ds=go('ex-wh-date'); if(ds) ds.value=''; go('ex-wh-any').classList.add('on'); exSearch(); };
+window.exSetMonth=function(v){ var ds=go('ex-wh-date'); if(ds) ds.value=''; EX_DATE=v||''; go('ex-wh-any').classList.toggle('on', !EX_DATE); exSearch(); };
+window.exSetDate=function(v){ var ms=go('ex-wh-month'); if(ms) ms.value=''; EX_DATE=v||''; go('ex-wh-any').classList.toggle('on', !EX_DATE); exSearch(); };
+function exMonthFill(){ var sel=go('ex-wh-month'); if(!sel) return; var now=new Date(); var mn=['January','February','March','April','May','June','July','August','September','October','November','December']; var h='<option value="">Flexible month\u2026</option>'; for(var k=0;k<12;k++){ var dt=new Date(now.getFullYear(), now.getMonth()+k, 1); var v=dt.getFullYear()+'-'+('0'+(dt.getMonth()+1)).slice(-2); h+='<option value="'+v+'">'+mn[dt.getMonth()]+' '+dt.getFullYear()+'</option>'; } sel.innerHTML=h; }
 function renderChips(){ go('ex-regions').innerHTML=REGIONS.map(function(r){ var lab=r==='all'?'All':r; return '<button class="airchip'+(EX_REG===r?' on':'')+'" data-r="'+r+'">'+lab+'</button>'; }).join(''); }
-window.exSearch=function(){ var ow=(EX_TRIP==='oneway'?'true':'false'); var to=(EX_TO_CODE||resolveTo(go('ex-to').value)).toUpperCase(); var when=''; if(!EX_ORIG.length){ go('ex-regions').style.display='none'; go('ex-when').style.display='none'; go('ex-out').innerHTML='<div class="wl-hint">'+(to?('Add at least one <b>From</b> airport to search fares to '+to+'.'):'Add your home airport(s) above &mdash; then optionally a destination &mdash; and hit Find deals.')+'</div>'; return; } EX_P2P=/^[A-Z]{3}$/.test(to); go('ex-regions').style.display=EX_P2P?'none':'flex'; go('ex-when').style.display=EX_P2P?'none':'block';
+window.exSearch=function(){ var ow=(EX_TRIP==='oneway'?'true':'false'); var to=(EX_TO_CODE||resolveTo(go('ex-to').value)).toUpperCase(); var when=''; if(!EX_ORIG.length){ go('ex-regions').style.display='none'; go('ex-when').style.display='none'; go('ex-out').innerHTML='<div class="wl-hint">'+(to?('Add at least one <b>From</b> airport to search fares to '+to+'.'):'Add your home airport(s) above &mdash; then optionally a destination &mdash; and hit Find deals.')+'</div>'; return; } EX_P2P=/^[A-Z]{3}$/.test(to); go('ex-regions').style.display=EX_P2P?'none':'flex'; go('ex-when').style.display='block';
   if(EX_P2P){
     go('ex-out').innerHTML='<div class="wl-hint">Finding '+(EX_TRIP==='oneway'?'one-way':'round-trip')+' fares to '+to+' from '+EX_ORIG.join(', ')+(when?(' around '+when):'')+'&hellip;</div>';
-    var calls=EX_ORIG.map(function(o){ return fetch('/api/search?origin='+o+'&destination='+to+'&one_way='+ow+'&sorting=route&limit=100').then(function(r){return r.json();}).then(function(j){ return (j&&j.data)||[]; }).catch(function(){ return []; }); });
+    var calls=EX_ORIG.map(function(o){ return fetch('/api/search?origin='+o+'&destination='+to+'&one_way='+ow+'&sorting=route&limit=100'+(EX_DATE?'&departure_at='+EX_DATE:'')).then(function(r){return r.json();}).then(function(j){ return (j&&j.data)||[]; }).catch(function(){ return []; }); });
     Promise.all(calls).then(function(arrs){ var all=[]; arrs.forEach(function(d){ all=all.concat(d); }); all=all.filter(function(f){ return f.destination_airport===to && f.departure_at; }); var seen={}; all.forEach(function(f){ var key=f.origin_airport+'|'+(f.departure_at||'').slice(0,10); if(!seen[key]||f.price<seen[key].price) seen[key]=f; }); var list=Object.keys(seen).map(function(k){return seen[k];}); if(when){ var only=list.filter(function(f){ return (f.departure_at||'').slice(0,10)>=when; }); if(only.length) list=only; } list.sort(function(a,b){ var da=(a.departure_at||'').slice(0,10), db=(b.departure_at||'').slice(0,10); if(da!==db) return da<db?-1:1; return a.price-b.price; }); EX_DATA=list; EX_SHOWN=list.slice(0,40); exRender(); if(!list.length){ go('ex-out').innerHTML='<div class="wl-hint">We don&rsquo;t have cached fares for '+EX_ORIG.join('/')+' &rarr; '+to+' right now. Try a major hub (JFK, LAX, ORD) as a From airport, or remove the date.</div>'; } }).catch(function(){ go('ex-out').innerHTML='<div class="wl-hint">Couldn&rsquo;t load that route &mdash; try again.</div>'; });
     return;
   }
-  go('ex-out').innerHTML='<div class="wl-hint">Finding the cheapest '+(EX_TRIP==='oneway'?'one-way':'round-trip')+' fares from '+EX_ORIG.join(', ')+'&hellip;</div>'; var origset={}; EX_ORIG.forEach(function(o){origset[o]=1;}); var calls2=EX_ORIG.map(function(o){ return fetch('/api/search?origin='+o+'&one_way='+ow+'&sorting=price&limit=600').then(function(r){return r.json();}).then(function(j){ return (j&&j.data)||[]; }).catch(function(){ return []; }); }); Promise.all(calls2).then(function(arrs){ var best={}; arrs.forEach(function(data){ data.forEach(function(f){ var d=f.destination_airport; if(!d||origset[d]) return; if(!best[d]||f.price<best[d].price) best[d]=f; }); }); EX_DATA=Object.keys(best).map(function(k){return best[k];}).sort(function(a,b){return a.price-b.price;}); exFilter(); }).catch(function(){ go('ex-out').innerHTML='<div class="wl-hint">Couldn&rsquo;t load deals &mdash; try again.</div>'; }); };
+  go('ex-out').innerHTML='<div class="wl-hint">Finding the cheapest '+(EX_TRIP==='oneway'?'one-way':'round-trip')+' fares from '+EX_ORIG.join(', ')+'&hellip;</div>'; var origset={}; EX_ORIG.forEach(function(o){origset[o]=1;}); var calls2=EX_ORIG.map(function(o){ return fetch('/api/search?origin='+o+'&one_way='+ow+'&sorting=price&limit=600'+(EX_DATE?'&departure_at='+EX_DATE:'')).then(function(r){return r.json();}).then(function(j){ return (j&&j.data)||[]; }).catch(function(){ return []; }); }); Promise.all(calls2).then(function(arrs){ var best={}; arrs.forEach(function(data){ data.forEach(function(f){ var d=f.destination_airport; if(!d||origset[d]) return; if(!best[d]||f.price<best[d].price) best[d]=f; }); }); EX_DATA=Object.keys(best).map(function(k){return best[k];}).sort(function(a,b){return a.price-b.price;}); exFilter(); }).catch(function(){ go('ex-out').innerHTML='<div class="wl-hint">Couldn&rsquo;t load deals &mdash; try again.</div>'; }); };
 function exFilter(){ var now=new Date(); var soon=new Date(); soon.setDate(soon.getDate()+16); var rows=EX_DATA.filter(function(f){ if(EX_REG!=='all' && tagsFor(f.destination_airport).indexOf(EX_REG)<0) return false; if(EX_WHEN==='soon'){ var dp=new Date((f.departure_at||'').slice(0,10)+'T00:00:00'); if(isNaN(dp)||dp<now||dp>soon) return false; } return true; }); EX_SHOWN=rows.slice(0,40); exRender(); }
 var BM = __BMJS__;
 function owFlag(d){ var cc=(CC[d]||'').toLowerCase(); return cc ? '<img class="flag" src="https://flagcdn.com/'+cc+'.svg" alt="" width="30" height="21" loading="lazy">' : '<span class="flag flag-na" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/></svg></span>'; }
@@ -3815,7 +3799,7 @@ document.addEventListener('click', function(e){ var b=e.target.closest && e.targ
 window.exSave=function(btn,i){ var f=EX_SHOWN[i]; if(!f) return; var list=bucket(); var id=f.origin_airport+f.destination_airport+(f.departure_at||'').slice(0,10); var idx=-1; for(var k=0;k<list.length;k++){ if(list[k].id===id){ idx=k; break; } } if(idx>=0){ list.splice(idx,1); btn.classList.remove('on'); btn.innerHTML='&#9734;'; } else { list.push({id:id,o:f.origin_airport,d:f.destination_airport,date:(f.departure_at||'').slice(0,10),ret:(f.return_at||'').slice(0,10),price:Math.round(f.price),link:f.link,ow:EX_TRIP==='oneway'?1:0}); btn.classList.add('on'); btn.innerHTML='&#9733;'; } localStorage.setItem('mf_bucket',JSON.stringify(list)); if(window.renderBucket) window.renderBucket(); };
 var rb=go('ex-regions'); if(rb){ rb.addEventListener('click', function(e){ var b=e.target.closest('[data-r]'); if(b){ EX_REG=b.getAttribute('data-r'); renderChips(); exFilter(); } }); }
 var ob=go('ex-origs'); if(ob){ ob.addEventListener('click', function(e){ var b=e.target.closest('[data-o]'); if(!b) return; var c=b.getAttribute('data-o'); EX_ORIG=EX_ORIG.filter(function(x){return x!==c;}); renderOrigs(); exSearch(); }); }
-renderOrigs(); renderChips(); exToBind(); exSearch();
+renderOrigs(); renderChips(); exToBind(); exMonthFill(); exSearch();
 })();
 </script>"""
 
@@ -3855,7 +3839,7 @@ def body_world(world):
     opts = ('<option value="all">All origins — cheapest worldwide</option>'
             + "".join(f'<option value="{o}">{html.escape(n)} ({o})</option>' for o, n in origins))
     return f"""<div class="wrap">
-  <div class="pagehead"><h1>World &mdash; anywhere to anywhere</h1><p>Cheapest one-way flights from major hubs worldwide, including international origins. Pick any origin city and filter by region.</p></div>
+  <div class="pagehead"><h1>Cheapest one-ways worldwide</h1><p>Cheapest one-way flights from major hubs worldwide, including international origins. Pick any origin city and filter by region.</p></div>
   {world_map_html()}
   <div class="citybar"><select id="world-origin" onchange="selWorldOrigin(this.value)">{opts}</select></div>
   <div class="airchips" style="margin:4px 0 8px;">
