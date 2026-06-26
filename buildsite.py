@@ -1689,14 +1689,37 @@ CSS = r"""<style>
   .lander h1 .g{ color:var(--gold); }
   .lander .lead{ font-size:17.5px; color:var(--muted); max-width:630px; margin:0 auto 26px; line-height:1.6; }
   .lander .lead .buy{ color:var(--green); font-weight:700; }
-  .hero-search{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; align-items:center; max-width:680px; margin:4px auto 16px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.15); border-radius:14px; padding:10px; }
-  .hero-search input{ background:#0e141d; color:var(--ink); border:1px solid var(--line); border-radius:9px; padding:11px 12px; font-size:15px; font-family:inherit; }
-  .hero-search .hs-from{ width:150px; }
-  .hero-search .hs-to{ flex:1; min-width:150px; }
-  .hero-search .hs-date{ width:150px; color-scheme:dark; }
-  .hero-search button{ background:var(--gold); color:#1a1205; font-weight:700; border:0; border-radius:9px; padding:11px 22px; font-size:15px; cursor:pointer; }
-  .hero-search button:hover{ filter:brightness(1.06); }
-  @media(max-width:560px){ .hero-search{ flex-direction:column; align-items:stretch; } .hero-search input,.hero-search button,.hero-search .hs-from,.hero-search .hs-date{ width:100%; } }
+  /* ---- Hybrid bright hero (light sky band; dark data resumes below) ---- */
+  .lander-bright{ background:linear-gradient(180deg,#dcebff 0%,#e8f3ff 8%,#eaf4ff 60%,#dfeefc 100%); }
+  .lander-bright{ background:linear-gradient(180deg,#d6e9ff 0%,#e9f4ff 55%,#f4faff 100%); border-bottom:1px solid #0a0e14; }
+  .lander-bright h1{ color:#0d1a30; }
+  .lander-bright h1 .g{ color:#1769c4; }
+  .lander-bright .lead{ color:#3c4a62; }
+  .lander-bright .eyebrow{ color:#1769c4; border-color:rgba(23,105,196,.35); background:rgba(255,255,255,.7); }
+  .lander-bright .trust{ color:#5b6b86; }
+  .lander-bright .trust b{ color:#0d1a30; }
+  .fsearch{ background:#fff; border:1px solid #d9e2ef; border-radius:16px; box-shadow:0 14px 38px rgba(20,40,80,.16);
+            padding:18px; max-width:680px; margin:8px auto 14px; text-align:left; }
+  .fsearch .fs-row{ display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; margin-bottom:12px; }
+  .fs-trip{ align-items:center; gap:20px; margin-bottom:14px; }
+  .fs-radio,.fs-check{ display:inline-flex; align-items:center; gap:7px; font-size:14.5px; color:#26344b; font-weight:600; cursor:pointer; }
+  .fs-radio input,.fs-check input{ accent-color:#1769c4; width:16px; height:16px; }
+  .fs-field{ display:flex; flex-direction:column; gap:5px; flex:1; min-width:130px; }
+  .fs-field label{ font-size:11.5px; font-weight:700; color:#5b6b86; text-transform:uppercase; letter-spacing:.04em; }
+  .fs-field input,.fs-field select{ background:#f6faff; color:#16202e; border:1px solid #cfdbeb; border-radius:9px;
+            padding:11px 12px; font-size:15px; font-family:inherit; }
+  .fs-od .fs-field{ flex:1; min-width:180px; }
+  .fs-swap{ flex:0 0 auto; align-self:flex-end; margin-bottom:4px; background:#eaf2ff; border:1px solid #cfdbeb;
+            color:#1769c4; width:40px; height:40px; border-radius:9px; cursor:pointer; font-size:18px; }
+  .fs-swap:hover{ background:#dcebff; }
+  .fs-alert{ background:#f1f6fd; border:1px solid #dbe7f6; border-radius:11px; padding:12px 14px; margin:2px 0 14px; }
+  .fs-alert-lab{ display:block; font-size:13.5px; font-weight:700; color:#26344b; margin-bottom:7px; }
+  .fs-alert-lab span{ color:#7a8aa3; font-weight:500; }
+  .fs-alert input{ width:100%; background:#fff; border:1px solid #cfdbeb; border-radius:9px; padding:11px 12px; font-size:15px; }
+  .fs-go{ display:block; width:100%; background:var(--gold); color:#1a1205; font-weight:800; font-size:16px; border:0;
+          border-radius:11px; padding:14px; cursor:pointer; letter-spacing:.02em; }
+  .fs-go:hover{ filter:brightness(1.05); }
+  @media(max-width:560px){ .fs-od{ flex-wrap:wrap; } .fs-swap{ display:none; } }
   .cta-row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
   .btn-primary{ background:var(--gold); color:var(--ink2); font-weight:700; text-decoration:none;
                 padding:13px 26px; border-radius:10px; font-size:15px; }
@@ -2585,14 +2608,21 @@ def oneway_board(oneway, market, limit=8):
 
 
 HOME_SEARCH_JS = """<script>
+function fsTrip(t){ var r=document.getElementById('hs-return-wrap'); if(r) r.style.display=(t==='oneway')?'none':''; }
+function fsSwap(){ var a=document.getElementById('hs-from'), b=document.getElementById('hs-to'); if(a&&b){ var v=a.value; a.value=b.value; b.value=v; } }
 function homeSearch(e){ e.preventDefault();
   var f=(document.getElementById('hs-from').value||'').trim();
   var t=(document.getElementById('hs-to').value||'').trim();
   var dep=document.getElementById('hs-depart').value, ret=document.getElementById('hs-return').value;
+  var owEl=document.querySelector('input[name="fs-trip"]:checked'); var oneway=(owEl&&owEl.value==='oneway');
+  var nsEl=document.getElementById('hs-nonstop'); var nonstop=(nsEl&&nsEl.checked);
+  var emEl=document.getElementById('hs-email'); var em=emEl?emEl.value.trim():'';
   if(!f){ document.getElementById('hs-from').focus(); return false; }
   if(!t){ document.getElementById('hs-to').focus(); return false; }
-  var q='explore.html?from='+encodeURIComponent(f)+'&to='+encodeURIComponent(t);
-  if(dep) q+='&depart='+dep; if(ret) q+='&return='+ret;
+  var act=e.target.getAttribute('data-alert');
+  if(em && act){ try{ var fd=new FormData(); fd.append('email', em); fd.append('source','home-search'); fetch(act,{method:'POST',body:fd,headers:{'Accept':'application/json'}}); }catch(_){} }
+  var q='explore.html?from='+encodeURIComponent(f)+'&to='+encodeURIComponent(t)+'&trip='+(oneway?'oneway':'round');
+  if(dep) q+='&depart='+dep; if(ret && !oneway) q+='&return='+ret; if(nonstop) q+='&nonstop=1';
   window.location.href=q; return false; }
 </script>"""
 
@@ -2618,23 +2648,34 @@ def body_home(market, hist, cards, lastmin, oneway, summary, world):
     except Exception:
         ncountries = nroutes
     nbook = sum(1 for m in market if signal_for(m["price"], m["benchmark"])[0] == "BOOK")
-    return f"""<section class="lander">
-  <div class="lander-glow"></div>
+    return f"""<section class="lander lander-bright">
   <div class="lander-inner">
     <span class="eyebrow">The world is closer than you think</span>
     <h1>The cheapest <span class="g">one-way flights</span> &mdash; from the US and abroad.</h1>
-    <p class="lead">Magellan Flights tracks the cheapest one-way fares from the USA to anywhere on earth, every single day &mdash; and flags the moment a fare drops below its normal price. Go one-way for less.</p>
-    <form class="hero-search" onsubmit="return homeSearch(event)" aria-label="Search flights">
-      <input id="hs-from" class="hs-from" placeholder="From (city or airport)" autocomplete="off" aria-label="From, city or airport">
-      <input id="hs-to" class="hs-to" placeholder="To (city or airport)" autocomplete="off" aria-label="Destination">
-      <input id="hs-depart" class="hs-date" type="date" aria-label="Depart date">
-      <input id="hs-return" class="hs-date" type="date" aria-label="Return date (optional)">
-      <button type="submit">Search flights</button>
+    <p class="lead">Track the cheapest fares from the USA to anywhere on earth, every day &mdash; and catch the moment one drops below its normal price.</p>
+    <form class="fsearch" data-alert="{FORM_ACTION}" onsubmit="return homeSearch(event)" aria-label="Flight search">
+      <div class="fs-row fs-trip">
+        <label class="fs-radio"><input type="radio" name="fs-trip" value="round" checked onchange="fsTrip('round')"> Round-trip</label>
+        <label class="fs-radio"><input type="radio" name="fs-trip" value="oneway" onchange="fsTrip('oneway')"> One-way</label>
+        <label class="fs-check"><input type="checkbox" id="hs-nonstop"> Non-stop only</label>
+      </div>
+      <div class="fs-row fs-od">
+        <div class="fs-field"><label>From</label><input id="hs-from" placeholder="City or airport" autocomplete="off"></div>
+        <button type="button" class="fs-swap" onclick="fsSwap()" aria-label="Swap from and to" title="Swap">&#8644;</button>
+        <div class="fs-field"><label>To</label><input id="hs-to" placeholder="Where to?" autocomplete="off"></div>
+      </div>
+      <div class="fs-row">
+        <div class="fs-field"><label>Depart</label><input id="hs-depart" type="date"></div>
+        <div class="fs-field" id="hs-return-wrap"><label>Return</label><input id="hs-return" type="date"></div>
+        <div class="fs-field"><label>Travelers</label><select id="hs-trav"><option>1 traveler</option><option>2 travelers</option><option>3 travelers</option><option>4 travelers</option><option>5+ travelers</option></select></div>
+        <div class="fs-field"><label>Class</label><select id="hs-class"><option>Economy</option><option>Premium</option><option>Business</option><option>First</option></select></div>
+      </div>
+      <div class="fs-alert">
+        <span class="fs-alert-lab">Send me alerts when prices drop <span>(optional)</span></span>
+        <input id="hs-email" type="email" placeholder="Enter your email" autocomplete="email">
+      </div>
+      <button type="submit" class="fs-go">Find deals &rarr;</button>
     </form>
-    <div class="cta-row">
-      <a class="btn-primary" href="#deals">Explore today&rsquo;s deals</a>
-      <a class="btn-ghost" href="around-the-world.html"><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m15.6 8.4-2.1 5.1-5.1 2.1 2.1-5.1 5.1-2.1z"/></svg> Around the World</a>
-    </div>
     <p class="trust">Free, forever &middot; fares tracked through the day &middot; live price confirmed when you book on Aviasales</p>
   </div>
 </section>
@@ -3699,12 +3740,12 @@ window.exSave=function(btn,i){ var f=EX_SHOWN[i]; if(!f) return; var list=bucket
 var rb=go('ex-regions'); if(rb){ rb.addEventListener('click', function(e){ var b=e.target.closest('[data-r]'); if(b){ EX_REG=b.getAttribute('data-r'); renderChips(); exFilter(); } }); }
 var ob=go('ex-origs'); if(ob){ ob.addEventListener('click', function(e){ var b=e.target.closest('[data-o]'); if(!b) return; var c=b.getAttribute('data-o'); EX_ORIG=EX_ORIG.filter(function(x){return x!==c;}); renderOrigs(); exSearch(); }); }
 renderOrigs(); renderChips(); exToBind(); exMonthFill(); exSearch();
-setTimeout(function(){ try{ var p=new URLSearchParams(location.search); var f=p.get('from'), t=p.get('to'); if(f&&t){ var ef=go('ep-from'),et=go('ep-to'),ed=go('ep-depart'),er=go('ep-return'); if(ef)ef.value=f; if(et)et.value=t; var dep=p.get('depart'),ret=p.get('return'); if(dep&&ed)ed.value=dep; if(ret&&er)er.value=ret; if(window.exPlanTrip)exPlanTrip(ret?'round':'oneway'); if(window.exTab)exTab('plan'); if(window.exPlanSearch)exPlanSearch(); } }catch(e){} }, 0);
+setTimeout(function(){ try{ var p=new URLSearchParams(location.search); var f=p.get('from'), t=p.get('to'); if(f&&t){ var ef=go('ep-from'),et=go('ep-to'),ed=go('ep-depart'),er=go('ep-return'); if(ef)ef.value=f; if(et)et.value=t; var dep=p.get('depart'),ret=p.get('return'),trip=p.get('trip'); if(dep&&ed)ed.value=dep; if(ret&&er)er.value=ret; window.EP_NS=(p.get('nonstop')==='1'); if(window.exPlanTrip)exPlanTrip(trip||(ret?'round':'oneway')); if(window.exTab)exTab('plan'); if(window.exPlanSearch)exPlanSearch(); } }catch(e){} }, 0);
 /* ---- Plan a trip: conventional From -> To -> Depart/Return route search ---- */
 var EP_TRIP='round';
 window.exTab=function(m){ go('ex-tab-plan').style.display=(m==='plan')?'':'none'; go('ex-tab-explore').style.display=(m==='explore')?'':'none'; go('ex-tab-plan-btn').classList.toggle('on',m==='plan'); go('ex-tab-explore-btn').classList.toggle('on',m==='explore'); };
 window.exPlanTrip=function(t){ EP_TRIP=t; go('ep-rt').classList.toggle('on',t==='round'); go('ep-ow').classList.toggle('on',t==='oneway'); go('ep-return-wrap').style.display=(t==='round')?'':'none'; };
-window.exPlanSearch=function(){ var oraw=(go('ep-from').value||'').trim(); var o=/^[A-Za-z]{3}$/.test(oraw)?oraw.toUpperCase():resolveTo(oraw); var raw=(go('ep-to').value||'').trim(); var d=/^[A-Za-z]{3}$/.test(raw)?raw.toUpperCase():resolveTo(raw); var dep=go('ep-depart').value, ret=go('ep-return').value, out=go('ep-out'); var rt=(EP_TRIP==='round'); if(!/^[A-Z]{3}$/.test(o)){ out.innerHTML='<div class="wl-hint">Enter a <b>From</b> city or airport code (e.g. Raleigh or RDU).</div>'; return; } if(!/^[A-Z]{3}$/.test(d)){ out.innerHTML='<div class="wl-hint">Enter a <b>To</b> city or 3-letter code (e.g. CUN).</div>'; return; } out.innerHTML='<div class="wl-hint">Searching '+(rt?'round-trip':'one-way')+' fares '+o+' &rarr; '+d+(dep?(' on '+dep):'')+'&hellip;</div>'; var u='/api/search?origin='+o+'&destination='+d+'&one_way='+(rt?'false':'true')+'&sorting=price&limit=30'; if(dep) u+='&departure_at='+dep; if(rt&&ret) u+='&return_at='+ret; fetch(u).then(function(r){return r.json();}).then(function(j){ var data=((j&&j.data)||[]).filter(function(f){ return f.destination_airport===d; }); data.sort(function(a,b){ return a.price-b.price; }); exPlanRender(o,d,rt,data); }).catch(function(){ out.innerHTML='<div class="wl-hint">Couldn&rsquo;t load that search &mdash; try again.</div>'; }); };
+window.exPlanSearch=function(){ var oraw=(go('ep-from').value||'').trim(); var o=/^[A-Za-z]{3}$/.test(oraw)?oraw.toUpperCase():resolveTo(oraw); var raw=(go('ep-to').value||'').trim(); var d=/^[A-Za-z]{3}$/.test(raw)?raw.toUpperCase():resolveTo(raw); var dep=go('ep-depart').value, ret=go('ep-return').value, out=go('ep-out'); var rt=(EP_TRIP==='round'); if(!/^[A-Z]{3}$/.test(o)){ out.innerHTML='<div class="wl-hint">Enter a <b>From</b> city or airport code (e.g. Raleigh or RDU).</div>'; return; } if(!/^[A-Z]{3}$/.test(d)){ out.innerHTML='<div class="wl-hint">Enter a <b>To</b> city or 3-letter code (e.g. CUN).</div>'; return; } out.innerHTML='<div class="wl-hint">Searching '+(rt?'round-trip':'one-way')+' fares '+o+' &rarr; '+d+(dep?(' on '+dep):'')+'&hellip;</div>'; var u='/api/search?origin='+o+'&destination='+d+'&one_way='+(rt?'false':'true')+'&sorting=price&limit=30'; if(dep) u+='&departure_at='+dep; if(rt&&ret) u+='&return_at='+ret; if(window.EP_NS) u+='&direct=true'; fetch(u).then(function(r){return r.json();}).then(function(j){ var data=((j&&j.data)||[]).filter(function(f){ return f.destination_airport===d; }); data.sort(function(a,b){ return a.price-b.price; }); exPlanRender(o,d,rt,data); }).catch(function(){ out.innerHTML='<div class="wl-hint">Couldn&rsquo;t load that search &mdash; try again.</div>'; }); };
 function exPlanRender(o,d,rt,data){ var out=go('ep-out'); if(!data.length){ out.innerHTML='<div class="wl-hint">No cached fares for '+o+' &rarr; '+d+(rt?' on those dates':'')+' right now. Try clearing the dates, a nearby date, or a major hub (JFK, LAX, ORD). Your live, bookable price is always on Aviasales.</div>'; return; } var nm=(typeof NAMES!=='undefined'&&NAMES[d])?(' <span style="color:var(--muted);font-weight:400">'+NAMES[d]+'</span>'):''; out.innerHTML='<div style="font-weight:600;margin:0 0 8px">'+o+' &rarr; '+d+nm+'</div>'+data.slice(0,20).map(function(f){ var dp=(f.departure_at||'').slice(0,10), rtd=(f.return_at||'').slice(0,10), p=Math.round(f.price); var sub=dp+(rt&&rtd?(' &rarr; '+rtd):''); return '<div class="mv-row"><div class="mv-dest">'+owFlag(d)+'<div class="mv-destcol"><div class="mv-name">'+o+' &rarr; '+d+'</div><div class="mv-air">'+sub+'</div></div></div><div class="mv-right"><span class="mv-price"><span class="lp-dot" title="Freshest tracked fare — your live, bookable price is confirmed on Aviasales"></span>$'+p.toLocaleString()+'</span> <span class="ow-unit">'+(rt?'round-trip':'one-way')+'</span><a class="mini-book" href="'+f.link+'" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a></div></div>'; }).join(''); }
 })();
 </script>"""
