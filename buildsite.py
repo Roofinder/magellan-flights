@@ -1689,6 +1689,14 @@ CSS = r"""<style>
   .lander h1 .g{ color:var(--gold); }
   .lander .lead{ font-size:17.5px; color:var(--muted); max-width:630px; margin:0 auto 26px; line-height:1.6; }
   .lander .lead .buy{ color:var(--green); font-weight:700; }
+  .hero-search{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; align-items:center; max-width:680px; margin:4px auto 16px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.15); border-radius:14px; padding:10px; }
+  .hero-search input{ background:#0e141d; color:var(--ink); border:1px solid var(--line); border-radius:9px; padding:11px 12px; font-size:15px; font-family:inherit; }
+  .hero-search .hs-from{ width:84px; text-transform:uppercase; letter-spacing:.06em; }
+  .hero-search .hs-to{ flex:1; min-width:150px; }
+  .hero-search .hs-date{ width:150px; color-scheme:dark; }
+  .hero-search button{ background:var(--gold); color:#1a1205; font-weight:700; border:0; border-radius:9px; padding:11px 22px; font-size:15px; cursor:pointer; }
+  .hero-search button:hover{ filter:brightness(1.06); }
+  @media(max-width:560px){ .hero-search{ flex-direction:column; align-items:stretch; } .hero-search input,.hero-search button,.hero-search .hs-from,.hero-search .hs-date{ width:100%; } }
   .cta-row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
   .btn-primary{ background:var(--gold); color:var(--ink2); font-weight:700; text-decoration:none;
                 padding:13px 26px; border-radius:10px; font-size:15px; }
@@ -2576,6 +2584,19 @@ def oneway_board(oneway, market, limit=8):
             f'<div class="grid">{"".join(cards)}</div></section>')
 
 
+HOME_SEARCH_JS = """<script>
+function homeSearch(e){ e.preventDefault();
+  var f=(document.getElementById('hs-from').value||'').trim().toUpperCase();
+  var t=(document.getElementById('hs-to').value||'').trim();
+  var dep=document.getElementById('hs-depart').value, ret=document.getElementById('hs-return').value;
+  if(!/^[A-Z]{3}$/.test(f)){ document.getElementById('hs-from').focus(); return false; }
+  if(!t){ document.getElementById('hs-to').focus(); return false; }
+  var q='explore.html?from='+encodeURIComponent(f)+'&to='+encodeURIComponent(t);
+  if(dep) q+='&depart='+dep; if(ret) q+='&return='+ret;
+  window.location.href=q; return false; }
+</script>"""
+
+
 def body_home(market, hist, cards, lastmin, oneway, summary, world):
     labels = [("summary", "Market summary"), ("indices", "Fare indices"),
               ("movers", "Biggest movers"), ("deals", "Cheapest trips"),
@@ -2603,9 +2624,15 @@ def body_home(market, hist, cards, lastmin, oneway, summary, world):
     <span class="eyebrow">&#9788; The world is closer than you think</span>
     <h1>The cheapest <span class="g">one-way flights</span> &mdash; from the US and abroad.</h1>
     <p class="lead">Magellan Flights tracks the cheapest one-way fares from the USA to anywhere on earth, every single day &mdash; and flags the moment a fare drops below its normal price. Go one-way for less.</p>
+    <form class="hero-search" onsubmit="return homeSearch(event)" aria-label="Search flights">
+      <input id="hs-from" class="hs-from" maxlength="3" placeholder="From" autocomplete="off" oninput="this.value=this.value.toUpperCase()" aria-label="From airport, e.g. RDU">
+      <input id="hs-to" class="hs-to" placeholder="To (city or airport)" autocomplete="off" aria-label="Destination">
+      <input id="hs-depart" class="hs-date" type="date" aria-label="Depart date">
+      <input id="hs-return" class="hs-date" type="date" aria-label="Return date (optional)">
+      <button type="submit">Search flights</button>
+    </form>
     <div class="cta-row">
       <a class="btn-primary" href="#deals">Explore today&rsquo;s deals</a>
-      <a class="btn-ghost" href="explore.html">Search any route</a>
       <a class="btn-ghost" href="around-the-world.html"><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m15.6 8.4-2.1 5.1-5.1 2.1 2.1-5.1 5.1-2.1z"/></svg> Around the World</a>
     </div>
     <p class="trust">Free, forever &middot; fares tracked through the day &middot; live price confirmed when you book on Aviasales</p>
@@ -2649,6 +2676,7 @@ def body_home(market, hist, cards, lastmin, oneway, summary, world):
     </div>
   </section>
 </div>
+{HOME_SEARCH_JS}
 {SIGNUP.replace("__FORM_ACTION__", FORM_ACTION)}"""
 
 # --------------------------------------------------------------------------- #
@@ -3671,6 +3699,7 @@ window.exSave=function(btn,i){ var f=EX_SHOWN[i]; if(!f) return; var list=bucket
 var rb=go('ex-regions'); if(rb){ rb.addEventListener('click', function(e){ var b=e.target.closest('[data-r]'); if(b){ EX_REG=b.getAttribute('data-r'); renderChips(); exFilter(); } }); }
 var ob=go('ex-origs'); if(ob){ ob.addEventListener('click', function(e){ var b=e.target.closest('[data-o]'); if(!b) return; var c=b.getAttribute('data-o'); EX_ORIG=EX_ORIG.filter(function(x){return x!==c;}); renderOrigs(); exSearch(); }); }
 renderOrigs(); renderChips(); exToBind(); exMonthFill(); exSearch();
+setTimeout(function(){ try{ var p=new URLSearchParams(location.search); var f=p.get('from'), t=p.get('to'); if(f&&t){ var ef=go('ep-from'),et=go('ep-to'),ed=go('ep-depart'),er=go('ep-return'); if(ef)ef.value=f.toUpperCase(); if(et)et.value=t; var dep=p.get('depart'),ret=p.get('return'); if(dep&&ed)ed.value=dep; if(ret&&er)er.value=ret; if(window.exPlanTrip)exPlanTrip(ret?'round':'oneway'); if(window.exTab)exTab('plan'); if(window.exPlanSearch)exPlanSearch(); } }catch(e){} }, 0);
 /* ---- Plan a trip: conventional From -> To -> Depart/Return route search ---- */
 var EP_TRIP='round';
 window.exTab=function(m){ go('ex-tab-plan').style.display=(m==='plan')?'':'none'; go('ex-tab-explore').style.display=(m==='explore')?'':'none'; go('ex-tab-plan-btn').classList.toggle('on',m==='plan'); go('ex-tab-explore-btn').classList.toggle('on',m==='explore'); };
