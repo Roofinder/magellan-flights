@@ -778,7 +778,7 @@ def _latest(pattern):
     return files[-1] if files else None
 
 
-def read_oneway(limit=600, kind="6m"):
+def read_oneway(limit=1500, kind="6m"):
     path = _latest(f"explore_oneway_{kind}_*.csv")
     if not path:
         return []
@@ -1029,38 +1029,102 @@ def index_sparkline(series):
     )
 
 
-def index_cards(market, hist):
-    by_reg = defaultdict(list)
-    for m in market:
-        reg = continent_of(m["code"])
-        if reg in INDEX_REGIONS:
-            by_reg[reg].append(m)
+OW_INDEX_LOG = os.path.join(HERE, "oneway_index.json")
+
+
+def country_from_name(name):
+    """"Athens, Greece" -> "Greece";  "Singapore" -> "Singapore"."""
+    if name and "," in name:
+        return name.rsplit(",", 1)[1].strip()
+    return (name or "").strip()
+
+
+def update_oneway_index_log(oneway, days=60):
+    """Append today's per-region average ONE-WAY fare to oneway_index.json (one point/day)."""
+    today = datetime.now().strftime("%Y-%m-%d")
+    by_reg = defaultdict(dict)
+    for o in oneway:
+        if (o.get("cc") or "").upper() == "US":
+            continue
+        reg = continent_of(o["code"])
+        if reg not in INDEX_REGIONS:
+            continue
+        c = o["code"]
+        try:
+            p = float(o["price"])
+        except (TypeError, ValueError):
+            continue
+        if c not in by_reg[reg] or p < by_reg[reg][c]:
+            by_reg[reg][c] = p
+    todays = {reg: round(sum(d.values()) / len(d), 2) for reg, d in by_reg.items() if d}
+    try:
+        log = json.load(open(OW_INDEX_LOG, encoding="utf-8"))
+    except Exception:
+        log = {}
+    if todays:
+        log[today] = todays
+    for d in sorted(log)[:-days]:
+        log.pop(d, None)
+    try:
+        json.dump(log, open(OW_INDEX_LOG, "w", encoding="utf-8"))
+    except Exception:
+        pass
+
+
+def oneway_index_history():
+    try:
+        log = json.load(open(OW_INDEX_LOG, encoding="utf-8"))
+    except Exception:
+        return {}
+    series = defaultdict(list)
+    for d in sorted(log):
+        for reg, val in log[d].items():
+            series[reg].append((d, val))
+    return series
+
+
+def index_cards(oneway, hist):
+    by_reg = defaultdict(dict)  # reg -> {code: cheapest one-way row}
+    for o in oneway:
+        if (o.get("cc") or "").upper() == "US":
+            continue
+        reg = continent_of(o["code"])
+        if reg not in INDEX_REGIONS:
+            continue
+        c = o["code"]
+        try:
+            p = float(o["price"])
+        except (TypeError, ValueError):
+            continue
+        cur = by_reg[reg].get(c)
+        if cur is None or p < float(cur["price"]):
+            by_reg[reg][c] = o
     cards = []
     for reg in INDEX_REGIONS:
-        rows = by_reg.get(reg, [])
-        if not rows:
+        items = list(by_reg.get(reg, {}).values())
+        if not items:
             continue
-        avg = sum(m["price"] for m in rows) / len(rows)
+        avg = sum(float(o["price"]) for o in items) / len(items)
         move = '<span class="idx-move new">today</span>'
         series = hist.get(reg, [])
         if len(series) >= 2:
-            diff = avg - series[-2][1]
+            diff = series[-1][1] - series[-2][1]
             if abs(diff) >= 1:
                 ar, cl = ("&#9660;", "down") if diff < 0 else ("&#9650;", "up")
                 move = f'<span class="idx-move {cl}">{ar}${abs(diff):,.0f} vs yest</span>'
             else:
                 move = '<span class="idx-move flat">flat</span>'
         const_rows = "".join(
-            f'<li><span>{html.escape(m.get("name", m["code"]))} '
-            f'<span class="idx-c-from">from {html.escape(m["origin"])}</span></span>'
-            f'<span>${m["price"]:,.0f}</span></li>'
-            for m in sorted(rows, key=lambda x: x["price"]))
-        constituents = (f'<details class="idx-const"><summary>What&rsquo;s in this index ({len(rows)} routes)</summary>'
+            f'<li><span>{html.escape(o.get("name", o["code"]))} '
+            f'<span class="idx-c-from">from {html.escape(o["origin"])}</span></span>'
+            f'<span>${float(o["price"]):,.0f}</span></li>'
+            for o in sorted(items, key=lambda x: float(x["price"])))
+        constituents = (f'<details class="idx-const"><summary>What&rsquo;s in this index ({len(items)} one-way routes)</summary>'
                         f'<ul>{const_rows}</ul></details>')
         cards.append(
             f'<div class="idx"><div class="idx-top"><p class="idx-name">{reg} index</p>{move}</div>'
             f'<p class="idx-val">${avg:,.0f}</p>'
-            f'<p class="idx-sub">avg of {len(rows)} tracked routes</p>'
+            f'<p class="idx-sub">avg one-way of {len(items)} tracked routes</p>'
             f'{index_sparkline(series)}{constituents}</div>')
     return "".join(cards)
 
@@ -1429,6 +1493,22 @@ CSS = r"""<style>
   .idx-const ul{ list-style:none; margin:8px 0 0; padding:0; max-height:190px; overflow:auto; }
   .idx-const li{ display:flex; justify-content:space-between; gap:10px; padding:4px 0; border-top:1px solid rgba(255,255,255,.08); }
   .idx-const li span:last-child{ font-variant-numeric:tabular-nums; color:#fff; white-space:nowrap; }
+  .owm-bar{ display:flex; gap:8px; margin:2px 0 12px; }
+  .owm-bar input{ flex:1; background:#121a26; border:1px solid #1d2735; border-radius:8px; color:#fff; padding:9px 12px; font:inherit; }
+  .owc-reg{ font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:700; margin:16px 0 6px; padding-top:4px; border-top:1px solid rgba(255,255,255,.08); }
+  .owc-reg:first-child{ border-top:none; margin-top:2px; }
+  details.owc{ border:1px solid #1d2735; border-radius:10px; margin-bottom:8px; background:#0e141d; overflow:hidden; }
+  details.owc[open]{ border-color:#27344a; }
+  .owc-sum{ list-style:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 14px; }
+  .owc-sum::-webkit-details-marker{ display:none; }
+  .owc-sum::after{ content:"\25be"; color:var(--muted); margin-left:6px; transition:transform .15s; }
+  details.owc[open] .owc-sum::after{ transform:rotate(180deg); }
+  .owc-country{ display:flex; align-items:center; gap:9px; font-weight:600; font-size:15px; }
+  .owc-meta{ font-size:13px; color:var(--muted); white-space:nowrap; }
+  .owc-meta b{ color:var(--gold); }
+  .owc-body{ padding:2px 10px 10px; border-top:1px solid rgba(255,255,255,.06); }
+  .owc-body .owr{ border-bottom:1px solid rgba(255,255,255,.05); }
+  .owc-body .owr:last-child{ border-bottom:none; }
   .idx-c-from{ color:#7e90ad; font-size:11px; }
   .idx{ background:var(--ink2); border-radius:12px; padding:14px 16px; color:#fff; }
   .idx-name{ margin:0; font-size:13px; color:#9fb0cc; } .idx-val{ margin:4px 0 0; font-size:24px; font-weight:700; }
@@ -3046,27 +3126,59 @@ def oneway_rows_block(rows_data, market, limit, pfx="m", per_region=0):
 
 
 def oneway_market(oneway, market, limit=30):
-    rows, regions = oneway_rows_block(oneway, market, 60, "m", per_region=10)
-    if not rows:
+    by_code = {}
+    for m in market:
+        c = m["code"]
+        if c not in by_code or m["price"] < by_code[c]["price"]:
+            by_code[c] = m
+    seen = {}
+    for o in oneway:
+        if (o.get("cc") or "").upper() == "US":
+            continue
+        code = o["code"]
+        reg = continent_of(code)
+        if reg == "Other":
+            continue
+        if code not in seen or float(o["price"]) < float(seen[code]["price"]):
+            seen[code] = o
+    if not seen:
         return ""
-    order = ["Americas", "Europe", "Asia", "Middle East", "Africa", "Oceania", "Other"]
-    chips = ['<button class="airchip on" data-owreg="all" onclick="owFilter(\'all\')">All</button>']
-    for r in order:
-        if r in regions:
-            chips.append(f'<button class="airchip" data-owreg="{r}" onclick="owFilter(\'{r}\')">{r}</button>')
-    chips_html = "".join(chips).replace('onclick="owFilter(', 'onclick="owSetReg(')
-    return (f'<div class="sec-head" id="deals"><h2><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5c.8 0 1.3 1.1 1.3 2.6v3.7l7.2 4.1v1.9l-7.2-2.1v3.6l1.9 1.4v1.5L12 18.5l-3.2 1.2v-1.5l1.9-1.4v-3.6L3.5 14.8v-1.9l7.2-4.1V5.1C10.7 3.6 11.2 2.5 12 2.5z"/></svg> One-way Voyages</h2>'
-            f'<span>cheap one-way fares to anywhere &middot; add a return any time</span></div>'
-            f'<div class="airchips" style="margin:2px 0 10px">{chips_html}</div>'
-            f'<div class="owm-bar"><input type="text" id="ow-q" placeholder="Search a city…" oninput="owApply()" autocomplete="off">'
-            f'<button class="owm-sort active" id="ow-sb-price" onclick="owSP()">Price <span id="ow-arp">&#9650;</span></button>'
-            f'<button class="owm-sort" id="ow-sb-pct" onclick="owSC()">% off <span id="ow-arc"></span></button></div>'
-            f'<div class="panel owm-panel">{"".join(rows)}</div>'
-            f'<script>var OW_REG="all",OW_DIR="asc",OW_SORT="price";'
-            f'function owSetReg(r){{OW_REG=r;var ch=document.querySelectorAll("[data-owreg]");for(var k=0;k<ch.length;k++){{ch[k].classList.toggle("on",ch[k].getAttribute("data-owreg")===r);}}owApply();}}'
-            f'function owApply(){{var q=((document.getElementById("ow-q")||{{}}).value||"").toLowerCase();var rows=document.querySelectorAll(".owm-panel .owr");for(var i=0;i<rows.length;i++){{var reg=rows[i].getAttribute("data-region");var nm=((rows[i].querySelector(".mv-name")||{{}}).textContent||"").toLowerCase();var ok=(OW_REG==="all"||reg===OW_REG)&&(q===""||nm.indexOf(q)>=0);rows[i].style.display=ok?"":"none";}}}}'
-            'function owSortApply(){var p=document.querySelector(".owm-panel");if(!p)return;var rows=[].slice.call(p.querySelectorAll(".owr"));rows.sort(function(a,b){var va,vb;if(OW_SORT==="pct"){va=parseFloat(a.getAttribute("data-pct"));vb=parseFloat(b.getAttribute("data-pct"));if(isNaN(va))va=-9999;if(isNaN(vb))vb=-9999;}else{va=parseFloat(a.getAttribute("data-price"))||0;vb=parseFloat(b.getAttribute("data-price"))||0;}return OW_DIR==="asc"?(va-vb):(vb-va);});for(var r=0;r<rows.length;r++){p.appendChild(rows[r]);}}'
-            'function owSort(field){if(OW_SORT===field){OW_DIR=(OW_DIR==="asc")?"desc":"asc";}else{OW_SORT=field;OW_DIR=(field==="pct")?"desc":"asc";}var bp=document.getElementById("ow-sb-price"),bc=document.getElementById("ow-sb-pct");if(bp)bp.classList.toggle("active",OW_SORT==="price");if(bc)bc.classList.toggle("active",OW_SORT==="pct");var arp=document.getElementById("ow-arp"),arc=document.getElementById("ow-arc");if(arp)arp.innerHTML=(OW_SORT==="price")?((OW_DIR==="asc")?"&#9650;":"&#9660;"):"";if(arc)arc.innerHTML=(OW_SORT==="pct")?((OW_DIR==="asc")?"&#9650;":"&#9660;"):"";owSortApply();}function owSP(){owSort("price");}function owSC(){owSort("pct");}</script>')
+    groups = {}
+    for code, o in seen.items():
+        reg = continent_of(code)
+        cname = country_from_name(o["name"])
+        groups.setdefault((reg, cname), []).append(o)
+    region_order = ["Americas", "Europe", "Asia", "Middle East", "Africa", "Oceania"]
+    items = []
+    for (reg, cname), rows in groups.items():
+        rows.sort(key=lambda x: float(x["price"]))
+        items.append((reg, float(rows[0]["price"]), cname, rows))
+    items.sort(key=lambda t: (region_order.index(t[0]) if t[0] in region_order else 99, t[1]))
+    regions_present = [r for r in region_order if any(it[0] == r for it in items)]
+    chips = ['<button class="airchip on" data-owreg="all" onclick="owSetReg(&#39;all&#39;)">All</button>']
+    for r in regions_present:
+        chips.append(f'<button class="airchip" data-owreg="{r}" onclick="owSetReg(&#39;{r}&#39;)">{r}</button>')
+    ncountries = len(items)
+    ncities = sum(len(it[3]) for it in items)
+    body = []
+    cur = None
+    for reg, cheapest, cname, rows in items:
+        if reg != cur:
+            body.append(f'<div class="owc-reg" data-reg="{reg}">{reg}</div>')
+            cur = reg
+        city_rows = "".join(oneway_row(o, by_code.get(o["code"]), "m") for o in rows)
+        nc = len(rows)
+        flag = flag_img(rows[0]["code"])
+        cities_attr = html.escape(" ".join((o.get("name") or "").lower() for o in rows), quote=True)
+        summary = (f'<summary class="owc-sum"><span class="owc-country">{flag}<span>{html.escape(cname)}</span></span>'
+                   f'<span class="owc-meta">from <b>${cheapest:,.0f}</b> one-way &middot; {nc} cit{"y" if nc == 1 else "ies"}</span></summary>')
+        body.append(f'<details class="owc" data-region="{reg}" data-country="{html.escape(cname.lower(), quote=True)}" data-cities="{cities_attr}">{summary}<div class="owc-body">{city_rows}</div></details>')
+    head = ('<div class="sec-head" id="deals"><h2><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5c.8 0 1.3 1.1 1.3 2.6v3.7l7.2 4.1v1.9l-7.2-2.1v3.6l1.9 1.4v1.5L12 18.5l-3.2 1.2v-1.5l1.9-1.4v-3.6L3.5 14.8v-1.9l7.2-4.1V5.1C10.7 3.6 11.2 2.5 12 2.5z"/></svg> One-way Voyages</h2>'
+            f'<span>{ncountries} countries &middot; {ncities} cheap one-way fares &middot; tap a country to see its cities</span></div>')
+    chips_html = f'<div class="airchips" style="margin:2px 0 10px">{"".join(chips)}</div>'
+    searchbar = ('<div class="owm-bar"><input type="text" id="ow-q" placeholder="Search a country or city\u2026" oninput="owApply()" autocomplete="off"></div>')
+    panel = f'<div class="panel owm-panel">{"".join(body)}</div>'
+    return head + chips_html + searchbar + panel + '<script>var OW_REG="all";function owSetReg(r){OW_REG=r;var ch=document.querySelectorAll(\'[data-owreg]\');for(var k=0;k<ch.length;k++){ch[k].classList.toggle(\'on\',ch[k].getAttribute(\'data-owreg\')===r);}owApply();}function owApply(){var q=((document.getElementById(\'ow-q\')||{}).value||\'\').toLowerCase();var cs=document.querySelectorAll(\'.owm-panel .owc\');var shown={};for(var i=0;i<cs.length;i++){var reg=cs[i].getAttribute(\'data-region\');var ctry=cs[i].getAttribute(\'data-country\')||\'\';var cities=cs[i].getAttribute(\'data-cities\')||\'\';var hit=(q===\'\'||ctry.indexOf(q)>=0||cities.indexOf(q)>=0);var ok=(OW_REG===\'all\'||reg===OW_REG)&&hit;cs[i].style.display=ok?\'\':\'none\';if(ok){shown[reg]=1;if(q&&hit){cs[i].open=true;}else if(!q){cs[i].open=false;}}}var hs=document.querySelectorAll(\'.owm-panel .owc-reg\');for(var h=0;h<hs.length;h++){var rg=hs[h].getAttribute(\'data-reg\');hs[h].style.display=((OW_REG===\'all\'||rg===OW_REG)&&shown[rg])?\'\':\'none\';}}</script>'
 
 
 def oneway_lastminute(oneway, market, limit=8):
@@ -3157,7 +3269,7 @@ def body_market(market, hist, cards, lastmin, oneway):
   <div class="summary">{market_pulse(market)}</div>
   <div class="sec-head" id="market"><h2>Fare indices</h2><span>avg vs. the Standard Meridian, by region</span></div>
   {context_banner(Q_INDICES)}
-  <div class="indices">{index_cards(market, hist)}</div>
+  <div class="indices">{index_cards(oneway, hist)}</div>
   <p class="finehint" style="text-align:center;margin:2px 0 14px">See the bigger picture &mdash; <a href="cheap-flight-index.html" style="color:var(--gold);font-weight:600">the Magellan Cheap Flight Index</a>: the cheapest places to fly from the USA right now, by region and by airport.</p>
   {oneway_market(oneway, market)}
   <div class="sec-head"><h2><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.2v5l3.2 2"/></svg> Last-minute one-ways</h2><span>cheapest one-ways leaving soon</span></div>
@@ -5386,7 +5498,8 @@ def main():
         for key in ("deals", "lastminute"):
             for d in c.get(key, []):
                 d["t"] = lm_tags(d.get("cc", ""))
-    hist = index_history()
+    update_oneway_index_log(oneway)
+    hist = oneway_index_history()
     global HIST_SERIES, FEATURED_VERIFIED, MONEY_PAGES, MONEY_BY_FILE, ROUTE_PAGES, ROUTE_BY_FILE, REGION_TOUR_BY_FILE, DAILY_WINNER
     HIST_SERIES = read_history_series()
     DAILY_WINNER = compute_daily_winner(market, HIST_SERIES)
