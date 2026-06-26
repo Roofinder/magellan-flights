@@ -589,11 +589,11 @@ def fx_line(code):
     if not cur:
         return ""
     if cur == "USD":
-        return '<p class="trip">&#128178; Uses the US dollar</p>'
+        return '<p class="trip">Uses the US dollar</p>'
     rate = FX_STATIC.get(cur)
     if not rate:
         return ""
-    return (f'<p class="trip">&#128178; <span data-cur="{cur}">'
+    return (f'<p class="trip"><span data-cur="{cur}">'
             f'$1 &asymp; {fmt_rate(rate)} {cur}</span></p>')
 
 
@@ -1133,7 +1133,7 @@ def card_html(m):
     _, pct = signal_for(m["price"], m["benchmark"])
     flash = is_flash(code, m["price"], m["benchmark"])
     hlabel, hcls = hist_signal(code, m["price"], m["benchmark"])
-    badge = ('<span class="badge flash">&#128293; FLASH</span>' if flash
+    badge = ('<span class="badge flash">FLASH</span>' if flash
              else (f'<span class="badge">Save {pct:.0f}%</span>' if pct > 0 else ""))
     dates = f'{html.escape(m.get("depart", ""))} &rarr; {html.escape(m.get("return", ""))}' if m.get("return") else html.escape(m.get("depart", ""))
     link = html.escape(m["link"], quote=True)
@@ -1157,7 +1157,7 @@ def card_html(m):
         <h3 class="dest">{html.escape(m["name"])}</h3>
         <p class="route">{html.escape(airline_name(m['airline']))} &middot; round-trip from {html.escape(m["origin"])}</p>
         <p class="dates">{dates}</p>
-        <p class="dates">&#9728; Best time: {html.escape(BEST_TIME.get(code, "year-round"))}</p>
+        <p class="dates">Best time: {html.escape(BEST_TIME.get(code, "year-round"))}</p>
         <p class="price">${m['price']:,.0f} <span class="was" title="The Standard Meridian — this route's historical baseline fare">${m['benchmark']:,.0f}</span></p>
         <p style="font-size:11px;color:var(--muted);margin:-11px 0 8px;letter-spacing:.03em">&#9678; vs. the <b style="color:var(--gold);font-weight:600">Standard Meridian</b> &middot; historical baseline</p>
         {price_bar(code, m['price'], m['benchmark'])}
@@ -1170,7 +1170,7 @@ def card_html(m):
       </article>
       <article class="card flip-back">
         <h3 class="dest">{html.escape(m["name"])}</h3>
-        <p class="binfo-h">&#127757; Things to know before you go</p>
+        <p class="binfo-h">Things to know before you go</p>
         {back}
         <p class="finehint">General guidance for US travelers — verify official sources before booking.</p>
         <button class="flipbtn" onclick="flipCard(this)">&#8592; Back to the deal</button>
@@ -1691,7 +1691,7 @@ CSS = r"""<style>
   .lander .lead .buy{ color:var(--green); font-weight:700; }
   .hero-search{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; align-items:center; max-width:680px; margin:4px auto 16px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.15); border-radius:14px; padding:10px; }
   .hero-search input{ background:#0e141d; color:var(--ink); border:1px solid var(--line); border-radius:9px; padding:11px 12px; font-size:15px; font-family:inherit; }
-  .hero-search .hs-from{ width:84px; text-transform:uppercase; letter-spacing:.06em; }
+  .hero-search .hs-from{ width:150px; }
   .hero-search .hs-to{ flex:1; min-width:150px; }
   .hero-search .hs-date{ width:150px; color-scheme:dark; }
   .hero-search button{ background:var(--gold); color:#1a1205; font-weight:700; border:0; border-radius:9px; padding:11px 22px; font-size:15px; cursor:pointer; }
@@ -2427,7 +2427,7 @@ def world_map_html():
            '<g id="mapGlow" fill="none" filter="url(#mglow)"></g>'
            '<g id="mapDots"></g></svg>')
     return ('<div class="worldmap-wrap">'
-            '<div class="wm-head"><span class="wm-title">&#9788; The Mercator Heatmap</span>'
+            '<div class="wm-head"><span class="wm-title">The Mercator Heatmap</span>'
             '<span class="wm-leg"><i class="lg-glow"></i> biggest drops &middot; into the buy zone</span></div>'
             f'{svg}'
             '<div class="wm-hint">Passages light up from the filters below &mdash; hover any glowing route for the fare.</div></div>')
@@ -2507,7 +2507,7 @@ def oneway_winner(oneway, market):
     bg, col = palette[c]
     rtnote = f' &middot; round-trip ${float(rt["price"]):,.0f} with a return' if rt else ''
     return (f'<a class="winner" data-o="{html.escape(w["origin"], quote=True)}" data-d="{code}" data-ow="1" href="{html.escape(w["link"], quote=True)}" target="_blank" rel="noopener">'
-            f'<span class="winner-badge">&#9733; Today&rsquo;s Biggest Winner</span>'
+            f'<span class="winner-badge">Today&rsquo;s Biggest Winner</span>'
             f'<div class="winner-main"><div class="winner-city">{html.escape(w["name"])}</div>'
             f'<div class="winner-route">One-way from {html.escape(w["origin"])} &middot; {html.escape(w["depart"])} &middot; <span style="color:var(--gold)">live price at booking</span>{rtnote}</div></div>'
             f'<div class="winner-right"><span class="winner-price">${price:,.0f}</span>'
@@ -2586,10 +2586,10 @@ def oneway_board(oneway, market, limit=8):
 
 HOME_SEARCH_JS = """<script>
 function homeSearch(e){ e.preventDefault();
-  var f=(document.getElementById('hs-from').value||'').trim().toUpperCase();
+  var f=(document.getElementById('hs-from').value||'').trim();
   var t=(document.getElementById('hs-to').value||'').trim();
   var dep=document.getElementById('hs-depart').value, ret=document.getElementById('hs-return').value;
-  if(!/^[A-Z]{3}$/.test(f)){ document.getElementById('hs-from').focus(); return false; }
+  if(!f){ document.getElementById('hs-from').focus(); return false; }
   if(!t){ document.getElementById('hs-to').focus(); return false; }
   var q='explore.html?from='+encodeURIComponent(f)+'&to='+encodeURIComponent(t);
   if(dep) q+='&depart='+dep; if(ret) q+='&return='+ret;
@@ -2608,7 +2608,7 @@ def body_home(market, hist, cards, lastmin, oneway, summary, world):
     if top4:
         fcards = "\n".join(card_html(m) for m in top4)
         flash_section = (f'<section class="home-sec"><div class="sec-head">'
-                         f'<h2>&#9851; Round-trip deals</h2><span>there &amp; back</span></div>'
+                         f'<h2>Round-trip deals</h2><span>there &amp; back</span></div>'
                          f'<div class="grid">{fcards}</div></section>')
     nroutes = len(market)
     noneway = len(oneway)
@@ -2621,11 +2621,11 @@ def body_home(market, hist, cards, lastmin, oneway, summary, world):
     return f"""<section class="lander">
   <div class="lander-glow"></div>
   <div class="lander-inner">
-    <span class="eyebrow">&#9788; The world is closer than you think</span>
+    <span class="eyebrow">The world is closer than you think</span>
     <h1>The cheapest <span class="g">one-way flights</span> &mdash; from the US and abroad.</h1>
     <p class="lead">Magellan Flights tracks the cheapest one-way fares from the USA to anywhere on earth, every single day &mdash; and flags the moment a fare drops below its normal price. Go one-way for less.</p>
     <form class="hero-search" onsubmit="return homeSearch(event)" aria-label="Search flights">
-      <input id="hs-from" class="hs-from" maxlength="3" placeholder="From" autocomplete="off" oninput="this.value=this.value.toUpperCase()" aria-label="From airport, e.g. RDU">
+      <input id="hs-from" class="hs-from" placeholder="From (city or airport)" autocomplete="off" aria-label="From, city or airport">
       <input id="hs-to" class="hs-to" placeholder="To (city or airport)" autocomplete="off" aria-label="Destination">
       <input id="hs-depart" class="hs-date" type="date" aria-label="Depart date">
       <input id="hs-return" class="hs-date" type="date" aria-label="Return date (optional)">
@@ -2639,7 +2639,14 @@ def body_home(market, hist, cards, lastmin, oneway, summary, world):
   </div>
 </section>
 <div class="wrap">
-  <div class="statbar">
+  <section class="home-sec" id="deals" style="margin-top:10px">{oneway_winner(oneway, market)}
+    <div style="text-align:center;margin-top:14px"><a class="btn-ghost" href="market.html">Search more one-way deals &rarr;</a></div>
+  </section>
+  <section class="home-sec">{atw_highlight(world)}
+    <div style="text-align:center;margin-top:14px"><a class="btn-ghost" href="around-the-world.html">Search more Around the World trips &rarr;</a></div>
+  </section>
+  <p class="finehint" style="text-align:center;margin-top:18px">These are recently-tracked one-way fares &mdash; tap any deal to see today&rsquo;s live price and book on Aviasales.</p>
+  <div class="statbar" style="margin-top:8px">
     <div class="stat"><div class="n">{nroutes}</div><div class="l">routes tracked</div></div>
     <div class="stat"><div class="n">{noneway}+</div><div class="l">one-way fares</div></div>
     <div class="stat"><div class="n">{nbook}</div><div class="l">flagged BUY today</div></div>
@@ -2647,13 +2654,6 @@ def body_home(market, hist, cards, lastmin, oneway, summary, world):
   </div>
   <p class="stat-note">{market_pulse(market)} &middot; tracked fares, refreshed through the day</p>
   <div class="summary" data-sec="summary">{summary}</div>
-  <section class="home-sec" id="deals">{oneway_winner(oneway, market)}
-    <div style="text-align:center;margin-top:14px"><a class="btn-ghost" href="market.html">Search more one-way deals &rarr;</a></div>
-  </section>
-  <section class="home-sec">{atw_highlight(world)}
-    <div style="text-align:center;margin-top:14px"><a class="btn-ghost" href="around-the-world.html">Search more Around the World trips &rarr;</a></div>
-  </section>
-  <p class="finehint" style="text-align:center;margin-top:18px">These are recently-tracked one-way fares &mdash; tap any deal to see today&rsquo;s live price and book on Aviasales.</p>
   <div class="section-head-lg"><h2>How to read a price</h2><p>Every fare is measured against this route&rsquo;s own price history &mdash; its Standard Meridian. The colored bar on each deal shows where today&rsquo;s price sits.</p></div>
   <div class="why">
     <div class="why-card"><span class="why-sig"><span class="why-dot g"></span>Low</span><h3 style="margin-top:12px">A great deal</h3><p>Well below this route&rsquo;s typical price &mdash; a genuinely good moment to book.</p></div>
@@ -2861,7 +2861,7 @@ def body_blog(market, oneway):
                       f'<span class="bv-play">&#9654;</span><span class="bv-text">A <b>{html.escape(cityshort)}</b> video guide is on the way &mdash; '
                       f'<b style="color:var(--gold)">subscribe</b> so you don&rsquo;t miss it.</span></a>')
     else:
-        watch_html = '<div class="blog-soon">&#127909; Video guide coming soon</div>'
+        watch_html = '<div class="blog-soon">Video guide coming soon</div>'
     rtnote = f' &middot; round-trip ${rtprice:,.0f} with a return' if (rt and rtprice) else ''
     return f"""<div class="wrap blog-wrap">
   <div class="blog-eyebrow">&#9733; Today&rsquo;s Biggest Winner &middot; best one-way deal on the board</div>
@@ -2871,8 +2871,8 @@ def body_blog(market, oneway):
     <div class="blog-deal-right"><span class="blog-price">${price:,.0f}</span><span class="blog-was">one-way</span><span class="winner-off" style="background:{pbg};color:{pcol}">{vv}</span><a class="book" href="{link}" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a></div>
   </div>
   <section class="blog-sec"><h2>The overview</h2><p>{html.escape(overview) if g else overview}</p></section>
-  <section class="blog-sec"><h2>&#128200; Price trend</h2><div class="blog-spark">{spark}</div><p>{verdict}</p></section>
-  <section class="blog-sec"><h2>&#128205; Top things to do</h2>{todo_block}</section>
+  <section class="blog-sec"><h2>Price trend</h2><div class="blog-spark">{spark}</div><p>{verdict}</p></section>
+  <section class="blog-sec"><h2>Top things to do</h2>{todo_block}</section>
   <section class="blog-sec"><h2>&#9654;&#65039; Watch a tour</h2>{watch_html}</section>
   <section class="blog-sec"><h2>Is it safe?</h2><p>{html.escape(info['safe'])}. As anywhere, watch your belongings in crowds and tourist areas. Visa for US passports: {html.escape(info['visa'])}. Always check your government&rsquo;s current travel advisory before you go.</p></section>
   <section class="blog-sec"><h2>A bit of history</h2><p>{html.escape(history) if g else history}</p></section>
@@ -3227,7 +3227,7 @@ def atw_highlight(world):
     legs = trip["legs"]
     route = " &rarr; ".join(html.escape(c) for c in ([trip["start"]] + [L["to"] for L in legs]))
     return (f'<a class="winner" href="around-the-world.html?start={html.escape(trip["start"], quote=True)}">'
-            f'<span class="winner-badge">&#127757; Today&rsquo;s best Around the World trip</span>'
+            f'<span class="winner-badge">Today&rsquo;s best Around the World trip</span>'
             f'<div class="winner-main"><div class="winner-city">{html.escape(trip["start_name"])} &rarr; around the world &rarr; home</div>'
             f'<div class="winner-route">{trip["stops"]} stops &middot; {trip["flights"]} one-way flights &middot; {route} &middot; '
             f'<span style="color:var(--gold)">live fares</span></div></div>'
@@ -3626,8 +3626,8 @@ def body_explore():
     return """<div class="wrap">
   <div class="pagehead"><h1>Explore</h1><p>Plan a specific trip. Add your home airport(s) and we&rsquo;ll find the cheapest one-ways to <b>anywhere</b> &mdash; or type a destination to track a <b>specific route</b> and see every fare we have for it. Add several airports and we compare across all of them. Just want to browse the cheapest deals? That&rsquo;s the <a href="market.html" style="color:var(--gold)">Market</a>.</p></div>
   <div class="airchips" id="ex-tabs" style="margin:0 0 14px;gap:8px">
-    <button type="button" class="airchip on" id="ex-tab-plan-btn" onclick="exTab('plan')">&#9992;&#65039; Plan a trip (A &rarr; B)</button>
-    <button type="button" class="airchip" id="ex-tab-explore-btn" onclick="exTab('explore')">&#9788; Explore anywhere</button>
+    <button type="button" class="airchip on" id="ex-tab-plan-btn" onclick="exTab('plan')">&#65039; Plan a trip (A &rarr; B)</button>
+    <button type="button" class="airchip" id="ex-tab-explore-btn" onclick="exTab('explore')">Explore anywhere</button>
   </div>
   <div class="tl-card" id="ex-tab-plan">
     <div class="tl-form" style="margin-bottom:10px"><div style="display:flex;gap:8px"><button type="button" class="airchip on" id="ep-rt" onclick="exPlanTrip('round')">Round-trip</button><button type="button" class="airchip" id="ep-ow" onclick="exPlanTrip('oneway')">One-way</button></div></div>
@@ -3699,12 +3699,12 @@ window.exSave=function(btn,i){ var f=EX_SHOWN[i]; if(!f) return; var list=bucket
 var rb=go('ex-regions'); if(rb){ rb.addEventListener('click', function(e){ var b=e.target.closest('[data-r]'); if(b){ EX_REG=b.getAttribute('data-r'); renderChips(); exFilter(); } }); }
 var ob=go('ex-origs'); if(ob){ ob.addEventListener('click', function(e){ var b=e.target.closest('[data-o]'); if(!b) return; var c=b.getAttribute('data-o'); EX_ORIG=EX_ORIG.filter(function(x){return x!==c;}); renderOrigs(); exSearch(); }); }
 renderOrigs(); renderChips(); exToBind(); exMonthFill(); exSearch();
-setTimeout(function(){ try{ var p=new URLSearchParams(location.search); var f=p.get('from'), t=p.get('to'); if(f&&t){ var ef=go('ep-from'),et=go('ep-to'),ed=go('ep-depart'),er=go('ep-return'); if(ef)ef.value=f.toUpperCase(); if(et)et.value=t; var dep=p.get('depart'),ret=p.get('return'); if(dep&&ed)ed.value=dep; if(ret&&er)er.value=ret; if(window.exPlanTrip)exPlanTrip(ret?'round':'oneway'); if(window.exTab)exTab('plan'); if(window.exPlanSearch)exPlanSearch(); } }catch(e){} }, 0);
+setTimeout(function(){ try{ var p=new URLSearchParams(location.search); var f=p.get('from'), t=p.get('to'); if(f&&t){ var ef=go('ep-from'),et=go('ep-to'),ed=go('ep-depart'),er=go('ep-return'); if(ef)ef.value=f; if(et)et.value=t; var dep=p.get('depart'),ret=p.get('return'); if(dep&&ed)ed.value=dep; if(ret&&er)er.value=ret; if(window.exPlanTrip)exPlanTrip(ret?'round':'oneway'); if(window.exTab)exTab('plan'); if(window.exPlanSearch)exPlanSearch(); } }catch(e){} }, 0);
 /* ---- Plan a trip: conventional From -> To -> Depart/Return route search ---- */
 var EP_TRIP='round';
 window.exTab=function(m){ go('ex-tab-plan').style.display=(m==='plan')?'':'none'; go('ex-tab-explore').style.display=(m==='explore')?'':'none'; go('ex-tab-plan-btn').classList.toggle('on',m==='plan'); go('ex-tab-explore-btn').classList.toggle('on',m==='explore'); };
 window.exPlanTrip=function(t){ EP_TRIP=t; go('ep-rt').classList.toggle('on',t==='round'); go('ep-ow').classList.toggle('on',t==='oneway'); go('ep-return-wrap').style.display=(t==='round')?'':'none'; };
-window.exPlanSearch=function(){ var o=(go('ep-from').value||'').trim().toUpperCase(); var raw=(go('ep-to').value||'').trim(); var d=/^[A-Za-z]{3}$/.test(raw)?raw.toUpperCase():resolveTo(raw); var dep=go('ep-depart').value, ret=go('ep-return').value, out=go('ep-out'); var rt=(EP_TRIP==='round'); if(!/^[A-Z]{3}$/.test(o)){ out.innerHTML='<div class="wl-hint">Enter a 3-letter <b>From</b> airport (e.g. RDU).</div>'; return; } if(!/^[A-Z]{3}$/.test(d)){ out.innerHTML='<div class="wl-hint">Enter a <b>To</b> city or 3-letter code (e.g. CUN).</div>'; return; } out.innerHTML='<div class="wl-hint">Searching '+(rt?'round-trip':'one-way')+' fares '+o+' &rarr; '+d+(dep?(' on '+dep):'')+'&hellip;</div>'; var u='/api/search?origin='+o+'&destination='+d+'&one_way='+(rt?'false':'true')+'&sorting=price&limit=30'; if(dep) u+='&departure_at='+dep; if(rt&&ret) u+='&return_at='+ret; fetch(u).then(function(r){return r.json();}).then(function(j){ var data=((j&&j.data)||[]).filter(function(f){ return f.destination_airport===d; }); data.sort(function(a,b){ return a.price-b.price; }); exPlanRender(o,d,rt,data); }).catch(function(){ out.innerHTML='<div class="wl-hint">Couldn&rsquo;t load that search &mdash; try again.</div>'; }); };
+window.exPlanSearch=function(){ var oraw=(go('ep-from').value||'').trim(); var o=/^[A-Za-z]{3}$/.test(oraw)?oraw.toUpperCase():resolveTo(oraw); var raw=(go('ep-to').value||'').trim(); var d=/^[A-Za-z]{3}$/.test(raw)?raw.toUpperCase():resolveTo(raw); var dep=go('ep-depart').value, ret=go('ep-return').value, out=go('ep-out'); var rt=(EP_TRIP==='round'); if(!/^[A-Z]{3}$/.test(o)){ out.innerHTML='<div class="wl-hint">Enter a <b>From</b> city or airport code (e.g. Raleigh or RDU).</div>'; return; } if(!/^[A-Z]{3}$/.test(d)){ out.innerHTML='<div class="wl-hint">Enter a <b>To</b> city or 3-letter code (e.g. CUN).</div>'; return; } out.innerHTML='<div class="wl-hint">Searching '+(rt?'round-trip':'one-way')+' fares '+o+' &rarr; '+d+(dep?(' on '+dep):'')+'&hellip;</div>'; var u='/api/search?origin='+o+'&destination='+d+'&one_way='+(rt?'false':'true')+'&sorting=price&limit=30'; if(dep) u+='&departure_at='+dep; if(rt&&ret) u+='&return_at='+ret; fetch(u).then(function(r){return r.json();}).then(function(j){ var data=((j&&j.data)||[]).filter(function(f){ return f.destination_airport===d; }); data.sort(function(a,b){ return a.price-b.price; }); exPlanRender(o,d,rt,data); }).catch(function(){ out.innerHTML='<div class="wl-hint">Couldn&rsquo;t load that search &mdash; try again.</div>'; }); };
 function exPlanRender(o,d,rt,data){ var out=go('ep-out'); if(!data.length){ out.innerHTML='<div class="wl-hint">No cached fares for '+o+' &rarr; '+d+(rt?' on those dates':'')+' right now. Try clearing the dates, a nearby date, or a major hub (JFK, LAX, ORD). Your live, bookable price is always on Aviasales.</div>'; return; } var nm=(typeof NAMES!=='undefined'&&NAMES[d])?(' <span style="color:var(--muted);font-weight:400">'+NAMES[d]+'</span>'):''; out.innerHTML='<div style="font-weight:600;margin:0 0 8px">'+o+' &rarr; '+d+nm+'</div>'+data.slice(0,20).map(function(f){ var dp=(f.departure_at||'').slice(0,10), rtd=(f.return_at||'').slice(0,10), p=Math.round(f.price); var sub=dp+(rt&&rtd?(' &rarr; '+rtd):''); return '<div class="mv-row"><div class="mv-dest">'+owFlag(d)+'<div class="mv-destcol"><div class="mv-name">'+o+' &rarr; '+d+'</div><div class="mv-air">'+sub+'</div></div></div><div class="mv-right"><span class="mv-price"><span class="lp-dot" title="Freshest tracked fare — your live, bookable price is confirmed on Aviasales"></span>$'+p.toLocaleString()+'</span> <span class="ow-unit">'+(rt?'round-trip':'one-way')+'</span><a class="mini-book" href="'+f.link+'" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a></div></div>'; }).join(''); }
 })();
 </script>"""
@@ -3744,7 +3744,7 @@ def body_essentials():
     return f"""<div class="wrap">
   <div class="pagehead"><h1>Travel essentials</h1><p>Everything else you need for the trip — hotels, data, insurance and more. Every booking supports {BRAND} at no extra cost to you.</p></div>
   <div class="grid">{essentials_cards()}</div>
-  <div class="summary" style="margin-top:24px">&#128161; Tip: the cheapest flight is just step one — booking your hotel, eSIM and activities here in one place keeps the whole trip organized.</div>
+  <div class="summary" style="margin-top:24px">Tip: the cheapest flight is just step one — booking your hotel, eSIM and activities here in one place keeps the whole trip organized.</div>
 </div>"""
 
 
@@ -4715,7 +4715,7 @@ def city_watch_html(code, cityshort):
                 f'<span class="bv-play">&#9654;</span><span class="bv-text">A <b>{html.escape(cityshort)}</b> '
                 f'video guide is on the way &mdash; <b style="color:var(--gold)">subscribe</b> '
                 f'so you don&rsquo;t miss it.</span></a>')
-    return '<div class="blog-soon">&#127909; Video guide coming soon</div>'
+    return '<div class="blog-soon">Video guide coming soon</div>'
 
 
 def city_faqs(g, deal, best, info):
