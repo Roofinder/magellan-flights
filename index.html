@@ -472,7 +472,7 @@
   .lander .lead .buy{ color:var(--green); font-weight:700; }
   .hero-search{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; align-items:center; max-width:680px; margin:4px auto 16px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.15); border-radius:14px; padding:10px; }
   .hero-search input{ background:#0e141d; color:var(--ink); border:1px solid var(--line); border-radius:9px; padding:11px 12px; font-size:15px; font-family:inherit; }
-  .hero-search .hs-from{ width:84px; text-transform:uppercase; letter-spacing:.06em; }
+  .hero-search .hs-from{ width:150px; }
   .hero-search .hs-to{ flex:1; min-width:150px; }
   .hero-search .hs-date{ width:150px; color-scheme:dark; }
   .hero-search button{ background:var(--gold); color:#1a1205; font-weight:700; border:0; border-radius:9px; padding:11px 22px; font-size:15px; cursor:pointer; }
@@ -649,11 +649,11 @@ function toggleTickers(){ var off=document.body.classList.toggle('tickers-off');
 <section class="lander">
   <div class="lander-glow"></div>
   <div class="lander-inner">
-    <span class="eyebrow">&#9788; The world is closer than you think</span>
+    <span class="eyebrow">The world is closer than you think</span>
     <h1>The cheapest <span class="g">one-way flights</span> &mdash; from the US and abroad.</h1>
     <p class="lead">Magellan Flights tracks the cheapest one-way fares from the USA to anywhere on earth, every single day &mdash; and flags the moment a fare drops below its normal price. Go one-way for less.</p>
     <form class="hero-search" onsubmit="return homeSearch(event)" aria-label="Search flights">
-      <input id="hs-from" class="hs-from" maxlength="3" placeholder="From" autocomplete="off" oninput="this.value=this.value.toUpperCase()" aria-label="From airport, e.g. RDU">
+      <input id="hs-from" class="hs-from" placeholder="From (city or airport)" autocomplete="off" aria-label="From, city or airport">
       <input id="hs-to" class="hs-to" placeholder="To (city or airport)" autocomplete="off" aria-label="Destination">
       <input id="hs-depart" class="hs-date" type="date" aria-label="Depart date">
       <input id="hs-return" class="hs-date" type="date" aria-label="Return date (optional)">
@@ -667,7 +667,14 @@ function toggleTickers(){ var off=document.body.classList.toggle('tickers-off');
   </div>
 </section>
 <div class="wrap">
-  <div class="statbar">
+  <section class="home-sec" id="deals" style="margin-top:10px"><a class="winner" data-o="JFK" data-d="KUT" data-ow="1" href="https://www.aviasales.com/search/JFK1510KUT1?marker=741311" target="_blank" rel="noopener"><span class="winner-badge">Today&rsquo;s Biggest Winner</span><div class="winner-main"><div class="winner-city">Kutaisi, Georgia</div><div class="winner-route">One-way from JFK &middot; 2026-10-15 &middot; <span style="color:var(--gold)">live price at booking</span> &middot; round-trip $1,804 with a return</div></div><div class="winner-right"><span class="winner-price">$262</span><span style="color:var(--muted);font-size:13px">one-way</span><span class="winner-off" style="background:rgba(39,208,122,.15);color:var(--green)">Low</span></div><span class="winner-cta">See live price on Aviasales &rarr;</span></a>
+    <div style="text-align:center;margin-top:14px"><a class="btn-ghost" href="market.html">Search more one-way deals &rarr;</a></div>
+  </section>
+  <section class="home-sec"><a class="winner" href="around-the-world.html?start=LAX"><span class="winner-badge">Today&rsquo;s best Around the World trip</span><div class="winner-main"><div class="winner-city">Los Angeles &rarr; around the world &rarr; home</div><div class="winner-route">3 stops &middot; 4 one-way flights &middot; LAX &rarr; DUB &rarr; DXB &rarr; MNL &rarr; LAX &middot; <span style="color:var(--gold)">live fares</span></div></div><div class="winner-right"><span class="winner-price">$963</span><span style="color:var(--muted);font-size:13px">whole loop</span></div><span class="winner-cta">Build this trip on Around the World &rarr;</span></a>
+    <div style="text-align:center;margin-top:14px"><a class="btn-ghost" href="around-the-world.html">Search more Around the World trips &rarr;</a></div>
+  </section>
+  <p class="finehint" style="text-align:center;margin-top:18px">These are recently-tracked one-way fares &mdash; tap any deal to see today&rsquo;s live price and book on Aviasales.</p>
+  <div class="statbar" style="margin-top:8px">
     <div class="stat"><div class="n">499</div><div class="l">routes tracked</div></div>
     <div class="stat"><div class="n">764+</div><div class="l">one-way fares</div></div>
     <div class="stat"><div class="n">16</div><div class="l">flagged BUY today</div></div>
@@ -675,13 +682,6 @@ function toggleTickers(){ var off=document.body.classList.toggle('tickers-off');
   </div>
   <p class="stat-note">&#9650; Fares are running ~8% ABOVE normal across 499 routes &middot; tracked fares, refreshed through the day</p>
   <div class="summary" data-sec="summary">Oceania leads today, averaging $754 (~4% below typical). Biggest mover: Tianjin, China, down 41%. 16 routes flagging BOOK.</div>
-  <section class="home-sec" id="deals"><a class="winner" data-o="JFK" data-d="KUT" data-ow="1" href="https://www.aviasales.com/search/JFK1510KUT1?marker=741311" target="_blank" rel="noopener"><span class="winner-badge">&#9733; Today&rsquo;s Biggest Winner</span><div class="winner-main"><div class="winner-city">Kutaisi, Georgia</div><div class="winner-route">One-way from JFK &middot; 2026-10-15 &middot; <span style="color:var(--gold)">live price at booking</span> &middot; round-trip $1,804 with a return</div></div><div class="winner-right"><span class="winner-price">$262</span><span style="color:var(--muted);font-size:13px">one-way</span><span class="winner-off" style="background:rgba(39,208,122,.15);color:var(--green)">Low</span></div><span class="winner-cta">See live price on Aviasales &rarr;</span></a>
-    <div style="text-align:center;margin-top:14px"><a class="btn-ghost" href="market.html">Search more one-way deals &rarr;</a></div>
-  </section>
-  <section class="home-sec"><a class="winner" href="around-the-world.html?start=LAX"><span class="winner-badge">&#127757; Today&rsquo;s best Around the World trip</span><div class="winner-main"><div class="winner-city">Los Angeles &rarr; around the world &rarr; home</div><div class="winner-route">3 stops &middot; 4 one-way flights &middot; LAX &rarr; DUB &rarr; DXB &rarr; MNL &rarr; LAX &middot; <span style="color:var(--gold)">live fares</span></div></div><div class="winner-right"><span class="winner-price">$963</span><span style="color:var(--muted);font-size:13px">whole loop</span></div><span class="winner-cta">Build this trip on Around the World &rarr;</span></a>
-    <div style="text-align:center;margin-top:14px"><a class="btn-ghost" href="around-the-world.html">Search more Around the World trips &rarr;</a></div>
-  </section>
-  <p class="finehint" style="text-align:center;margin-top:18px">These are recently-tracked one-way fares &mdash; tap any deal to see today&rsquo;s live price and book on Aviasales.</p>
   <div class="section-head-lg"><h2>How to read a price</h2><p>Every fare is measured against this route&rsquo;s own price history &mdash; its Standard Meridian. The colored bar on each deal shows where today&rsquo;s price sits.</p></div>
   <div class="why">
     <div class="why-card"><span class="why-sig"><span class="why-dot g"></span>Low</span><h3 style="margin-top:12px">A great deal</h3><p>Well below this route&rsquo;s typical price &mdash; a genuinely good moment to book.</p></div>
@@ -706,10 +706,10 @@ function toggleTickers(){ var off=document.body.classList.toggle('tickers-off');
 </div>
 <script>
 function homeSearch(e){ e.preventDefault();
-  var f=(document.getElementById('hs-from').value||'').trim().toUpperCase();
+  var f=(document.getElementById('hs-from').value||'').trim();
   var t=(document.getElementById('hs-to').value||'').trim();
   var dep=document.getElementById('hs-depart').value, ret=document.getElementById('hs-return').value;
-  if(!/^[A-Z]{3}$/.test(f)){ document.getElementById('hs-from').focus(); return false; }
+  if(!f){ document.getElementById('hs-from').focus(); return false; }
   if(!t){ document.getElementById('hs-to').focus(); return false; }
   var q='explore.html?from='+encodeURIComponent(f)+'&to='+encodeURIComponent(t);
   if(dep) q+='&depart='+dep; if(ret) q+='&return='+ret;
