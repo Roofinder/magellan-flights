@@ -2454,24 +2454,33 @@ def oneway_winner(oneway, market):
         c = m["code"]
         if c not in by_code or m["price"] < by_code[c]["price"]:
             by_code[c] = m
-    best = None  # (ratio, one-way, rt) — pick the fare furthest below its typical
+    # Collect the best one-way *values* (furthest below typical), one per destination,
+    # then rotate through the top few by day-of-year so the same city isn't featured
+    # every single day.
+    cands = []  # (ratio, one-way, rt)
     cheapest = None
+    seen = set()
     for o in oneway:
         if (o.get("cc") or "").upper() == "US":
             continue
+        code = o["code"]
         if cheapest is None:
-            cheapest = (o, by_code.get(o["code"]))
-        rt_o = by_code.get(o["code"])
+            cheapest = (o, by_code.get(code))
+        if code in seen:
+            continue
+        rt_o = by_code.get(code)
         try:
             typ_o = float(rt_o["price"]) * 0.62 if rt_o and rt_o.get("price") else 0
             if typ_o > 0:
-                ratio = float(o["price"]) / typ_o
-                if best is None or ratio < best[0]:
-                    best = (ratio, o, rt_o)
+                cands.append((float(o["price"]) / typ_o, o, rt_o))
+                seen.add(code)
         except Exception:
             continue
-    if best:
-        w, rt = best[1], best[2]
+    if cands:
+        cands.sort(key=lambda x: x[0])
+        pool = cands[:7]
+        idx = datetime.now().timetuple().tm_yday % len(pool)
+        w, rt = pool[idx][1], pool[idx][2]
     elif cheapest:
         w, rt = cheapest
     else:
@@ -2567,7 +2576,7 @@ def oneway_board(oneway, market, limit=8):
             f'<div class="grid">{"".join(cards)}</div></section>')
 
 
-def body_home(market, hist, cards, lastmin, oneway, summary):
+def body_home(market, hist, cards, lastmin, oneway, summary, world):
     labels = [("summary", "Market summary"), ("indices", "Fare indices"),
               ("movers", "Biggest movers"), ("deals", "Cheapest trips"),
               ("lastminute", "Last-minute getaways"), ("oneway", "One-way escapes")]
@@ -2580,7 +2589,6 @@ def body_home(market, hist, cards, lastmin, oneway, summary):
         flash_section = (f'<section class="home-sec"><div class="sec-head">'
                          f'<h2>&#9851; Round-trip deals</h2><span>there &amp; back</span></div>'
                          f'<div class="grid">{fcards}</div></section>')
-    ow_section = oneway_board(oneway, market)
     nroutes = len(market)
     noneway = len(oneway)
     try:
@@ -2612,13 +2620,13 @@ def body_home(market, hist, cards, lastmin, oneway, summary):
   </div>
   <p class="stat-note">{market_pulse(market)} &middot; tracked fares, refreshed through the day</p>
   <div class="summary" data-sec="summary">{summary}</div>
-  <section class="home-sec">{oneway_winner(oneway, market)}</section>
-  <div id="deals">{ow_section}</div>
-  <p class="finehint" style="text-align:center;margin-top:14px">These are recently-tracked fares &mdash; tap any deal to see today&rsquo;s live price and book on Aviasales.</p>
-  <div class="home-sec" style="text-align:center">
-    <a class="btn-primary" href="market.html">See the full Market &rarr;</a>
-    <p style="color:var(--muted);font-size:13.5px;margin:14px auto 0;max-width:560px">Fare indices, every biggest mover, today&rsquo;s cheapest trips, last-minute getaways and one-way deals &mdash; the whole board lives on the <a href="market.html" style="color:var(--gold)">Market</a> tab.</p>
-  </div>
+  <section class="home-sec" id="deals">{oneway_winner(oneway, market)}
+    <div style="text-align:center;margin-top:14px"><a class="btn-ghost" href="market.html">Search more one-way deals &rarr;</a></div>
+  </section>
+  <section class="home-sec">{atw_highlight(world)}
+    <div style="text-align:center;margin-top:14px"><a class="btn-ghost" href="around-the-world.html">Search more Around the World trips &rarr;</a></div>
+  </section>
+  <p class="finehint" style="text-align:center;margin-top:18px">These are recently-tracked one-way fares &mdash; tap any deal to see today&rsquo;s live price and book on Aviasales.</p>
   <div class="section-head-lg"><h2>How to read a price</h2><p>Every fare is measured against this route&rsquo;s own price history &mdash; its Standard Meridian. The colored bar on each deal shows where today&rsquo;s price sits.</p></div>
   <div class="why">
     <div class="why-card"><span class="why-sig"><span class="why-dot g"></span>Low</span><h3 style="margin-top:12px">A great deal</h3><p>Well below this route&rsquo;s typical price &mdash; a genuinely good moment to book.</p></div>
@@ -3180,6 +3188,24 @@ def round_the_world(world, min_stops=3, max_stops=5, gap_min=35, gap_max=175):
                      "price": L["price"], "link": L.get("link", ""), "depart": L.get("depart", "")})
     return {"start": route[0], "start_name": WORLD_HUBS[route[0]], "total": total,
             "stops": len(route) - 2, "flights": len(legs), "legs": legs}
+
+
+def atw_highlight(world):
+    """Today's best Around-the-World value — the cheapest full loop, as a highlight card
+    matching the one-way 'Biggest Winner' treatment, linking into the ATW builder."""
+    trip = round_the_world(world)
+    if not trip:
+        return ""
+    legs = trip["legs"]
+    route = " &rarr; ".join(html.escape(c) for c in ([trip["start"]] + [L["to"] for L in legs]))
+    return (f'<a class="winner" href="around-the-world.html?start={html.escape(trip["start"], quote=True)}">'
+            f'<span class="winner-badge">&#127757; Today&rsquo;s best Around the World trip</span>'
+            f'<div class="winner-main"><div class="winner-city">{html.escape(trip["start_name"])} &rarr; around the world &rarr; home</div>'
+            f'<div class="winner-route">{trip["stops"]} stops &middot; {trip["flights"]} one-way flights &middot; {route} &middot; '
+            f'<span style="color:var(--gold)">live fares</span></div></div>'
+            f'<div class="winner-right"><span class="winner-price">${trip["total"]:,.0f}</span>'
+            f'<span style="color:var(--muted);font-size:13px">whole loop</span></div>'
+            f'<span class="winner-cta">Build this trip on Around the World &rarr;</span></a>')
 
 
 def body_rtw(world):
@@ -5331,7 +5357,7 @@ def main():
     cards = "\n".join(card_html(m) for m in cards_src)
 
     pages = {
-        "index.html": ("Home", body_home(market, hist, cards, lastmin, oneway, summary)),
+        "index.html": ("Home", body_home(market, hist, cards, lastmin, oneway, summary, world)),
         "market.html": ("Market", body_market(market, hist, cards, lastmin, oneway)),
         "explore.html": ("Explore", body_explore()),
         "blog.html": ("Daily Guide", body_blog(market, oneway)),
