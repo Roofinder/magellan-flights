@@ -1,29 +1,19 @@
 name: Refresh & publish Magellan Flights
 
+# Slow lane: scrape all live fares (incl. the world hub scan), COMMIT the data so
+# the fast publish.yml can rebuild from it, then rebuild + publish.
+# Runs on the cron schedule + manual dispatch only (push -> publish.yml handles code).
+
 on:
   schedule:
-    # Every 3h / 8x a day (UTC) to keep tracked fares fresh. GitHub may start
-    # these a few minutes late under load.
     - cron: '0 */3 * * *'
-  workflow_dispatch: {}   # adds a manual "Run workflow" button
-  push:
-    branches: [main]
-    # Rebuild + publish immediately when SOURCE changes (e.g. buildsite.py).
-    # The bot's own HTML/data commits use GITHUB_TOKEN (which can't retrigger a
-    # workflow) and only touch the paths below, so this never loops.
-    paths-ignore:
-      - '**.html'
-      - 'data/**'
-      - 'sitemap.xml'
-      - 'robots.txt'
-      - 'llms.txt'
-      - '**.png'
+  workflow_dispatch: {}
 
 permissions:
   contents: write
 
 concurrency:
-  group: refresh-publish
+  group: magellan-publish
   cancel-in-progress: false
 
 jobs:
@@ -31,7 +21,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -39,8 +28,7 @@ jobs:
       - name: Build config.json from secret
         env:
           TP_TOKEN: ${{ secrets.TP_TOKEN }}
-        run: |
-          printf '{"api_token":"%s","marker":"741311","currency":"usd","market":"us"}' "$TP_TOKEN" > config.json
+        run: printf '{"api_token":"%s","marker":"741311","currency":"usd","market":"us"}' "$TP_TOKEN" > config.json
 
       - name: Refresh all route data from the live API
         run: |
@@ -53,7 +41,7 @@ jobs:
           python lastminute.py --international || true
           python homebase.py || true
 
-      - name: Re-price for accuracy (round-trip + one-way + top-down validate + featured cross-check)
+      - name: Re-price for accuracy
         env:
           RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
         run: |
@@ -72,20 +60,25 @@ jobs:
           cp site/sitemap.xml site/robots.txt site/llms.txt . 2>/dev/null || true
           cp site/og-image.png . 2>/dev/null || true
 
-      - name: Commit & push if anything changed
+      - name: Prune old dated data CSVs (keep newest per kind)
+        run: |
+          for pat in explore_oneway_6m explore_oneway_lm world_any world_lm lastminute_all lastminute_intl; do
+            ls -1t ${pat}_*.csv 2>/dev/null | tail -n +2 | xargs -r rm -f
+          done
+
+      - name: Commit data + built site (race-proof)
         run: |
           git config user.name "magellan-bot"
           git config user.email "actions@users.noreply.github.com"
           git add -A -- '*.html' winners.json oneway_index.json favicon.svg favicon-32.png favicon-48.png favicon-96.png apple-touch-icon.png sitemap.xml robots.txt llms.txt og-image.png
-          git add -f data/pricehistory.csv data/market_latest.csv data/sky_ids.json data/sky_calls.json data/featured_verified.json 2>/dev/null || true
-          if git diff --cached --quiet; then
-            echo "No changes to publish."
-          else
-            git commit -m "Auto refresh: accurate fares + rebuild ($(date -u +%Y-%m-%dT%H:%MZ))"
-            for i in 1 2 3 4 5; do
-              git push origin HEAD:main && break
-              echo "Push rejected (race) - rebasing and retrying ($i)..."
-              git pull --rebase --autostash origin main || true
-              sleep 3
-            done
-          fi
+          git add -f explore_oneway_*.csv world_*.csv lastminute_*.csv data/market_latest.csv data/pricehistory.csv data/homebase.json data/sky_ids.json data/sky_calls.json data/featured_verified.json 2>/dev/null || true
+          if git diff --cached --quiet; then echo "Nothing to publish."; exit 0; fi
+          for i in 1 2 3 4 5; do
+            git commit -m "Auto refresh + data ($(date -u +%Y-%m-%dT%H:%MZ))" || true
+            git push origin HEAD:main && { echo "Published."; exit 0; }
+            echo "Push raced; replaying onto latest main (attempt $i)"
+            git fetch origin main || true
+            git reset --soft origin/main || true
+            sleep 2
+          done
+          echo "Could not publish after retries"; exit 1
