@@ -3741,22 +3741,7 @@ def body_consultant():
 def body_explore():
     return """<div class="wrap">
   <div class="pagehead"><h1>Explore</h1><p>Plan a specific trip. Add your home airport(s) and we&rsquo;ll find the cheapest one-ways to <b>anywhere</b> &mdash; or type a destination to track a <b>specific route</b> and see every fare we have for it. Add several airports and we compare across all of them. Just want to browse the cheapest deals? That&rsquo;s the <a href="market.html" style="color:var(--gold)">Market</a>.</p></div>
-  <div class="airchips" id="ex-tabs" style="margin:0 0 14px;gap:8px">
-    <button type="button" class="airchip on" id="ex-tab-plan-btn" onclick="exTab('plan')">&#9992;&#65039; Plan a trip (A &rarr; B)</button>
-    <button type="button" class="airchip" id="ex-tab-explore-btn" onclick="exTab('explore')">&#9788; Explore anywhere</button>
-  </div>
-  <div class="tl-card" id="ex-tab-plan">
-    <div class="tl-form" style="margin-bottom:10px"><div style="display:flex;gap:8px"><button type="button" class="airchip on" id="ep-rt" onclick="exPlanTrip('round')">Round-trip</button><button type="button" class="airchip" id="ep-ow" onclick="exPlanTrip('oneway')">One-way</button></div></div>
-    <div class="tl-form" style="align-items:flex-end;flex-wrap:wrap;gap:12px">
-      <label>From<input id="ep-from" maxlength="3" placeholder="RDU" autocomplete="off" oninput="this.value=this.value.toUpperCase()" onkeydown="if(event.key==='Enter')exPlanSearch()"></label>
-      <label>To<input id="ep-to" placeholder="City or code (e.g. CUN)" autocomplete="off" onkeydown="if(event.key==='Enter')exPlanSearch()"></label>
-      <label>Depart<input id="ep-depart" type="date" onkeydown="if(event.key==='Enter')exPlanSearch()"></label>
-      <label id="ep-return-wrap">Return<input id="ep-return" type="date" onkeydown="if(event.key==='Enter')exPlanSearch()"></label>
-      <button class="btn-primary tl-go" onclick="exPlanSearch()">Search flights</button>
-    </div>
-    <div class="panel" style="margin-top:12px"><div id="ep-out"><div class="wl-hint">Where are you flying? Enter <b>From</b> and <b>To</b>, pick your dates, and search &mdash; just like a normal flight search.</div></div></div>
-  </div>
-  <div class="tl-card" id="ex-tab-explore" style="display:none">
+  <div class="tl-card">
     <div class="tl-form" style="align-items:flex-end">
       <div style="display:flex;flex-direction:column;gap:5px">
         <span style="font-size:12px;color:var(--muted)">From &mdash; any airport, US or abroad</span>
@@ -3815,12 +3800,6 @@ window.exSave=function(btn,i){ var f=EX_SHOWN[i]; if(!f) return; var list=bucket
 var rb=go('ex-regions'); if(rb){ rb.addEventListener('click', function(e){ var b=e.target.closest('[data-r]'); if(b){ EX_REG=b.getAttribute('data-r'); renderChips(); exFilter(); } }); }
 var ob=go('ex-origs'); if(ob){ ob.addEventListener('click', function(e){ var b=e.target.closest('[data-o]'); if(!b) return; var c=b.getAttribute('data-o'); EX_ORIG=EX_ORIG.filter(function(x){return x!==c;}); renderOrigs(); exSearch(); }); }
 renderOrigs(); renderChips(); exToBind(); exMonthFill(); exSearch();
-/* ---- Plan a trip: conventional From -> To -> Depart/Return route search ---- */
-var EP_TRIP='round';
-window.exTab=function(m){ go('ex-tab-plan').style.display=(m==='plan')?'':'none'; go('ex-tab-explore').style.display=(m==='explore')?'':'none'; go('ex-tab-plan-btn').classList.toggle('on',m==='plan'); go('ex-tab-explore-btn').classList.toggle('on',m==='explore'); };
-window.exPlanTrip=function(t){ EP_TRIP=t; go('ep-rt').classList.toggle('on',t==='round'); go('ep-ow').classList.toggle('on',t==='oneway'); go('ep-return-wrap').style.display=(t==='round')?'':'none'; };
-window.exPlanSearch=function(){ var o=(go('ep-from').value||'').trim().toUpperCase(); var raw=(go('ep-to').value||'').trim(); var d=/^[A-Za-z]{3}$/.test(raw)?raw.toUpperCase():resolveTo(raw); var dep=go('ep-depart').value, ret=go('ep-return').value, out=go('ep-out'); var rt=(EP_TRIP==='round'); if(!/^[A-Z]{3}$/.test(o)){ out.innerHTML='<div class="wl-hint">Enter a 3-letter <b>From</b> airport (e.g. RDU).</div>'; return; } if(!/^[A-Z]{3}$/.test(d)){ out.innerHTML='<div class="wl-hint">Enter a <b>To</b> city or 3-letter code (e.g. CUN).</div>'; return; } out.innerHTML='<div class="wl-hint">Searching '+(rt?'round-trip':'one-way')+' fares '+o+' &rarr; '+d+(dep?(' on '+dep):'')+'&hellip;</div>'; var u='/api/search?origin='+o+'&destination='+d+'&one_way='+(rt?'false':'true')+'&sorting=price&limit=30'; if(dep) u+='&departure_at='+dep; if(rt&&ret) u+='&return_at='+ret; fetch(u).then(function(r){return r.json();}).then(function(j){ var data=((j&&j.data)||[]).filter(function(f){ return f.destination_airport===d; }); data.sort(function(a,b){ return a.price-b.price; }); exPlanRender(o,d,rt,data); }).catch(function(){ out.innerHTML='<div class="wl-hint">Couldn&rsquo;t load that search &mdash; try again.</div>'; }); };
-function exPlanRender(o,d,rt,data){ var out=go('ep-out'); if(!data.length){ out.innerHTML='<div class="wl-hint">No cached fares for '+o+' &rarr; '+d+(rt?' on those dates':'')+' right now. Try clearing the dates, a nearby date, or a major hub (JFK, LAX, ORD). Your live, bookable price is always on Aviasales.</div>'; return; } var nm=(typeof NAMES!=='undefined'&&NAMES[d])?(' <span style="color:var(--muted);font-weight:400">'+NAMES[d]+'</span>'):''; out.innerHTML='<div style="font-weight:600;margin:0 0 8px">'+o+' &rarr; '+d+nm+'</div>'+data.slice(0,20).map(function(f){ var dp=(f.departure_at||'').slice(0,10), rtd=(f.return_at||'').slice(0,10), p=Math.round(f.price); var sub=dp+(rt&&rtd?(' &rarr; '+rtd):''); return '<div class="mv-row"><div class="mv-dest">'+owFlag(d)+'<div class="mv-destcol"><div class="mv-name">'+o+' &rarr; '+d+'</div><div class="mv-air">'+sub+'</div></div></div><div class="mv-right"><span class="mv-price"><span class="lp-dot" title="Freshest tracked fare — your live, bookable price is confirmed on Aviasales"></span>$'+p.toLocaleString()+'</span> <span class="ow-unit">'+(rt?'round-trip':'one-way')+'</span><a class="mini-book" href="'+f.link+'" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a></div></div>'; }).join(''); }
 })();
 </script>"""
 
