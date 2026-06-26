@@ -251,6 +251,14 @@ DESTINATIONS = [
     ("ZNZ", "Zanzibar, Tanzania",        "🌍", 1450),
     ("JRO", "Kilimanjaro, Tanzania",     "🌍", 1400),
     ("MRU", "Mauritius",                 "🌍", 1500),
+    # --- Coverage gaps: popular US-tourist spots ---
+    ("TLV", "Tel Aviv, Israel",          "🇮🇱", 1300),
+    ("AMM", "Amman, Jordan",             "🇯🇴", 1250),
+    ("SPU", "Split, Croatia",            "🇭🇷", 1100),
+    ("REP", "Siem Reap, Cambodia",       "🇰🇭", 1250),
+    ("KBV", "Krabi, Thailand",           "🏝️", 1250),
+    ("SZG", "Salzburg, Austria",         "🇦🇹", 1050),
+    ("HUX", "Huatulco, Mexico",          "🏖️", 650),
 ]
 
 # Best time to visit (general averages) — shown to travelers and used by the bot.
