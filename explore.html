@@ -470,6 +470,14 @@
   .lander h1 .g{ color:var(--gold); }
   .lander .lead{ font-size:17.5px; color:var(--muted); max-width:630px; margin:0 auto 26px; line-height:1.6; }
   .lander .lead .buy{ color:var(--green); font-weight:700; }
+  .hero-search{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; align-items:center; max-width:680px; margin:4px auto 16px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.15); border-radius:14px; padding:10px; }
+  .hero-search input{ background:#0e141d; color:var(--ink); border:1px solid var(--line); border-radius:9px; padding:11px 12px; font-size:15px; font-family:inherit; }
+  .hero-search .hs-from{ width:84px; text-transform:uppercase; letter-spacing:.06em; }
+  .hero-search .hs-to{ flex:1; min-width:150px; }
+  .hero-search .hs-date{ width:150px; color-scheme:dark; }
+  .hero-search button{ background:var(--gold); color:#1a1205; font-weight:700; border:0; border-radius:9px; padding:11px 22px; font-size:15px; cursor:pointer; }
+  .hero-search button:hover{ filter:brightness(1.06); }
+  @media(max-width:560px){ .hero-search{ flex-direction:column; align-items:stretch; } .hero-search input,.hero-search button,.hero-search .hs-from,.hero-search .hs-date{ width:100%; } }
   .cta-row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
   .btn-primary{ background:var(--gold); color:var(--ink2); font-weight:700; text-decoration:none;
                 padding:13px 26px; border-radius:10px; font-size:15px; }
@@ -714,6 +722,7 @@ window.exSave=function(btn,i){ var f=EX_SHOWN[i]; if(!f) return; var list=bucket
 var rb=go('ex-regions'); if(rb){ rb.addEventListener('click', function(e){ var b=e.target.closest('[data-r]'); if(b){ EX_REG=b.getAttribute('data-r'); renderChips(); exFilter(); } }); }
 var ob=go('ex-origs'); if(ob){ ob.addEventListener('click', function(e){ var b=e.target.closest('[data-o]'); if(!b) return; var c=b.getAttribute('data-o'); EX_ORIG=EX_ORIG.filter(function(x){return x!==c;}); renderOrigs(); exSearch(); }); }
 renderOrigs(); renderChips(); exToBind(); exMonthFill(); exSearch();
+setTimeout(function(){ try{ var p=new URLSearchParams(location.search); var f=p.get('from'), t=p.get('to'); if(f&&t){ var ef=go('ep-from'),et=go('ep-to'),ed=go('ep-depart'),er=go('ep-return'); if(ef)ef.value=f.toUpperCase(); if(et)et.value=t; var dep=p.get('depart'),ret=p.get('return'); if(dep&&ed)ed.value=dep; if(ret&&er)er.value=ret; if(window.exPlanTrip)exPlanTrip(ret?'round':'oneway'); if(window.exTab)exTab('plan'); if(window.exPlanSearch)exPlanSearch(); } }catch(e){} }, 0);
 /* ---- Plan a trip: conventional From -> To -> Depart/Return route search ---- */
 var EP_TRIP='round';
 window.exTab=function(m){ go('ex-tab-plan').style.display=(m==='plan')?'':'none'; go('ex-tab-explore').style.display=(m==='explore')?'':'none'; go('ex-tab-plan-btn').classList.toggle('on',m==='plan'); go('ex-tab-explore-btn').classList.toggle('on',m==='explore'); };
