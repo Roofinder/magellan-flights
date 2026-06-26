@@ -2505,7 +2505,7 @@ def oneway_winner(oneway, market):
                "y": ("rgba(231,185,78,.15)", "var(--gold)"),
                "r": ("rgba(255,94,94,.15)", "var(--red)")}
     bg, col = palette[c]
-    rtnote = f' &middot; round-trip ${float(rt["price"]):,.0f} with a return' if rt else ''
+    rtnote = ''
     return (f'<a class="winner" data-o="{html.escape(w["origin"], quote=True)}" data-d="{code}" data-ow="1" href="{html.escape(w["link"], quote=True)}" target="_blank" rel="noopener">'
             f'<span class="winner-badge">Today&rsquo;s Biggest Winner</span>'
             f'<div class="winner-main"><div class="winner-city">{html.escape(w["name"])}</div>'
