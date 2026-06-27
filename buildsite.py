@@ -1360,7 +1360,7 @@ CSS = r"""<style>
   .guide-card{ display:flex; flex-direction:column; gap:8px; background:var(--card); border:1px solid var(--line); box-shadow:0 6px 18px rgba(0,0,0,.22);
                border-radius:14px; padding:18px 18px 16px; text-decoration:none; transition:border-color .15s,transform .15s; }
   .guide-card:hover{ border-color:var(--gold); transform:translateY(-2px); }
-  .gc-kick{ font-size:11.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--gold); }
+  .gc-kick{ font-size:14.5px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; color:var(--gold); }
   .gc-title{ font-size:18px; font-weight:700; color:var(--ink); line-height:1.3; }
   .gc-desc{ font-size:13.5px; color:var(--muted); line-height:1.55; flex:1; }
   .gc-more{ font-size:13px; color:var(--gold); font-weight:600; }
