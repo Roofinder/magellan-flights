@@ -459,17 +459,17 @@
   }
 
   /* ====================  Landing hero  ==================== */
-  .lander{ position:relative; overflow:hidden; text-align:center; padding:62px 20px 26px; }
+  .lander{ position:relative; overflow:hidden; text-align:center; padding:48px 20px 22px; }
   .lander-glow{ position:absolute; top:-170px; left:50%; transform:translateX(-50%); width:820px; height:440px;
                 background:radial-gradient(ellipse at center, rgba(231,185,78,.15), rgba(231,185,78,0) 70%);
                 pointer-events:none; z-index:0; }
-  .lander-inner{ position:relative; z-index:1; max-width:780px; margin:0 auto; }
-  .eyebrow{ display:inline-block; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:11px;
+  .lander-inner{ position:relative; z-index:1; max-width:660px; margin:0 auto; }
+  .eyebrow{ display:inline-block; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:10px;
             letter-spacing:.22em; text-transform:uppercase; color:var(--lux);
-            border:1px solid rgba(244,193,78,.45); border-radius:30px; padding:7px 15px; margin-bottom:20px; }
-  .lander h1{ font-size:47px; line-height:1.07; margin:0 0 16px; letter-spacing:-.015em; }
+            border:1px solid rgba(244,193,78,.45); border-radius:30px; padding:6px 13px; margin-bottom:16px; }
+  .lander h1{ font-size:38px; line-height:1.08; margin:0 0 13px; letter-spacing:-.015em; }
   .lander h1 .g{ color:var(--gold); }
-  .lander .lead{ font-size:17.5px; color:var(--muted); max-width:630px; margin:0 auto 26px; line-height:1.6; }
+  .lander .lead{ font-size:15px; color:var(--muted); max-width:560px; margin:0 auto 20px; line-height:1.6; }
   .lander .lead .buy{ color:var(--green); font-weight:700; }
   /* ---- Hybrid bright hero (light sky band; dark data resumes below) ---- */
   .lander-bright{ background:linear-gradient(180deg,#dcebff 0%,#e8f3ff 8%,#eaf4ff 60%,#dfeefc 100%); }
@@ -481,25 +481,25 @@
   .lander-bright .trust{ color:#5b6b86; }
   .lander-bright .trust b{ color:#0d1a30; }
   .fsearch{ background:#fff; border:1px solid #d9e2ef; border-radius:16px; box-shadow:0 14px 38px rgba(20,40,80,.16);
-            padding:18px; max-width:680px; margin:8px auto 14px; text-align:left; }
-  .fsearch .fs-row{ display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; margin-bottom:12px; }
-  .fs-trip{ align-items:center; gap:20px; margin-bottom:14px; }
-  .fs-radio,.fs-check{ display:inline-flex; align-items:center; gap:7px; font-size:14.5px; color:#26344b; font-weight:600; cursor:pointer; }
+            padding:15px; max-width:560px; margin:6px auto 12px; text-align:left; }
+  .fsearch .fs-row{ display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; margin-bottom:10px; }
+  .fs-trip{ align-items:center; gap:16px; margin-bottom:12px; }
+  .fs-radio,.fs-check{ display:inline-flex; align-items:center; gap:7px; font-size:13px; color:#26344b; font-weight:600; cursor:pointer; }
   .fs-radio input,.fs-check input{ accent-color:#1769c4; width:16px; height:16px; }
-  .fs-field{ display:flex; flex-direction:column; gap:5px; flex:1; min-width:130px; }
-  .fs-field label{ font-size:11.5px; font-weight:700; color:#5b6b86; text-transform:uppercase; letter-spacing:.04em; }
+  .fs-field{ display:flex; flex-direction:column; gap:5px; flex:1; min-width:115px; }
+  .fs-field label{ font-size:10.5px; font-weight:700; color:#5b6b86; text-transform:uppercase; letter-spacing:.04em; }
   .fs-field input,.fs-field select{ background:#f6faff; color:#16202e; border:1px solid #cfdbeb; border-radius:9px;
-            padding:11px 12px; font-size:15px; font-family:inherit; }
-  .fs-od .fs-field{ flex:1; min-width:180px; }
+            padding:9px 10px; font-size:13.5px; font-family:inherit; }
+  .fs-od .fs-field{ flex:1; min-width:150px; }
   .fs-swap{ flex:0 0 auto; align-self:flex-end; margin-bottom:4px; background:#eaf2ff; border:1px solid #cfdbeb;
-            color:#1769c4; width:40px; height:40px; border-radius:9px; cursor:pointer; font-size:18px; }
+            color:#1769c4; width:34px; height:34px; border-radius:9px; cursor:pointer; font-size:16px; }
   .fs-swap:hover{ background:#dcebff; }
-  .fs-alert{ background:#f1f6fd; border:1px solid #dbe7f6; border-radius:11px; padding:12px 14px; margin:2px 0 14px; }
-  .fs-alert-lab{ display:block; font-size:13.5px; font-weight:700; color:#26344b; margin-bottom:7px; }
+  .fs-alert{ background:#f1f6fd; border:1px solid #dbe7f6; border-radius:11px; padding:10px 12px; margin:2px 0 12px; }
+  .fs-alert-lab{ display:block; font-size:12.5px; font-weight:700; color:#26344b; margin-bottom:7px; }
   .fs-alert-lab span{ color:#7a8aa3; font-weight:500; }
-  .fs-alert input{ width:100%; background:#fff; border:1px solid #cfdbeb; border-radius:9px; padding:11px 12px; font-size:15px; }
-  .fs-go{ display:block; width:100%; background:var(--green); color:#06281a; font-weight:800; font-size:16px; border:0;
-          border-radius:11px; padding:14px; cursor:pointer; letter-spacing:.02em; }
+  .fs-alert input{ width:100%; background:#fff; border:1px solid #cfdbeb; border-radius:9px; padding:9px 10px; font-size:13.5px; }
+  .fs-go{ display:block; width:100%; background:var(--green); color:#06281a; font-weight:800; font-size:14px; border:0;
+          border-radius:11px; padding:11px; cursor:pointer; letter-spacing:.02em; }
   .fs-go:hover{ filter:brightness(1.05); }
   @media(max-width:560px){ .fs-od{ flex-wrap:wrap; } .fs-swap{ display:none; } }
   .cta-row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
@@ -534,7 +534,7 @@
   .why-card h3{ margin:0 0 7px; font-size:17px; }
   .why-card p{ margin:0; font-size:13.5px; color:var(--muted); line-height:1.6; }
   @media(max-width:760px){ .why{ grid-template-columns:1fr; } }
-  @media(max-width:680px){ .statbar{ grid-template-columns:repeat(2,1fr); } .lander h1{ font-size:33px; } .lander{ padding-top:44px; } }
+  @media(max-width:680px){ .statbar{ grid-template-columns:repeat(2,1fr); } .lander h1{ font-size:27px; } .lander{ padding-top:34px; } }
 
   /* ====================  Promise strip  ==================== */
   .promise{ margin:46px 0 6px; border:1px solid var(--line); border-radius:16px; padding:26px 24px;
@@ -662,7 +662,7 @@ window.addEventListener('load',function(){setTimeout(done, rm?700:2700);});})();
 <header>
   <div class="bar">
     <a class="logo" href="index.html"><span class="mark"><svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="50" cy="50" r="47" fill="none" stroke="#3a9dff" stroke-width="2"/><circle cx="50" cy="50" r="39" fill="none" stroke="#3a9dff" stroke-width="1" opacity="0.4"/><g stroke="#b8862f" stroke-width="1.4" opacity="0.7"><line x1="50" y1="50" x2="71" y2="29"/><line x1="50" y1="50" x2="71" y2="71"/><line x1="50" y1="50" x2="29" y2="71"/><line x1="50" y1="50" x2="29" y2="29"/></g><path d="M50 7 L42 42 L50 50 Z" fill="#7cc4ff"/><path d="M50 7 L58 42 L50 50 Z" fill="#2b6fd6"/><path d="M93 50 L58 42 L50 50 Z" fill="#7cc4ff"/><path d="M93 50 L58 58 L50 50 Z" fill="#2b6fd6"/><path d="M50 93 L58 58 L50 50 Z" fill="#7cc4ff"/><path d="M50 93 L42 58 L50 50 Z" fill="#2b6fd6"/><path d="M7 50 L42 58 L50 50 Z" fill="#7cc4ff"/><path d="M7 50 L42 42 L50 50 Z" fill="#2b6fd6"/><circle cx="50" cy="50" r="5.5" fill="#0f1830"/><circle cx="50" cy="50" r="3" fill="#7cc4ff"/></svg></span>Magellan Flights</a>
-    <nav class="nav"><a class="link" href="index.html">Home</a><a class="link" href="market.html">Market</a><a class="link" href="explore.html">Explore</a><a class="link" href="around-the-world.html">Around the World</a><a class="link" href="guides.html">Guides</a><a class="link" href="cheap-flights.html">By airport</a><a class="nav-star" href="watchlist.html" title="My bucket list" aria-label="My bucket list">&#9733;</a><a class="nav-cta" href="newsletter.html">Newsletter</a><button type="button" class="ticker-toggle" onclick="toggleTickers()" title="Hide or show the price ticker" aria-label="Toggle ticker"><span class="tt-ar">&#9650;</span> Ticker</button></nav>
+    <nav class="nav"><a class="link" href="index.html">Home</a><a class="link" href="market.html">Market</a><a class="link" href="explore.html">Explore</a><a class="link" href="around-the-world.html">Around the World</a><a class="link" href="guides.html">Guides</a><a class="link" href="cheap-flights.html">By airport</a><a class="link" href="our-story.html">Our Story</a><a class="nav-star" href="watchlist.html" title="My bucket list" aria-label="My bucket list">&#9733;</a><a class="nav-cta" href="newsletter.html">Newsletter</a><button type="button" class="ticker-toggle" onclick="toggleTickers()" title="Hide or show the price ticker" aria-label="Toggle ticker"><span class="tt-ar">&#9650;</span> Ticker</button></nav>
   </div>
 </header>
 <script>
@@ -710,7 +710,7 @@ window.addEventListener('load', window.renderBucket);
       <p class="ft-tag">The cheapest flights from the USA to anywhere on earth &mdash; tracked every day, judged against their own price history.</p>
       <a class="nav-cta ft-cta" href="newsletter.html">Join the free newsletter</a>
     </div>
-    <nav class="ft-links"><div class="ft-col"><h4>Browse fares</h4><a href="market.html">The Market</a><a href="explore.html">Explore &amp; search</a><a href="around-the-world.html">Around the World</a><a href="cheap-europe-trip.html">Continent trips</a><a href="cheap-flights.html">Cheap flights by airport</a></div><div class="ft-col"><h4>Learn</h4><a href="city-guides.html">City guides</a><a href="guides.html">Guides &amp; tips</a><a href="blog.html">Today&rsquo;s Daily Guide</a><a href="cheap-flight-index.html">Cheap Flight Index</a><a href="essentials.html">Travel kit</a></div><div class="ft-col"><h4>Your trips</h4><a href="watchlist.html">My bucket list</a><a href="newsletter.html">Free newsletter</a><a href="consultant.html">Hire a consultant</a></div></nav>
+    <nav class="ft-links"><div class="ft-col"><h4>Browse fares</h4><a href="market.html">The Market</a><a href="explore.html">Explore &amp; search</a><a href="around-the-world.html">Around the World</a><a href="cheap-europe-trip.html">Continent trips</a><a href="cheap-flights.html">Cheap flights by airport</a></div><div class="ft-col"><h4>Learn</h4><a href="city-guides.html">City guides</a><a href="guides.html">Guides &amp; tips</a><a href="blog.html">Today&rsquo;s Daily Guide</a><a href="cheap-flight-index.html">Cheap Flight Index</a><a href="essentials.html">Travel kit</a><a href="our-story.html">Our story</a></div><div class="ft-col"><h4>Your trips</h4><a href="watchlist.html">My bucket list</a><a href="newsletter.html">Free newsletter</a><a href="consultant.html">Hire a consultant</a></div></nav>
   </div>
   <div class="ft-bottom">
     <p>Prices are round-trip unless marked one-way and change fast &mdash; book soon if you see one you love. Magellan Flights may earn a commission when you book through our links, at no extra cost to you.</p>
