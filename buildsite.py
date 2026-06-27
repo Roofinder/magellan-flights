@@ -3346,46 +3346,78 @@ def heatmap_legend():
     return f'<div class="hm-legend">{sw}</div>'
 
 
-def heatmap_html(market):
-    """A market-style heatmap: one tile per destination, colored by how far the
-    cheapest tracked fare sits below (green) or above (red) its own normal price."""
-    best = {}
+def heatmap_build(oneway, market):
+    """One-way fare heatmap: one tile per destination, colored by how far the
+    cheapest tracked one-way sits below (green) or above (red) its usual one-way
+    price (= the route's round-trip benchmark x 0.62). Returns (grid, chips)."""
+    by_code = {}
     for m in market:
+        c = m.get("code")
+        if not c:
+            continue
         try:
-            p = float(m["price"]); b = float(m["benchmark"])
+            if c not in by_code or float(m["price"]) < float(by_code[c]["price"]):
+                by_code[c] = m
         except (TypeError, ValueError, KeyError):
             continue
-        if p <= 0 or b <= 0:
+    best = {}
+    for o in oneway:
+        if (o.get("cc") or "").upper() == "US":
             continue
-        pct = (b - p) / b * 100.0
-        code = m.get("code")
+        code = o.get("code")
         if not code:
             continue
+        rt = by_code.get(code)
+        try:
+            p = float(o["price"])
+            typ = float(rt["price"]) * 0.62 if (rt and rt.get("price")) else 0
+        except (TypeError, ValueError, KeyError):
+            continue
+        if p <= 0 or typ <= 0:
+            continue
+        pct = (typ - p) / typ * 100.0
         if code not in best or pct > best[code][0]:
-            best[code] = (pct, m, p)
+            best[code] = (pct, o, p)
     items = sorted(best.values(), key=lambda x: -x[0])
-    tiles = []
-    for pct, m, p in items:
+    region_order = ["North America", "South America", "Europe", "Asia", "Middle East", "Africa", "Oceania"]
+    present, tiles = [], []
+    for pct, o, p in items:
+        code = o["code"]
+        reg = board_region_of(code)
+        if reg in region_order and reg not in present:
+            present.append(reg)
         bg, tc = hm_color(pct)
-        code = m["code"]
         below = "below" if pct >= 0 else "above"
-        tip = html.escape(f'{m.get("name", code)} from {m.get("origin", "")} — ${p:,.0f}, '
-                          f'{abs(pct):.0f}% {below} normal', quote=True)
-        link = html.escape(m.get("link", ""), quote=True)
+        tip = html.escape(f'{o.get("name", code)} from {o.get("origin", "")} — ${p:,.0f}, '
+                          f'{abs(pct):.0f}% {below} normal (one-way)', quote=True)
+        link = html.escape(o.get("link", ""), quote=True)
         tiles.append(
-            f'<a class="hm-tile" href="{link}" target="_blank" rel="noopener" '
-            f'style="background:{bg};color:{tc}" title="{tip}">'
+            f'<a class="hm-tile" data-region="{html.escape(reg, quote=True)}" href="{link}" '
+            f'target="_blank" rel="noopener" style="background:{bg};color:{tc}" title="{tip}">'
             f'<span class="hm-code">{html.escape(code)}</span>'
             f'<span class="hm-price">${p:,.0f}</span></a>')
-    return f'<div class="hm-grid">{"".join(tiles)}</div>'
+    chips = ['<button class="airchip on" data-hmr="all" onclick="hmReg(&#39;all&#39;)">All</button>']
+    for r in [x for x in region_order if x in present]:
+        chips.append(f'<button class="airchip" data-hmr="{r}" onclick="hmReg(&#39;{r}&#39;)">{r}</button>')
+    grid = f'<div class="hm-grid" id="hm-grid">{"".join(tiles)}</div>'
+    return grid, "".join(chips)
 
 
-def body_heatmap(market):
+HM_JS = ("""<script>(function(){var R='all';function ap(){var ts=document.querySelectorAll('#hm-grid .hm-tile');"""
+         """for(var i=0;i<ts.length;i++){var t=ts[i];t.style.display=(R==='all'||t.getAttribute('data-region')===R)?'':'none';}"""
+         """var cs=document.querySelectorAll('#hm-chips [data-hmr]');for(var k=0;k<cs.length;k++){cs[k].classList.toggle('on',cs[k].getAttribute('data-hmr')===R);}}"""
+         """window.hmReg=function(r){R=r;ap();};})();</script>""")
+
+
+def body_heatmap(oneway, market):
+    grid, chips = heatmap_build(oneway, market)
     return f"""<div class="wrap">
-  <div class="pagehead"><h1>The Heatmap</h1><p>Every fare we track, at a glance &mdash; <b style="color:#2e8b57">green when it&rsquo;s below its normal price</b> (a deal) and <b style="color:#c0392b">red when it&rsquo;s above</b>. The deeper the color, the bigger the move; about-even fares stay parchment. Tap any tile to see its live price and book.</p></div>
+  <div class="pagehead"><h1>The Heatmap</h1><p>Every <b>one-way</b> fare we track, at a glance &mdash; <b style="color:#2e8b57">green when it&rsquo;s below its normal price</b> (a deal) and <b style="color:#c0392b">red when it&rsquo;s above</b>. The deeper the color, the bigger the move; about-even fares stay parchment. Filter by region, and tap any tile to see its live price and book.</p></div>
   {heatmap_legend()}
-  {heatmap_html(market)}
-  <p class="finehint" style="text-align:center;margin-top:14px">Sorted best deal first. Prices are recently-tracked fares judged against each route&rsquo;s own price history &mdash; your live, bookable price is confirmed on Aviasales.</p>
+  <div class="airchips" id="hm-chips" style="margin:8px 0 6px">{chips}</div>
+  {grid}
+  <p class="finehint" style="text-align:center;margin-top:14px">Sorted best deal first. One-way fares judged against each route&rsquo;s usual one-way price &mdash; your live, bookable price is confirmed on Aviasales.</p>
+{HM_JS}
 </div>"""
 
 
@@ -5680,7 +5712,7 @@ def main():
     pages = {
         "index.html": ("Home", body_home(market, hist, cards, lastmin, oneway, summary, world)),
         "market.html": ("Market", body_market(market, hist, cards, lastmin, oneway)),
-        "heatmap.html": ("The Heatmap", body_heatmap(market)),
+        "heatmap.html": ("The Heatmap", body_heatmap(oneway, market)),
         "explore.html": ("Explore", body_explore()),
         "blog.html": ("Daily Guide", body_blog(market, oneway)),
         "around-the-world.html": ("Ferdinand's World Loop", body_rtw(world)),
