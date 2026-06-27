@@ -2407,11 +2407,20 @@ def render_page(active, title, body, market, oneway, onewaylm, home, lm, world, 
               .replace("__ACOJS__", MAP_COORDS if active == "world.html" else "{}")
               .replace("__ASTRO__", ASTRO_SVG))
     foot = site_footer(today)
-    _cc = "{}"; _bm = "{}"; _names = "{}"
+    _cc = "{}"; _bm = "{}"; _names = "{}"; _major = "[]"
     if active == "explore.html":
         try:
             with open(os.path.join(HERE, "airport_names.json"), encoding="utf-8") as _nf:
                 _names = _nf.read().strip()
+        except Exception:
+            pass
+        try:
+            _mc = set(WORLD_HUBS.keys()) | set(home.keys())
+            for _o in oneway:
+                _mc.add(_o.get("code")); _mc.add(_o.get("origin"))
+            for _m in market:
+                _mc.add(_m.get("code")); _mc.add(_m.get("origin"))
+            _major = json.dumps(sorted(c for c in _mc if c))
         except Exception:
             pass
     if active in ("trip.html", "explore.html"):
@@ -2444,7 +2453,7 @@ def render_page(active, title, body, market, oneway, onewaylm, home, lm, world, 
             f'<link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">\n'
             f'<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">\n'
             f'<link rel="apple-touch-icon" href="apple-touch-icon.png">\n'
-            f'{CSS}\n</head>\n{top_chrome(active, market)}\n{body}\n{CHAT_HTML}\n{WIDGET_HTML}\n{foot}\n{script}\n{POPUP_JS}\n</body>\n</html>').replace("__CCJS__", _cc).replace("__BMJS__", _bm).replace("__NAMESJS__", _names)
+            f'{CSS}\n</head>\n{top_chrome(active, market)}\n{body}\n{CHAT_HTML}\n{WIDGET_HTML}\n{foot}\n{script}\n{POPUP_JS}\n</body>\n</html>').replace("__CCJS__", _cc).replace("__BMJS__", _bm).replace("__NAMESJS__", _names).replace("__MAJORJS__", _major)
 
 
 # --------------------------------------------------------------------------- #
@@ -3853,12 +3862,12 @@ function exFilter(){ var now=new Date(); var soon=new Date(); soon.setDate(soon.
 var BM = __BMJS__;
 function owFlag(d){ var cc=(CC[d]||'').toLowerCase(); return cc ? '<img class="flag" src="https://flagcdn.com/'+cc+'.svg" alt="" width="30" height="21" loading="lazy">' : '<span class="flag flag-na" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/></svg></span>'; }
 function owMini(price, typ){ if(!typ||typ<=0) return ''; var lo=typ*0.6, hi=typ*1.4; if(hi<=lo) return ''; var frac=Math.max(2,Math.min(98,(price-lo)/(hi-lo)*100)); var c,v; if(price<=typ*0.9){c='g';v='Low';}else if(price<=typ*1.1){c='y';v='Typical';}else{c='r';v='High';} return '<div class="minibar"><div class="mb-track"><span class="mb-dot '+c+'" style="left:'+Math.round(frac)+'%"></span></div><span class="mb-lab '+c+'">'+v+'</span></div>'; }
-var NAMES = __NAMESJS__;
+var NAMES = __NAMESJS__; var MAJOR = __MAJORJS__; var MAJSET={}; for(var _mi=0;_mi<MAJOR.length;_mi++) MAJSET[MAJOR[_mi]]=1;
 var EX_TO_CODE='';
-function resolveTo(txt){ txt=(txt||'').trim(); if(!txt) return ''; if(/^[A-Za-z]{3}$/.test(txt)) return txt.toUpperCase(); var q=txt.toLowerCase(); for(var c in NAMES){ if((NAMES[c]||'').toLowerCase()===q) return c; } for(var c in NAMES){ if((NAMES[c]||'').toLowerCase().indexOf(q)===0) return c; } return ''; }
-window.exToAC=function(){ var inp=document.getElementById('ex-to'); var q=(inp.value||'').trim().toLowerCase(); var drop=document.getElementById('ex-to-ac'); EX_TO_CODE=''; if(q.length<2){ drop.style.display='none'; drop.innerHTML=''; return; } var starts=[],cont=[]; for(var c in NAMES){ var nm=NAMES[c]; if(!nm) continue; var i=nm.toLowerCase().indexOf(q); if(i<0) continue; (i===0?starts:cont).push([c,nm]); if(starts.length>60) break; } var list=starts.concat(cont).slice(0,8); if(!list.length){ drop.style.display='none'; drop.innerHTML=''; return; } drop.innerHTML=list.map(function(x){ return '<div class="ac-item" data-code="'+x[0]+'" data-name="'+x[1].replace(/"/g,'&quot;')+'"><span>'+x[1]+'</span><span class="ac-code">'+x[0]+'</span></div>'; }).join(''); drop.style.display='block'; };
+function resolveTo(txt){ txt=(txt||'').trim(); if(!txt) return ''; if(/^[A-Za-z]{3}$/.test(txt)) return txt.toUpperCase(); var q=txt.toLowerCase(); var em='',ea='',sm='',sa=''; for(var c in NAMES){ var nm=(NAMES[c]||'').toLowerCase(); if(!nm) continue; if(nm===q){ if(MAJSET[c]){ if(!em) em=c; } else if(!ea) ea=c; } else if(nm.indexOf(q)===0){ if(MAJSET[c]){ if(!sm) sm=c; } else if(!sa) sa=c; } } return em||ea||sm||sa||''; }
+window.exToAC=function(){ var inp=document.getElementById('ex-to'); var q=(inp.value||'').trim().toLowerCase(); var drop=document.getElementById('ex-to-ac'); EX_TO_CODE=''; if(q.length<2){ drop.style.display='none'; drop.innerHTML=''; return; } var starts=[],cont=[]; for(var c in NAMES){ var nm=NAMES[c]; if(!nm) continue; var i=nm.toLowerCase().indexOf(q); if(i<0) continue; (i===0?starts:cont).push([c,nm]); if(starts.length>60) break; } var mf=function(a,b){ return (MAJSET[a[0]]?0:1)-(MAJSET[b[0]]?0:1); }; starts.sort(mf); cont.sort(mf); var list=starts.concat(cont).slice(0,8); if(!list.length){ drop.style.display='none'; drop.innerHTML=''; return; } drop.innerHTML=list.map(function(x){ return '<div class="ac-item" data-code="'+x[0]+'" data-name="'+x[1].replace(/"/g,'&quot;')+'"><span>'+x[1]+'</span><span class="ac-code">'+x[0]+'</span></div>'; }).join(''); drop.style.display='block'; };
 function exToBind(){ var d=document.getElementById('ex-to-ac'); if(d && !d._bound){ d._bound=1; d.addEventListener('click', function(e){ var it=e.target.closest('.ac-item'); if(!it) return; EX_TO_CODE=it.getAttribute('data-code'); document.getElementById('ex-to').value=it.getAttribute('data-name'); d.style.display='none'; window.exSearch(); }); document.addEventListener('click', function(e){ if(!e.target.closest('.ac-wrap')){ d.style.display='none'; } }); } }
-function airportFilter(inp, drop){ if(!inp||!drop) return; var q=(inp.value||'').trim().toLowerCase(); if(q.length<2){ drop.style.display='none'; drop.innerHTML=''; return; } var starts=[],cont=[]; for(var c in NAMES){ var nm=NAMES[c]; if(!nm) continue; var i=nm.toLowerCase().indexOf(q); if(i<0) continue; (i===0?starts:cont).push([c,nm]); if(starts.length>60) break; } var list=starts.concat(cont).slice(0,8); if(!list.length){ drop.style.display='none'; drop.innerHTML=''; return; } drop.innerHTML=list.map(function(x){ return '<div class="ac-item" data-code="'+x[0]+'" data-name="'+x[1].replace(/"/g,'&quot;')+'"><span>'+x[1]+'</span><span class="ac-code">'+x[0]+'</span></div>'; }).join(''); drop.style.display='block'; }
+function airportFilter(inp, drop){ if(!inp||!drop) return; var q=(inp.value||'').trim().toLowerCase(); if(q.length<2){ drop.style.display='none'; drop.innerHTML=''; return; } var starts=[],cont=[]; for(var c in NAMES){ var nm=NAMES[c]; if(!nm) continue; var i=nm.toLowerCase().indexOf(q); if(i<0) continue; (i===0?starts:cont).push([c,nm]); if(starts.length>60) break; } var mf=function(a,b){ return (MAJSET[a[0]]?0:1)-(MAJSET[b[0]]?0:1); }; starts.sort(mf); cont.sort(mf); var list=starts.concat(cont).slice(0,8); if(!list.length){ drop.style.display='none'; drop.innerHTML=''; return; } drop.innerHTML=list.map(function(x){ return '<div class="ac-item" data-code="'+x[0]+'" data-name="'+x[1].replace(/"/g,'&quot;')+'"><span>'+x[1]+'</span><span class="ac-code">'+x[0]+'</span></div>'; }).join(''); drop.style.display='block'; }
 function bindAC(drop, inp, onpick){ if(!drop||!inp||drop._bound) return; drop._bound=1; drop.addEventListener('click', function(e){ var it=e.target.closest('.ac-item'); if(!it) return; inp.value=it.getAttribute('data-name'); drop.style.display='none'; onpick(it.getAttribute('data-code')); }); }
 window.epFromAC=function(){ EP_FROM_CODE=''; airportFilter(go('ep-from'), go('ep-from-ac')); };
 window.epToAC=function(){ EP_TO_CODE=''; airportFilter(go('ep-to'), go('ep-to-ac')); };
