@@ -109,7 +109,8 @@ REGION_BTNS = ["all", "USA", "Abroad", "Asia", "SE Asia", "E Asia", "S Asia",
 # Primary nav — kept to five clear destinations. Secondary pages live in the
 # grouped footer (FOOTER_NAV) so nothing is lost and everything stays crawlable.
 NAV = [("index.html", "Home"), ("market.html", "Market"), ("explore.html", "Explore"),
-       ("around-the-world.html", "Around the World"), ("guides.html", "Guides"), ("cheap-flights.html", "By airport")]
+       ("around-the-world.html", "Around the World"), ("guides.html", "Guides"), ("cheap-flights.html", "By airport"),
+       ("our-story.html", "Our Story")]
 
 FOOTER_NAV = [
     ("Browse fares", [("market.html", "The Market"), ("explore.html", "Explore &amp; search"),
@@ -117,7 +118,8 @@ FOOTER_NAV = [
                       ("cheap-europe-trip.html", "Continent trips"),
                       ("cheap-flights.html", "Cheap flights by airport")]),
     ("Learn", [("city-guides.html", "City guides"), ("guides.html", "Guides &amp; tips"),
-               ("blog.html", "Today&rsquo;s Daily Guide"), ("cheap-flight-index.html", "Cheap Flight Index"), ("essentials.html", "Travel kit")]),
+               ("blog.html", "Today&rsquo;s Daily Guide"), ("cheap-flight-index.html", "Cheap Flight Index"), ("essentials.html", "Travel kit"),
+               ("our-story.html", "Our story")]),
     ("Your trips", [("watchlist.html", "My bucket list"), ("newsletter.html", "Free newsletter"),
                ("consultant.html", "Hire a consultant")]),
 ]
@@ -236,6 +238,10 @@ SEO = {
         "Free Cheap-Flight Newsletter — Weekly Deal Drop | Magellan Flights",
         "Join the free Magellan Flights newsletter: the week's cheapest real, bookable flights "
         "from the USA plus a featured trip, every week. No spam, unsubscribe anytime."),
+    "our-story.html": (
+        "Our Story — Why Magellan Flights | Magellan Flights",
+        "How Magellan Flights came to be, and how we track the cheapest flights from the USA "
+        "like a market — judging every fare against its own price history so you book at the low."),
 }
 
 # Questions AI assistants and Google's "People also ask" love to answer.
@@ -1678,17 +1684,17 @@ CSS = r"""<style>
   }
 
   /* ====================  Landing hero  ==================== */
-  .lander{ position:relative; overflow:hidden; text-align:center; padding:62px 20px 26px; }
+  .lander{ position:relative; overflow:hidden; text-align:center; padding:48px 20px 22px; }
   .lander-glow{ position:absolute; top:-170px; left:50%; transform:translateX(-50%); width:820px; height:440px;
                 background:radial-gradient(ellipse at center, rgba(231,185,78,.15), rgba(231,185,78,0) 70%);
                 pointer-events:none; z-index:0; }
-  .lander-inner{ position:relative; z-index:1; max-width:780px; margin:0 auto; }
-  .eyebrow{ display:inline-block; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:11px;
+  .lander-inner{ position:relative; z-index:1; max-width:660px; margin:0 auto; }
+  .eyebrow{ display:inline-block; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:10px;
             letter-spacing:.22em; text-transform:uppercase; color:var(--lux);
-            border:1px solid rgba(244,193,78,.45); border-radius:30px; padding:7px 15px; margin-bottom:20px; }
-  .lander h1{ font-size:47px; line-height:1.07; margin:0 0 16px; letter-spacing:-.015em; }
+            border:1px solid rgba(244,193,78,.45); border-radius:30px; padding:6px 13px; margin-bottom:16px; }
+  .lander h1{ font-size:38px; line-height:1.08; margin:0 0 13px; letter-spacing:-.015em; }
   .lander h1 .g{ color:var(--gold); }
-  .lander .lead{ font-size:17.5px; color:var(--muted); max-width:630px; margin:0 auto 26px; line-height:1.6; }
+  .lander .lead{ font-size:15px; color:var(--muted); max-width:560px; margin:0 auto 20px; line-height:1.6; }
   .lander .lead .buy{ color:var(--green); font-weight:700; }
   /* ---- Hybrid bright hero (light sky band; dark data resumes below) ---- */
   .lander-bright{ background:linear-gradient(180deg,#dcebff 0%,#e8f3ff 8%,#eaf4ff 60%,#dfeefc 100%); }
@@ -1700,25 +1706,25 @@ CSS = r"""<style>
   .lander-bright .trust{ color:#5b6b86; }
   .lander-bright .trust b{ color:#0d1a30; }
   .fsearch{ background:#fff; border:1px solid #d9e2ef; border-radius:16px; box-shadow:0 14px 38px rgba(20,40,80,.16);
-            padding:18px; max-width:680px; margin:8px auto 14px; text-align:left; }
-  .fsearch .fs-row{ display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; margin-bottom:12px; }
-  .fs-trip{ align-items:center; gap:20px; margin-bottom:14px; }
-  .fs-radio,.fs-check{ display:inline-flex; align-items:center; gap:7px; font-size:14.5px; color:#26344b; font-weight:600; cursor:pointer; }
+            padding:15px; max-width:560px; margin:6px auto 12px; text-align:left; }
+  .fsearch .fs-row{ display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; margin-bottom:10px; }
+  .fs-trip{ align-items:center; gap:16px; margin-bottom:12px; }
+  .fs-radio,.fs-check{ display:inline-flex; align-items:center; gap:7px; font-size:13px; color:#26344b; font-weight:600; cursor:pointer; }
   .fs-radio input,.fs-check input{ accent-color:#1769c4; width:16px; height:16px; }
-  .fs-field{ display:flex; flex-direction:column; gap:5px; flex:1; min-width:130px; }
-  .fs-field label{ font-size:11.5px; font-weight:700; color:#5b6b86; text-transform:uppercase; letter-spacing:.04em; }
+  .fs-field{ display:flex; flex-direction:column; gap:5px; flex:1; min-width:115px; }
+  .fs-field label{ font-size:10.5px; font-weight:700; color:#5b6b86; text-transform:uppercase; letter-spacing:.04em; }
   .fs-field input,.fs-field select{ background:#f6faff; color:#16202e; border:1px solid #cfdbeb; border-radius:9px;
-            padding:11px 12px; font-size:15px; font-family:inherit; }
-  .fs-od .fs-field{ flex:1; min-width:180px; }
+            padding:9px 10px; font-size:13.5px; font-family:inherit; }
+  .fs-od .fs-field{ flex:1; min-width:150px; }
   .fs-swap{ flex:0 0 auto; align-self:flex-end; margin-bottom:4px; background:#eaf2ff; border:1px solid #cfdbeb;
-            color:#1769c4; width:40px; height:40px; border-radius:9px; cursor:pointer; font-size:18px; }
+            color:#1769c4; width:34px; height:34px; border-radius:9px; cursor:pointer; font-size:16px; }
   .fs-swap:hover{ background:#dcebff; }
-  .fs-alert{ background:#f1f6fd; border:1px solid #dbe7f6; border-radius:11px; padding:12px 14px; margin:2px 0 14px; }
-  .fs-alert-lab{ display:block; font-size:13.5px; font-weight:700; color:#26344b; margin-bottom:7px; }
+  .fs-alert{ background:#f1f6fd; border:1px solid #dbe7f6; border-radius:11px; padding:10px 12px; margin:2px 0 12px; }
+  .fs-alert-lab{ display:block; font-size:12.5px; font-weight:700; color:#26344b; margin-bottom:7px; }
   .fs-alert-lab span{ color:#7a8aa3; font-weight:500; }
-  .fs-alert input{ width:100%; background:#fff; border:1px solid #cfdbeb; border-radius:9px; padding:11px 12px; font-size:15px; }
-  .fs-go{ display:block; width:100%; background:var(--green); color:#06281a; font-weight:800; font-size:16px; border:0;
-          border-radius:11px; padding:14px; cursor:pointer; letter-spacing:.02em; }
+  .fs-alert input{ width:100%; background:#fff; border:1px solid #cfdbeb; border-radius:9px; padding:9px 10px; font-size:13.5px; }
+  .fs-go{ display:block; width:100%; background:var(--green); color:#06281a; font-weight:800; font-size:14px; border:0;
+          border-radius:11px; padding:11px; cursor:pointer; letter-spacing:.02em; }
   .fs-go:hover{ filter:brightness(1.05); }
   @media(max-width:560px){ .fs-od{ flex-wrap:wrap; } .fs-swap{ display:none; } }
   .cta-row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
@@ -1753,7 +1759,7 @@ CSS = r"""<style>
   .why-card h3{ margin:0 0 7px; font-size:17px; }
   .why-card p{ margin:0; font-size:13.5px; color:var(--muted); line-height:1.6; }
   @media(max-width:760px){ .why{ grid-template-columns:1fr; } }
-  @media(max-width:680px){ .statbar{ grid-template-columns:repeat(2,1fr); } .lander h1{ font-size:33px; } .lander{ padding-top:44px; } }
+  @media(max-width:680px){ .statbar{ grid-template-columns:repeat(2,1fr); } .lander h1{ font-size:27px; } .lander{ padding-top:34px; } }
 
   /* ====================  Promise strip  ==================== */
   .promise{ margin:46px 0 6px; border:1px solid var(--line); border-radius:16px; padding:26px 24px;
@@ -2716,6 +2722,99 @@ def body_home(market, hist, cards, lastmin, oneway, summary, world):
       <div class="pr"><span class="pr-n">03</span><p><b>Always free.</b> We earn only if you book — at no extra cost to you.</p></div>
       <div class="pr"><span class="pr-n">04</span><p><b>No spam.</b> Alerts only when a price actually drops.</p></div>
     </div>
+  </section>
+</div>
+{HOME_SEARCH_JS}
+{SIGNUP.replace("__FORM_ACTION__", FORM_ACTION)}"""
+
+
+def body_story(market, oneway, world):
+    """Our Story / About page — the Magellan narrative + how the site works,
+    fronted by the same bright BookingBuddy-style search as the homepage."""
+    nroutes = len(market)
+    noneway = len(oneway)
+    try:
+        _cc = json.load(open(os.path.join(HERE, "code_cc.json"), encoding="utf-8"))
+        ncountries = len({_cc.get(m["code"]) for m in market if _cc.get(m["code"])})
+    except Exception:
+        ncountries = nroutes
+    nbook = sum(1 for m in market if signal_for(m["price"], m["benchmark"])[0] == "BOOK")
+    return f"""<section class="lander lander-bright">
+  <div class="lander-inner">
+    <span class="eyebrow">Our story</span>
+    <h1>Airfare, <span class="g">handed back</span> to ordinary travelers.</h1>
+    <p class="lead">Magellan Flights tracks the cheapest fares from the USA to anywhere on earth, every day &mdash; and tells you the moment one drops below its normal price. Start with a search, or read how we got here.</p>
+    <form class="fsearch" data-alert="{FORM_ACTION}" onsubmit="return homeSearch(event)" aria-label="Flight search">
+      <div class="fs-row fs-trip">
+        <label class="fs-radio"><input type="radio" name="fs-trip" value="round" checked onchange="fsTrip('round')"> Round-trip</label>
+        <label class="fs-radio"><input type="radio" name="fs-trip" value="oneway" onchange="fsTrip('oneway')"> One-way</label>
+        <label class="fs-check"><input type="checkbox" id="hs-nonstop"> Non-stop only</label>
+      </div>
+      <div class="fs-row fs-od">
+        <div class="fs-field"><label>From</label><input id="hs-from" placeholder="City or airport" autocomplete="off"></div>
+        <button type="button" class="fs-swap" onclick="fsSwap()" aria-label="Swap from and to" title="Swap">&#8644;</button>
+        <div class="fs-field"><label>To</label><input id="hs-to" placeholder="Where to?" autocomplete="off"></div>
+      </div>
+      <div class="fs-row">
+        <div class="fs-field"><label>Depart</label><input id="hs-depart" type="date"></div>
+        <div class="fs-field" id="hs-return-wrap"><label>Return</label><input id="hs-return" type="date"></div>
+        <div class="fs-field"><label>Travelers</label><select id="hs-trav"><option>1 traveler</option><option>2 travelers</option><option>3 travelers</option><option>4 travelers</option><option>5+ travelers</option></select></div>
+        <div class="fs-field"><label>Class</label><select id="hs-class"><option>Economy</option><option>Premium</option><option>Business</option><option>First</option></select></div>
+      </div>
+      <div class="fs-alert">
+        <span class="fs-alert-lab">Send me alerts when prices drop <span>(optional)</span></span>
+        <input id="hs-email" type="email" placeholder="Enter your email" autocomplete="email">
+      </div>
+      <button type="submit" class="fs-go">Find deals &rarr;</button>
+    </form>
+    <p class="trust">Free, forever &middot; fares tracked through the day &middot; live price confirmed when you book on Aviasales</p>
+  </div>
+</section>
+<div class="wrap">
+  <div class="statbar" style="margin-top:26px">
+    <div class="stat"><div class="n">{nroutes}</div><div class="l">routes tracked</div></div>
+    <div class="stat"><div class="n">{noneway}+</div><div class="l">one-way fares</div></div>
+    <div class="stat"><div class="n">{nbook}</div><div class="l">flagged BUY today</div></div>
+    <div class="stat"><div class="n">{ncountries}</div><div class="l">countries</div></div>
+  </div>
+  <p class="stat-note">Live counts &mdash; the routes, fares and countries we are tracking right now, refreshed through the day.</p>
+
+  <section class="mission" style="margin-top:34px">
+    <div class="astro lg" style="width:58px">{ASTRO_SVG}</div>
+    <h2>Why &ldquo;Magellan&rdquo;?</h2>
+    <p>In 1519, Ferdinand Magellan&rsquo;s expedition set out to do something no one had ever done &mdash; sail all the way around the world. Three years later the survivors came home, and for the first time the whole planet was proven reachable. The map stopped being a rumor and became a place you could actually go.</p>
+    <p>Five centuries on, the map is open but the prices are not. Airfare is deliberately confusing &mdash; the same seat swings hundreds of dollars with no explanation. Magellan Flights pulls back that curtain. We put the real numbers in your hands, judge every fare against its own history, and hand the freedom of travel back to ordinary people.</p>
+  </section>
+
+  <div class="section-head-lg"><h2>What we actually do</h2><p>Three jobs, every single day &mdash; so you don&rsquo;t have to refresh a dozen booking sites hoping to get lucky.</p></div>
+  <div class="why">
+    <div class="why-card"><h3>1 &middot; We track</h3><p>We watch the cheapest one-way and round-trip fares from {nroutes} US routes to {ncountries} countries, refreshed several times a day &mdash; a living market of real, bookable prices.</p></div>
+    <div class="why-card"><h3>2 &middot; We judge</h3><p>Every fare is measured against that route&rsquo;s own price history &mdash; its Standard Meridian. That&rsquo;s how we know a $300 ticket to Europe is a genuine steal and a $300 ticket next door is not.</p></div>
+    <div class="why-card"><h3>3 &middot; We flag &amp; alert</h3><p>When a price drops well below normal we flag it BUY ({nbook} today) and, if you ask, email you the moment it happens &mdash; so you book at the low instead of the average.</p></div>
+  </div>
+
+  <div class="section-head-lg"><h2>How to read a price</h2><p>Every deal carries a colored bar showing where today&rsquo;s fare sits against this route&rsquo;s normal range.</p></div>
+  <div class="why">
+    <div class="why-card"><span class="why-sig"><span class="why-dot g"></span>Low</span><h3 style="margin-top:12px">A great deal</h3><p>Well below this route&rsquo;s typical price &mdash; a genuinely good moment to book.</p></div>
+    <div class="why-card"><span class="why-sig"><span class="why-dot y"></span>Typical</span><h3 style="margin-top:12px">A fair price</h3><p>Around the route&rsquo;s usual range. Fine to book, though a dip may still come.</p></div>
+    <div class="why-card"><span class="why-sig"><span class="why-dot r"></span>High</span><h3 style="margin-top:12px">Above normal</h3><p>Higher than this route usually runs. History suggests it&rsquo;s likely to fall &mdash; worth waiting.</p></div>
+  </div>
+  <p class="readnote">Prices refresh several times a day, and each fare&rsquo;s live price is confirmed when you book on Aviasales &mdash; the figures here are a guide from recent history, so the deal you see is the deal you get.</p>
+
+  <section class="promise">
+    <h2>Our promise to you</h2>
+    <div class="promise-grid">
+      <div class="pr"><span class="pr-n">01</span><p>Prices refreshed <b>through the day</b> — never stale.</p></div>
+      <div class="pr"><span class="pr-n">02</span><p>Every fare judged against <b>its own history</b>, so a deal is really a deal.</p></div>
+      <div class="pr"><span class="pr-n">03</span><p><b>Always free.</b> We earn only if you book — at no extra cost to you.</p></div>
+      <div class="pr"><span class="pr-n">04</span><p><b>No spam.</b> Alerts only when a price actually drops.</p></div>
+    </div>
+  </section>
+
+  <section class="mission">
+    <h2>Where we&rsquo;re headed</h2>
+    <p>Magellan started as one traveler&rsquo;s spreadsheet and became a daily market for the rest of us. We&rsquo;re building the place you check first &mdash; where a fair price is obvious, a real deal is unmistakable, and the next trip is always one search away. Thanks for traveling with us.</p>
+    <div class="cta-row" style="margin-top:18px"><a class="btn-ghost" href="market.html">Browse today&rsquo;s deals &rarr;</a><a class="btn-ghost" href="newsletter.html">Get the free newsletter &rarr;</a></div>
   </section>
 </div>
 {HOME_SEARCH_JS}
@@ -5443,6 +5542,7 @@ def main():
         "cheap-flights.html": ("By airport", body_money_hub(MONEY_PAGES)),
         "cheap-flight-index.html": ("Cheap Flight Index", body_cflindex(market, today)),
         "city-guides.html": ("City guides", body_cityguide_hub(CITY_GUIDES, market)),
+        "our-story.html": ("Our Story", body_story(market, oneway, world)),
     }
 
     os.makedirs(SITE_DIR, exist_ok=True)
