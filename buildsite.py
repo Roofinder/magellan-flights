@@ -5696,6 +5696,48 @@ def body_newsletter(market):
 </div>"""
 
 
+def newsletter_issue_html(oneway, market):
+    """Email-safe (inline-styled) issue of this week's biggest one-way drops."""
+    items = _hm_items(oneway, market)[:10]
+    rows = ""
+    for pct, o, p in items:
+        city = html.escape(str(o.get("name", o["code"])).split(",")[0])
+        origin = html.escape(o.get("origin", ""))
+        link = html.escape(o.get("link", ""), quote=True)
+        rows += (
+            '<tr>'
+            f'<td style="padding:11px 0;border-bottom:1px solid #d9c9a0;font-family:Georgia,serif;font-size:16px;color:#2c2a1e">'
+            f'<a href="{link}" style="color:#2f6b46;text-decoration:none;font-weight:bold">{city}</a> '
+            f'<span style="color:#7a715a;font-size:13px">one-way from {origin}</span></td>'
+            f'<td align="right" style="padding:11px 0;border-bottom:1px solid #d9c9a0;font-family:Georgia,serif;font-size:17px;font-weight:bold;color:#2c2a1e;white-space:nowrap">'
+            f'${p:,.0f} <span style="color:#2f6b46;font-size:12px">&#9660;{pct:.0f}%</span></td></tr>')
+    return (
+        '<div style="max-width:560px;margin:0 auto;background:#f3ecd8;padding:30px 26px;font-family:Georgia,serif;color:#2c2a1e">'
+        '<div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#2f6b46;font-weight:bold">Magellan Flights</div>'
+        '<div style="font-size:25px;font-weight:bold;margin:6px 0 4px;color:#2c2a1e">This week&rsquo;s cheapest escapes</div>'
+        '<div style="font-size:15px;color:#5b5440;margin:0 0 18px;line-height:1.5">The biggest one-way price drops from the USA right now &mdash; real, bookable fares, below their normal price. Tap a city to book.</div>'
+        f'<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">{rows}</table>'
+        f'<div style="text-align:center;margin:24px 0 8px"><a href="{BASE_URL}/market.html" style="background:#2f6b46;color:#ffffff;text-decoration:none;padding:13px 26px;border-radius:8px;font-size:15px;font-weight:bold;display:inline-block">See all of today&rsquo;s deals &rarr;</a></div>'
+        f'<div style="font-size:12px;color:#7a715a;text-align:center;margin:18px 0 0;line-height:1.5">You&rsquo;re getting this because you joined Magellan Flights at <a href="{BASE_URL}" style="color:#2f6b46">magellanflights.com</a>. Prices are recently-tracked fares; your live price is confirmed on Aviasales. Unsubscribe anytime.</div>'
+        '</div>')
+
+
+def body_newsletter_issue(oneway, market):
+    issue = newsletter_issue_html(oneway, market)
+    return f"""<div class="wrap" style="max-width:720px">
+  <div class="pagehead"><h1>Weekly issue generator</h1><p>A ready-to-send newsletter built from this week&rsquo;s biggest price drops. Click <b>Copy issue</b>, open Beehiiv, create a new post, paste (Ctrl/Cmd-V), and send. It refreshes automatically as the deals update &mdash; just reload this page each week. (Owner tool &mdash; not linked publicly.)</p></div>
+  <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:0 0 16px">
+    <button class="book" id="nlcopy" onclick="nlCopy()" style="font-size:15px;padding:12px 26px;border:0;cursor:pointer">Copy issue</button>
+    <span id="nlcopied" style="color:#2f6b46;font-weight:600"></span>
+  </div>
+  <div style="border:1px solid var(--line);border-radius:12px;overflow:hidden"><div id="nlpreview">{issue}</div></div>
+  <script>
+  function nlDone(){{ document.getElementById('nlcopied').textContent='Copied — paste into a new Beehiiv post.'; }}
+  function nlCopy(){{ var el=document.getElementById('nlpreview'); try{{ var r=document.createRange(); r.selectNodeContents(el); var sel=window.getSelection(); sel.removeAllRanges(); sel.addRange(r); document.execCommand('copy'); sel.removeAllRanges(); nlDone(); }}catch(e){{ if(navigator.clipboard){{ navigator.clipboard.writeText(el.innerHTML).then(nlDone); }} }} }}
+  </script>
+</div>"""
+
+
 def main():
     market = read_snapshot()
     if not market:
@@ -5746,6 +5788,7 @@ def main():
         "around-the-world.html": ("Ferdinand's World Loop", body_rtw(world)),
         "consultant.html": ("Hire a Trip Consultant", body_consultant()),
         "newsletter.html": ("Free Newsletter", body_newsletter(market)),
+        "newsletter-issue.html": ("Weekly issue", body_newsletter_issue(oneway, market)),
         "lastminute.html": ("Last-minute", body_lastminute(lastmin)),
         "airports.html": ("Captain's Log", body_airports(home)),
         "watchlist.html": ("Watchlist", body_watchlist(market)),
@@ -5843,6 +5886,8 @@ def write_seo_files(pages):
     cityguide_files = set(globals().get("CITYGUIDE_BY_FILE", {}))
     urls = []
     for fname in pages:
+        if fname == "newsletter-issue.html":
+            continue  # owner tool — keep out of sitemap
         loc = BASE_URL + "/" + ("" if fname == "index.html" else fname)
         cf = ("monthly" if fname in article_files
               else "weekly" if fname in cityguide_files or fname in route_files or fname in tour_files else "daily")
@@ -5860,7 +5905,7 @@ def write_seo_files(pages):
     _ai_bots = ["GPTBot", "OAI-SearchBot", "ChatGPT-User", "PerplexityBot", "Perplexity-User",
                "ClaudeBot", "Claude-Web", "Google-Extended", "Applebot-Extended", "CCBot"]
     _ai_block = "".join(f"User-agent: {bot}\nAllow: /\n\n" for bot in _ai_bots)
-    robots = (f"User-agent: *\nAllow: /\n\n"
+    robots = (f"User-agent: *\nAllow: /\nDisallow: /newsletter-issue.html\n\n"
               "# AI answer engines are welcome to read and cite our pages.\n"
               f"{_ai_block}"
               f"Sitemap: {BASE_URL}/sitemap.xml\n")
