@@ -3316,8 +3316,7 @@ def winner_highlight_html():
 
 def body_market(market, hist, cards, lastmin, oneway):
     return f"""<div class="wrap">
-  <div class="pagehead"><h1>The Market</h1><p>The full board &mdash; the cheapest one-way fares to anywhere, region fare indices and last-minute getaways.</p></div>
-  {winner_highlight_html()}
+  <div class="pagehead"><h1>The Market</h1><p>The full board &mdash; the cheapest one-way fares to anywhere, judged against each route&rsquo;s own price history, plus region fare indices.</p></div>
   <div class="summary">{market_pulse(market)}</div>
   <div class="sec-head" id="market"><h2>Fare indices</h2><span>avg vs. the Standard Meridian, by region</span></div>
   {context_banner(Q_INDICES)}
