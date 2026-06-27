@@ -1252,7 +1252,8 @@ LOGO_SVG = (
 CSS = r"""<style>
   :root{ --bg:#0f1830; --card:#16223f; --ink:#eef2fb; --muted:#9aa6c4; --line:#27345a;
          --blue:#3a9dff; --blue-d:#2b6fd6; --green:#2bd576; --green-bg:rgba(43,213,118,.14);
-         --red:#ff5e5e; --amber:#e8b53e; --amber-bg:rgba(232,181,62,.14); --ink2:#070a10; --gold:#3a9dff; }
+         --red:#ff5e5e; --amber:#e8b53e; --amber-bg:rgba(232,181,62,.14); --ink2:#070a10; --gold:#3a9dff;
+         --lux:#f4c14e; --lux-d:#d8a534; }
   *{ box-sizing:border-box; }
   .hicon{ width:1em; height:1em; display:inline-block; vertical-align:-0.13em; margin-right:.38em; flex:0 0 auto; }
   body{ margin:0; background:var(--bg); color:var(--ink);
@@ -1294,7 +1295,7 @@ CSS = r"""<style>
   .regchip.on{ background:#fff; color:#0b1320; border-color:#fff; font-weight:600; }
   .topbar{ position:sticky; top:0; z-index:60; }
   .blog-wrap{ max-width:760px; }
-  .blog-eyebrow{ color:var(--gold); font-size:12.5px; letter-spacing:.05em; text-transform:uppercase; margin-bottom:6px; }
+  .blog-eyebrow{ color:var(--lux); font-size:12.5px; letter-spacing:.05em; text-transform:uppercase; margin-bottom:6px; }
   .blog-title{ font-size:40px; margin:0 0 16px; }
   .blog-deal{ display:flex; flex-wrap:wrap; gap:14px; justify-content:space-between; align-items:center; background:#0e141d; border:1px solid var(--line); border-radius:14px; padding:16px 18px; margin-bottom:22px; }
   .blog-deal-label{ font-weight:700; } .blog-deal-dates{ color:var(--muted); font-size:13px; }
@@ -1520,7 +1521,7 @@ CSS = r"""<style>
   .owret-lab{ color:var(--muted); font-size:12px; }
   .owret-rp{ font-size:17px; font-weight:700; color:var(--ink); margin:2px 0 8px; } .owret-rp span{ color:var(--muted); font-size:12px; font-weight:600; }
   .star{ background:none; border:0; cursor:pointer; font-size:19px; color:#b9bec7; line-height:1; padding:0; }
-  .star.on{ color:var(--gold); }
+  .star.on{ color:var(--lux); }
   .mini-book{ background:var(--blue); color:#fff; text-decoration:none; font-size:13px; font-weight:600; padding:6px 13px; border-radius:7px; }
   .mini-book:hover{ background:var(--blue-d); }
   .citybar{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:12px; }
@@ -1683,8 +1684,8 @@ CSS = r"""<style>
                 pointer-events:none; z-index:0; }
   .lander-inner{ position:relative; z-index:1; max-width:780px; margin:0 auto; }
   .eyebrow{ display:inline-block; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:11px;
-            letter-spacing:.22em; text-transform:uppercase; color:var(--gold);
-            border:1px solid rgba(231,185,78,.4); border-radius:30px; padding:7px 15px; margin-bottom:20px; }
+            letter-spacing:.22em; text-transform:uppercase; color:var(--lux);
+            border:1px solid rgba(244,193,78,.45); border-radius:30px; padding:7px 15px; margin-bottom:20px; }
   .lander h1{ font-size:47px; line-height:1.07; margin:0 0 16px; letter-spacing:-.015em; }
   .lander h1 .g{ color:var(--gold); }
   .lander .lead{ font-size:17.5px; color:var(--muted); max-width:630px; margin:0 auto 26px; line-height:1.6; }
@@ -1736,7 +1737,7 @@ CSS = r"""<style>
   .winner{ display:flex; flex-wrap:wrap; align-items:center; gap:14px 22px; margin:20px 0 4px; padding:20px 24px 18px; border-radius:18px; text-decoration:none; color:var(--ink);
     background:linear-gradient(120deg,#1d1708 0%,#0e141d 58%); border:1px solid rgba(212,175,90,.45); position:relative; overflow:hidden; transition:border-color .15s, transform .15s; }
   .winner:hover{ border-color:var(--gold); transform:translateY(-2px); }
-  .winner-badge{ position:absolute; top:0; left:0; background:var(--gold); color:#06203f; font-size:11px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; padding:5px 12px; border-bottom-right-radius:12px; }
+  .winner-badge{ position:absolute; top:0; left:0; background:var(--lux); color:#3a2604; font-size:11px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; padding:5px 12px; border-bottom-right-radius:12px; }
   .winner-main{ flex:1 1 240px; min-width:190px; padding-top:12px; }
   .winner-city{ font-size:27px; font-weight:800; line-height:1.15; }
   .winner-route{ color:var(--muted); font-size:13.5px; margin-top:4px; }
@@ -1804,7 +1805,7 @@ CSS = r"""<style>
   /* ====================  Design refresh: nav, rhythm, footer  ==================== */
   .nav{ gap:18px; }
   .nav-star{ font-size:18px; color:var(--muted); text-decoration:none; line-height:1; padding:2px 4px; }
-  .nav-star:hover{ color:var(--gold); }
+  .nav-star:hover{ color:var(--lux); }
   /* one calm vertical rhythm for stacked homepage / content sections */
   .home-sec{ margin:48px 0 0; }
   .sec-head{ margin:0 0 14px; }
