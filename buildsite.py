@@ -2723,8 +2723,8 @@ function homeSearch(e){ e.preventDefault();
   var emEl=document.getElementById('hs-email'); var em=emEl?emEl.value.trim():'';
   if(!f){ document.getElementById('hs-from').focus(); return false; }
   if(!t){ document.getElementById('hs-to').focus(); return false; }
-  var act=e.target.getAttribute('data-alert');
-  if(em && act){ try{ var fd=new FormData(); fd.append('email', em); fd.append('source','home-search'); fetch(act,{method:'POST',body:fd,headers:{'Accept':'application/json'}}); }catch(_){} }
+  var sub=e.target.getAttribute('data-subscribe');
+  if(em && sub){ try{ window.open(sub+(sub.indexOf('?')<0?'?':'&')+'email='+encodeURIComponent(em),'_blank','noopener'); }catch(_){} }
   var q='explore.html?from='+encodeURIComponent(f)+'&to='+encodeURIComponent(t)+'&trip='+(oneway?'oneway':'round');
   if(dep) q+='&depart='+dep; if(ret && !oneway) q+='&return='+ret; if(nonstop) q+='&nonstop=1';
   window.location.href=q; return false; }
@@ -2757,7 +2757,7 @@ def body_home(market, hist, cards, lastmin, oneway, summary, world):
     <span class="eyebrow">The world is closer than you think</span>
     <h1>The cheapest <span class="g">one-way flights</span> &mdash; from the US and abroad.</h1>
     <p class="lead">Track the cheapest fares from the USA to anywhere on earth, every day &mdash; and catch the moment one drops below its normal price.</p>
-    <form class="fsearch" data-alert="{FORM_ACTION}" onsubmit="return homeSearch(event)" aria-label="Flight search">
+    <form class="fsearch" data-alert="{FORM_ACTION}" data-subscribe="{BEEHIIV_URL}" onsubmit="return homeSearch(event)" aria-label="Flight search">
       <div class="fs-row fs-trip">
         <label class="fs-radio"><input type="radio" name="fs-trip" value="round" checked onchange="fsTrip('round')"> Round-trip</label>
         <label class="fs-radio"><input type="radio" name="fs-trip" value="oneway" onchange="fsTrip('oneway')"> One-way</label>
@@ -2814,7 +2814,7 @@ def body_story(market, oneway, world):
     <span class="eyebrow">Our story</span>
     <h1>Airfare, <span class="g">handed back</span> to ordinary travelers.</h1>
     <p class="lead">Magellan Flights tracks the cheapest fares from the USA to anywhere on earth, every day &mdash; and tells you the moment one drops below its normal price. Start with a search, or read how we got here.</p>
-    <form class="fsearch" data-alert="{FORM_ACTION}" onsubmit="return homeSearch(event)" aria-label="Flight search">
+    <form class="fsearch" data-alert="{FORM_ACTION}" data-subscribe="{BEEHIIV_URL}" onsubmit="return homeSearch(event)" aria-label="Flight search">
       <div class="fs-row fs-trip">
         <label class="fs-radio"><input type="radio" name="fs-trip" value="round" checked onchange="fsTrip('round')"> Round-trip</label>
         <label class="fs-radio"><input type="radio" name="fs-trip" value="oneway" onchange="fsTrip('oneway')"> One-way</label>
@@ -5673,8 +5673,12 @@ def body_newsletter(market):
   <div class="signup" style="margin:0 0 22px"><div class="signup-inner">
     <h2>Get the weekly deal drop</h2>
     <p>Free forever &middot; one email a week &middot; real, bookable fares.</p>
-    <a class="book" href="{BEEHIIV_URL}" target="_blank" rel="noopener" style="display:inline-block;font-size:16px;padding:12px 26px">Join free &rarr;</a>
-    <p style="font-size:12.5px;color:var(--muted);margin-top:10px">Opens our secure signup &mdash; takes 10 seconds, unsubscribe anytime.</p>
+    <form onsubmit="return nlSub(event)" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;max-width:440px;margin:8px auto 0">
+      <input id="nl-email" type="email" required placeholder="you@email.com" autocomplete="email" style="flex:1;min-width:210px;background:#fffdf6;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:15px">
+      <button class="book" type="submit" style="font-size:16px;padding:12px 26px">Join free &rarr;</button>
+    </form>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:10px">Free &middot; one email a week &middot; unsubscribe anytime.</p>
+    <script>function nlSub(e){{e.preventDefault();var v=(document.getElementById('nl-email').value||'').trim();if(!v)return false;var u="{BEEHIIV_URL}";window.location.href=u+(u.indexOf('?')<0?'?':'&')+'email='+encodeURIComponent(v);return false;}}</script>
   </div></div>
   <div class="blog-sec"><h2>What you get every week</h2>
   <ul class="blog-list">
