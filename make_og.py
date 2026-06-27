@@ -9,11 +9,11 @@ from PIL import Image, ImageDraw, ImageFont
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 W, H = 1200, 630
-BG = (15, 24, 48)        # #0f1830
-CARD = (22, 34, 63)      # #16223f
-AZ = (58, 157, 255)      # #3a9dff (brand azure)
-INK = (238, 242, 251)    # #eef2fb
-MUTE = (148, 160, 179)   # #94a0b3
+BG = (243, 236, 216)     # #f3ecd8 cream
+CARD = (251, 246, 233)   # #fbf6e9
+AZ = (47, 107, 70)       # #2f6b46 forest green
+INK = (44, 42, 30)       # #2c2a1e
+MUTE = (122, 113, 90)    # #7a715a
 
 
 def _font(names, size):
@@ -32,9 +32,9 @@ def main():
 
     # subtle latitude grid (market/map motif)
     for y in range(70, H, 70):
-        d.line([(0, y), (W, y)], fill=(26, 40, 72), width=1)
+        d.line([(0, y), (W, y)], fill=(224, 213, 184), width=1)
     for x in range(70, W, 70):
-        d.line([(x, 0), (x, H)], fill=(20, 32, 60), width=1)
+        d.line([(x, 0), (x, H)], fill=(230, 221, 196), width=1)
 
     # a gold "great-circle" arc — the Magellan voyage motif
     pts = []
