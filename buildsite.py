@@ -1283,6 +1283,8 @@ CSS = r"""<style>
   body{ margin:0; background:var(--bg); color:var(--ink);
         font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; line-height:1.6; }
   a{ color:inherit; }
+  .chartbg{ position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; }
+  .chartbg svg{ width:100%; height:100%; display:block; }
   .cfi-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:18px 0 8px; }
   .cfi-stat{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 18px; box-shadow:0 6px 18px rgba(0,0,0,.10); }
   .cfi-num{ font-size:30px; font-weight:700; color:var(--ink); line-height:1.1; }
@@ -2453,12 +2455,45 @@ def render_page(active, title, body, market, oneway, onewaylm, home, lm, world, 
             f'<link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">\n'
             f'<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">\n'
             f'<link rel="apple-touch-icon" href="apple-touch-icon.png">\n'
-            f'{CSS}\n</head>\n{top_chrome(active, market)}\n{body}\n{CHAT_HTML}\n{WIDGET_HTML}\n{foot}\n{script}\n{POPUP_JS}\n</body>\n</html>').replace("__CCJS__", _cc).replace("__BMJS__", _bm).replace("__NAMESJS__", _names).replace("__MAJORJS__", _major)
+            f'{CSS}\n</head>\n{top_chrome(active, market)}\n{CHART_BG}\n{body}\n{CHAT_HTML}\n{WIDGET_HTML}\n{foot}\n{script}\n{POPUP_JS}\n</body>\n</html>').replace("__CCJS__", _cc).replace("__BMJS__", _bm).replace("__NAMESJS__", _names).replace("__MAJORJS__", _major)
 
 
 # --------------------------------------------------------------------------- #
 # Page bodies
 # --------------------------------------------------------------------------- #
+def chart_bg_html():
+    """A faint fixed 'navigator's chart' behind every page (Atlas vibe):
+    graticule grid + compass roses + dashed great-circle arcs, in faint green."""
+    import math as _m
+    W, H = 1600, 900
+    el = []
+    for x in range(0, W + 1, 100):
+        el.append(f'<line x1="{x}" y1="0" x2="{x}" y2="{H}"/>')
+    for y in range(0, H + 1, 90):
+        el.append(f'<line x1="0" y1="{y}" x2="{W}" y2="{y}"/>')
+    grat = f'<g stroke="#2f6b46" stroke-width="1" opacity="0.06">{"".join(el)}</g>'
+    roses = []
+    for cx, cy, r in [(300, 250, 270), (1290, 660, 320)]:
+        seg = []
+        for ang in range(0, 360, 30):
+            x = cx + r * _m.cos(_m.radians(ang)); y = cy + r * _m.sin(_m.radians(ang))
+            seg.append(f'<line x1="{cx}" y1="{cy}" x2="{x:.0f}" y2="{y:.0f}"/>')
+        seg.append(f'<circle cx="{cx}" cy="{cy}" r="{r*0.55:.0f}" fill="none"/>')
+        seg.append(f'<circle cx="{cx}" cy="{cy}" r="{r*0.3:.0f}" fill="none"/>')
+        roses.append(f'<g stroke="#2f6b46" stroke-width="1" opacity="0.08">{"".join(seg)}</g>')
+    arcs = []
+    for x1, y1, cxx, cyy, x2, y2 in [(110, 720, 720, 180, 1520, 520), (60, 300, 820, 760, 1540, 170)]:
+        arcs.append(f'<path d="M{x1} {y1} Q{cxx} {cyy} {x2} {y2}"/>')
+    arcg = (f'<g stroke="#2f6b46" stroke-width="1.5" stroke-dasharray="2 9" fill="none" '
+            f'opacity="0.13" stroke-linecap="round">{"".join(arcs)}</g>')
+    svg = (f'<svg viewBox="0 0 {W} {H}" preserveAspectRatio="xMidYMid slice" '
+           f'xmlns="http://www.w3.org/2000/svg">{grat}{roses[0]}{roses[1]}{arcg}</svg>')
+    return f'<div class="chartbg" aria-hidden="true">{svg}</div>'
+
+
+CHART_BG = chart_bg_html()
+
+
 def world_map_html():
     import math as _m
     W, H = 1000, 500
