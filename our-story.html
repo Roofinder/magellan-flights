@@ -480,27 +480,28 @@
   .lander-bright .eyebrow{ color:#1769c4; border-color:rgba(23,105,196,.35); background:rgba(255,255,255,.7); }
   .lander-bright .trust{ color:#5b6b86; }
   .lander-bright .trust b{ color:#0d1a30; }
-  .fsearch{ background:#fff; border:1px solid #d9e2ef; border-radius:16px; box-shadow:0 14px 38px rgba(20,40,80,.16);
+  .fsearch{ background:var(--card); border:1px solid var(--line); border-radius:16px; box-shadow:0 14px 38px rgba(0,0,0,.3);
             padding:15px; max-width:560px; margin:6px auto 12px; text-align:left; }
   .fsearch .fs-row{ display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; margin-bottom:10px; }
   .fs-trip{ align-items:center; gap:16px; margin-bottom:12px; }
-  .fs-radio,.fs-check{ display:inline-flex; align-items:center; gap:7px; font-size:13px; color:#26344b; font-weight:600; cursor:pointer; }
-  .fs-radio input,.fs-check input{ accent-color:#1769c4; width:16px; height:16px; }
+  .fs-radio,.fs-check{ display:inline-flex; align-items:center; gap:7px; font-size:13px; color:var(--ink); font-weight:600; cursor:pointer; }
+  .fs-radio input,.fs-check input{ accent-color:var(--blue); width:16px; height:16px; }
   .fs-field{ display:flex; flex-direction:column; gap:5px; flex:1; min-width:115px; }
-  .fs-field label{ font-size:10.5px; font-weight:700; color:#5b6b86; text-transform:uppercase; letter-spacing:.04em; }
-  .fs-field input,.fs-field select{ background:#f6faff; color:#16202e; border:1px solid #cfdbeb; border-radius:9px;
+  .fs-field label{ font-size:10.5px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  .fs-field input,.fs-field select{ background:#12274a; color:var(--ink); border:1px solid var(--line); border-radius:9px;
             padding:9px 10px; font-size:13.5px; font-family:inherit; }
   .fs-od .fs-field{ flex:1; min-width:150px; }
-  .fs-swap{ flex:0 0 auto; align-self:flex-end; margin-bottom:4px; background:#eaf2ff; border:1px solid #cfdbeb;
-            color:#1769c4; width:34px; height:34px; border-radius:9px; cursor:pointer; font-size:16px; }
-  .fs-swap:hover{ background:#dcebff; }
-  .fs-alert{ background:#f1f6fd; border:1px solid #dbe7f6; border-radius:11px; padding:10px 12px; margin:2px 0 12px; }
-  .fs-alert-lab{ display:block; font-size:12.5px; font-weight:700; color:#26344b; margin-bottom:7px; }
-  .fs-alert-lab span{ color:#7a8aa3; font-weight:500; }
-  .fs-alert input{ width:100%; background:#fff; border:1px solid #cfdbeb; border-radius:9px; padding:9px 10px; font-size:13.5px; }
+  .fs-swap{ flex:0 0 auto; align-self:flex-end; margin-bottom:4px; background:#12274a; border:1px solid var(--line);
+            color:var(--blue); width:34px; height:34px; border-radius:9px; cursor:pointer; font-size:16px; }
+  .fs-swap:hover{ background:#19335f; }
+  .fs-alert{ background:#142c52; border:1px solid var(--line); border-radius:11px; padding:10px 12px; margin:2px 0 12px; }
+  .fs-alert-lab{ display:block; font-size:12.5px; font-weight:700; color:var(--ink); margin-bottom:7px; }
+  .fs-alert-lab span{ color:var(--muted); font-weight:500; }
+  .fs-alert input{ width:100%; background:#12274a; color:var(--ink); border:1px solid var(--line); border-radius:9px; padding:9px 10px; font-size:13.5px; }
   .fs-go{ display:block; width:100%; background:var(--green); color:#06281a; font-weight:800; font-size:14px; border:0;
           border-radius:11px; padding:11px; cursor:pointer; letter-spacing:.02em; }
   .fs-go:hover{ filter:brightness(1.05); }
+  .fsearch input::placeholder{ color:#8294b5; }
   @media(max-width:560px){ .fs-od{ flex-wrap:wrap; } .fs-swap{ display:none; } }
   .cta-row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
   .btn-primary{ background:var(--gold); color:var(--ink2); font-weight:700; text-decoration:none;
@@ -670,7 +671,7 @@ function toggleTickers(){ var off=document.body.classList.toggle('tickers-off');
 (function(){ var off=false; try{ off=localStorage.getItem('mf_tickers')==='off'; }catch(e){} if(off){ document.body.classList.add('tickers-off'); var a=document.querySelector('.ticker-toggle .tt-ar'); if(a) a.innerHTML='&#9660;'; } })();
 </script>
 </div>
-<section class="lander lander-bright">
+<section class="lander">
   <div class="lander-inner">
     <span class="eyebrow">Our story</span>
     <h1>Airfare, <span class="g">handed back</span> to ordinary travelers.</h1>
