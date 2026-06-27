@@ -59,9 +59,9 @@ def main():
         grat.append(f'<line x1="0" y1="{y}" x2="{W}" y2="{y}"/>')
     svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" '
            f'preserveAspectRatio="xMidYMid slice">'
-           f'<g stroke="#2f6b46" stroke-width="1" opacity="0.05">{"".join(grat)}</g>'
-           f'<path d="{d}" fill="#2f6b46" fill-opacity="0.11" stroke="#2f6b46" '
-           f'stroke-opacity="0.18" stroke-width="0.8" fill-rule="evenodd"/></svg>')
+           f'<g stroke="#2f6b46" stroke-width="1" opacity="0.035">{"".join(grat)}</g>'
+           f'<path d="{d}" fill="#2f6b46" fill-opacity="0.06" stroke="#2f6b46" '
+           f'stroke-opacity="0.10" stroke-width="0.8" fill-rule="evenodd"/></svg>')
     for base in (HERE, os.path.join(HERE, "site")):
         os.makedirs(base, exist_ok=True)
         with open(os.path.join(base, "world-bg.svg"), "w", encoding="utf-8") as fh:
