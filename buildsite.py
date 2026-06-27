@@ -1080,13 +1080,15 @@ def index_cards(oneway, hist):
             f'<span class="idx-c-from">from {html.escape(o["origin"])}</span></span>'
             f'<span>${float(o["price"]):,.0f}</span></li>'
             for o in sorted(items, key=lambda x: float(x["price"])))
-        constituents = (f'<details class="idx-const"><summary>What&rsquo;s in this index ({len(items)} one-way routes)</summary>'
-                        f'<ul>{const_rows}</ul></details>')
         cards.append(
-            f'<div class="idx"><div class="idx-top"><p class="idx-name">{reg} index</p>{move}</div>'
-            f'<p class="idx-val">${avg:,.0f}</p>'
+            f'<details class="idx">'
+            f'<summary class="idx-sum"><span class="idx-sum-name">{reg}</span>'
+            f'<span class="idx-sum-right"><span class="idx-val">${avg:,.0f}</span>{move}</span></summary>'
+            f'<div class="idx-body">'
             f'<p class="idx-sub">avg one-way of {len(items)} tracked routes</p>'
-            f'{index_sparkline(series)}{constituents}</div>')
+            f'{index_sparkline(series)}'
+            f'<ul class="idx-list">{const_rows}</ul>'
+            f'</div></details>')
     return "".join(cards)
 
 
@@ -1394,16 +1396,27 @@ CSS = r"""<style>
   .pagehead{ padding:26px 0 2px; } .pagehead h1{ font-size:26px; margin:0 0 4px; } .pagehead p{ margin:0; color:var(--muted); }
   .sec-head{ display:flex; align-items:baseline; justify-content:space-between; margin:26px 0 12px; gap:10px; flex-wrap:wrap; }
   .sec-head h2{ font-size:20px; margin:0; } .sec-head span{ font-size:13px; color:var(--muted); }
-  .indices{ display:grid; grid-template-columns:repeat(auto-fit,minmax(248px,1fr)); gap:12px; }
+  .indices{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; max-width:1040px; margin:0 auto; }
+  @media(max-width:880px){ .indices{ grid-template-columns:repeat(2,1fr); } }
+  @media(max-width:560px){ .indices{ grid-template-columns:1fr; } }
   .idx-top{ display:flex; justify-content:space-between; align-items:baseline; gap:8px; }
   .idx-chart{ display:block; width:100%; height:auto; margin-top:8px; }
   .idx-chart-x{ display:flex; justify-content:space-between; font-size:10px; color:#7e90ad; margin-top:1px; }
   .idx-chart-empty{ font-size:11px; color:#7e90ad; margin-top:8px; }
-  .idx-const{ margin-top:10px; font-size:12px; }
-  .idx-const summary{ cursor:pointer; color:var(--gold); font-weight:600; list-style:revert; }
-  .idx-const ul{ list-style:none; margin:8px 0 0; padding:0; max-height:190px; overflow:auto; }
-  .idx-const li{ display:flex; justify-content:space-between; gap:10px; padding:4px 0; border-top:1px solid rgba(255,255,255,.08); }
-  .idx-const li span:last-child{ font-variant-numeric:tabular-nums; color:#fff; white-space:nowrap; }
+  .idx-sum{ list-style:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:10px; padding:14px 16px; }
+  .idx-sum::-webkit-details-marker{ display:none; }
+  .idx-sum-name{ font-size:15px; font-weight:700; }
+  .idx-sum-right{ display:flex; align-items:center; gap:10px; }
+  .idx-sum .idx-val{ font-size:19px; margin:0; }
+  .idx-sum::after{ content:"\25be"; color:var(--muted); transition:transform .15s; }
+  details.idx[open] .idx-sum::after{ transform:rotate(180deg); }
+  details.idx[open] .idx-sum{ border-bottom:1px solid var(--line); }
+  .idx-body{ padding:12px 16px 14px; font-size:12px; }
+  .idx-list{ list-style:none; margin:10px 0 0; padding:0; max-height:230px; overflow:auto; }
+  .idx-list li{ display:flex; justify-content:space-between; gap:10px; padding:7px 8px; border-radius:7px; border-top:1px solid rgba(255,255,255,.07); }
+  .idx-list li:first-child{ border-top:none; }
+  .idx-list li:hover{ background:rgba(58,157,255,.14); }
+  .idx-list li span:last-child{ font-variant-numeric:tabular-nums; color:#fff; white-space:nowrap; font-weight:600; }
   .owm-bar{ display:flex; gap:8px; margin:2px 0 12px; }
   .owm-bar input{ flex:1; background:#121a26; border:1px solid #1d2735; border-radius:8px; color:#fff; padding:9px 12px; font:inherit; }
   .owc-reg{ font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:700; margin:16px 0 6px; padding-top:4px; border-top:1px solid rgba(255,255,255,.08); }
@@ -1421,7 +1434,7 @@ CSS = r"""<style>
   .owc-body .owr{ border-bottom:1px solid rgba(255,255,255,.05); }
   .owc-body .owr:last-child{ border-bottom:none; }
   .idx-c-from{ color:#7e90ad; font-size:11px; }
-  .idx{ background:var(--ink2); border-radius:12px; padding:14px 16px; color:#fff; }
+  .idx{ background:var(--ink2); border-radius:12px; color:#fff; overflow:hidden; }
   .idx-name{ margin:0; font-size:13px; color:#9fb0cc; } .idx-val{ margin:4px 0 0; font-size:24px; font-weight:700; }
   .idx-sub{ margin:2px 0 0; font-size:12px; color:#7e90ad; }
   .idx-move.down{ color:#36d36b; } .idx-move.up{ color:#ff6b6b; } .idx-move.new,.idx-move.flat{ color:#7e90ad; }
@@ -3234,8 +3247,6 @@ def body_market(market, hist, cards, lastmin, oneway):
   <div class="indices">{index_cards(oneway, hist)}</div>
   <p class="finehint" style="text-align:center;margin:2px 0 14px">See the bigger picture &mdash; <a href="cheap-flight-index.html" style="color:var(--gold);font-weight:600">the Magellan Cheap Flight Index</a>: the cheapest places to fly from the USA right now, by region and by airport.</p>
   {oneway_market(oneway, market)}
-  <div class="sec-head"><h2><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#3a9dff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.2v5l3.2 2"/></svg> Last-minute one-ways</h2><span>cheapest one-ways leaving soon</span></div>
-  {oneway_lastminute(oneway, market, 8)}
 </div>"""
 
 
