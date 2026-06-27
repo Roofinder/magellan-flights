@@ -3346,10 +3346,12 @@ def heatmap_legend():
     return f'<div class="hm-legend">{sw}</div>'
 
 
-def heatmap_build(oneway, market):
-    """One-way fare heatmap: one tile per destination, colored by how far the
-    cheapest tracked one-way sits below (green) or above (red) its usual one-way
-    price (= the route's round-trip benchmark x 0.62). Returns (grid, chips)."""
+HM_REGION_ORDER = ["North America", "South America", "Europe", "Asia", "Middle East", "Africa", "Oceania"]
+
+
+def _hm_items(oneway, market):
+    """Sorted (pct, oneway-row, price) for each destination, best deal first.
+    pct = % the cheapest one-way sits below its usual one-way price (rt x 0.62)."""
     by_code = {}
     for m in market:
         c = m.get("code")
@@ -3378,29 +3380,45 @@ def heatmap_build(oneway, market):
         pct = (typ - p) / typ * 100.0
         if code not in best or pct > best[code][0]:
             best[code] = (pct, o, p)
-    items = sorted(best.values(), key=lambda x: -x[0])
-    region_order = ["North America", "South America", "Europe", "Asia", "Middle East", "Africa", "Oceania"]
-    present, tiles = [], []
-    for pct, o, p in items:
-        code = o["code"]
-        reg = board_region_of(code)
-        if reg in region_order and reg not in present:
-            present.append(reg)
-        bg, tc = hm_color(pct)
-        below = "below" if pct >= 0 else "above"
-        tip = html.escape(f'{o.get("name", code)} from {o.get("origin", "")} — ${p:,.0f}, '
-                          f'{abs(pct):.0f}% {below} normal (one-way)', quote=True)
-        link = html.escape(o.get("link", ""), quote=True)
-        tiles.append(
-            f'<a class="hm-tile" data-region="{html.escape(reg, quote=True)}" href="{link}" '
-            f'target="_blank" rel="noopener" style="background:{bg};color:{tc}" title="{tip}">'
+    return sorted(best.values(), key=lambda x: -x[0])
+
+
+def _hm_tile(pct, o, p):
+    code = o["code"]
+    reg = board_region_of(code)
+    bg, tc = hm_color(pct)
+    below = "below" if pct >= 0 else "above"
+    tip = html.escape(f'{o.get("name", code)} from {o.get("origin", "")} — ${p:,.0f}, '
+                      f'{abs(pct):.0f}% {below} normal (one-way) — tap for {o.get("name", code)}', quote=True)
+    # link to the city's own page: a rich city guide if we have one, else Explore
+    # pre-filtered to that destination (cheapest ways to get there).
+    cp = globals().get("CODE_TO_CITYPAGE", {}).get(code)
+    href = cp if cp else f"explore.html?to={code}"
+    return (f'<a class="hm-tile" data-region="{html.escape(reg, quote=True)}" href="{href}" '
+            f'style="background:{bg};color:{tc}" title="{tip}">'
             f'<span class="hm-code">{html.escape(code)}</span>'
             f'<span class="hm-price">${p:,.0f}</span></a>')
+
+
+def heatmap_build(oneway, market):
+    items = _hm_items(oneway, market)
+    present = []
+    tiles = []
+    for it in items:
+        reg = board_region_of(it[1]["code"])
+        if reg in HM_REGION_ORDER and reg not in present:
+            present.append(reg)
+        tiles.append(_hm_tile(*it))
     chips = ['<button class="airchip on" data-hmr="all" onclick="hmReg(&#39;all&#39;)">All</button>']
-    for r in [x for x in region_order if x in present]:
+    for r in [x for x in HM_REGION_ORDER if x in present]:
         chips.append(f'<button class="airchip" data-hmr="{r}" onclick="hmReg(&#39;{r}&#39;)">{r}</button>')
     grid = f'<div class="hm-grid" id="hm-grid">{"".join(tiles)}</div>'
     return grid, "".join(chips)
+
+
+def heatmap_preview(oneway, market, n=42):
+    tiles = "".join(_hm_tile(*it) for it in _hm_items(oneway, market)[:n])
+    return f'<div class="hm-grid">{tiles}</div>'
 
 
 HM_JS = ("""<script>(function(){var R='all';function ap(){var ts=document.querySelectorAll('#hm-grid .hm-tile');"""
@@ -3425,7 +3443,10 @@ def body_market(market, hist, cards, lastmin, oneway):
     return f"""<div class="wrap">
   <div class="pagehead"><h1>The Market</h1><p>The full board &mdash; the cheapest one-way fares to anywhere, judged against each route&rsquo;s own price history, plus region fare indices.</p></div>
   <div class="summary">{market_pulse(market)}</div>
-  <p class="finehint" style="text-align:center;margin:6px 0 12px"><a href="heatmap.html" style="color:var(--blue);font-weight:700">See every fare as a color heatmap &rarr;</a></p>
+  <div class="sec-head"><h2>Fare heatmap</h2><span>one-way deals vs. their normal price</span></div>
+  {heatmap_legend()}
+  {heatmap_preview(oneway, market, 42)}
+  <div style="text-align:center;margin:8px 0 18px"><a class="btn-ghost" href="heatmap.html">View the full heatmap &rarr;</a></div>
   <div class="sec-head" id="market"><h2>Fare indices</h2><span>avg vs. the Standard Meridian, by region</span></div>
   {context_banner(Q_INDICES)}
   <div class="indices">{index_cards(oneway, hist)}</div>
@@ -4023,7 +4044,7 @@ window.exSave=function(btn,i){ var f=EX_SHOWN[i]; if(!f) return; var list=bucket
 var rb=go('ex-regions'); if(rb){ rb.addEventListener('click', function(e){ var b=e.target.closest('[data-r]'); if(b){ EX_REG=b.getAttribute('data-r'); renderChips(); exFilter(); } }); }
 var ob=go('ex-origs'); if(ob){ ob.addEventListener('click', function(e){ var b=e.target.closest('[data-o]'); if(!b) return; var c=b.getAttribute('data-o'); EX_ORIG=EX_ORIG.filter(function(x){return x!==c;}); renderOrigs(); exSearch(); }); }
 renderOrigs(); renderChips(); exToBind(); exMonthFill(); exSearch(); bindAC(go('ep-from-ac'), go('ep-from'), function(c){ EP_FROM_CODE=c; }); bindAC(go('ep-to-ac'), go('ep-to'), function(c){ EP_TO_CODE=c; }); bindAC(go('ex-add-ac'), go('ex-add'), function(c){ go('ex-add').value=''; if(EX_ORIG.indexOf(c)<0) EX_ORIG.push(c); renderOrigs(); exSearch(); }); document.addEventListener('click', function(e){ if(!e.target.closest('.ac-wrap')){ var _ds=document.querySelectorAll('.ac-drop'); for(var _i=0;_i<_ds.length;_i++) _ds[_i].style.display='none'; } });
-setTimeout(function(){ try{ var p=new URLSearchParams(location.search); var f=p.get('from'), t=p.get('to'); if(f&&t){ var ef=go('ep-from'),et=go('ep-to'),ed=go('ep-depart'),er=go('ep-return'); if(ef)ef.value=f; if(et)et.value=t; var dep=p.get('depart'),ret=p.get('return'),trip=p.get('trip'); if(dep&&ed)ed.value=dep; if(ret&&er)er.value=ret; window.EP_NS=(p.get('nonstop')==='1'); if(window.exPlanTrip)exPlanTrip(trip||(ret?'round':'oneway')); if(window.exTab)exTab('plan'); if(window.exPlanSearch)exPlanSearch(); } }catch(e){} }, 0);
+setTimeout(function(){ try{ var p=new URLSearchParams(location.search); var f=p.get('from'), t=p.get('to'); if(f&&t){ var ef=go('ep-from'),et=go('ep-to'),ed=go('ep-depart'),er=go('ep-return'); if(ef)ef.value=f; if(et)et.value=t; var dep=p.get('depart'),ret=p.get('return'),trip=p.get('trip'); if(dep&&ed)ed.value=dep; if(ret&&er)er.value=ret; window.EP_NS=(p.get('nonstop')==='1'); if(window.exPlanTrip)exPlanTrip(trip||(ret?'round':'oneway')); if(window.exTab)exTab('plan'); if(window.exPlanSearch)exPlanSearch(); } else if(t){ var et2=go('ex-to'); if(et2) et2.value=((typeof NAMES!=='undefined'&&NAMES[t])?NAMES[t]:t); EX_TO_CODE=(''+t).toUpperCase(); EX_TRIP='oneway'; EX_ORIG=['JFK','LAX','ORD','DFW','MIA','SFO']; renderOrigs(); if(window.exTab)exTab('explore'); if(window.exSearch)exSearch(); } }catch(e){} }, 0);
 /* ---- Plan a trip: conventional From -> To -> Depart/Return route search ---- */
 var EP_TRIP='round';
 window.exTab=function(m){ go('ex-tab-plan').style.display=(m==='plan')?'':'none'; go('ex-tab-explore').style.display=(m==='explore')?'':'none'; var _fv=go('ex-tab-fav'); if(_fv) _fv.style.display=(m==='fav')?'':'none'; go('ex-tab-plan-btn').classList.toggle('on',m==='plan'); go('ex-tab-explore-btn').classList.toggle('on',m==='explore'); var _fb=go('ex-tab-fav-btn'); if(_fb) _fb.classList.toggle('on',m==='fav'); if(m==='fav'&&window.exFavRender) window.exFavRender(); };
@@ -5018,6 +5039,7 @@ def _build_city_guides():
 
 CITY_GUIDES = _build_city_guides()
 CITYGUIDE_BY_FILE = {g["fname"]: g for g in CITY_GUIDES}
+CODE_TO_CITYPAGE = {g["code"]: g["fname"] for g in CITY_GUIDES}
 
 
 def find_city_deal(code, market):
