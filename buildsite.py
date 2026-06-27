@@ -108,7 +108,7 @@ REGION_BTNS = ["all", "USA", "Abroad", "Asia", "SE Asia", "E Asia", "S Asia",
 
 # Primary nav — kept to five clear destinations. Secondary pages live in the
 # grouped footer (FOOTER_NAV) so nothing is lost and everything stays crawlable.
-NAV = [("index.html", "Home"), ("market.html", "Market"), ("explore.html", "Explore"),
+NAV = [("index.html", "Home"), ("market.html", "Market"), ("heatmap.html", "Heatmap"), ("explore.html", "Explore"),
        ("around-the-world.html", "Around the World"), ("guides.html", "Guides"), ("cheap-flights.html", "By airport")]
 
 FOOTER_NAV = [
@@ -184,6 +184,10 @@ SEO = {
         "Cheap Flight Deals Today — Live Fare Tracker | Magellan Flights",
         "A live board of the cheapest round-trip flights from the USA, with "
         "price history and how far below normal each fare is. Updated daily."),
+    "heatmap.html": (
+        "Flight Fare Heatmap — Every Deal at a Glance | Magellan Flights",
+        "A live heatmap of every flight fare we track from the USA: green when a fare is "
+        "below its normal price, red when above. The deeper the color, the bigger the move."),
     "world.html": (
         "Cheapest One-Way Flights Worldwide | Magellan Flights",
         "Explore the cheapest flights between 50 global hubs — anywhere to "
@@ -1448,6 +1452,15 @@ CSS = r"""<style>
   details.owreg[open] .owreg-sum::after{ transform:rotate(180deg); }
   details.owreg[open] .owreg-sum{ border-bottom:1px solid var(--line); }
   .owreg-body{ padding:10px 12px 12px; }
+  .hm-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(74px,1fr)); gap:6px; margin:14px 0; }
+  .hm-tile{ aspect-ratio:1/1; border-radius:8px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-decoration:none; padding:4px; border:1px solid rgba(0,0,0,.08); transition:transform .1s ease, box-shadow .1s ease; }
+  .hm-tile:hover{ transform:scale(1.1); box-shadow:0 5px 16px rgba(0,0,0,.22); position:relative; z-index:3; }
+  .hm-code{ font-weight:800; font-size:14px; letter-spacing:.02em; line-height:1.1; }
+  .hm-price{ font-size:11px; font-weight:700; margin-top:2px; font-family:ui-monospace,Menlo,Consolas,monospace; }
+  .hm-legend{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; font-size:12.5px; color:var(--muted); margin:4px 0 2px; }
+  .hm-leg-item{ display:inline-flex; align-items:center; gap:6px; }
+  .hm-key{ width:15px; height:15px; border-radius:4px; display:inline-block; border:1px solid rgba(0,0,0,.08); }
+  @media(max-width:560px){ .hm-grid{ grid-template-columns:repeat(auto-fill,minmax(60px,1fr)); gap:5px; } .hm-code{ font-size:12px; } .hm-price{ font-size:10px; } }
   .owc-reg{ font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:700; margin:16px 0 6px; padding-top:4px; border-top:1px solid rgba(0,0,0,.08); }
   .owc-reg:first-child{ border-top:none; margin-top:2px; }
   details.owc{ border:1px solid #d9c9a0; border-radius:10px; margin-bottom:8px; background:#efe5cd; overflow:hidden; }
@@ -3314,10 +3327,73 @@ def winner_highlight_html():
     )
 
 
+def hm_color(pct):
+    """pct = % below the route's normal price (positive = cheaper = greener)."""
+    if pct >= 25: return ("#15643a", "#ffffff")
+    if pct >= 12: return ("#2e8b57", "#ffffff")
+    if pct >= 4:  return ("#9bccab", "#16361f")
+    if pct > -4:  return ("#e7dcc0", "#6b6147")
+    if pct > -12: return ("#e3a89e", "#591e16")
+    if pct > -25: return ("#c0392b", "#ffffff")
+    return ("#8d1f17", "#ffffff")
+
+
+def heatmap_legend():
+    keys = [("#15643a", "Big drop"), ("#2e8b57", "Below normal"), ("#e7dcc0", "About even"),
+            ("#c0392b", "Above normal"), ("#8d1f17", "Way above")]
+    sw = "".join(f'<span class="hm-leg-item"><span class="hm-key" style="background:{c}"></span>{l}</span>'
+                 for c, l in keys)
+    return f'<div class="hm-legend">{sw}</div>'
+
+
+def heatmap_html(market):
+    """A market-style heatmap: one tile per destination, colored by how far the
+    cheapest tracked fare sits below (green) or above (red) its own normal price."""
+    best = {}
+    for m in market:
+        try:
+            p = float(m["price"]); b = float(m["benchmark"])
+        except (TypeError, ValueError, KeyError):
+            continue
+        if p <= 0 or b <= 0:
+            continue
+        pct = (b - p) / b * 100.0
+        code = m.get("code")
+        if not code:
+            continue
+        if code not in best or pct > best[code][0]:
+            best[code] = (pct, m, p)
+    items = sorted(best.values(), key=lambda x: -x[0])
+    tiles = []
+    for pct, m, p in items:
+        bg, tc = hm_color(pct)
+        code = m["code"]
+        below = "below" if pct >= 0 else "above"
+        tip = html.escape(f'{m.get("name", code)} from {m.get("origin", "")} — ${p:,.0f}, '
+                          f'{abs(pct):.0f}% {below} normal', quote=True)
+        link = html.escape(m.get("link", ""), quote=True)
+        tiles.append(
+            f'<a class="hm-tile" href="{link}" target="_blank" rel="noopener" '
+            f'style="background:{bg};color:{tc}" title="{tip}">'
+            f'<span class="hm-code">{html.escape(code)}</span>'
+            f'<span class="hm-price">${p:,.0f}</span></a>')
+    return f'<div class="hm-grid">{"".join(tiles)}</div>'
+
+
+def body_heatmap(market):
+    return f"""<div class="wrap">
+  <div class="pagehead"><h1>The Heatmap</h1><p>Every fare we track, at a glance &mdash; <b style="color:#2e8b57">green when it&rsquo;s below its normal price</b> (a deal) and <b style="color:#c0392b">red when it&rsquo;s above</b>. The deeper the color, the bigger the move; about-even fares stay parchment. Tap any tile to see its live price and book.</p></div>
+  {heatmap_legend()}
+  {heatmap_html(market)}
+  <p class="finehint" style="text-align:center;margin-top:14px">Sorted best deal first. Prices are recently-tracked fares judged against each route&rsquo;s own price history &mdash; your live, bookable price is confirmed on Aviasales.</p>
+</div>"""
+
+
 def body_market(market, hist, cards, lastmin, oneway):
     return f"""<div class="wrap">
   <div class="pagehead"><h1>The Market</h1><p>The full board &mdash; the cheapest one-way fares to anywhere, judged against each route&rsquo;s own price history, plus region fare indices.</p></div>
   <div class="summary">{market_pulse(market)}</div>
+  <p class="finehint" style="text-align:center;margin:6px 0 12px"><a href="heatmap.html" style="color:var(--blue);font-weight:700">See every fare as a color heatmap &rarr;</a></p>
   <div class="sec-head" id="market"><h2>Fare indices</h2><span>avg vs. the Standard Meridian, by region</span></div>
   {context_banner(Q_INDICES)}
   <div class="indices">{index_cards(oneway, hist)}</div>
@@ -5604,6 +5680,7 @@ def main():
     pages = {
         "index.html": ("Home", body_home(market, hist, cards, lastmin, oneway, summary, world)),
         "market.html": ("Market", body_market(market, hist, cards, lastmin, oneway)),
+        "heatmap.html": ("The Heatmap", body_heatmap(market)),
         "explore.html": ("Explore", body_explore()),
         "blog.html": ("Daily Guide", body_blog(market, oneway)),
         "around-the-world.html": ("Ferdinand's World Loop", body_rtw(world)),
