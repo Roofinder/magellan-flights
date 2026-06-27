@@ -1283,8 +1283,8 @@ CSS = r"""<style>
   body{ margin:0; background:var(--bg); color:var(--ink);
         font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; line-height:1.6; }
   a{ color:inherit; }
-  .chartbg{ position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; }
-  .chartbg svg{ width:100%; height:100%; display:block; }
+  .chartbg{ position:fixed; inset:0; z-index:-1; pointer-events:none;
+            background:url("world-bg.svg") center center / cover no-repeat; }
   .cfi-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:18px 0 8px; }
   .cfi-stat{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 18px; box-shadow:0 6px 18px rgba(0,0,0,.10); }
   .cfi-num{ font-size:30px; font-weight:700; color:var(--ink); line-height:1.1; }
@@ -2488,10 +2488,10 @@ def chart_bg_html():
             f'opacity="0.13" stroke-linecap="round">{"".join(arcs)}</g>')
     svg = (f'<svg viewBox="0 0 {W} {H}" preserveAspectRatio="xMidYMid slice" '
            f'xmlns="http://www.w3.org/2000/svg">{grat}{roses[0]}{roses[1]}{arcg}</svg>')
-    return f'<div class="chartbg" aria-hidden="true">{svg}</div>'
+    return f'<div class="chartbg-chart" aria-hidden="true">{svg}</div>'
 
 
-CHART_BG = chart_bg_html()
+CHART_BG = '<div class="chartbg" aria-hidden="true"></div>'
 
 
 def world_map_html():
