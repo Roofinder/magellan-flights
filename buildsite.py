@@ -109,8 +109,7 @@ REGION_BTNS = ["all", "USA", "Abroad", "Asia", "SE Asia", "E Asia", "S Asia",
 # Primary nav — kept to five clear destinations. Secondary pages live in the
 # grouped footer (FOOTER_NAV) so nothing is lost and everything stays crawlable.
 NAV = [("index.html", "Home"), ("market.html", "Market"), ("explore.html", "Explore"),
-       ("around-the-world.html", "Around the World"), ("guides.html", "Guides"), ("cheap-flights.html", "By airport"),
-       ("our-story.html", "Our Story")]
+       ("around-the-world.html", "Around the World"), ("guides.html", "Guides"), ("cheap-flights.html", "By airport")]
 
 FOOTER_NAV = [
     ("Browse fares", [("market.html", "The Market"), ("explore.html", "Explore &amp; search"),
@@ -307,7 +306,7 @@ def head_seo(active, full_title, description, market=None):
     tags += [
         f'<link rel="canonical" href="{url}">',
         '<meta name="robots" content="index, follow, max-image-preview:large">',
-        '<meta name="theme-color" content="#0f1830">',
+        '<meta name="theme-color" content="#16325e">',
         f'<meta property="og:type" content="website">',
         f'<meta property="og:site_name" content="{BRAND}">',
         f'<meta property="og:title" content="{t}">',
@@ -1256,10 +1255,10 @@ LOGO_SVG = (
 )
 
 CSS = r"""<style>
-  :root{ --bg:#0f1830; --card:#16223f; --ink:#eef2fb; --muted:#9aa6c4; --line:#27345a;
+  :root{ --bg:#16325e; --card:#1d3c6d; --ink:#eef2fb; --muted:#a4b2d0; --line:#36548a;
          --blue:#3a9dff; --blue-d:#2b6fd6; --green:#2bd576; --green-bg:rgba(43,213,118,.14);
          --red:#ff5e5e; --amber:#e8b53e; --amber-bg:rgba(232,181,62,.14); --ink2:#070a10; --gold:#3a9dff;
-         --lux:#f4c14e; --lux-d:#d8a534; }
+         --lux:#3a9dff; --lux-d:#2b6fd6; }
   *{ box-sizing:border-box; }
   .hicon{ width:1em; height:1em; display:inline-block; vertical-align:-0.13em; margin-right:.38em; flex:0 0 auto; }
   body{ margin:0; background:var(--bg); color:var(--ink);
@@ -1691,7 +1690,7 @@ CSS = r"""<style>
   .lander-inner{ position:relative; z-index:1; max-width:660px; margin:0 auto; }
   .eyebrow{ display:inline-block; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:10px;
             letter-spacing:.22em; text-transform:uppercase; color:var(--lux);
-            border:1px solid rgba(244,193,78,.45); border-radius:30px; padding:6px 13px; margin-bottom:16px; }
+            border:1px solid rgba(58,157,255,.4); border-radius:30px; padding:6px 13px; margin-bottom:16px; }
   .lander h1{ font-size:38px; line-height:1.08; margin:0 0 13px; letter-spacing:-.015em; }
   .lander h1 .g{ color:var(--gold); }
   .lander .lead{ font-size:15px; color:var(--muted); max-width:560px; margin:0 auto 20px; line-height:1.6; }
@@ -1741,7 +1740,7 @@ CSS = r"""<style>
   .stat .n{ font-size:26px; font-weight:700; color:var(--gold); font-family:ui-monospace,Menlo,Consolas,monospace; }
   .stat .l{ font-size:12px; color:var(--muted); margin-top:3px; }
   .winner{ display:flex; flex-wrap:wrap; align-items:center; gap:14px 22px; margin:20px 0 4px; padding:20px 24px 18px; border-radius:18px; text-decoration:none; color:var(--ink);
-    background:linear-gradient(120deg,#1d1708 0%,#0e141d 58%); border:1px solid rgba(212,175,90,.45); position:relative; overflow:hidden; transition:border-color .15s, transform .15s; }
+    background:linear-gradient(120deg,#1d3c6d 0%,#13284c 58%); border:1px solid rgba(58,157,255,.4); position:relative; overflow:hidden; transition:border-color .15s, transform .15s; }
   .winner:hover{ border-color:var(--gold); transform:translateY(-2px); }
   .winner-badge{ position:absolute; top:0; left:0; background:var(--lux); color:#3a2604; font-size:11px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; padding:5px 12px; border-bottom-right-radius:12px; }
   .winner-main{ flex:1 1 240px; min-width:190px; padding-top:12px; }
@@ -2694,35 +2693,8 @@ def body_home(market, hist, cards, lastmin, oneway, summary, world):
     <div style="text-align:center;margin-top:14px"><a class="btn-ghost" href="around-the-world.html">Search more Around the World trips &rarr;</a></div>
   </section>
   <p class="finehint" style="text-align:center;margin-top:18px">These are recently-tracked one-way fares &mdash; tap any deal to see today&rsquo;s live price and book on Aviasales.</p>
-  <div class="statbar" style="margin-top:8px">
-    <div class="stat"><div class="n">{nroutes}</div><div class="l">routes tracked</div></div>
-    <div class="stat"><div class="n">{noneway}+</div><div class="l">one-way fares</div></div>
-    <div class="stat"><div class="n">{nbook}</div><div class="l">flagged BUY today</div></div>
-    <div class="stat"><div class="n">{ncountries}</div><div class="l">countries</div></div>
-  </div>
-  <p class="stat-note">{market_pulse(market)} &middot; tracked fares, refreshed through the day</p>
   <div class="summary" data-sec="summary">{summary}</div>
-  <div class="section-head-lg"><h2>How to read a price</h2><p>Every fare is measured against this route&rsquo;s own price history &mdash; its Standard Meridian. The colored bar on each deal shows where today&rsquo;s price sits.</p></div>
-  <div class="why">
-    <div class="why-card"><span class="why-sig"><span class="why-dot g"></span>Low</span><h3 style="margin-top:12px">A great deal</h3><p>Well below this route&rsquo;s typical price &mdash; a genuinely good moment to book.</p></div>
-    <div class="why-card"><span class="why-sig"><span class="why-dot y"></span>Typical</span><h3 style="margin-top:12px">A fair price</h3><p>Around the route&rsquo;s usual range. Fine to book, though a dip may still come.</p></div>
-    <div class="why-card"><span class="why-sig"><span class="why-dot r"></span>High</span><h3 style="margin-top:12px">Above normal</h3><p>Higher than this route usually runs. History suggests it&rsquo;s likely to fall &mdash; worth waiting.</p></div>
-  </div>
-  <p class="readnote">Prices refresh several times a day, and each fare&rsquo;s live price is confirmed when you book on Aviasales &mdash; the figures here are a guide from recent history, so the deal you see is the deal you get.</p>
-  <section class="mission">
-    <div class="astro lg" style="width:58px">{ASTRO_SVG}</div>
-    <h2>Why &ldquo;Magellan&rdquo;?</h2>
-    <p>In 1519, Magellan&rsquo;s expedition became the first to circle the globe &mdash; the moment the whole planet became reachable. Five centuries on, we pull back the curtain on airfare: the real numbers in your hands, genuine deals judged against history, and the freedom of travel handed back to ordinary people.</p>
-  </section>
-  <section class="promise">
-    <h2>Our promise to you</h2>
-    <div class="promise-grid">
-      <div class="pr"><span class="pr-n">01</span><p>Prices refreshed <b>twice every day</b> — never stale.</p></div>
-      <div class="pr"><span class="pr-n">02</span><p>Every fare judged against <b>its own history</b>, so a deal is really a deal.</p></div>
-      <div class="pr"><span class="pr-n">03</span><p><b>Always free.</b> We earn only if you book — at no extra cost to you.</p></div>
-      <div class="pr"><span class="pr-n">04</span><p><b>No spam.</b> Alerts only when a price actually drops.</p></div>
-    </div>
-  </section>
+  <p class="finehint" style="text-align:center;margin-top:22px"><a href="our-story.html" style="color:var(--blue)">Why &ldquo;Magellan,&rdquo; how we read a price, and everything we track &rarr;</a></p>
 </div>
 {HOME_SEARCH_JS}
 {SIGNUP.replace("__FORM_ACTION__", FORM_ACTION)}"""
