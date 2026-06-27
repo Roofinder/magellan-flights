@@ -57,7 +57,8 @@ def main():
         grat.append(f'<line x1="{x}" y1="0" x2="{x}" y2="{H}"/>')
     for y in range(0, H + 1, 100):
         grat.append(f'<line x1="0" y1="{y}" x2="{W}" y2="{y}"/>')
-    svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" '
+    top, vh = -150, 1070  # empty above (push N. America down) + crop bottom (half Antarctica)
+    svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 {top} {W} {vh}" '
            f'preserveAspectRatio="xMidYMid slice">'
            f'<g stroke="#2f6b46" stroke-width="1" opacity="0.035">{"".join(grat)}</g>'
            f'<path d="{d}" fill="#2f6b46" fill-opacity="0.06" stroke="#2f6b46" '
