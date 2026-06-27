@@ -1121,6 +1121,23 @@ def continent_of(code):
     return CONTINENT_CC.get(CODE_CC_MAP.get(code, ""), "Other")
 
 
+# The board splits the Americas into North vs South America for cleaner browsing
+# (the fare INDICES keep the single "Americas" region).
+SA_CC = {"CO", "PE", "BR", "AR", "CL", "EC", "BO", "UY", "PY", "VE", "GY", "SR", "GF"}
+SA_CODES = {"BOG", "MDE", "CTG", "CLO", "CUC", "ADZ", "SMR", "LIM", "CUZ", "AQP", "IQT",
+            "GRU", "GIG", "BSB", "CWB", "POA", "FOR", "REC", "SSA", "FLN", "CNF", "VCP", "MAO",
+            "EZE", "COR", "MDZ", "SCL", "UIO", "GYE", "MVD", "ASU", "CCS", "MAR", "VVI", "LPB",
+            "GEO", "PBM", "CAY"}
+
+
+def board_region_of(code):
+    reg = continent_of(code)
+    if reg == "Americas":
+        cc = (CODE_CC_MAP.get(code) or "").upper()
+        return "South America" if (cc in SA_CC or code in SA_CODES) else "North America"
+    return reg
+
+
 def city_options(home):
     opts = ['<option value="">Choose your home airport…</option>']
     for code in sorted(home, key=lambda c: home[c]["name"]):
@@ -1419,6 +1436,16 @@ CSS = r"""<style>
   .idx-list li span:last-child{ font-variant-numeric:tabular-nums; color:#fff; white-space:nowrap; font-weight:600; }
   .owm-bar{ display:flex; gap:8px; margin:2px 0 12px; }
   .owm-bar input{ flex:1; background:#121a26; border:1px solid #1d2735; border-radius:8px; color:#fff; padding:9px 12px; font:inherit; }
+  .owreg{ border:1px solid var(--line); border-radius:12px; margin-bottom:10px; background:var(--card); overflow:hidden; box-shadow:0 6px 18px rgba(0,0,0,.22); }
+  .owreg-sum{ list-style:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:10px; padding:15px 18px; }
+  .owreg-sum::-webkit-details-marker{ display:none; }
+  .owreg-name{ font-size:16px; font-weight:700; }
+  .owreg-meta{ font-size:12.5px; color:var(--muted); font-weight:500; white-space:nowrap; }
+  .owreg-meta b{ color:var(--blue); }
+  .owreg-sum::after{ content:"\25be"; color:var(--muted); margin-left:6px; transition:transform .15s; }
+  details.owreg[open] .owreg-sum::after{ transform:rotate(180deg); }
+  details.owreg[open] .owreg-sum{ border-bottom:1px solid var(--line); }
+  .owreg-body{ padding:10px 12px 12px; }
   .owc-reg{ font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:700; margin:16px 0 6px; padding-top:4px; border-top:1px solid rgba(255,255,255,.08); }
   .owc-reg:first-child{ border-top:none; margin-top:2px; }
   details.owc{ border:1px solid #1d2735; border-radius:10px; margin-bottom:8px; background:#0e141d; overflow:hidden; }
@@ -3073,7 +3100,7 @@ def oneway_rows_block(rows_data, market, limit, pfx="m", per_region=0):
         code = o["code"]
         if code in seen:
             continue
-        reg = continent_of(code)
+        reg = board_region_of(code)
         if reg == "Other":
             continue
         seen.add(code); cand.append((reg, o))
@@ -3110,7 +3137,7 @@ def oneway_market(oneway, market, limit=30):
         if (o.get("cc") or "").upper() == "US":
             continue
         code = o["code"]
-        reg = continent_of(code)
+        reg = board_region_of(code)
         if reg == "Other":
             continue
         if code not in seen or float(o["price"]) < float(seen[code]["price"]):
@@ -3119,10 +3146,10 @@ def oneway_market(oneway, market, limit=30):
         return ""
     groups = {}
     for code, o in seen.items():
-        reg = continent_of(code)
+        reg = board_region_of(code)
         cname = country_from_name(o["name"])
         groups.setdefault((reg, cname), []).append(o)
-    region_order = ["Americas", "Europe", "Asia", "Middle East", "Africa", "Oceania"]
+    region_order = ["North America", "South America", "Europe", "Asia", "Middle East", "Africa", "Oceania"]
     items = []
     for (reg, cname), rows in groups.items():
         rows.sort(key=lambda x: float(x["price"]))
@@ -3134,26 +3161,32 @@ def oneway_market(oneway, market, limit=30):
         chips.append(f'<button class="airchip" data-owreg="{r}" onclick="owSetReg(&#39;{r}&#39;)">{r}</button>')
     ncountries = len(items)
     ncities = sum(len(it[3]) for it in items)
-    body = []
-    cur = None
+    by_region = {}
     for reg, cheapest, cname, rows in items:
-        if reg != cur:
-            body.append(f'<div class="owc-reg" data-reg="{reg}">{reg}</div>')
-            cur = reg
-        city_rows = "".join(oneway_row(o, by_code.get(o["code"]), "m") for o in rows)
-        nc = len(rows)
-        flag = flag_img(rows[0]["code"])
-        cities_attr = html.escape(" ".join((o.get("name") or "").lower() for o in rows), quote=True)
-        summary = (f'<summary class="owc-sum"><span class="owc-country">{flag}<span>{html.escape(cname)}</span></span>'
-                   f'<span class="owc-meta">from <b>${cheapest:,.0f}</b> one-way &middot; {nc} cit{"y" if nc == 1 else "ies"}</span></summary>')
-        body.append(f'<details class="owc" data-region="{reg}" data-country="{html.escape(cname.lower(), quote=True)}" data-cities="{cities_attr}">{summary}<div class="owc-body">{city_rows}</div></details>')
+        by_region.setdefault(reg, []).append((cheapest, cname, rows))
+    body = []
+    for reg in regions_present:
+        countries = by_region[reg]
+        reg_cheapest = min(c[0] for c in countries)
+        inner = []
+        for cheapest, cname, rows in countries:
+            city_rows = "".join(oneway_row(o, by_code.get(o["code"]), "m") for o in rows)
+            nc = len(rows)
+            flag = flag_img(rows[0]["code"])
+            cities_attr = html.escape(" ".join((o.get("name") or "").lower() for o in rows), quote=True)
+            summary = (f'<summary class="owc-sum"><span class="owc-country">{flag}<span>{html.escape(cname)}</span></span>'
+                       f'<span class="owc-meta">from <b>${cheapest:,.0f}</b> one-way &middot; {nc} cit{"y" if nc == 1 else "ies"}</span></summary>')
+            inner.append(f'<details class="owc" data-region="{reg}" data-country="{html.escape(cname.lower(), quote=True)}" data-cities="{cities_attr}">{summary}<div class="owc-body">{city_rows}</div></details>')
+        reg_sum = (f'<summary class="owreg-sum"><span class="owreg-name">{reg}</span>'
+                   f'<span class="owreg-meta">{len(countries)} countries &middot; from <b>${reg_cheapest:,.0f}</b></span></summary>')
+        body.append(f'<details class="owreg" data-region="{reg}">{reg_sum}<div class="owreg-body">{"".join(inner)}</div></details>')
     head = ('<div class="sec-head" id="deals"><h2><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#3a9dff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5c.8 0 1.3 1.1 1.3 2.6v3.7l7.2 4.1v1.9l-7.2-2.1v3.6l1.9 1.4v1.5L12 18.5l-3.2 1.2v-1.5l1.9-1.4v-3.6L3.5 14.8v-1.9l7.2-4.1V5.1C10.7 3.6 11.2 2.5 12 2.5z"/></svg> One-way Voyages</h2>'
-            f'<span>{ncountries} countries &middot; {ncities} cheap one-way fares &middot; tap a country to see its cities</span></div>')
+            f'<span>{len(regions_present)} regions &middot; {ncountries} countries &middot; {ncities} cheap one-way fares &middot; tap a region, then a country</span></div>')
     chips_html = f'<div class="airchips" style="margin:2px 0 10px">{"".join(chips)}</div>'
     searchbar = ('<div class="owm-bar"><input type="text" id="ow-q" placeholder="Search a country or city\u2026" oninput="owApply()" autocomplete="off">'
                  '<select id="ow-month" onchange="owApply()" style="background:#0e141d;color:var(--ink);border:1px solid var(--line);border-radius:9px;padding:9px 12px;font:inherit"><option value="">Any month</option></select></div>')
     panel = f'<div class="panel owm-panel">{"".join(body)}</div>'
-    return head + chips_html + searchbar + panel + """<script>var OW_REG="all";function owMonthFill(){var sel=document.getElementById('ow-month');if(!sel)return;var now=new Date();var mn=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];var h='<option value="">Any month</option>';for(var k=0;k<10;k++){var dt=new Date(now.getFullYear(),now.getMonth()+k,1);var v=dt.getFullYear()+'-'+('0'+(dt.getMonth()+1)).slice(-2);h+='<option value="'+v+'">'+mn[dt.getMonth()]+' '+dt.getFullYear()+'</option>';}sel.innerHTML=h;}function owSetReg(r){OW_REG=r;var ch=document.querySelectorAll('[data-owreg]');for(var k=0;k<ch.length;k++){ch[k].classList.toggle('on',ch[k].getAttribute('data-owreg')===r);}owApply();}function owApply(){var q=((document.getElementById('ow-q')||{}).value||'').toLowerCase();var mo=(document.getElementById('ow-month')||{}).value||'';var cs=document.querySelectorAll('.owm-panel .owc');var shown={};for(var i=0;i<cs.length;i++){var c=cs[i];var reg=c.getAttribute('data-region');var ctry=c.getAttribute('data-country')||'';var cities=c.getAttribute('data-cities')||'';var hit=(q===''||ctry.indexOf(q)>=0||cities.indexOf(q)>=0);var regOk=(OW_REG==='all'||reg===OW_REG)&&hit;if(!regOk){c.style.display='none';continue;}var rows=c.querySelectorAll('.owr');var vis=0;for(var jj=0;jj<rows.length;jj++){var m=rows[jj].getAttribute('data-month')||'';var rok=(!mo||m===mo);rows[jj].style.display=rok?'':'none';if(rok)vis++;}if(vis){c.style.display='';shown[reg]=1;c.open=(!!mo||!!q);}else{c.style.display='none';}}var hs=document.querySelectorAll('.owm-panel .owc-reg');for(var hh=0;hh<hs.length;hh++){var rg=hs[hh].getAttribute('data-reg');hs[hh].style.display=((OW_REG==='all'||rg===OW_REG)&&shown[rg])?'':'none';}}owMonthFill();</script>"""
+    return head + chips_html + searchbar + panel + """<script>var OW_REG="all";function owMonthFill(){var sel=document.getElementById('ow-month');if(!sel)return;var now=new Date();var mn=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];var h='<option value="">Any month</option>';for(var k=0;k<10;k++){var dt=new Date(now.getFullYear(),now.getMonth()+k,1);var v=dt.getFullYear()+'-'+('0'+(dt.getMonth()+1)).slice(-2);h+='<option value="'+v+'">'+mn[dt.getMonth()]+' '+dt.getFullYear()+'</option>';}sel.innerHTML=h;}function owSetReg(r){OW_REG=r;var ch=document.querySelectorAll('[data-owreg]');for(var k=0;k<ch.length;k++){ch[k].classList.toggle('on',ch[k].getAttribute('data-owreg')===r);}owApply();}function owApply(){var q=((document.getElementById('ow-q')||{}).value||'').toLowerCase();var mo=(document.getElementById('ow-month')||{}).value||'';var regs=document.querySelectorAll('.owm-panel .owreg');for(var i=0;i<regs.length;i++){var rg=regs[i];var reg=rg.getAttribute('data-region');if(!(OW_REG==='all'||reg===OW_REG)){rg.style.display='none';continue;}var cs=rg.querySelectorAll('.owc');var any=0;for(var j=0;j<cs.length;j++){var c=cs[j];var ctry=c.getAttribute('data-country')||'';var cities=c.getAttribute('data-cities')||'';var hit=(q===''||ctry.indexOf(q)>=0||cities.indexOf(q)>=0);if(!hit){c.style.display='none';continue;}var rows=c.querySelectorAll('.owr');var vis=0;for(var k2=0;k2<rows.length;k2++){var m=rows[k2].getAttribute('data-month')||'';var rok=(!mo||m===mo);rows[k2].style.display=rok?'':'none';if(rok)vis++;}if(vis){c.style.display='';c.open=(!!mo||!!q);any++;}else{c.style.display='none';}}if(any){rg.style.display='';rg.open=(!!q||!!mo||OW_REG!=='all');}else{rg.style.display='none';}}}owMonthFill();</script>"""
 
 
 def oneway_lastminute(oneway, market, limit=8):
