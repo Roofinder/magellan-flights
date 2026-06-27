@@ -1278,6 +1278,7 @@ LOGO_SVG = (
 )
 
 CSS = r"""<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap');
   :root{ --bg:#f3ecd8; --card:#fbf6e9; --ink:#2c2a1e; --muted:#7a715a; --line:#d9c9a0;
          --blue:#2f6b46; --blue-d:#245537; --green:#2e8b57; --green-bg:rgba(46,139,87,.14);
          --red:#c0392b; --amber:#b8801f; --amber-bg:rgba(184,128,31,.14); --ink2:#2f6b46; --gold:#2f6b46;
@@ -1287,6 +1288,7 @@ CSS = r"""<style>
   body{ margin:0; background:var(--bg); color:var(--ink);
         font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; line-height:1.6; }
   a{ color:inherit; }
+  h1, h2{ font-family:"Fraunces",Georgia,"Times New Roman",serif; font-weight:700; letter-spacing:0; }
   .chartbg{ position:fixed; inset:0; z-index:-1; pointer-events:none;
             background:url("world-bg.svg") center center / cover no-repeat; }
   .cfi-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:18px 0 8px; }
