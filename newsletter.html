@@ -710,8 +710,12 @@ function toggleTickers(){ var off=document.body.classList.toggle('tickers-off');
   <div class="signup" style="margin:0 0 22px"><div class="signup-inner">
     <h2>Get the weekly deal drop</h2>
     <p>Free forever &middot; one email a week &middot; real, bookable fares.</p>
-    <a class="book" href="https://daltons-newsletter-44b474.beehiiv.com/" target="_blank" rel="noopener" style="display:inline-block;font-size:16px;padding:12px 26px">Join free &rarr;</a>
-    <p style="font-size:12.5px;color:var(--muted);margin-top:10px">Opens our secure signup &mdash; takes 10 seconds, unsubscribe anytime.</p>
+    <form onsubmit="return nlSub(event)" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;max-width:440px;margin:8px auto 0">
+      <input id="nl-email" type="email" required placeholder="you@email.com" autocomplete="email" style="flex:1;min-width:210px;background:#fffdf6;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:15px">
+      <button class="book" type="submit" style="font-size:16px;padding:12px 26px">Join free &rarr;</button>
+    </form>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:10px">Free &middot; one email a week &middot; unsubscribe anytime.</p>
+    <script>function nlSub(e){e.preventDefault();var v=(document.getElementById('nl-email').value||'').trim();if(!v)return false;var u="https://daltons-newsletter-44b474.beehiiv.com/";window.location.href=u+(u.indexOf('?')<0?'?':'&')+'email='+encodeURIComponent(v);return false;}</script>
   </div></div>
   <div class="blog-sec"><h2>What you get every week</h2>
   <ul class="blog-list">

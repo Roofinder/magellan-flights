@@ -709,7 +709,7 @@ function toggleTickers(){ var off=document.body.classList.toggle('tickers-off');
     <span class="eyebrow">Our story</span>
     <h1>Airfare, <span class="g">handed back</span> to ordinary travelers.</h1>
     <p class="lead">Magellan Flights tracks the cheapest fares from the USA to anywhere on earth, every day &mdash; and tells you the moment one drops below its normal price. Start with a search, or read how we got here.</p>
-    <form class="fsearch" data-alert="https://formspree.io/f/mojoqrgn" onsubmit="return homeSearch(event)" aria-label="Flight search">
+    <form class="fsearch" data-alert="https://formspree.io/f/mojoqrgn" data-subscribe="https://daltons-newsletter-44b474.beehiiv.com/" onsubmit="return homeSearch(event)" aria-label="Flight search">
       <div class="fs-row fs-trip">
         <label class="fs-radio"><input type="radio" name="fs-trip" value="round" checked onchange="fsTrip('round')"> Round-trip</label>
         <label class="fs-radio"><input type="radio" name="fs-trip" value="oneway" onchange="fsTrip('oneway')"> One-way</label>
@@ -794,8 +794,8 @@ function homeSearch(e){ e.preventDefault();
   var emEl=document.getElementById('hs-email'); var em=emEl?emEl.value.trim():'';
   if(!f){ document.getElementById('hs-from').focus(); return false; }
   if(!t){ document.getElementById('hs-to').focus(); return false; }
-  var act=e.target.getAttribute('data-alert');
-  if(em && act){ try{ var fd=new FormData(); fd.append('email', em); fd.append('source','home-search'); fetch(act,{method:'POST',body:fd,headers:{'Accept':'application/json'}}); }catch(_){} }
+  var sub=e.target.getAttribute('data-subscribe');
+  if(em && sub){ try{ window.open(sub+(sub.indexOf('?')<0?'?':'&')+'email='+encodeURIComponent(em),'_blank','noopener'); }catch(_){} }
   var q='explore.html?from='+encodeURIComponent(f)+'&to='+encodeURIComponent(t)+'&trip='+(oneway?'oneway':'round');
   if(dep) q+='&depart='+dep; if(ret && !oneway) q+='&return='+ret; if(nonstop) q+='&nonstop=1';
   window.location.href=q; return false; }
