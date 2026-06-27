@@ -108,7 +108,7 @@ REGION_BTNS = ["all", "USA", "Abroad", "Asia", "SE Asia", "E Asia", "S Asia",
 
 # Primary nav — kept to five clear destinations. Secondary pages live in the
 # grouped footer (FOOTER_NAV) so nothing is lost and everything stays crawlable.
-NAV = [("index.html", "Home"), ("market.html", "Market"), ("heatmap.html", "Heatmap"), ("explore.html", "Explore"),
+NAV = [("index.html", "Home"), ("market.html", "Market"), ("explore.html", "Explore"),
        ("around-the-world.html", "Around the World"), ("guides.html", "Guides"), ("cheap-flights.html", "By airport")]
 
 FOOTER_NAV = [
@@ -3445,7 +3445,7 @@ def body_market(market, hist, cards, lastmin, oneway):
   <div class="summary">{market_pulse(market)}</div>
   <div class="sec-head"><h2>Fare heatmap</h2><span>one-way deals vs. their normal price</span></div>
   {heatmap_legend()}
-  {heatmap_preview(oneway, market, 42)}
+  {heatmap_preview(oneway, market, 12)}
   <div style="text-align:center;margin:8px 0 18px"><a class="btn-ghost" href="heatmap.html">View the full heatmap &rarr;</a></div>
   <div class="sec-head" id="market"><h2>Fare indices</h2><span>avg vs. the Standard Meridian, by region</span></div>
   {context_banner(Q_INDICES)}
