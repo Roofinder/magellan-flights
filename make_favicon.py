@@ -9,25 +9,25 @@ import os
 from PIL import Image, ImageDraw
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-BG = (10, 14, 20)       # #0a0e14
-GOLD = (240, 200, 96)   # #f0c860
-GOLD_D = (199, 154, 51)  # #c79a33
-RING = (231, 185, 78)   # #e7b94e
-LINE = (184, 134, 47)   # #b8862f
+BG = (15, 24, 48)       # #0f1830
+GOLD = (124, 196, 255)  # #7cc4ff
+GOLD_D = (43, 111, 214)  # #2b6fd6
+RING = (58, 157, 255)   # #3a9dff
+LINE = (47, 93, 168)    # #2f5da8
 
 # A dark rounded square + the Magellan compass rose (matches LOGO_SVG).
 FAVICON_SVG = (
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">'
-    '<rect width="100" height="100" rx="20" fill="#0a0e14"/>'
-    '<circle cx="50" cy="50" r="46" fill="none" stroke="#e7b94e" stroke-width="3"/>'
-    '<g stroke="#b8862f" stroke-width="1.6" opacity="0.7">'
+    '<rect width="100" height="100" rx="20" fill="#0f1830"/>'
+    '<circle cx="50" cy="50" r="46" fill="none" stroke="#3a9dff" stroke-width="3"/>'
+    '<g stroke="#2f5da8" stroke-width="1.6" opacity="0.7">'
     '<line x1="50" y1="50" x2="71" y2="29"/><line x1="50" y1="50" x2="71" y2="71"/>'
     '<line x1="50" y1="50" x2="29" y2="71"/><line x1="50" y1="50" x2="29" y2="29"/></g>'
-    '<path d="M50 9 L42 42 L50 50 Z" fill="#f0c860"/><path d="M50 9 L58 42 L50 50 Z" fill="#c79a33"/>'
-    '<path d="M91 50 L58 42 L50 50 Z" fill="#f0c860"/><path d="M91 50 L58 58 L50 50 Z" fill="#c79a33"/>'
-    '<path d="M50 91 L58 58 L50 50 Z" fill="#f0c860"/><path d="M50 91 L42 58 L50 50 Z" fill="#c79a33"/>'
-    '<path d="M9 50 L42 58 L50 50 Z" fill="#f0c860"/><path d="M9 50 L42 42 L50 50 Z" fill="#c79a33"/>'
-    '<circle cx="50" cy="50" r="5.5" fill="#0a0e14"/><circle cx="50" cy="50" r="3" fill="#f0c860"/>'
+    '<path d="M50 9 L42 42 L50 50 Z" fill="#7cc4ff"/><path d="M50 9 L58 42 L50 50 Z" fill="#2b6fd6"/>'
+    '<path d="M91 50 L58 42 L50 50 Z" fill="#7cc4ff"/><path d="M91 50 L58 58 L50 50 Z" fill="#2b6fd6"/>'
+    '<path d="M50 91 L58 58 L50 50 Z" fill="#7cc4ff"/><path d="M50 91 L42 58 L50 50 Z" fill="#2b6fd6"/>'
+    '<path d="M9 50 L42 58 L50 50 Z" fill="#7cc4ff"/><path d="M9 50 L42 42 L50 50 Z" fill="#2b6fd6"/>'
+    '<circle cx="50" cy="50" r="5.5" fill="#0f1830"/><circle cx="50" cy="50" r="3" fill="#7cc4ff"/>'
     '</svg>'
 )
 

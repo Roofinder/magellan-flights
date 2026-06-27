@@ -301,7 +301,7 @@ def head_seo(active, full_title, description, market=None):
     tags += [
         f'<link rel="canonical" href="{url}">',
         '<meta name="robots" content="index, follow, max-image-preview:large">',
-        '<meta name="theme-color" content="#0a0e14">',
+        '<meta name="theme-color" content="#0f1830">',
         f'<meta property="og:type" content="website">',
         f'<meta property="og:site_name" content="{BRAND}">',
         f'<meta property="og:title" content="{t}">',
@@ -709,7 +709,7 @@ def sparkline_svg(series, w=84, h=22):
         y = h - 2 - (v - lo) / rng * (h - 4)
         pts.append("%.1f,%.1f" % (x, y))
     falling = series[-1] <= series[0]
-    color = "#27d07a" if falling else "#ff5e5e"
+    color = "#2bd576" if falling else "#ff5e5e"
     label = ("Price trend over %d days: %s, from $%d to $%d, now $%d"
              % (n, "falling" if falling else "rising", lo, hi, series[-1]))
     return ('<svg class="spark" width="%d" height="%d" viewBox="0 0 %d %d" '
@@ -977,7 +977,7 @@ def index_sparkline(series):
     return (
         f'<svg class="idx-chart" viewBox="0 0 280 78" preserveAspectRatio="none" role="img" aria-label="price history">'
         f'<path d="{area}" fill="rgba(231,185,78,.13)"/>'
-        f'<path d="{line}" fill="none" stroke="#e7b94e" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>'
+        f'<path d="{line}" fill="none" stroke="#3a9dff" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>'
         f'<text x="6" y="11" fill="#7e90ad" font-size="9">${hi:,.0f}</text>'
         f'<text x="6" y="{H - 2:.0f}" fill="#7e90ad" font-size="9">${lo:,.0f}</text>'
         f'</svg>'
@@ -1209,7 +1209,7 @@ CHAT_HTML = f"""
 
 # Digital astrolabe — thin-line gold loader (rotating rete over a graduated ring).
 ASTRO_SVG = (
-    '<svg viewBox="0 0 100 100" fill="none" stroke="#e7b94e" stroke-width="1.4" '
+    '<svg viewBox="0 0 100 100" fill="none" stroke="#3a9dff" stroke-width="1.4" '
     'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
     '<circle cx="50" cy="50" r="47" stroke-opacity=".9"/>'
     '<circle cx="50" cy="50" r="43" stroke-width="1" stroke-opacity=".5"/>'
@@ -1223,36 +1223,36 @@ ASTRO_SVG = (
     '<line x1="50" y1="50" x2="74" y2="30"/>'
     '<line x1="50" y1="50" x2="26" y2="70"/>'
     '<line x1="50" y1="50" x2="30" y2="34"/>'
-    '<circle cx="74" cy="30" r="1.8" fill="#e7b94e" stroke="none"/>'
-    '<circle cx="26" cy="70" r="1.8" fill="#e7b94e" stroke="none"/>'
-    '<circle cx="30" cy="34" r="1.6" fill="#e7b94e" stroke="none"/>'
+    '<circle cx="74" cy="30" r="1.8" fill="#3a9dff" stroke="none"/>'
+    '<circle cx="26" cy="70" r="1.8" fill="#3a9dff" stroke="none"/>'
+    '<circle cx="30" cy="34" r="1.6" fill="#3a9dff" stroke="none"/>'
     '</g>'
     '<line x1="50" y1="3" x2="50" y2="97" stroke-width="1" stroke-opacity=".4"/>'
     '<line x1="3" y1="50" x2="97" y2="50" stroke-width="1" stroke-opacity=".4"/>'
-    '<circle cx="50" cy="50" r="3.4" fill="#0a0e14"/>'
-    '<circle cx="50" cy="50" r="2.2" fill="#e7b94e" stroke="none"/>'
+    '<circle cx="50" cy="50" r="3.4" fill="#0f1830"/>'
+    '<circle cx="50" cy="50" r="2.2" fill="#3a9dff" stroke="none"/>'
     '</svg>'
 )
 
 LOGO_SVG = (
     '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'
-    '<circle cx="50" cy="50" r="47" fill="none" stroke="#e7b94e" stroke-width="2"/>'
-    '<circle cx="50" cy="50" r="39" fill="none" stroke="#e7b94e" stroke-width="1" opacity="0.4"/>'
+    '<circle cx="50" cy="50" r="47" fill="none" stroke="#3a9dff" stroke-width="2"/>'
+    '<circle cx="50" cy="50" r="39" fill="none" stroke="#3a9dff" stroke-width="1" opacity="0.4"/>'
     '<g stroke="#b8862f" stroke-width="1.4" opacity="0.7">'
     '<line x1="50" y1="50" x2="71" y2="29"/><line x1="50" y1="50" x2="71" y2="71"/>'
     '<line x1="50" y1="50" x2="29" y2="71"/><line x1="50" y1="50" x2="29" y2="29"/></g>'
-    '<path d="M50 7 L42 42 L50 50 Z" fill="#f0c860"/><path d="M50 7 L58 42 L50 50 Z" fill="#c79a33"/>'
-    '<path d="M93 50 L58 42 L50 50 Z" fill="#f0c860"/><path d="M93 50 L58 58 L50 50 Z" fill="#c79a33"/>'
-    '<path d="M50 93 L58 58 L50 50 Z" fill="#f0c860"/><path d="M50 93 L42 58 L50 50 Z" fill="#c79a33"/>'
-    '<path d="M7 50 L42 58 L50 50 Z" fill="#f0c860"/><path d="M7 50 L42 42 L50 50 Z" fill="#c79a33"/>'
-    '<circle cx="50" cy="50" r="5.5" fill="#0a0e14"/><circle cx="50" cy="50" r="3" fill="#f0c860"/>'
+    '<path d="M50 7 L42 42 L50 50 Z" fill="#7cc4ff"/><path d="M50 7 L58 42 L50 50 Z" fill="#2b6fd6"/>'
+    '<path d="M93 50 L58 42 L50 50 Z" fill="#7cc4ff"/><path d="M93 50 L58 58 L50 50 Z" fill="#2b6fd6"/>'
+    '<path d="M50 93 L58 58 L50 50 Z" fill="#7cc4ff"/><path d="M50 93 L42 58 L50 50 Z" fill="#2b6fd6"/>'
+    '<path d="M7 50 L42 58 L50 50 Z" fill="#7cc4ff"/><path d="M7 50 L42 42 L50 50 Z" fill="#2b6fd6"/>'
+    '<circle cx="50" cy="50" r="5.5" fill="#0f1830"/><circle cx="50" cy="50" r="3" fill="#7cc4ff"/>'
     '</svg>'
 )
 
 CSS = r"""<style>
-  :root{ --bg:#0a0e14; --card:#121821; --ink:#e9edf4; --muted:#94a0b3; --line:#222b38;
-         --blue:#e7b94e; --blue-d:#d2a23a; --green:#27d07a; --green-bg:rgba(39,208,122,.14);
-         --red:#ff5e5e; --amber:#e7b94e; --amber-bg:rgba(231,185,78,.14); --ink2:#070a10; --gold:#e7b94e; }
+  :root{ --bg:#0f1830; --card:#16223f; --ink:#eef2fb; --muted:#9aa6c4; --line:#27345a;
+         --blue:#3a9dff; --blue-d:#2b6fd6; --green:#2bd576; --green-bg:rgba(43,213,118,.14);
+         --red:#ff5e5e; --amber:#e8b53e; --amber-bg:rgba(232,181,62,.14); --ink2:#070a10; --gold:#3a9dff; }
   *{ box-sizing:border-box; }
   .hicon{ width:1em; height:1em; display:inline-block; vertical-align:-0.13em; margin-right:.38em; flex:0 0 auto; }
   body{ margin:0; background:var(--bg); color:var(--ink);
@@ -1359,7 +1359,7 @@ CSS = r"""<style>
   .mv-sortbtn:hover{ color:var(--ink); }
   .mv-sortbtn.on{ color:var(--gold); font-weight:600; }
   .mv-ar{ font-size:10px; }
-  .lp-dot{ display:inline-block; width:7px; height:7px; border-radius:50%; background:#27d07a; margin-right:6px; vertical-align:middle; animation:lppulse 1.8s infinite; }
+  .lp-dot{ display:inline-block; width:7px; height:7px; border-radius:50%; background:#2bd576; margin-right:6px; vertical-align:middle; animation:lppulse 1.8s infinite; }
   @keyframes lppulse{ 0%{box-shadow:0 0 0 0 rgba(39,208,122,.5)} 70%{box-shadow:0 0 0 6px rgba(39,208,122,0)} 100%{box-shadow:0 0 0 0 rgba(39,208,122,0)} }
   .ticker-toggle{ background:#0e141d; color:var(--gold); border:1px solid var(--line); border-radius:8px; padding:6px 9px; font-size:12px; cursor:pointer; display:inline-flex; align-items:center; gap:5px; line-height:1; }
   .ticker-toggle:hover{ border-color:var(--gold); }
@@ -1691,7 +1691,7 @@ CSS = r"""<style>
   .lander .lead .buy{ color:var(--green); font-weight:700; }
   /* ---- Hybrid bright hero (light sky band; dark data resumes below) ---- */
   .lander-bright{ background:linear-gradient(180deg,#dcebff 0%,#e8f3ff 8%,#eaf4ff 60%,#dfeefc 100%); }
-  .lander-bright{ background:linear-gradient(180deg,#d6e9ff 0%,#e9f4ff 55%,#f4faff 100%); border-bottom:1px solid #0a0e14; }
+  .lander-bright{ background:linear-gradient(180deg,#d6e9ff 0%,#e9f4ff 55%,#f4faff 100%); border-bottom:1px solid #0f1830; }
   .lander-bright h1{ color:#0d1a30; }
   .lander-bright h1 .g{ color:#1769c4; }
   .lander-bright .lead{ color:#3c4a62; }
@@ -1716,7 +1716,7 @@ CSS = r"""<style>
   .fs-alert-lab{ display:block; font-size:13.5px; font-weight:700; color:#26344b; margin-bottom:7px; }
   .fs-alert-lab span{ color:#7a8aa3; font-weight:500; }
   .fs-alert input{ width:100%; background:#fff; border:1px solid #cfdbeb; border-radius:9px; padding:11px 12px; font-size:15px; }
-  .fs-go{ display:block; width:100%; background:var(--gold); color:#1a1205; font-weight:800; font-size:16px; border:0;
+  .fs-go{ display:block; width:100%; background:var(--green); color:#06281a; font-weight:800; font-size:16px; border:0;
           border-radius:11px; padding:14px; cursor:pointer; letter-spacing:.02em; }
   .fs-go:hover{ filter:brightness(1.05); }
   @media(max-width:560px){ .fs-od{ flex-wrap:wrap; } .fs-swap{ display:none; } }
@@ -1736,7 +1736,7 @@ CSS = r"""<style>
   .winner{ display:flex; flex-wrap:wrap; align-items:center; gap:14px 22px; margin:20px 0 4px; padding:20px 24px 18px; border-radius:18px; text-decoration:none; color:var(--ink);
     background:linear-gradient(120deg,#1d1708 0%,#0e141d 58%); border:1px solid rgba(212,175,90,.45); position:relative; overflow:hidden; transition:border-color .15s, transform .15s; }
   .winner:hover{ border-color:var(--gold); transform:translateY(-2px); }
-  .winner-badge{ position:absolute; top:0; left:0; background:var(--gold); color:#1a1205; font-size:11px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; padding:5px 12px; border-bottom-right-radius:12px; }
+  .winner-badge{ position:absolute; top:0; left:0; background:var(--gold); color:#06203f; font-size:11px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; padding:5px 12px; border-bottom-right-radius:12px; }
   .winner-main{ flex:1 1 240px; min-width:190px; padding-top:12px; }
   .winner-city{ font-size:27px; font-weight:800; line-height:1.15; }
   .winner-route{ color:var(--muted); font-size:13.5px; margin-top:4px; }
@@ -1772,16 +1772,16 @@ CSS = r"""<style>
   .wm-title{ font-weight:700; font-size:14px; color:var(--ink); }
   .wm-leg{ font-size:11.5px; color:var(--muted); display:inline-flex; align-items:center; gap:7px; }
   .lg-glow{ width:20px; height:0; border-top:2px solid var(--green); box-shadow:0 0 6px var(--green); display:inline-block; }
-  .worldmap{ width:100%; height:auto; display:block; border-radius:10px; background:#0a0e14; }
-  .ml-grat line{ stroke:#e7b94e; stroke-width:0.5; opacity:0.13; stroke-dasharray:1 5; }
-  .ml-rhumb line{ stroke:#e7b94e; stroke-width:0.4; opacity:0.14; }
-  .ml-rhumb circle{ stroke:#e7b94e; opacity:0.4; }
-  .ml-lab{ font-family:ui-monospace,Menlo,Consolas,monospace; font-size:11px; letter-spacing:2px; fill:#e7b94e; opacity:0.26; }
+  .worldmap{ width:100%; height:auto; display:block; border-radius:10px; background:#0f1830; }
+  .ml-grat line{ stroke:#3a9dff; stroke-width:0.5; opacity:0.13; stroke-dasharray:1 5; }
+  .ml-rhumb line{ stroke:#3a9dff; stroke-width:0.4; opacity:0.14; }
+  .ml-rhumb circle{ stroke:#3a9dff; opacity:0.4; }
+  .ml-lab{ font-family:ui-monospace,Menlo,Consolas,monospace; font-size:11px; letter-spacing:2px; fill:#3a9dff; opacity:0.26; }
   #mapRoutes path{ stroke:#566273; stroke-width:0.7; opacity:0.5; cursor:pointer; }
   #mapRoutes path:hover{ stroke:#9aa6b6; opacity:0.9; }
-  #mapGlow path{ stroke:#27d07a; stroke-width:1.5; opacity:0.95; cursor:pointer; }
+  #mapGlow path{ stroke:#2bd576; stroke-width:1.5; opacity:0.95; cursor:pointer; }
   #mapGlow path:hover{ stroke:#5fffa6; }
-  #mapDots circle{ fill:#f0c860; }
+  #mapDots circle{ fill:#7cc4ff; }
   .wm-hint{ font-size:11.5px; color:var(--muted); text-align:center; padding:7px 0 2px; }
 
   /* ====================  Trip Lab + live prices  ==================== */
@@ -2442,7 +2442,7 @@ def world_map_html():
            '<defs><filter id="mglow" x="-50%" y="-50%" width="200%" height="200%">'
            '<feGaussianBlur stdDeviation="3" result="b"/><feMerge>'
            '<feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>'
-           '<rect x="0" y="0" width="1000" height="500" fill="#0a0e14"/>'
+           '<rect x="0" y="0" width="1000" height="500" fill="#0f1830"/>'
            f'<g class="ml-grat">{"".join(grat)}</g>'
            f'<g class="ml-rhumb">{"".join(rhumb)}</g>'
            f'{"".join(labs)}'
@@ -2602,7 +2602,7 @@ def oneway_board(oneway, market, limit=8):
     if not cards:
         return ""
     return (f'<section class="home-sec"><div class="sec-head">'
-            f'<h2><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5c.8 0 1.3 1.1 1.3 2.6v3.7l7.2 4.1v1.9l-7.2-2.1v3.6l1.9 1.4v1.5L12 18.5l-3.2 1.2v-1.5l1.9-1.4v-3.6L3.5 14.8v-1.9l7.2-4.1V5.1C10.7 3.6 11.2 2.5 12 2.5z"/></svg> One-way Voyages</h2>'
+            f'<h2><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#3a9dff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5c.8 0 1.3 1.1 1.3 2.6v3.7l7.2 4.1v1.9l-7.2-2.1v3.6l1.9 1.4v1.5L12 18.5l-3.2 1.2v-1.5l1.9-1.4v-3.6L3.5 14.8v-1.9l7.2-4.1V5.1C10.7 3.6 11.2 2.5 12 2.5z"/></svg> One-way Voyages</h2>'
             f'<span>cheap one-way fares to anywhere</span></div>'
             f'<div class="grid">{"".join(cards)}</div></section>')
 
@@ -3061,7 +3061,7 @@ def oneway_market(oneway, market, limit=30):
         summary = (f'<summary class="owc-sum"><span class="owc-country">{flag}<span>{html.escape(cname)}</span></span>'
                    f'<span class="owc-meta">from <b>${cheapest:,.0f}</b> one-way &middot; {nc} cit{"y" if nc == 1 else "ies"}</span></summary>')
         body.append(f'<details class="owc" data-region="{reg}" data-country="{html.escape(cname.lower(), quote=True)}" data-cities="{cities_attr}">{summary}<div class="owc-body">{city_rows}</div></details>')
-    head = ('<div class="sec-head" id="deals"><h2><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5c.8 0 1.3 1.1 1.3 2.6v3.7l7.2 4.1v1.9l-7.2-2.1v3.6l1.9 1.4v1.5L12 18.5l-3.2 1.2v-1.5l1.9-1.4v-3.6L3.5 14.8v-1.9l7.2-4.1V5.1C10.7 3.6 11.2 2.5 12 2.5z"/></svg> One-way Voyages</h2>'
+    head = ('<div class="sec-head" id="deals"><h2><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#3a9dff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5c.8 0 1.3 1.1 1.3 2.6v3.7l7.2 4.1v1.9l-7.2-2.1v3.6l1.9 1.4v1.5L12 18.5l-3.2 1.2v-1.5l1.9-1.4v-3.6L3.5 14.8v-1.9l7.2-4.1V5.1C10.7 3.6 11.2 2.5 12 2.5z"/></svg> One-way Voyages</h2>'
             f'<span>{ncountries} countries &middot; {ncities} cheap one-way fares &middot; tap a country to see its cities</span></div>')
     chips_html = f'<div class="airchips" style="margin:2px 0 10px">{"".join(chips)}</div>'
     searchbar = ('<div class="owm-bar"><input type="text" id="ow-q" placeholder="Search a country or city\u2026" oninput="owApply()" autocomplete="off">'
@@ -3161,7 +3161,7 @@ def body_market(market, hist, cards, lastmin, oneway):
   <div class="indices">{index_cards(oneway, hist)}</div>
   <p class="finehint" style="text-align:center;margin:2px 0 14px">See the bigger picture &mdash; <a href="cheap-flight-index.html" style="color:var(--gold);font-weight:600">the Magellan Cheap Flight Index</a>: the cheapest places to fly from the USA right now, by region and by airport.</p>
   {oneway_market(oneway, market)}
-  <div class="sec-head"><h2><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.2v5l3.2 2"/></svg> Last-minute one-ways</h2><span>cheapest one-ways leaving soon</span></div>
+  <div class="sec-head"><h2><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#3a9dff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.2v5l3.2 2"/></svg> Last-minute one-ways</h2><span>cheapest one-ways leaving soon</span></div>
   {oneway_lastminute(oneway, market, 8)}
 </div>"""
 
@@ -3353,11 +3353,11 @@ def body_rtw(world):
                         'Try different settings, or browse one-way deals on the '
                         '<a href="market.html" style="color:var(--gold)">Market</a>.</div>')
 
-    COMPASS = ('<svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" '
+    COMPASS = ('<svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#3a9dff" stroke-width="1.7" '
                'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/>'
                '<path d="m15.6 8.4-2.1 5.1-5.1 2.1 2.1-5.1 5.1-2.1z"/></svg>')
 
-    shell = """<style>.mf-ledger{margin-top:14px;background:#0e141d;border:1px solid #1d2735;border-radius:12px;padding:14px}.mf-totals{display:flex;gap:12px;flex-wrap:wrap}.mf-tot{flex:1;min-width:150px;background:#121a26;border:1px solid #1d2735;border-radius:10px;padding:10px 12px}.mf-tot .mf-lbl{display:block;font-size:12px;color:var(--muted)}.mf-tot .mf-val{font-size:22px;font-weight:700}.mf-tot .mf-sub{display:block;font-size:11px;color:var(--muted);margin-top:2px}.mf-conf{border-color:rgba(39,208,122,.45)}.mf-conf .mf-val{color:#27d07a}.mf-save{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}.mf-save input{flex:1;min-width:180px;background:#121a26;border:1px solid #1d2735;border-radius:8px;color:#fff;padding:8px 10px;font:inherit}.rtw-confwrap{display:flex;align-items:center;gap:6px;margin-top:6px}.rtw-bk{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);cursor:pointer}.rtw-bp{width:84px;background:#121a26;border:1px solid #1d2735;border-radius:6px;color:#fff;padding:3px 6px;font:inherit}.rtw-bp:disabled{opacity:.4}.mf-trips-h{font-size:12px;color:var(--muted);margin:14px 0 4px}.mf-trip{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 0;border-top:1px solid #1d2735}.mf-trip-nm{font-weight:600}.mf-trip-meta{font-size:12px;color:var(--muted)}.mf-mini{padding:3px 10px;font-size:12px}.rtw-mustchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.rtw-chip{display:inline-flex;align-items:center;gap:5px;background:#1a2433;border:1px solid #27344a;border-radius:999px;padding:3px 4px 3px 10px;font-size:12px;color:#fff}.rtw-chip button{background:none;border:none;color:var(--muted);cursor:pointer;font-size:15px;line-height:1;padding:0 3px}.rtw-chip button:hover{color:#fff}.rtw-mustbtns{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px;font-size:12px;color:var(--muted)}.rtw-mustbtns select{background:#121a26;border:1px solid #1d2735;border-radius:6px;color:#fff;padding:3px 6px;font:inherit}.rtw-mustnote{font-size:11px;color:var(--muted);margin-top:6px}</style>
+    shell = """<style>.mf-ledger{margin-top:14px;background:#0e141d;border:1px solid #1d2735;border-radius:12px;padding:14px}.mf-totals{display:flex;gap:12px;flex-wrap:wrap}.mf-tot{flex:1;min-width:150px;background:#121a26;border:1px solid #1d2735;border-radius:10px;padding:10px 12px}.mf-tot .mf-lbl{display:block;font-size:12px;color:var(--muted)}.mf-tot .mf-val{font-size:22px;font-weight:700}.mf-tot .mf-sub{display:block;font-size:11px;color:var(--muted);margin-top:2px}.mf-conf{border-color:rgba(39,208,122,.45)}.mf-conf .mf-val{color:#2bd576}.mf-save{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}.mf-save input{flex:1;min-width:180px;background:#121a26;border:1px solid #1d2735;border-radius:8px;color:#fff;padding:8px 10px;font:inherit}.rtw-confwrap{display:flex;align-items:center;gap:6px;margin-top:6px}.rtw-bk{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);cursor:pointer}.rtw-bp{width:84px;background:#121a26;border:1px solid #1d2735;border-radius:6px;color:#fff;padding:3px 6px;font:inherit}.rtw-bp:disabled{opacity:.4}.mf-trips-h{font-size:12px;color:var(--muted);margin:14px 0 4px}.mf-trip{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 0;border-top:1px solid #1d2735}.mf-trip-nm{font-weight:600}.mf-trip-meta{font-size:12px;color:var(--muted)}.mf-mini{padding:3px 10px;font-size:12px}.rtw-mustchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.rtw-chip{display:inline-flex;align-items:center;gap:5px;background:#1a2433;border:1px solid #27344a;border-radius:999px;padding:3px 4px 3px 10px;font-size:12px;color:#fff}.rtw-chip button{background:none;border:none;color:var(--muted);cursor:pointer;font-size:15px;line-height:1;padding:0 3px}.rtw-chip button:hover{color:#fff}.rtw-mustbtns{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px;font-size:12px;color:var(--muted)}.rtw-mustbtns select{background:#121a26;border:1px solid #1d2735;border-radius:6px;color:#fff;padding:3px 6px;font:inherit}.rtw-mustnote{font-size:11px;color:var(--muted);margin-top:6px}</style>
 <div class="wrap">
   <div class="pagehead"><h1>__COMPASS__ Ferdinand&rsquo;s World Loop</h1>
   <p>Five centuries after Magellan circled the globe, build your own cheapest way to do it today &mdash; one cheap one-way at a time. Set your start, stops, regions and budget, and we&rsquo;ll find the lowest-cost real loop our tracker can assemble right now.</p></div>
@@ -3753,7 +3753,7 @@ function exPlanRender(o,d,rt,data){ var out=go('ep-out'); if(!data.length){ out.
 
 def body_lastminute(lm):
     return f"""<div class="wrap">
-  <div class="pagehead"><h1><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.2v5l3.2 2"/></svg> Last-minute one-ways</h1><p>Cheapest one-way fares leaving soon, from anywhere in the USA. Filter by region &mdash; tap one or several (USA for domestic).</p></div>
+  <div class="pagehead"><h1><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#3a9dff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.2v5l3.2 2"/></svg> Last-minute one-ways</h1><p>Cheapest one-way fares leaving soon, from anywhere in the USA. Filter by region &mdash; tap one or several (USA for domestic).</p></div>
   <div class="airchips" style="margin:6px 0 16px;">{region_chip_bar("data-lmr", "toggleLMR")}</div>
   <div class="panel"><div id="lmlist"></div></div>
 </div>"""
@@ -3773,7 +3773,7 @@ def body_airports(home):
   <div class="sec-head"><h2>Deals from your airport</h2><span>tap &#9734; to watch</span></div>
   <div class="airchips" style="margin:6px 0 8px;">
     <button class="airchip on" data-act="any" onclick="setACMode('any')">Cheapest anytime</button>
-    <button class="airchip" data-act="lm" onclick="setACMode('lm')"><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#e7b94e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.2v5l3.2 2"/></svg> Last-minute this week</button>
+    <button class="airchip" data-act="lm" onclick="setACMode('lm')"><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#3a9dff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.2v5l3.2 2"/></svg> Last-minute this week</button>
   </div>
   <div class="airchips" style="margin:0 0 14px;">{region_chip_bar("data-acr", "toggleACR")}</div>
   <div class="panel"><div id="citydeals"></div>

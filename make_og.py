@@ -9,10 +9,10 @@ from PIL import Image, ImageDraw, ImageFont
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 W, H = 1200, 630
-BG = (10, 14, 20)        # #0a0e14
-CARD = (18, 24, 33)      # #121821
-GOLD = (231, 185, 78)    # #e7b94e
-INK = (233, 237, 244)    # #e9edf4
+BG = (15, 24, 48)        # #0f1830
+CARD = (22, 34, 63)      # #16223f
+AZ = (58, 157, 255)      # #3a9dff (brand azure)
+INK = (238, 242, 251)    # #eef2fb
 MUTE = (148, 160, 179)   # #94a0b3
 
 
@@ -32,9 +32,9 @@ def main():
 
     # subtle latitude grid (market/map motif)
     for y in range(70, H, 70):
-        d.line([(0, y), (W, y)], fill=(22, 30, 44), width=1)
+        d.line([(0, y), (W, y)], fill=(26, 40, 72), width=1)
     for x in range(70, W, 70):
-        d.line([(x, 0), (x, H)], fill=(18, 24, 36), width=1)
+        d.line([(x, 0), (x, H)], fill=(20, 32, 60), width=1)
 
     # a gold "great-circle" arc — the Magellan voyage motif
     pts = []
@@ -43,21 +43,21 @@ def main():
         x = 80 + t * (W - 160)
         y = 470 - math.sin(t * math.pi) * 230
         pts.append((x, y))
-    d.line(pts, fill=GOLD, width=4, joint="curve")
+    d.line(pts, fill=AZ, width=4, joint="curve")
     # endpoint dots
     d.ellipse([72, 462, 96, 486], fill=INK)
-    d.ellipse([W - 96, 462, W - 72, 486], outline=GOLD, width=4)
+    d.ellipse([W - 96, 462, W - 72, 486], outline=AZ, width=4)
     # little plane at the apex
     ax, ay = pts[50]
     d.polygon([(ax - 14, ay + 8), (ax + 16, ay), (ax - 14, ay - 8), (ax - 6, ay)],
-              fill=GOLD)
+              fill=AZ)
 
     big = _font(["segoeuib.ttf", "Arialbd.ttf", "arialbd.ttf", "DejaVuSans-Bold.ttf"], 92)
     mid = _font(["segoeui.ttf", "Arial.ttf", "arial.ttf", "DejaVuSans.ttf"], 38)
     small = _font(["segoeui.ttf", "Arial.ttf", "arial.ttf", "DejaVuSans.ttf"], 30)
 
     d.text((80, 110), "Magellan Flights", font=big, fill=INK)
-    d.text((84, 222), "The cheapest flights from the USA", font=mid, fill=GOLD)
+    d.text((84, 222), "The cheapest flights from the USA", font=mid, fill=AZ)
     d.text((84, 540), "magellanflights.com", font=small, fill=MUTE)
 
     for name in ("og-image.png", os.path.join("site", "og-image.png")):
