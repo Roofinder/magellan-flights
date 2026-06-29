@@ -2459,7 +2459,17 @@ def render_page(active, title, body, market, oneway, onewaylm, home, lm, world, 
               .replace("__ACOJS__", MAP_COORDS if active == "world.html" else "{}")
               .replace("__ASTRO__", ASTRO_SVG))
     foot = site_footer(today)
-    _cc = "{}"; _bm = "{}"; _names = "{}"; _major = "[]"
+    _cc = "{}"; _bm = "{}"; _names = "{}"; _major = "[]"; _heron = "{}"
+    if active in ("index.html", "our-story.html"):
+        try:
+            _hc = set(WORLD_HUBS.keys()) | set(home.keys())
+            for _o in oneway:
+                _hc.add(_o.get("code")); _hc.add(_o.get("origin"))
+            for _m in market:
+                _hc.add(_m.get("code")); _hc.add(_m.get("origin"))
+            _heron = json.dumps({c: AIRPORT_NAMES[c] for c in sorted(_hc) if c and c in AIRPORT_NAMES})
+        except Exception:
+            pass
     if active == "explore.html":
         try:
             with open(os.path.join(HERE, "airport_names.json"), encoding="utf-8") as _nf:
@@ -2505,7 +2515,7 @@ def render_page(active, title, body, market, oneway, onewaylm, home, lm, world, 
             f'<link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">\n'
             f'<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">\n'
             f'<link rel="apple-touch-icon" href="apple-touch-icon.png">\n'
-            f'{CSS}\n</head>\n{top_chrome(active, market)}\n{CHART_BG}\n{body}\n{CHAT_HTML}\n{WIDGET_HTML}\n{foot}\n{script}\n{POPUP_JS}\n</body>\n</html>').replace("__CCJS__", _cc).replace("__BMJS__", _bm).replace("__NAMESJS__", _names).replace("__MAJORJS__", _major)
+            f'{CSS}\n</head>\n{top_chrome(active, market)}\n{CHART_BG}\n{body}\n{CHAT_HTML}\n{WIDGET_HTML}\n{foot}\n{script}\n{POPUP_JS}\n</body>\n</html>').replace("__CCJS__", _cc).replace("__BMJS__", _bm).replace("__NAMESJS__", _names).replace("__MAJORJS__", _major).replace("__HERONAMESJS__", _heron)
 
 
 # --------------------------------------------------------------------------- #
@@ -2749,22 +2759,47 @@ def oneway_board(oneway, market, limit=8):
 
 
 HOME_SEARCH_JS = """<script>
+var HNAMES=__HERONAMESJS__;
 function fsTrip(t){ var r=document.getElementById('hs-return-wrap'); if(r) r.style.display=(t==='oneway')?'none':''; }
-function fsSwap(){ var a=document.getElementById('hs-from'), b=document.getElementById('hs-to'); if(a&&b){ var v=a.value; a.value=b.value; b.value=v; } }
+function fsSwap(){ var a=document.getElementById('hs-from'), b=document.getElementById('hs-to'), ac=document.getElementById('hs-from-code'), bc=document.getElementById('hs-to-code');
+  if(a&&b){ var v=a.value; a.value=b.value; b.value=v; } if(ac&&bc){ var c=ac.value; ac.value=bc.value; bc.value=c; } }
+function hsAC(which){
+  var inp=document.getElementById('hs-'+which), drop=document.getElementById('hs-'+which+'-ac'), hid=document.getElementById('hs-'+which+'-code');
+  if(hid) hid.value='';
+  var q=(inp.value||'').trim().toLowerCase(); if(q.length<2){ drop.style.display='none'; drop.innerHTML=''; return; }
+  var starts=[],cont=[]; for(var c in HNAMES){ var nm=HNAMES[c]; if(!nm) continue; var i=nm.toLowerCase().indexOf(q); if(i<0) continue; (i===0?starts:cont).push([c,nm]); }
+  var list=starts.concat(cont).slice(0,7); if(!list.length){ drop.style.display='none'; drop.innerHTML=''; return; }
+  drop.innerHTML=list.map(function(x){ return '<div class="ac-item" data-code="'+x[0]+'" data-name="'+x[1].replace(/"/g,'&quot;')+'"><span>'+x[1]+'</span><span class="ac-code">'+x[0]+'</span></div>'; }).join('');
+  drop.style.display='block';
+  if(!drop._b){ drop._b=1; drop.addEventListener('click', function(e){ var it=e.target.closest('.ac-item'); if(!it) return; inp.value=it.getAttribute('data-name'); if(hid) hid.value=it.getAttribute('data-code'); drop.style.display='none'; }); }
+}
+document.addEventListener('click', function(e){ if(!e.target.closest('.ac-wrap')){ var ds=document.querySelectorAll('.ac-drop'); for(var i=0;i<ds.length;i++) ds[i].style.display='none'; } });
+function hsResolve(txt){ if(!txt) return ''; var up=txt.trim().toUpperCase(); if(/^[A-Z]{3}$/.test(up)) return up; var q=txt.trim().toLowerCase();
+  for(var c in HNAMES){ if((HNAMES[c]||'').toLowerCase().indexOf(q)===0) return c; } for(var c2 in HNAMES){ if((HNAMES[c2]||'').toLowerCase().indexOf(q)>=0) return c2; } return ''; }
+function fsDDMM(v){ if(!v) return ''; var p=v.split('-'); return (p.length<3)?'':(p[2]+p[1]); }
+function fsSoon(days){ var d=new Date(); d.setDate(d.getDate()+days); return ('0'+d.getDate()).slice(-2)+('0'+(d.getMonth()+1)).slice(-2); }
 function homeSearch(e){ e.preventDefault();
-  var f=(document.getElementById('hs-from').value||'').trim();
-  var t=(document.getElementById('hs-to').value||'').trim();
+  var fEl=document.getElementById('hs-from'), tEl=document.getElementById('hs-to');
+  var f=(fEl.value||'').trim(), t=(tEl.value||'').trim();
+  if(!f){ fEl.focus(); return false; } if(!t){ tEl.focus(); return false; }
+  var fc=((document.getElementById('hs-from-code')||{}).value)||hsResolve(f);
+  var tc=((document.getElementById('hs-to-code')||{}).value)||hsResolve(t);
   var dep=document.getElementById('hs-depart').value, ret=document.getElementById('hs-return').value;
   var owEl=document.querySelector('input[name="fs-trip"]:checked'); var oneway=(owEl&&owEl.value==='oneway');
-  var nsEl=document.getElementById('hs-nonstop'); var nonstop=(nsEl&&nsEl.checked);
+  var travEl=document.getElementById('hs-trav'); var adults=1; if(travEl){ var mt=(travEl.value||'').match(/[0-9]+/); if(mt) adults=Math.max(1,parseInt(mt[0],10)); }
   var emEl=document.getElementById('hs-email'); var em=emEl?emEl.value.trim():'';
-  if(!f){ document.getElementById('hs-from').focus(); return false; }
-  if(!t){ document.getElementById('hs-to').focus(); return false; }
   var sub=e.target.getAttribute('data-subscribe');
   if(em && sub){ try{ window.open(sub+(sub.indexOf('?')<0?'?':'&')+'email='+encodeURIComponent(em),'_blank','noopener'); }catch(_){} }
+  if(fc && tc && fc!==tc){
+    var dd=fsDDMM(dep)||fsSoon(21); var path=fc+dd+tc;
+    if(!oneway){ path+=(fsDDMM(ret)||fsSoon(28)); }
+    path+=adults;
+    window.location.href='https://www.aviasales.com/search/'+path+'?marker=741311'; return false;
+  }
   var q='explore.html?from='+encodeURIComponent(f)+'&to='+encodeURIComponent(t)+'&trip='+(oneway?'oneway':'round');
-  if(dep) q+='&depart='+dep; if(ret && !oneway) q+='&return='+ret; if(nonstop) q+='&nonstop=1';
-  window.location.href=q; return false; }
+  if(dep) q+='&depart='+dep; if(ret && !oneway) q+='&return='+ret;
+  window.location.href=q; return false;
+}
 </script>"""
 
 
@@ -2801,9 +2836,9 @@ def body_home(market, hist, cards, lastmin, oneway, summary, world):
         <label class="fs-check"><input type="checkbox" id="hs-nonstop"> Non-stop only</label>
       </div>
       <div class="fs-row fs-od">
-        <div class="fs-field"><label>From</label><input id="hs-from" placeholder="City or airport" autocomplete="off"></div>
+        <div class="fs-field"><label>From</label><span class="ac-wrap" style="display:block"><input id="hs-from" placeholder="City or airport" autocomplete="off" oninput="hsAC('from')" style="width:100%"><div id="hs-from-ac" class="ac-drop"></div></span><input type="hidden" id="hs-from-code"></div>
         <button type="button" class="fs-swap" onclick="fsSwap()" aria-label="Swap from and to" title="Swap">&#8644;</button>
-        <div class="fs-field"><label>To</label><input id="hs-to" placeholder="Where to?" autocomplete="off"></div>
+        <div class="fs-field"><label>To</label><span class="ac-wrap" style="display:block"><input id="hs-to" placeholder="Where to?" autocomplete="off" oninput="hsAC('to')" style="width:100%"><div id="hs-to-ac" class="ac-drop"></div></span><input type="hidden" id="hs-to-code"></div>
       </div>
       <div class="fs-row">
         <div class="fs-field"><label>Depart</label><input id="hs-depart" type="date"></div>
@@ -2858,9 +2893,9 @@ def body_story(market, oneway, world):
         <label class="fs-check"><input type="checkbox" id="hs-nonstop"> Non-stop only</label>
       </div>
       <div class="fs-row fs-od">
-        <div class="fs-field"><label>From</label><input id="hs-from" placeholder="City or airport" autocomplete="off"></div>
+        <div class="fs-field"><label>From</label><span class="ac-wrap" style="display:block"><input id="hs-from" placeholder="City or airport" autocomplete="off" oninput="hsAC('from')" style="width:100%"><div id="hs-from-ac" class="ac-drop"></div></span><input type="hidden" id="hs-from-code"></div>
         <button type="button" class="fs-swap" onclick="fsSwap()" aria-label="Swap from and to" title="Swap">&#8644;</button>
-        <div class="fs-field"><label>To</label><input id="hs-to" placeholder="Where to?" autocomplete="off"></div>
+        <div class="fs-field"><label>To</label><span class="ac-wrap" style="display:block"><input id="hs-to" placeholder="Where to?" autocomplete="off" oninput="hsAC('to')" style="width:100%"><div id="hs-to-ac" class="ac-drop"></div></span><input type="hidden" id="hs-to-code"></div>
       </div>
       <div class="fs-row">
         <div class="fs-field"><label>Depart</label><input id="hs-depart" type="date"></div>
