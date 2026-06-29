@@ -5898,22 +5898,31 @@ def body_newsletter(market, oneway):
     <p style="font-size:12.5px;color:var(--muted);margin-top:10px">Free &middot; one email a week &middot; unsubscribe anytime.</p>
     <script>function nlSub(e){{e.preventDefault();var v=(document.getElementById('nl-email').value||'').trim();if(!v)return false;var u="{BEEHIIV_URL}";window.location.href=u+(u.indexOf('?')<0?'?':'&')+'email='+encodeURIComponent(v);return false;}}</script>
   </div></div>
+  <div class="blog-sec"><h2>How it works</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:6px">
+    <div class="why-card"><span class="eyebrow" style="color:var(--green)">Step 1</span><h3 style="margin:6px 0 6px">We track airfare daily</h3><p style="margin:0;color:var(--muted)">Every day we scan U.S. fares to everywhere on earth &mdash; like a stock market for flights.</p></div>
+    <div class="why-card"><span class="eyebrow" style="color:var(--green)">Step 2</span><h3 style="margin:6px 0 6px">We flag below-normal</h3><p style="margin:0;color:var(--muted)">When a fare drops under its usual price, we catch it &mdash; so a &ldquo;deal&rdquo; actually means below normal.</p></div>
+    <div class="why-card"><span class="eyebrow" style="color:var(--green)">Step 3</span><h3 style="margin:6px 0 6px">You get the best, weekly</h3><p style="margin:0;color:var(--muted)">One short email a week: the biggest drops and the one trip worth booking right now.</p></div>
+  </div></div>
   <div class="blog-sec"><h2>See a sample issue</h2>
   <p style="font-size:13.5px;color:var(--muted);margin-bottom:14px">Exactly what lands in your inbox &mdash; a recent issue, built from live data:</p>
   <div style="border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 10px 30px rgba(12,22,34,.10)">{newsletter_issue_html(oneway, market)}</div></div>
   <div class="blog-sec"><h2>What you get every week</h2>
-  <ul class="blog-list">
-    <li><b>The market, by country</b> &mdash; how far each region&rsquo;s fares rose or fell week-over-week, so you can see where deals are opening up.</li>
-    <li><b>This week&rsquo;s biggest movers</b> &mdash; the steepest price drops (and notable jumps), each judged against that route&rsquo;s own history.</li>
-    <li><b>Past vs. current performers</b> &mdash; what&rsquo;s been reliably cheap, and what just dropped below normal.</li>
-    <li><b>One trip to book now</b> &mdash; a single recommended trip, flagged because its price is unusually low right now.</li>
-    <li><b>Plain-English takeaways</b> &mdash; what it all means for your next trip, and the one-way tricks most travelers miss.</li>
-    <li><b>Zero spam</b> &mdash; one email a week, unsubscribe in a click.</li>
-  </ul></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:6px">
+    <div class="why-card"><h3 style="margin:0 0 8px">&#128205; One trip to book now</h3><p style="margin:0;color:var(--muted)">The single best below-normal one-way, with the normal price shown so you see the real saving.</p></div>
+    <div class="why-card"><h3 style="margin:0 0 8px">&#129517; Deals from your part of the country</h3><p style="margin:0;color:var(--muted)">A standout fare from the East, the Middle, and the West &mdash; so there&rsquo;s always one near you.</p></div>
+    <div class="why-card"><h3 style="margin:0 0 8px">&#128202; Honest research, not hype</h3><p style="margin:0;color:var(--muted)">Every fare judged against its own normal price. No fake &ldquo;90% off&rdquo; &mdash; just the truth.</p></div>
+  </div>
+  <p style="font-size:13px;color:var(--muted);margin-top:12px">Plus the market by region, this week&rsquo;s biggest movers, and plain-English takeaways &mdash; in one email, unsubscribe in a click.</p></div>
   <div class="blog-sec"><h2>A peek at this week&rsquo;s movers</h2>
   <ul class="blog-list">{sample_rows}</ul>
   <p style="font-size:13px;color:var(--muted)">A sample of what lands in your inbox &mdash; see the full board on the <a href="market.html" style="color:var(--gold)">Market</a>.</p></div>
   <div class="blog-sec"><h2>Frequently asked questions</h2>{faq_html}</div>
+  <div class="signup" style="margin-top:10px"><div class="signup-inner">
+    <h2>Catch your dream trip when it&rsquo;s cheap</h2>
+    <p>The biggest below-normal flight deals from the USA &mdash; and the one to book now. Free, once a week.</p>
+    <a class="book" href="javascript:void(0)" onclick="var e=document.getElementById('nl-email');if(e){{e.scrollIntoView({{behavior:'smooth',block:'center'}});e.focus();}}return false;" style="display:inline-block;font-size:16px;padding:12px 28px;margin-top:6px">Join free &rarr;</a>
+  </div></div>
 </div>"""
 
 
