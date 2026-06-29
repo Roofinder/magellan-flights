@@ -25,7 +25,7 @@ import html
 import json
 import os
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timedelta
 from urllib.parse import quote_plus
 
 import dealsgen as dg
@@ -5746,6 +5746,42 @@ def newsletter_rss(market):
     return "\n".join(parts)
 
 
+def newsletter_weekly_rss(oneway, market):
+    """Weekly digest feed for automated sending. Exactly ONE <item> per ISO week,
+    whose <content:encoded> IS the full briefing. Point Beehiiv's RSS-to-send
+    automation at this feed and each new week's item auto-builds and sends the
+    email — no copy-paste. The guid is the ISO week, so it sends once per week
+    even though the feed is regenerated on every daily build."""
+    now_dt = datetime.now()
+    yr, wk, _ = now_dt.isocalendar()
+    guid = f"{yr}-W{wk:02d}"
+    pub = now_dt.strftime("%a, %d %b %Y %H:%M:%S +0000")
+    title = f"The flight market this week — {now_dt.strftime('%b %d, %Y')}"
+    issue = newsletter_issue_html(oneway, market)
+    top = _hm_items(oneway, market)[:5]
+    summary = "; ".join(
+        f'{str(o.get("name", o["code"])).split(",")[0]} ${p:,.0f} ({pct:.0f}% below)'
+        for pct, o, p in top)
+    return "\n".join([
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">',
+        '<channel>',
+        f'<title>{BRAND} — Weekly Flight-Market Briefing</title>',
+        f'<link>{BASE_URL}/newsletter.html</link>',
+        '<description>One email a week: the biggest below-normal one-way drops from the USA, by region, plus one trip to book now.</description>',
+        f'<lastBuildDate>{pub}</lastBuildDate>',
+        '<item>',
+        f'<title>{html.escape(title)}</title>',
+        f'<link>{BASE_URL}/newsletter.html</link>',
+        f'<guid isPermaLink="false">{guid}</guid>',
+        f'<pubDate>{pub}</pubDate>',
+        f'<description>{html.escape("This week's biggest below-normal one-way drops: " + summary + ".")}</description>',
+        f'<content:encoded><![CDATA[{issue}]]></content:encoded>',
+        '</item>',
+        '</channel></rss>',
+    ])
+
+
 def body_newsletter(market, oneway):
     sample = sorted(market, key=lambda m: m.get("price", 1e9))[:5]
     sample_rows = "".join(
@@ -5792,11 +5828,115 @@ def body_newsletter(market, oneway):
 </div>"""
 
 
+def _credible_wow(series, avg):
+    """Week-over-week move in a region's avg one-way, ONLY when it can be trusted:
+    a prior point at least 5 days old, and a magnitude small enough that it reflects
+    real price movement rather than a change in which routes are tracked. Returns the
+    signed dollar delta, or None to suppress (young/unstable history)."""
+    if len(series) < 2:
+        return None
+    try:
+        latest = datetime.strptime(series[-1][0], "%Y-%m-%d")
+    except ValueError:
+        return None
+    prior = None
+    for ds, v in series[:-1]:
+        try:
+            if (latest - datetime.strptime(ds, "%Y-%m-%d")).days >= 5:
+                prior = v
+        except ValueError:
+            continue
+    if prior is None:
+        return None
+    delta = series[-1][1] - prior
+    if abs(delta) > max(80.0, 0.30 * avg):   # composition artifact, not a real move
+        return None
+    return delta
+
+
+def _email_region_index(oneway, market):
+    """Per-region research signal for the briefing's market table. Built from the
+    graded deal set so every number is honest today: avg one-way, deal density
+    (share of routes below their normal price), route count, and a week-over-week
+    move only when it's credible. Returns [(region, avg, density, n, delta), ...]."""
+    agg = defaultdict(lambda: {"prices": [], "below": 0, "n": 0})
+    for pct, o, p in _hm_items(oneway, market):
+        reg = continent_of(o["code"])
+        if reg not in INDEX_REGIONS:
+            continue
+        a = agg[reg]
+        a["prices"].append(p)
+        a["n"] += 1
+        if pct > 0:
+            a["below"] += 1
+    hist = oneway_index_history()
+    out = []
+    for reg in INDEX_REGIONS:
+        a = agg.get(reg)
+        if not a or a["n"] == 0:
+            continue
+        avg = sum(a["prices"]) / a["n"]
+        density = a["below"] / a["n"]
+        out.append((reg, avg, density, a["n"], _credible_wow(hist.get(reg, []), avg)))
+    return sorted(out, key=lambda r: -r[2])   # densest deals first
+
+
+def _email_move_suffix(delta):
+    """Small inline week-over-week tag appended after the avg; empty when not credible."""
+    if delta is None:
+        return ""
+    if abs(delta) < 1:
+        return ' &middot; <span style="color:#9b9582;font-size:12px">flat wk</span>'
+    if delta < 0:
+        return f' &middot; <span style="color:#2f6b46;font-size:12px;font-weight:bold">&#9660;${abs(delta):,.0f} wk</span>'
+    return f' &middot; <span style="color:#b4532f;font-size:12px;font-weight:bold">&#9650;${abs(delta):,.0f} wk</span>'
+
+
 def newsletter_issue_html(oneway, market):
-    """Email-safe (inline-styled) issue of this week's biggest one-way drops."""
-    items = _hm_items(oneway, market)[:10]
+    """Email-safe (inline-styled) research briefing: a book-now pick, the market by
+    region (week-over-week), and this week's biggest below-normal one-way drops."""
+    items = _hm_items(oneway, market)
+    issued = datetime.now().strftime("%B %d, %Y")
+
+    # --- Section: one trip to book now (the single best below-normal fare) ---
+    hero_html = ""
+    if items:
+        hpct, ho, hp = items[0]
+        hcity = html.escape(str(ho.get("name", ho["code"])).split(",")[0])
+        hcountry = html.escape(country_from_name(str(ho.get("name", ""))))
+        horigin = html.escape(ho.get("origin", ""))
+        hlink = html.escape(ho.get("link", BASE_URL + "/market.html"), quote=True)
+        loc = f"{hcity}, {hcountry}" if hcountry and hcountry != hcity else hcity
+        hero_html = (
+            '<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:separate;margin:0 0 22px">'
+            '<tr><td style="background:#fffdf6;border:1px solid #2f6b46;border-radius:12px;padding:20px 22px">'
+            '<div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#2f6b46;font-weight:bold">&#128205; Book this week</div>'
+            f'<div style="font-size:23px;font-weight:bold;margin:6px 0 2px;color:#2c2a1e">{loc}</div>'
+            f'<div style="font-size:14px;color:#7a715a;margin:0 0 12px">one-way from {horigin} &middot; <b style="color:#2f6b46">${hp:,.0f}</b> &middot; {hpct:.0f}% below its normal price</div>'
+            f'<a href="{hlink}" style="background:#2f6b46;color:#ffffff;text-decoration:none;padding:11px 22px;border-radius:8px;font-size:14px;font-weight:bold;display:inline-block">See live price &amp; book &rarr;</a>'
+            '</td></tr></table>')
+
+    # --- Section: the market this week, by region (deal density + WoW when credible) ---
+    idx = _email_region_index(oneway, market)
+    idx_rows = ""
+    for reg, avg, density, n, delta in idx:
+        idx_rows += (
+            '<tr>'
+            f'<td style="padding:9px 0;border-bottom:1px solid #e3d8b8;font-family:Georgia,serif;font-size:15px;color:#2c2a1e">{html.escape(reg)} '
+            f'<span style="color:#9b9582;font-size:12px">&middot; {n} routes</span></td>'
+            f'<td align="right" style="padding:9px 8px 9px 0;border-bottom:1px solid #e3d8b8;font-family:Georgia,serif;font-size:15px;color:#2c2a1e;white-space:nowrap">${avg:,.0f} avg{_email_move_suffix(delta)}</td>'
+            f'<td align="right" style="padding:9px 0;border-bottom:1px solid #e3d8b8;font-family:Georgia,serif;font-size:14px;font-weight:bold;color:#2f6b46;white-space:nowrap">{density*100:.0f}% below</td>'
+            '</tr>')
+    market_section = ""
+    if idx_rows:
+        market_section = (
+            '<div style="font-size:18px;font-weight:bold;margin:6px 0 4px;color:#2c2a1e">The market this week</div>'
+            '<div style="font-size:13px;color:#7a715a;margin:0 0 10px;line-height:1.5">By region: the average one-way fare and the share of routes sitting below their normal price right now. Higher &ldquo;below&rdquo; means more deals are open.</div>'
+            f'<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:0 0 24px">{idx_rows}</table>')
+
+    # --- Section: this week's biggest below-normal drops (excludes the hero) ---
     rows = ""
-    for pct, o, p in items:
+    for pct, o, p in items[1:8]:
         city = html.escape(str(o.get("name", o["code"])).split(",")[0])
         origin = html.escape(o.get("origin", ""))
         link = html.escape(o.get("link", ""), quote=True)
@@ -5807,13 +5947,22 @@ def newsletter_issue_html(oneway, market):
             f'<span style="color:#7a715a;font-size:13px">one-way from {origin}</span></td>'
             f'<td align="right" style="padding:11px 0;border-bottom:1px solid #d9c9a0;font-family:Georgia,serif;font-size:17px;font-weight:bold;color:#2c2a1e;white-space:nowrap">'
             f'${p:,.0f} <span style="color:#2f6b46;font-size:12px">&#9660;{pct:.0f}%</span></td></tr>')
+    drops_section = ""
+    if rows:
+        drops_section = (
+            '<div style="font-size:18px;font-weight:bold;margin:6px 0 4px;color:#2c2a1e">This week&rsquo;s biggest drops</div>'
+            '<div style="font-size:13px;color:#7a715a;margin:0 0 6px;line-height:1.5">The steepest below-normal one-ways from the USA right now. Tap a city to book.</div>'
+            f'<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">{rows}</table>')
+
     return (
         '<div style="max-width:560px;margin:0 auto;background:#f3ecd8;padding:30px 26px;font-family:Georgia,serif;color:#2c2a1e">'
-        '<div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#2f6b46;font-weight:bold">Magellan Flights</div>'
-        '<div style="font-size:25px;font-weight:bold;margin:6px 0 4px;color:#2c2a1e">This week&rsquo;s cheapest escapes</div>'
-        '<div style="font-size:15px;color:#5b5440;margin:0 0 18px;line-height:1.5">The biggest one-way price drops from the USA right now &mdash; real, bookable fares, below their normal price. Tap a city to book.</div>'
-        f'<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">{rows}</table>'
-        f'<div style="text-align:center;margin:24px 0 8px"><a href="{BASE_URL}/market.html" style="background:#2f6b46;color:#ffffff;text-decoration:none;padding:13px 26px;border-radius:8px;font-size:15px;font-weight:bold;display:inline-block">See all of today&rsquo;s deals &rarr;</a></div>'
+        '<div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#2f6b46;font-weight:bold">Magellan Flights &middot; Weekly Briefing</div>'
+        '<div style="font-size:25px;font-weight:bold;margin:6px 0 2px;color:#2c2a1e">The flight market this week</div>'
+        f'<div style="font-size:13px;color:#9b9582;margin:0 0 18px">{issued} &middot; one email a week</div>'
+        f'{hero_html}'
+        f'{market_section}'
+        f'{drops_section}'
+        f'<div style="text-align:center;margin:24px 0 8px"><a href="{BASE_URL}/market.html" style="background:#2f6b46;color:#ffffff;text-decoration:none;padding:13px 26px;border-radius:8px;font-size:15px;font-weight:bold;display:inline-block">See the full live board &rarr;</a></div>'
         f'<div style="font-size:12px;color:#7a715a;text-align:center;margin:18px 0 0;line-height:1.5">You&rsquo;re getting this because you joined Magellan Flights at <a href="{BASE_URL}" style="color:#2f6b46">magellanflights.com</a>. Prices are recently-tracked fares; your live price is confirmed on Aviasales. Unsubscribe anytime.</div>'
         '</div>')
 
@@ -5821,7 +5970,7 @@ def newsletter_issue_html(oneway, market):
 def body_newsletter_issue(oneway, market):
     issue = newsletter_issue_html(oneway, market)
     return f"""<div class="wrap" style="max-width:720px">
-  <div class="pagehead"><h1>Weekly issue generator</h1><p>A ready-to-send newsletter built from this week&rsquo;s biggest price drops. Click <b>Copy issue</b>, open Beehiiv, create a new post, paste (Ctrl/Cmd-V), and send. It refreshes automatically as the deals update &mdash; just reload this page each week. (Owner tool &mdash; not linked publicly.)</p></div>
+  <div class="pagehead"><h1>Weekly issue generator</h1><p><b>Automated:</b> Beehiiv&rsquo;s RSS-to-send pulls this issue from <a href="newsletter.xml" style="color:var(--gold)">newsletter.xml</a> and emails it once a week with no copy-paste &mdash; set it up once under <i>Automations &rarr; RSS</i> in Beehiiv (feed URL: <code>magellanflights.com/newsletter.xml</code>). <b>Manual fallback:</b> click <b>Copy issue</b>, open Beehiiv, create a new post, paste (Ctrl/Cmd-V), and send. Either way it refreshes automatically as the deals update. (Owner tool &mdash; not linked publicly.)</p></div>
   <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:0 0 16px">
     <button class="book" id="nlcopy" onclick="nlCopy()" style="font-size:15px;padding:12px 26px;border:0;cursor:pointer">Copy issue</button>
     <span id="nlcopied" style="color:#2f6b46;font-weight:600"></span>
@@ -5958,6 +6107,8 @@ def main():
                  + [m["slug"] + ".html" for m in REGION_TOURS])
     with open(os.path.join(SITE_DIR, "deals.xml"), "w", encoding="utf-8") as f:
         f.write(newsletter_rss(market))
+    with open(os.path.join(SITE_DIR, "newsletter.xml"), "w", encoding="utf-8") as f:
+        f.write(newsletter_weekly_rss(oneway, market))
     write_seo_files(all_files)
     print(f"Built {len(pages)} pages + {len(ARTICLES)} articles + {len(MONEY_PAGES)} money pages "
           f"+ {len(CITY_GUIDES)} city guides + {len(ROUTE_PAGES)} route pages + sitemap/robots -> {SITE_DIR}  "
