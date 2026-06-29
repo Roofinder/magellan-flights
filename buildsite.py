@@ -238,9 +238,9 @@ SEO = {
         "international destinations, cheapest US airports to fly abroad from, and how far below "
         "normal today's deals are. Updated daily, free to cite."),
     "newsletter.html": (
-        "Free Cheap-Flight Newsletter — Weekly Deal Drop | Magellan Flights",
-        "Join the free Magellan Flights newsletter: the week's cheapest real, bookable flights "
-        "from the USA plus a featured trip, every week. No spam, unsubscribe anytime."),
+        "Weekly Flight-Market Briefing — Free Newsletter | Magellan Flights",
+        "The free weekly flight-market briefing: how each country's fares moved, what's below "
+        "normal now, and one trip to book this week — from fares tracked daily. Unsubscribe anytime."),
     "our-story.html": (
         "Our Story — Why Magellan Flights | Magellan Flights",
         "How Magellan Flights came to be, and how we track the cheapest flights from the USA "
@@ -1246,9 +1246,9 @@ def market_js(market):
 SIGNUP = """
 <section class="signup" id="alerts">
   <div class="signup-inner">
-    <h2>Never miss a deal</h2>
-    <p>Get the week&rsquo;s biggest flight-price drops from the USA, free in your inbox.</p>
-    <a class="book" href="newsletter.html" style="display:inline-block;font-size:16px;padding:12px 28px;margin-top:6px">Join the free newsletter &rarr;</a>
+    <h2>The weekly flight-market briefing</h2>
+    <p>One email a week: how each country&rsquo;s fares moved, what&rsquo;s below normal right now, and the one trip worth booking this week &mdash; from the fares we track every day. Free.</p>
+    <a class="book" href="newsletter.html" style="display:inline-block;font-size:16px;padding:12px 28px;margin-top:6px">Get the weekly briefing &rarr;</a>
   </div>
 </section>"""
 
@@ -5711,18 +5711,18 @@ def body_newsletter(market):
         for m in sample)
     faqs = [
         ("Is the newsletter free?", "Yes, completely free. We may earn a commission when you book through our links, at no extra cost to you."),
-        ("How often will I hear from you?", "Once a week — a short digest of the biggest price drops and one featured trip. No spam, ever."),
-        ("What's in each issue?", "The week's cheapest real, bookable fares from the USA, the single biggest discount, and a featured around-the-world or continent trip."),
+        ("How often will I hear from you?", "Once a week — a short research digest of the market's moves and one trip worth booking. No spam, ever."),
+        ("What's in each issue?", "A research digest: how each country's fares moved week-over-week, the biggest movers judged against each route's own history, past and current top performers, and one recommended trip to book now while it's below normal."),
         ("Can I unsubscribe anytime?", "Of course — one click in any email and you're off the list, no hard feelings."),
     ]
     faq_html = "".join(f'<details class="art-q"><summary>{html.escape(q)}</summary><p>{html.escape(a)}</p></details>'
                        for q, a in faqs)
     return f"""<div class="wrap" style="max-width:720px">
-  <div class="pagehead"><h1>The cheapest escapes, in your inbox</h1>
-  <p>Join the free {BRAND} newsletter and get the week&rsquo;s best flight deals from the USA &mdash; the biggest price drops, mistake-fare-level lows, and a featured trip to dream on &mdash; delivered every week. No spam, unsubscribe anytime.</p></div>
+  <div class="pagehead"><h1>The weekly flight-market briefing</h1>
+  <p>The only newsletter that treats airfare like a market. Every week you get the research: how each country&rsquo;s fares moved, what&rsquo;s below normal right now, and the one trip worth booking this week &mdash; from the {BRAND} data we track every single day. Free, one email a week, unsubscribe anytime.</p></div>
   <div class="signup" style="margin:0 0 22px"><div class="signup-inner">
-    <h2>Get the weekly deal drop</h2>
-    <p>Free forever &middot; one email a week &middot; real, bookable fares.</p>
+    <h2>Get the weekly briefing</h2>
+    <p>Free forever &middot; one email a week &middot; the week&rsquo;s movers + one trip to book now.</p>
     <form onsubmit="return nlSub(event)" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;max-width:440px;margin:8px auto 0">
       <input id="nl-email" type="email" required placeholder="you@email.com" autocomplete="email" style="flex:1;min-width:210px;background:#fffdf6;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:15px">
       <button class="book" type="submit" style="font-size:16px;padding:12px 26px">Join free &rarr;</button>
@@ -5732,12 +5732,14 @@ def body_newsletter(market):
   </div></div>
   <div class="blog-sec"><h2>What you get every week</h2>
   <ul class="blog-list">
-    <li><b>The biggest price drops</b> from across the USA &mdash; real fares, below their normal price.</li>
-    <li><b>One featured trip</b> &mdash; a cheap around-the-world loop or a continent trip you can actually book.</li>
-    <li><b>The one-way tricks</b> most travelers miss, in plain English.</li>
+    <li><b>The market, by country</b> &mdash; how far each region&rsquo;s fares rose or fell week-over-week, so you can see where deals are opening up.</li>
+    <li><b>This week&rsquo;s biggest movers</b> &mdash; the steepest price drops (and notable jumps), each judged against that route&rsquo;s own history.</li>
+    <li><b>Past vs. current performers</b> &mdash; what&rsquo;s been reliably cheap, and what just dropped below normal.</li>
+    <li><b>One trip to book now</b> &mdash; a single recommended trip, flagged because its price is unusually low right now.</li>
+    <li><b>Plain-English takeaways</b> &mdash; what it all means for your next trip, and the one-way tricks most travelers miss.</li>
     <li><b>Zero spam</b> &mdash; one email a week, unsubscribe in a click.</li>
   </ul></div>
-  <div class="blog-sec"><h2>A peek at this week&rsquo;s deals</h2>
+  <div class="blog-sec"><h2>A peek at this week&rsquo;s movers</h2>
   <ul class="blog-list">{sample_rows}</ul>
   <p style="font-size:13px;color:var(--muted)">A sample of what lands in your inbox &mdash; see the full board on the <a href="market.html" style="color:var(--gold)">Market</a>.</p></div>
   <div class="blog-sec"><h2>Frequently asked questions</h2>{faq_html}</div>
