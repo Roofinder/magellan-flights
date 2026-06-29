@@ -5833,9 +5833,16 @@ def newsletter_weekly_rss(oneway, market):
     yr, wk, _ = now_dt.isocalendar()
     guid = f"{yr}-W{wk:02d}"
     pub = now_dt.strftime("%a, %d %b %Y %H:%M:%S +0000")
-    title = f"The flight market this week — {now_dt.strftime('%b %d, %Y')}"
-    issue = newsletter_issue_html(oneway, market)
+    # Subject line = a curiosity-gap hook led by the single best deal's number + city
+    # (front-loaded so it survives mobile truncation). Falls back to a plain title.
     top = _hm_items(oneway, market)[:5]
+    if top:
+        _, _to, _tp = top[0]
+        _tcity = str(_to.get("name", _to["code"])).split(",")[0]
+        title = f"How is {_tcity} ${_tp:,.0f} right now? (+ this week's biggest drops)"
+    else:
+        title = f"The flight market this week — {now_dt.strftime('%b %d, %Y')}"
+    issue = newsletter_issue_html(oneway, market)
     summary = "; ".join(
         f'{str(o.get("name", o["code"])).split(",")[0]} ${p:,.0f} ({pct:.0f}% below)'
         for pct, o, p in top)
@@ -5993,6 +6000,23 @@ def newsletter_issue_html(oneway, market):
     items = _hm_items(oneway, market)
     issued = datetime.now().strftime("%B %d, %Y")
 
+    # --- Fare Watch: a one-line market-mood signature (the honest home for "research") ---
+    graded = [pct for pct, _, _ in items]
+    share = (sum(1 for x in graded if x > 0) / len(graded) * 100) if graded else 0
+    if share >= 75:
+        mood = "a strong week to buy"
+    elif share >= 55:
+        mood = "a good week to buy"
+    elif share >= 35:
+        mood = "a mixed week &mdash; be picky"
+    else:
+        mood = "a quiet week &mdash; wait for drops"
+    fare_watch = (
+        '<table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 18px"><tr>'
+        '<td style="background:#eef4ec;border:1px solid #cfe0d2;border-radius:8px;padding:9px 14px;font-family:Georgia,serif;font-size:13px;color:#2c2a1e">'
+        f'<b style="color:#2f6b46">&#128202; Fare Watch:</b> {share:.0f}% of the routes we track are below their normal price right now &mdash; {mood}.'
+        '</td></tr></table>') if graded else ""
+
     # --- Section: one trip to book now (the single best below-normal fare) ---
     hero_html = ""
     if items:
@@ -6002,12 +6026,14 @@ def newsletter_issue_html(oneway, market):
         horigin = html.escape(ho.get("origin", ""))
         hlink = html.escape(ho.get("link", BASE_URL + "/market.html"), quote=True)
         loc = f"{hcity}, {hcountry}" if hcountry and hcountry != hcity else hcity
+        hnorm = hp / (1 - hpct / 100.0) if 0 < hpct < 90 else 0
+        norm_str = f' <s style="color:#9b9582;font-weight:normal">normally ~${hnorm:,.0f}</s>' if hnorm > hp else ''
         hero_html = (
             '<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:separate;margin:0 0 22px">'
             '<tr><td style="background:#fffdf6;border:1px solid #2f6b46;border-radius:12px;padding:20px 22px">'
             '<div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#2f6b46;font-weight:bold">&#128205; Book this week</div>'
             f'<div style="font-size:23px;font-weight:bold;margin:6px 0 2px;color:#2c2a1e">{loc}</div>'
-            f'<div style="font-size:14px;color:#7a715a;margin:0 0 12px">one-way from {horigin} &middot; <b style="color:#2f6b46">${hp:,.0f}</b> &middot; {hpct:.0f}% below its normal price</div>'
+            f'<div style="font-size:14px;color:#7a715a;margin:0 0 12px">one-way from {horigin} &middot; <b style="color:#2f6b46">${hp:,.0f}</b>{norm_str} &middot; {hpct:.0f}% below normal</div>'
             f'<a href="{hlink}" style="background:#2f6b46;color:#ffffff;text-decoration:none;padding:11px 22px;border-radius:8px;font-size:14px;font-weight:bold;display:inline-block">See live price &amp; book &rarr;</a>'
             '</td></tr></table>')
 
@@ -6084,7 +6110,8 @@ def newsletter_issue_html(oneway, market):
         '<div style="max-width:560px;margin:0 auto;background:#f3ecd8;padding:30px 26px;font-family:Georgia,serif;color:#2c2a1e">'
         '<div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#2f6b46;font-weight:bold">Magellan Flights &middot; Weekly Briefing</div>'
         '<div style="font-size:25px;font-weight:bold;margin:6px 0 2px;color:#2c2a1e">The flight market this week</div>'
-        f'<div style="font-size:13px;color:#9b9582;margin:0 0 18px">{issued} &middot; one email a week</div>'
+        f'<div style="font-size:13px;color:#9b9582;margin:0 0 14px">{issued} &middot; one email a week</div>'
+        f'{fare_watch}'
         f'{hero_html}'
         f'{market_section}'
         f'{airport_section}'
