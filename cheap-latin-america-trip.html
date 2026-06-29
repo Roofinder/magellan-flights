@@ -418,11 +418,14 @@
   .nav-cta:hover{ filter:brightness(1.07); }
   #chatbtn{ color:#15130c; box-shadow:0 6px 20px rgba(0,0,0,.55); }
   .cp-msg.you .bub, .cp-msg.you .bub a{ color:#15130c; }
-  .regchip.on{ background:var(--gold); color:#15130c; border-color:var(--gold); }
-  .ticker, .ticker.ow, .regionbar{ background:var(--ink2); border-bottom:1px solid var(--line); }
-  .ti-item{ color:var(--ink); font-weight:600; border-right:1px solid var(--line); }
-  .ti-item:hover{ background:#efe5cd; }
-  .regchip{ border-color:#e7dcc0; color:#8a7d64; }
+  .ticker, .ticker.ow, .regionbar{ background:#1c3d29; border-bottom:1px solid #16301f; }
+  .ti-item{ color:#e7f0e8; font-weight:600; border-right:1px solid rgba(255,255,255,.10); }
+  .ti-item:hover{ background:rgba(255,255,255,.10); }
+  .ti-code{ color:#ffffff; } .ti-price{ color:#ffffff; }
+  .down{ color:#74dca0; } .up{ color:#ff8a7a; } .ow{ color:#9fd8b6; }
+  .regchip{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.32); color:#eaf3ec; }
+  .regchip:hover{ background:rgba(255,255,255,.14); border-color:rgba(255,255,255,.5); }
+  .regchip.on{ background:#f3ecd8; color:#1c3d29; border-color:#f3ecd8; font-weight:700; }
   .idx{ background:#efe5cd; border:1px solid var(--line); }
   .badge.flash{ background:rgba(192,57,43,.13); color:#c0392b; }
   .s-wait{ background:rgba(122,113,90,.13); color:var(--muted); }
@@ -441,9 +444,9 @@
   .ticker{ position:relative; }
   .ticker .ticker-track{ flex:1 1 auto; min-width:0; position:relative; z-index:1; }
   .ti-label{ flex:0 0 auto; position:relative; z-index:3; display:inline-flex; align-items:center; gap:6px; padding:8px 14px;
-             background:var(--gold); color:#15130c; font-family:ui-monospace,Menlo,Consolas,monospace;
+             background:#f3ecd8; color:#1c3d29; font-family:ui-monospace,Menlo,Consolas,monospace;
              font-size:11.5px; font-weight:700; letter-spacing:.10em; text-transform:uppercase; white-space:nowrap; }
-  .ticker.ow .ti-label{ background:transparent; color:var(--gold); border-right:1px solid var(--line); }
+  .ticker.ow .ti-label{ background:transparent; color:#cfe4d6; border-right:1px solid rgba(255,255,255,.14); }
 
   /* ====================  Historical context banners  ==================== */
   .context-banner{ display:flex; gap:10px; align-items:flex-start; margin:0 0 14px;
