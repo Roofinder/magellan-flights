@@ -182,7 +182,7 @@ SEO = {
         "book at the low. Round-trip and one-way deals."),
     "market.html": (
         "Cheap Flight Deals Today — Live Fare Tracker | Magellan Flights",
-        "A live board of the cheapest round-trip flights from the USA, with "
+        "A live board of the cheapest one-way flights from the USA, with "
         "price history and how far below normal each fare is. Updated daily."),
     "heatmap.html": (
         "Flight Fare Heatmap — Every Deal at a Glance | Magellan Flights",
@@ -1279,7 +1279,7 @@ LOGO_SVG = (
 
 CSS = r"""<style>
   @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap');
-  :root{ --bg:#f3ecd8; --card:#fbf6e9; --ink:#2c2a1e; --muted:#7a715a; --line:#d9c9a0;
+  :root{ --bg:#f3ecd8; --card:#fbf6e9; --ink:#2c2a1e; --muted:#675e48; --line:#d9c9a0;
          --blue:#2f6b46; --blue-d:#245537; --green:#2e8b57; --green-bg:rgba(46,139,87,.14);
          --red:#c0392b; --amber:#b8801f; --amber-bg:rgba(184,128,31,.14); --ink2:#2f6b46; --gold:#2f6b46;
          --lux:#2f6b46; --lux-d:#245537; }
@@ -1484,7 +1484,7 @@ CSS = r"""<style>
   .owc-body .owr:last-child{ border-bottom:none; }
   .idx-c-from{ color:#7a715a; font-size:11px; }
   .idx{ background:var(--card); border-radius:12px; color:var(--ink); overflow:hidden; }
-  .idx-name{ margin:0; font-size:13px; color:#8a7d64; } .idx-val{ margin:4px 0 0; font-size:24px; font-weight:700; }
+  .idx-name{ margin:0; font-size:13px; color:var(--muted); } .idx-val{ margin:4px 0 0; font-size:24px; font-weight:700; }
   .idx-sub{ margin:2px 0 0; font-size:12px; color:#7a715a; }
   .idx-move.down{ color:#2e8b57; } .idx-move.up{ color:#c0392b; } .idx-move.new,.idx-move.flat{ color:#7a715a; }
   .panel{ background:var(--card); border:1px solid var(--line); border-radius:14px; overflow:hidden; }
@@ -1666,9 +1666,9 @@ CSS = r"""<style>
   .logo .mark{ background:none; }
   .nav a.link.active{ color:var(--gold); font-weight:700; text-decoration:underline; text-underline-offset:6px; text-decoration-thickness:2px; }
   /* dark text on gold buttons */
-  .nav-cta, .book, .mini-book, .form button, .citybar button, .cp-in button{ color:#15130c; font-weight:700; }
+  .nav-cta, .book, .mini-book, .form button, .citybar button, .cp-in button{ color:#fff; font-weight:700; }
   .nav-cta:hover{ filter:brightness(1.07); }
-  #chatbtn{ color:#15130c; box-shadow:0 6px 20px rgba(0,0,0,.55); }
+  #chatbtn{ color:#fff; box-shadow:0 6px 20px rgba(0,0,0,.55); }
   .cp-msg.you .bub, .cp-msg.you .bub a{ color:#15130c; }
   .ticker, .ticker.ow, .regionbar{ background:#1c3d29; border-bottom:1px solid #16301f; }
   .ti-item{ color:#e7f0e8; font-weight:600; border-right:1px solid rgba(255,255,255,.10); }
@@ -1681,8 +1681,8 @@ CSS = r"""<style>
   .idx{ background:#efe5cd; border:1px solid var(--line); }
   .badge.flash{ background:rgba(192,57,43,.13); color:#c0392b; }
   .s-wait{ background:rgba(122,113,90,.13); color:var(--muted); }
-  .airchip.on{ background:var(--gold); color:#15130c; border-color:var(--gold); font-weight:700; }
-  .citychip{ background:var(--gold); color:#15130c; } .citychip b{ color:#15130c; }
+  .airchip.on{ background:var(--gold); color:#fff; border-color:var(--gold); font-weight:700; }
+  .citychip{ background:var(--gold); color:#fff; } .citychip b{ color:#fff; }
   .summary{ background:var(--card); border-color:var(--line); border-left:4px solid var(--gold); }
   input, select, textarea{ background:#efe5cd; color:var(--ink); border-color:var(--line); }
   .citybar select, .form input, .cp-in input{ background:#efe5cd; color:var(--ink); }
@@ -1788,13 +1788,13 @@ CSS = r"""<style>
   .fs-alert-lab{ display:block; font-size:12.5px; font-weight:700; color:var(--ink); margin-bottom:7px; }
   .fs-alert-lab span{ color:var(--muted); font-weight:500; }
   .fs-alert input{ width:100%; background:#fffdf7; color:var(--ink); border:1px solid #cdbb8e; border-radius:9px; padding:9px 10px; font-size:13.5px; transition:border-color .15s, box-shadow .15s; }
-  .fs-go{ display:block; width:100%; background:var(--green); color:#15130c; font-weight:800; font-size:14px; border:0;
+  .fs-go{ display:block; width:100%; background:var(--blue); color:#fff; font-weight:800; font-size:14px; border:0;
           border-radius:11px; padding:11px; cursor:pointer; letter-spacing:.02em; transition:transform .15s, filter .15s, box-shadow .15s; }
   .fs-go:hover{ filter:brightness(1.06); transform:translateY(-1px); box-shadow:0 8px 20px rgba(46,139,87,.28); }
   .fsearch input::placeholder{ color:#8294b5; }
   @media(max-width:560px){ .fs-od{ flex-wrap:wrap; } .fs-swap{ display:none; } }
   .cta-row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
-  .btn-primary{ background:var(--gold); color:#15130c; font-weight:700; text-decoration:none;
+  .btn-primary{ background:var(--gold); color:#fff; font-weight:700; text-decoration:none;
                 padding:13px 26px; border-radius:10px; font-size:15px; }
   .btn-primary:hover{ filter:brightness(1.07); }
   .btn-ghost{ background:#efe5cd; color:var(--ink); border:1px solid #d9c9a0; text-decoration:none;
@@ -2413,7 +2413,7 @@ def site_footer(today):
     <nav class="ft-links">{cols_html}</nav>
   </div>
   <div class="ft-bottom">
-    <p>Prices are round-trip unless marked one-way and change fast &mdash; book soon if you see one you love. {BRAND} may earn a commission when you book through our links, at no extra cost to you.</p>
+    <p>Prices are one-way unless marked otherwise and change fast &mdash; book soon if you see one you love. {BRAND} may earn a commission when you book through our links, at no extra cost to you.</p>
     <p>&copy; {BRAND} &middot; Fares found {today} and may change at any time.</p>
   </div>
 </footer>"""
@@ -5576,11 +5576,16 @@ def region_tour(world, hub_list, n_cities):
 
 def region_tour_faqs(m, trip):
     name = m["name"]
-    cost = f"${trip['total']:,.0f}" if trip else "varies by season"
+    if trip:
+        cost_clause = f"about ${trip['total']:,.0f} in flights"
+        ncities = trip["cities"]
+    else:
+        cost_clause = "based on the cheapest live one-way fares we can chain together"
+        ncities = 4
     return [
         (f"How much does it cost for a trip around {name}?",
-         f"Right now the cheapest {trip['cities'] if trip else 4}-city {name} trip we can build from live "
-         f"one-way fares is about {cost} in flights. It changes daily as fares move &mdash; this page refreshes "
+         f"Right now the cheapest {ncities}-city {name} trip we can build from live "
+         f"one-way fares is {cost_clause}. It changes daily as fares move &mdash; this page refreshes "
          f"with the current low."),
         (f"What's the cheapest way to travel around {name}?",
          "Fly one-way between cities instead of booking separate round-trips. Chaining cheap one-ways into a loop "
