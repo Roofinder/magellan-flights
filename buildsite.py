@@ -1252,6 +1252,12 @@ SIGNUP = """
   </div>
 </section>"""
 
+BRIEFING_CTA = """<div class="signup" style="margin-top:24px"><div class="signup-inner">
+  <h2>Get this in your inbox</h2>
+  <p>The weekly flight-market briefing &mdash; how each country&rsquo;s fares moved, what&rsquo;s below normal right now, and the one trip worth booking this week. Free.</p>
+  <a class="book" href="newsletter.html" style="display:inline-block;font-size:15px;padding:11px 24px;margin-top:4px">Get the weekly briefing &rarr;</a>
+</div></div>"""
+
 CHAT_HTML = f"""
 <button id="chatbtn" onclick="chatToggle()" aria-label="Ask {BRAND}">{icon('chat', 'chat-ic')}</button>
 <div id="chatpanel">
@@ -3515,6 +3521,7 @@ def body_heatmap(oneway, market):
   <div class="airchips" id="hm-chips" style="margin:8px 0 6px">{chips}</div>
   {grid}
   <p class="finehint" style="text-align:center;margin-top:14px">Sorted best deal first. One-way fares judged against each route&rsquo;s usual one-way price &mdash; your live, bookable price is confirmed on Aviasales.</p>
+  {BRIEFING_CTA}
 {HM_JS}
 </div>"""
 
@@ -3532,6 +3539,7 @@ def body_market(market, hist, cards, lastmin, oneway):
   <div class="indices">{index_cards(oneway, hist)}</div>
   <p class="finehint" style="text-align:center;margin:2px 0 14px">See the bigger picture &mdash; <a href="cheap-flight-index.html" style="color:var(--gold);font-weight:600">the Magellan Cheap Flight Index</a>: the cheapest places to fly from the USA right now, by region and by airport.</p>
   {oneway_market(oneway, market)}
+  {BRIEFING_CTA}
 </div>"""
 
 
@@ -5738,7 +5746,7 @@ def newsletter_rss(market):
     return "\n".join(parts)
 
 
-def body_newsletter(market):
+def body_newsletter(market, oneway):
     sample = sorted(market, key=lambda m: m.get("price", 1e9))[:5]
     sample_rows = "".join(
         f'<li>{flag_img(m["code"], "flag")} {html.escape(str(m["name"]).split(",")[0])} '
@@ -5765,6 +5773,9 @@ def body_newsletter(market):
     <p style="font-size:12.5px;color:var(--muted);margin-top:10px">Free &middot; one email a week &middot; unsubscribe anytime.</p>
     <script>function nlSub(e){{e.preventDefault();var v=(document.getElementById('nl-email').value||'').trim();if(!v)return false;var u="{BEEHIIV_URL}";window.location.href=u+(u.indexOf('?')<0?'?':'&')+'email='+encodeURIComponent(v);return false;}}</script>
   </div></div>
+  <div class="blog-sec"><h2>See a sample issue</h2>
+  <p style="font-size:13.5px;color:var(--muted);margin-bottom:14px">Exactly what lands in your inbox &mdash; a recent issue, built from live data:</p>
+  <div style="border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 10px 30px rgba(12,22,34,.10)">{newsletter_issue_html(oneway, market)}</div></div>
   <div class="blog-sec"><h2>What you get every week</h2>
   <ul class="blog-list">
     <li><b>The market, by country</b> &mdash; how far each region&rsquo;s fares rose or fell week-over-week, so you can see where deals are opening up.</li>
@@ -5872,7 +5883,7 @@ def main():
         "blog.html": ("Daily Guide", body_blog(market, oneway)),
         "around-the-world.html": ("Ferdinand's World Loop", body_rtw(world)),
         "consultant.html": ("Hire a Trip Consultant", body_consultant()),
-        "newsletter.html": ("Free Newsletter", body_newsletter(market)),
+        "newsletter.html": ("Free Newsletter", body_newsletter(market, oneway)),
         "newsletter-issue.html": ("Weekly issue", body_newsletter_issue(oneway, market)),
         "lastminute.html": ("Last-minute", body_lastminute(lastmin)),
         "airports.html": ("Captain's Log", body_airports(home)),
