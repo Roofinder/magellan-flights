@@ -5,6 +5,7 @@ name: Publish (fast rebuild on code push)
 # The slow full data refresh lives in daily.yml (cron only).
 
 on:
+  workflow_dispatch: {}
   push:
     branches: [main]
     paths-ignore:
