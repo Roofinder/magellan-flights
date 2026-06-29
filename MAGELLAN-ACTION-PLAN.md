@@ -16,6 +16,7 @@ _Everything the STORM research recommended (defensibility · newsletter content 
 - [x] **Curiosity-gap auto-send subject** ("How is Tijuana $100 right now?")
 - [x] Research repositioned as the *voice/credibility*, with the bookable deal leading ("Book this week" hero)
 - [x] Content playbooks written: `SOCIAL-POSTS.md`, `NEWSLETTER-GROWTH.md`, and the STORM briefings
+- [x] **Homepage remembers your saved home airport** (pre-selects + "Welcome back, see your deals" line)
 
 ---
 
@@ -58,11 +59,11 @@ _Everything the STORM research recommended (defensibility · newsletter content 
 
 ---
 
-## 🔧 BUILD OPPORTUNITIES — things I (Claude) can still implement on request
-- [ ] Wire **Class + Non-stop** into the Aviasales search URL (currently left as on-results filters)
-- [ ] Make the "deals from your airport" experience even deeper (e.g. remember the reader's airport site-wide)
-- [ ] Add an optional **feature-premium** scaffold (e.g. more home airports / instant alerts) if you decide to go that route
-- [ ] Any tweak to the cards page, newsletter layout, or a new signature section
+## 🔧 BUILD OPPORTUNITIES — things I (Claude) can implement
+- [x] **Per-airport relevance, deeper** — the homepage now remembers your saved airport (pre-selects + "Welcome back" line). ✅ shipped
+- [x] **Class + Non-stop in the search URL — RESOLVED (intentionally left as on-results filters).** Verified 2026-06-29: Non-stop has no Aviasales deep-link parameter, and the only URL format that supports cabin class (`search.aviasales.com/flights/?...trip_class=`) **redirects to the Russian homepage and drops the route + the affiliate marker** when tested — i.e. switching would break the working, revenue-tracking search. The compact `aviasales.com/search/...?marker=741311` format works and is kept. Both filters are one tap on the Aviasales results page. _Correct call, not a gap._
+- [ ] Add an optional **feature-premium** scaffold (more home airports / instant alerts) — _gated on your decision to add a paid tier_
+- [ ] Any tweak to the cards page, newsletter layout, or a new signature section — on request
 
 ---
 
