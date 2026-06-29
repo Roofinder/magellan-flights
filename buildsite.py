@@ -471,6 +471,31 @@ def head_seo(active, full_title, description, market=None):
             {"@type": "Question", "name": q,
              "acceptedAnswer": {"@type": "Answer", "text": a4}}
             for q, a4 in route_faqs(p)]})
+    # Hub pages: ItemList so search engines & AI read them as curated link lists.
+    if active == "cheap-flights.html":
+        items = [{"@type": "ListItem", "position": i,
+                  "name": f"Cheap flights from {mp['city']} ({mp['code']})",
+                  "url": BASE_URL + "/" + mp["fname"]}
+                 for i, mp in enumerate(globals().get("MONEY_PAGES", []), 1)]
+        if items:
+            graph.append({"@type": "ItemList", "name": "Cheap flights by departure city",
+                          "numberOfItems": len(items), "itemListElement": items})
+    if active == "city-guides.html":
+        items = [{"@type": "ListItem", "position": i,
+                  "name": f"{cg['city']} travel guide",
+                  "url": BASE_URL + "/" + cg["fname"]}
+                 for i, cg in enumerate(CITY_GUIDES, 1)]
+        if items:
+            graph.append({"@type": "ItemList", "name": "City guides",
+                          "numberOfItems": len(items), "itemListElement": items})
+    if active == "guides.html":
+        items = [{"@type": "ListItem", "position": i,
+                  "name": ar.get("h1", ar.get("slug", "")),
+                  "url": BASE_URL + "/" + ar["slug"] + ".html"}
+                 for i, ar in enumerate(ARTICLES, 1)]
+        if items:
+            graph.append({"@type": "ItemList", "name": "Flight deal guides",
+                          "numberOfItems": len(items), "itemListElement": items})
     blob = json.dumps({"@context": "https://schema.org", "@graph": graph},
                       ensure_ascii=False)
     tags.append(f'<script type="application/ld+json">{blob}</script>')
