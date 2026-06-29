@@ -2871,11 +2871,15 @@ def body_home(market, hist, cards, lastmin, oneway, summary, world, home=None):
   <section class="home-sec" id="from-your-airport" style="margin-top:10px">
     <div class="sec-head"><h2>Cheap one-ways from your home airport</h2><span>the deals that actually matter to you</span></div>
     <p style="color:var(--muted);margin:0 0 12px;max-width:640px">The one thing every flight-deal list gets wrong: showing you fares from airports you&rsquo;ll never use. Pick yours and see only the cheap one-ways that actually leave from near you.</p>
+    <div id="fya-welcome" style="display:none;background:rgba(47,107,70,.10);border:1px solid var(--line);border-radius:10px;padding:11px 15px;margin:0 0 12px;font-size:14.5px"></div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-      <select aria-label="Choose your home airport" onchange="goHomeAirport(this.value)" style="flex:1;min-width:240px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:15px">{city_options(home or {})}</select>
+      <select id="fya-select" aria-label="Choose your home airport" onchange="goHomeAirport(this.value)" style="flex:1;min-width:240px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:15px">{city_options(home or {})}</select>
       <a class="btn-ghost" href="airports.html">Browse all airports &rarr;</a>
     </div>
-    <script>function goHomeAirport(c){{if(!c)return;try{{localStorage.setItem('fs_home',JSON.stringify([c]));}}catch(e){{}}location.href='airports.html';}}</script>
+    <script>
+    function goHomeAirport(c){{if(!c)return;try{{localStorage.setItem('fs_home',JSON.stringify([c]));}}catch(e){{}}location.href='airports.html';}}
+    (function(){{try{{var h=JSON.parse(localStorage.getItem('fs_home')||'[]');if(h&&h.length){{var code=h[0];var sel=document.getElementById('fya-select');if(sel)sel.value=code;var nm=(sel&&sel.options[sel.selectedIndex])?sel.options[sel.selectedIndex].text:code;var w=document.getElementById('fya-welcome');if(w){{w.innerHTML='&#9989; Welcome back &mdash; your home airport is <b>'+nm+'</b>. <a href="airports.html" style="color:var(--gold);font-weight:600">See your deals &rarr;</a> &middot; <a href="#" onclick="try{{localStorage.removeItem(&quot;fs_home&quot;);}}catch(e){{}}location.reload();return false;" style="color:var(--muted)">change</a>';w.style.display='block';}}}}}}catch(e){{}}}})();
+    </script>
   </section>
   <section class="home-sec" id="deals" style="margin-top:10px">{oneway_winner(oneway, market)}
     <div style="text-align:center;margin-top:14px"><a class="btn-ghost" href="market.html">Search more one-way deals &rarr;</a></div>
