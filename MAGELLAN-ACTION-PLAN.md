@@ -48,10 +48,11 @@ _Everything the STORM research recommended (defensibility · newsletter content 
 - [ ] **Pinterest** (evergreen travel pins → signup) + **short-form video** ("$X from your city" clips)
 - [ ] **Reddit / niche communities** — value-first, post the deal not the signup (first ~500 subs, ongoing trickle)
 
-### E. Monetization (the real money — apply, then I can wire links)
-- [ ] **Apply to credit-card affiliate programs** (the biggest lever — up to ~$200/approval vs ~1% on a flight)
-- [ ] Once approved, send me the card names + your affiliate links → I'll populate `travel-cards.html`
-- [ ] Keep Aviasales links live (marker 741311) but treat ~1% flight affiliate as a bonus, not the engine
+### E. Monetization — ⏸️ PARKED until the list grows (~1–2K subs)
+_Dalton's call 2026-06-29: grow the following first. Correct — a small list earns almost nothing from cards, and monetization is meant to wrap around an audience, not precede it. Revisit when the list is bigger._
+- [ ] (later) **Apply to credit-card affiliate programs** (the biggest lever — up to ~$200/approval vs ~1% on a flight)
+- [ ] (later) Once approved, send me the card names + your affiliate links → I'll populate `travel-cards.html`
+- [x] Aviasales links live (marker 741311) — the bonus revenue while you grow ✅
 
 ### F. Distribution content (ready to use)
 - [ ] Post the **brand-story / transparency posts** (Format H–K in `SOCIAL-POSTS.md`) + weekly movers
