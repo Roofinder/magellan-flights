@@ -1719,18 +1719,18 @@ CSS = r"""<style>
   .intro-grid line{ stroke:#efe5cd; stroke-width:1; }
   .intro-arc{ fill:none; stroke:var(--gold); stroke-width:4; stroke-linecap:round;
               stroke-dasharray:1300; stroke-dashoffset:1300;
-              animation:mfArc 2.2s cubic-bezier(.45,0,.25,1) .25s forwards; }
-  .intro-dot-a{ fill:var(--ink); opacity:0; animation:mfFade .4s ease .15s forwards; }
+              animation:mfArc 1.0s cubic-bezier(.45,0,.25,1) .1s forwards; }
+  .intro-dot-a{ fill:var(--ink); opacity:0; animation:mfFade .3s ease .05s forwards; }
   .intro-dot-b{ fill:none; stroke:var(--gold); stroke-width:4; opacity:0;
-                animation:mfFade .5s ease 2.15s forwards; }
-  .intro-plane{ opacity:0; animation:mfFade .3s ease .25s forwards; }
+                animation:mfFade .3s ease 1.0s forwards; }
+  .intro-plane{ opacity:0; animation:mfFade .25s ease .1s forwards; }
   .intro-plane path{ fill:var(--gold); }
   .intro-ttl{ font:800 96px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-              fill:var(--ink); opacity:0; animation:mfFade .7s ease .9s forwards; }
+              fill:var(--ink); opacity:0; animation:mfFade .45s ease .45s forwards; }
   .intro-sub{ font:600 40px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-              fill:var(--gold); opacity:0; animation:mfFade .7s ease 1.25s forwards; }
+              fill:var(--gold); opacity:0; animation:mfFade .45s ease .7s forwards; }
   .intro-url{ font:500 30px ui-monospace,Menlo,Consolas,monospace;
-              fill:var(--muted); opacity:0; animation:mfFade .6s ease 1.9s forwards; }
+              fill:var(--muted); opacity:0; animation:mfFade .4s ease 1.0s forwards; }
   @keyframes mfArc{ to{ stroke-dashoffset:0; } }
   @keyframes mfFade{ from{ opacity:0; } to{ opacity:1; } }
   @media(prefers-reduced-motion:reduce){
@@ -1769,8 +1769,9 @@ CSS = r"""<style>
   .fs-radio input,.fs-check input{ accent-color:var(--blue); width:16px; height:16px; }
   .fs-field{ display:flex; flex-direction:column; gap:5px; flex:1; min-width:115px; }
   .fs-field label{ font-size:10.5px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
-  .fs-field input,.fs-field select{ background:#efe5cd; color:var(--ink); border:1px solid var(--line); border-radius:9px;
-            padding:9px 10px; font-size:13.5px; font-family:inherit; }
+  .fs-field input,.fs-field select{ background:#fffdf7; color:var(--ink); border:1px solid #cdbb8e; border-radius:9px;
+            padding:9px 10px; font-size:13.5px; font-family:inherit; transition:border-color .15s, box-shadow .15s; }
+  .fsearch input:focus,.fsearch select:focus{ outline:none; border-color:var(--green); box-shadow:0 0 0 3px rgba(46,139,87,.18); }
   .fs-od .fs-field{ flex:1; min-width:150px; }
   .fs-swap{ flex:0 0 auto; align-self:flex-end; margin-bottom:4px; background:#efe5cd; border:1px solid var(--line);
             color:var(--blue); width:34px; height:34px; border-radius:9px; cursor:pointer; font-size:16px; }
@@ -1778,10 +1779,10 @@ CSS = r"""<style>
   .fs-alert{ background:#efe5cd; border:1px solid var(--line); border-radius:11px; padding:10px 12px; margin:2px 0 12px; }
   .fs-alert-lab{ display:block; font-size:12.5px; font-weight:700; color:var(--ink); margin-bottom:7px; }
   .fs-alert-lab span{ color:var(--muted); font-weight:500; }
-  .fs-alert input{ width:100%; background:#efe5cd; color:var(--ink); border:1px solid var(--line); border-radius:9px; padding:9px 10px; font-size:13.5px; }
+  .fs-alert input{ width:100%; background:#fffdf7; color:var(--ink); border:1px solid #cdbb8e; border-radius:9px; padding:9px 10px; font-size:13.5px; transition:border-color .15s, box-shadow .15s; }
   .fs-go{ display:block; width:100%; background:var(--green); color:#15130c; font-weight:800; font-size:14px; border:0;
-          border-radius:11px; padding:11px; cursor:pointer; letter-spacing:.02em; }
-  .fs-go:hover{ filter:brightness(1.05); }
+          border-radius:11px; padding:11px; cursor:pointer; letter-spacing:.02em; transition:transform .15s, filter .15s, box-shadow .15s; }
+  .fs-go:hover{ filter:brightness(1.06); transform:translateY(-1px); box-shadow:0 8px 20px rgba(46,139,87,.28); }
   .fsearch input::placeholder{ color:#8294b5; }
   @media(max-width:560px){ .fs-od{ flex-wrap:wrap; } .fs-swap{ display:none; } }
   .cta-row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
@@ -2357,10 +2358,11 @@ def top_chrome(active, market):
     return f"""<body>
 <div id="astro-splash"><div class="intro-stage">{INTRO_SVG}</div></div>
 <script>(function(){{var s=document.getElementById('astro-splash');if(!s)return;
-if(sessionStorage.getItem('mf_intro')){{s.parentNode.removeChild(s);return;}}
+var seen;try{{seen=localStorage.getItem('mf_intro');}}catch(e){{}}
+if(seen){{s.parentNode.removeChild(s);return;}}
 var rm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-function done(){{s.classList.add('hide');sessionStorage.setItem('mf_intro','1');setTimeout(function(){{if(s.parentNode)s.parentNode.removeChild(s);}},650);}}
-window.addEventListener('load',function(){{setTimeout(done, rm?700:2700);}});}})();</script>
+function done(){{s.classList.add('hide');try{{localStorage.setItem('mf_intro','1');}}catch(e){{}}setTimeout(function(){{if(s.parentNode)s.parentNode.removeChild(s);}},600);}}
+window.addEventListener('load',function(){{setTimeout(done, rm?400:1400);}});}})();</script>
 <div class="topbar">
 <div class="ticker"><span class="ti-label">Flight Tracker</span><div class="ticker-track">{ticker_rt(market)}</div></div>
 <div class="regionbar">{region_buttons()}</div>
