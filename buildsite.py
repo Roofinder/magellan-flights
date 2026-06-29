@@ -6007,6 +6007,22 @@ def _us_region(code):
     return None
 
 
+def _flag_email(cc):
+    """Small country-flag <img> for the email (flagcdn.com, loads in all clients).
+    Empty string if the country code is missing/invalid."""
+    cc = (cc or "").strip().lower()
+    if len(cc) != 2 or not cc.isalpha():
+        return ""
+    return (f'<img src="https://flagcdn.com/w40/{cc}.png" width="24" height="18" alt="" '
+            'style="vertical-align:middle;border-radius:3px;border:1px solid rgba(0,0,0,.12);margin-right:9px">')
+
+
+def _pct_badge(pct):
+    """Bold green 'NN% below' pill — the savings number as the hero element."""
+    return ('<span style="background:#2f6b46;color:#ffffff;font-family:Arial,sans-serif;font-size:11px;'
+            f'font-weight:bold;padding:3px 9px;border-radius:11px;white-space:nowrap">&#9660; {pct:.0f}% below</span>')
+
+
 def newsletter_issue_html(oneway, market):
     """Email-safe (inline-styled) research briefing: a book-now pick, the market by
     region (week-over-week), and this week's biggest below-normal one-way drops."""
@@ -6040,14 +6056,16 @@ def newsletter_issue_html(oneway, market):
         hlink = html.escape(ho.get("link", BASE_URL + "/market.html"), quote=True)
         loc = f"{hcity}, {hcountry}" if hcountry and hcountry != hcity else hcity
         hnorm = hp / (1 - hpct / 100.0) if 0 < hpct < 90 else 0
-        norm_str = f' <s style="color:#9b9582;font-weight:normal">normally ~${hnorm:,.0f}</s>' if hnorm > hp else ''
+        norm_str = (f' <s style="color:#9b9582;font-weight:normal;font-size:16px;vertical-align:middle">normally ~${hnorm:,.0f}</s>'
+                    if hnorm > hp else '')
         hero_html = (
-            '<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:separate;margin:0 0 22px">'
-            '<tr><td style="background:#fffdf6;border:1px solid #2f6b46;border-radius:12px;padding:20px 22px">'
-            '<div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#2f6b46;font-weight:bold">&#128205; Book this week</div>'
-            f'<div style="font-size:23px;font-weight:bold;margin:6px 0 2px;color:#2c2a1e">{loc}</div>'
-            f'<div style="font-size:14px;color:#7a715a;margin:0 0 12px">one-way from {horigin} &middot; <b style="color:#2f6b46">${hp:,.0f}</b>{norm_str} &middot; {hpct:.0f}% below normal</div>'
-            f'<a href="{hlink}" style="background:#2f6b46;color:#ffffff;text-decoration:none;padding:11px 22px;border-radius:8px;font-size:14px;font-weight:bold;display:inline-block">See live price &amp; book &rarr;</a>'
+            '<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:separate;margin:0 0 24px">'
+            '<tr><td style="background:#ffffff;border:2px solid #2f6b46;border-radius:14px;padding:22px 24px">'
+            '<div style="font-family:Arial,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#2f6b46;font-weight:bold">&#128205; Book this week</div>'
+            f'<div style="font-size:25px;font-weight:bold;margin:9px 0 2px;color:#2c2a1e">{_flag_email(ho.get("cc"))}{loc}</div>'
+            f'<div style="font-size:13px;color:#9b9582;margin:0 0 12px">one-way from {horigin}</div>'
+            f'<div style="margin:0 0 16px"><span style="font-size:40px;font-weight:bold;color:#2f6b46;vertical-align:middle">${hp:,.0f}</span>{norm_str} &nbsp; {_pct_badge(hpct)}</div>'
+            f'<a href="{hlink}" style="background:#2f6b46;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:9px;font-size:15px;font-weight:bold;display:inline-block">See live price &amp; book &rarr;</a>'
             '</td></tr></table>')
 
     # --- Section: the market this week, by region (deal density + WoW when credible) ---
@@ -6070,23 +6088,24 @@ def newsletter_issue_html(oneway, market):
 
     # --- Section: this week's biggest below-normal drops (excludes the hero) ---
     rows = ""
-    for pct, o, p in items[1:8]:
+    for i, (pct, o, p) in enumerate(items[1:8]):
         city = html.escape(str(o.get("name", o["code"])).split(",")[0])
         origin = html.escape(o.get("origin", ""))
         link = html.escape(o.get("link", ""), quote=True)
+        bg = "#ffffff" if i % 2 == 0 else "#f7f0dd"
         rows += (
-            '<tr>'
-            f'<td style="padding:11px 0;border-bottom:1px solid #d9c9a0;font-family:Georgia,serif;font-size:16px;color:#2c2a1e">'
-            f'<a href="{link}" style="color:#2f6b46;text-decoration:none;font-weight:bold">{city}</a> '
-            f'<span style="color:#7a715a;font-size:13px">one-way from {origin}</span></td>'
-            f'<td align="right" style="padding:11px 0;border-bottom:1px solid #d9c9a0;font-family:Georgia,serif;font-size:17px;font-weight:bold;color:#2c2a1e;white-space:nowrap">'
-            f'${p:,.0f} <span style="color:#2f6b46;font-size:12px">&#9660;{pct:.0f}%</span></td></tr>')
+            f'<tr style="background:{bg}">'
+            f'<td style="padding:13px 14px;font-family:Georgia,serif;font-size:16px;color:#2c2a1e">'
+            f'{_flag_email(o.get("cc"))}<a href="{link}" style="color:#2c2a1e;text-decoration:none;font-weight:bold">{city}</a> '
+            f'<span style="color:#9b9582;font-size:12px">from {origin}</span></td>'
+            f'<td align="right" style="padding:13px 14px;font-family:Georgia,serif;white-space:nowrap">'
+            f'<span style="font-size:19px;font-weight:bold;color:#2c2a1e">${p:,.0f}</span> &nbsp; {_pct_badge(pct)}</td></tr>')
     drops_section = ""
     if rows:
         drops_section = (
-            '<div style="font-size:18px;font-weight:bold;margin:6px 0 4px;color:#2c2a1e">This week&rsquo;s biggest drops</div>'
-            '<div style="font-size:13px;color:#7a715a;margin:0 0 6px;line-height:1.5">The steepest below-normal one-ways from the USA right now. Tap a city to book.</div>'
-            f'<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">{rows}</table>')
+            '<div style="font-size:19px;font-weight:bold;margin:6px 0 4px;color:#2c2a1e">This week&rsquo;s biggest drops</div>'
+            '<div style="font-size:13px;color:#7a715a;margin:0 0 10px;line-height:1.5">The steepest below-normal one-ways from the USA right now. Tap a city to book.</div>'
+            f'<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border:1px solid #e3d8b8;border-radius:12px;overflow:hidden;margin:0 0 24px">{rows}</table>')
 
     # --- Section: closest to you (a standout deal from each part of the country) ---
     buckets = {"the East Coast": None, "the Middle": None, "the West Coast": None}
@@ -6105,11 +6124,11 @@ def newsletter_issue_html(oneway, market):
         link = html.escape(o.get("link", ""), quote=True)
         ap_rows += (
             '<tr>'
-            f'<td style="padding:10px 0;border-bottom:1px solid #d9c9a0;font-family:Georgia,serif;font-size:13px;color:#7a715a;white-space:nowrap;vertical-align:top">From {label}</td>'
-            f'<td style="padding:10px 0 10px 12px;border-bottom:1px solid #d9c9a0;font-family:Georgia,serif;font-size:15px;color:#2c2a1e">'
-            f'<a href="{link}" style="color:#2f6b46;text-decoration:none;font-weight:bold">{city}</a> '
-            f'<span style="color:#7a715a;font-size:13px">from {origin}</span></td>'
-            f'<td align="right" style="padding:10px 0;border-bottom:1px solid #d9c9a0;font-family:Georgia,serif;font-size:15px;font-weight:bold;color:#2c2a1e;white-space:nowrap">${p:,.0f} <span style="color:#2f6b46;font-size:12px">&#9660;{pct:.0f}%</span></td>'
+            f'<td style="padding:11px 0;border-bottom:1px solid #e0d4b3;font-family:Arial,sans-serif;font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:#9b9582;white-space:nowrap;vertical-align:middle">{label.replace("the ", "")}</td>'
+            f'<td style="padding:11px 0 11px 14px;border-bottom:1px solid #e0d4b3;font-family:Georgia,serif;font-size:15px;color:#2c2a1e">'
+            f'{_flag_email(o.get("cc"))}<a href="{link}" style="color:#2c2a1e;text-decoration:none;font-weight:bold">{city}</a> '
+            f'<span style="color:#9b9582;font-size:12px">from {origin}</span></td>'
+            f'<td align="right" style="padding:11px 0;border-bottom:1px solid #e0d4b3;font-family:Georgia,serif;white-space:nowrap"><span style="font-size:16px;font-weight:bold;color:#2c2a1e">${p:,.0f}</span> &nbsp; {_pct_badge(pct)}</td>'
             '</tr>')
     airport_section = ""
     if ap_rows:
@@ -6120,24 +6139,29 @@ def newsletter_issue_html(oneway, market):
             f'<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:0 0 4px">{ap_rows}</table>')
 
     return (
-        '<div style="max-width:560px;margin:0 auto;background:#f3ecd8;padding:30px 26px;font-family:Georgia,serif;color:#2c2a1e">'
-        '<div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#2f6b46;font-weight:bold">Magellan Flights &middot; Weekly Briefing</div>'
-        '<div style="font-size:25px;font-weight:bold;margin:6px 0 2px;color:#2c2a1e">The flight market this week</div>'
-        f'<div style="font-size:13px;color:#9b9582;margin:0 0 14px">{issued} &middot; one email a week</div>'
+        '<div style="max-width:600px;margin:0 auto;font-family:Georgia,serif;color:#2c2a1e">'
+        '<div style="background:#2f6b46;padding:30px 26px 24px;text-align:center;border-radius:16px 16px 0 0">'
+        '<div style="font-family:Arial,sans-serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#bfe0cb;font-weight:bold">&#9992; Magellan Flights</div>'
+        '<div style="font-size:28px;font-weight:bold;color:#ffffff;margin:9px 0 3px">The flight market this week</div>'
+        f'<div style="font-size:12px;color:#9fd0b0">{issued} &middot; one email a week</div>'
+        '</div>'
+        '<div style="background:#f3ecd8;padding:24px 26px">'
         f'{fare_watch}'
         f'{hero_html}'
-        f'{market_section}'
-        f'{airport_section}'
         f'{drops_section}'
-        f'<div style="text-align:center;margin:24px 0 8px"><a href="{BASE_URL}/market.html" style="background:#2f6b46;color:#ffffff;text-decoration:none;padding:13px 26px;border-radius:8px;font-size:15px;font-weight:bold;display:inline-block">See the full live board &rarr;</a></div>'
-        '<table width="100%" cellpadding="0" cellspacing="0" style="margin:18px 0 0"><tr><td style="background:#fffdf6;border:1px dashed #c9b88e;border-radius:10px;padding:16px 18px;text-align:center">'
-        '<div style="font-size:14px;color:#2c2a1e;font-weight:bold;margin-bottom:3px">&#128233; Know a fellow deal-hunter?</div>'
+        f'{airport_section}'
+        f'{market_section}'
+        f'<div style="text-align:center;margin:8px 0 4px"><a href="{BASE_URL}/market.html" style="background:#2c2a1e;color:#ffffff;text-decoration:none;padding:14px 30px;border-radius:9px;font-size:15px;font-weight:bold;display:inline-block">See the full live board &rarr;</a></div>'
+        '<table width="100%" cellpadding="0" cellspacing="0" style="margin:18px 0 0"><tr><td style="background:#ffffff;border:1px dashed #c9b88e;border-radius:12px;padding:18px 20px;text-align:center">'
+        '<div style="font-size:15px;color:#2c2a1e;font-weight:bold;margin-bottom:4px">&#128233; Know a fellow deal-hunter?</div>'
         '<div style="font-size:13px;color:#7a715a;margin-bottom:10px;line-height:1.5">Forward this email &mdash; they can get the weekly briefing free. The more of us watching the market, the better it gets.</div>'
         f'<a href="{BASE_URL}/newsletter.html" style="color:#2f6b46;text-decoration:none;font-weight:bold;font-size:13px">Send a friend to magellanflights.com/newsletter &rarr;</a>'
         '</td></tr></table>'
-        f'<div style="font-size:12px;color:#7a715a;text-align:center;margin:18px 0 0;line-height:1.55">'
-        '<b>How we judge &ldquo;below normal&rdquo;:</b> we compare the cheapest one-way we&rsquo;ve tracked to that route&rsquo;s usual price (estimated from round-trip fares and its own price history). It&rsquo;s an honest guide, not a guarantee &mdash; your live price is always confirmed on Aviasales.'
-        f'<br><br>You&rsquo;re getting this because you joined Magellan Flights at <a href="{BASE_URL}" style="color:#2f6b46">magellanflights.com</a>. Unsubscribe anytime.</div>'
+        '</div>'
+        '<div style="background:#e7ddc6;padding:18px 26px;border-radius:0 0 16px 16px;font-size:11.5px;color:#7a715a;text-align:center;line-height:1.6">'
+        '<b style="color:#2c2a1e">How we judge &ldquo;below normal&rdquo;:</b> we compare the cheapest one-way we&rsquo;ve tracked to that route&rsquo;s usual price (estimated from round-trip fares and its own price history). An honest guide, not a guarantee &mdash; your live price is always confirmed on Aviasales.'
+        f'<br><br>You&rsquo;re getting this because you joined Magellan Flights at <a href="{BASE_URL}" style="color:#2f6b46">magellanflights.com</a>. Unsubscribe anytime.'
+        '</div>'
         '</div>')
 
 
