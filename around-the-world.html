@@ -208,14 +208,19 @@
   details.owreg[open] .owreg-sum{ border-bottom:1px solid var(--line); }
   .owreg-body{ padding:10px 12px 12px; }
   .hm-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(74px,1fr)); gap:6px; margin:14px 0; }
-  .hm-tile{ aspect-ratio:1/1; border-radius:8px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-decoration:none; padding:4px; border:1px solid rgba(0,0,0,.08); transition:transform .1s ease, box-shadow .1s ease; }
+  .hm-tile{ position:relative; aspect-ratio:1/1; border-radius:8px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-decoration:none; padding:4px; border:1px solid rgba(0,0,0,.08); transition:transform .1s ease, box-shadow .1s ease; }
+  .hm-tile .hm-star{ position:absolute; top:1px; right:3px; background:none; border:0; cursor:pointer; font-size:13px; line-height:1; padding:2px 3px; color:rgba(255,255,255,.6); opacity:.5; text-shadow:0 1px 2px rgba(0,0,0,.45); z-index:2; }
+  .hm-tile:hover .hm-star{ opacity:1; }
+  .hm-tile .hm-star.on{ opacity:1; color:#fff; }
   .hm-tile:hover{ transform:scale(1.1); box-shadow:0 5px 16px rgba(0,0,0,.22); position:relative; z-index:3; }
   .hm-code{ font-weight:800; font-size:14px; letter-spacing:.02em; line-height:1.1; }
+  .hm-city{ font-weight:800; font-size:10.5px; line-height:1.05; max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-align:center; }
+  .hm-cc{ font-size:8.5px; font-weight:600; opacity:.82; line-height:1.15; margin-top:1px; max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-align:center; }
   .hm-price{ font-size:11px; font-weight:700; margin-top:2px; font-family:ui-monospace,Menlo,Consolas,monospace; }
   .hm-legend{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; font-size:12.5px; color:var(--muted); margin:4px 0 2px; }
   .hm-leg-item{ display:inline-flex; align-items:center; gap:6px; }
   .hm-key{ width:15px; height:15px; border-radius:4px; display:inline-block; border:1px solid rgba(0,0,0,.08); }
-  @media(max-width:560px){ .hm-grid{ grid-template-columns:repeat(auto-fill,minmax(60px,1fr)); gap:5px; } .hm-code{ font-size:12px; } .hm-price{ font-size:10px; } }
+  @media(max-width:560px){ .hm-grid{ grid-template-columns:repeat(auto-fill,minmax(64px,1fr)); gap:5px; } .hm-code{ font-size:12px; } .hm-city{ font-size:9.5px; } .hm-cc{ font-size:7.5px; } .hm-price{ font-size:10px; } }
   .owc-reg{ font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:700; margin:16px 0 6px; padding-top:4px; border-top:1px solid rgba(0,0,0,.08); }
   .owc-reg:first-child{ border-top:none; margin-top:2px; }
   details.owc{ border:1px solid #d9c9a0; border-radius:10px; margin-bottom:8px; background:#efe5cd; overflow:hidden; }
@@ -1075,7 +1080,7 @@ function render(){
   document.querySelectorAll('.star[data-code]').forEach(function(b){
     var e=bMarketEntry(b.dataset.code); var on = e ? _bk.some(function(x){return x.id===e.id;}) : false;
     b.innerHTML=on?'&#9733;':'&#9734;'; b.classList.toggle('on', on);
-    b.onclick=function(){ bMarketStar(b.dataset.code); }; });
+    b.onclick=function(ev){ if(ev){ev.preventDefault();ev.stopPropagation();} bMarketStar(b.dataset.code); }; });
   document.querySelectorAll('.airchip[data-air]').forEach(function(b){ b.classList.toggle('on', WA.indexOf(b.dataset.air)>=0); });
   var wl=document.getElementById('watchlist'), hint=document.getElementById('wl-hint');
   if(wl && hint){ var items=MARKET.filter(function(m){ return WD.indexOf(m.c)>=0 || (WA.length && WA.indexOf(m.a)>=0); });
