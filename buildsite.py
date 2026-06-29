@@ -3450,7 +3450,7 @@ HM_JS = ("""<script>(function(){var R='all';function ap(){var ts=document.queryS
 def body_heatmap(oneway, market):
     grid, chips = heatmap_build(oneway, market)
     return f"""<div class="wrap">
-  <div class="pagehead"><h1>The Heatmap</h1><p>Every <b>one-way</b> fare we track, at a glance &mdash; <b style="color:#2e8b57">green when it&rsquo;s below its normal price</b> (a deal) and <b style="color:#c0392b">red when it&rsquo;s above</b>. The deeper the color, the bigger the move; about-even fares stay parchment. Filter by region, and tap any tile to see its live price and book.</p></div>
+  <div class="pagehead"><h1>Flight Fare Heatmap</h1><p>Every <b>one-way</b> fare we track, at a glance &mdash; <b style="color:#2e8b57">green when it&rsquo;s below its normal price</b> (a deal) and <b style="color:#c0392b">red when it&rsquo;s above</b>. The deeper the color, the bigger the move; about-even fares stay parchment. Filter by region, and tap any tile to see its live price and book.</p></div>
   {heatmap_legend()}
   <div class="airchips" id="hm-chips" style="margin:8px 0 6px">{chips}</div>
   {grid}
@@ -3461,7 +3461,7 @@ def body_heatmap(oneway, market):
 
 def body_market(market, hist, cards, lastmin, oneway):
     return f"""<div class="wrap">
-  <div class="pagehead"><h1>The Market</h1><p>The full board &mdash; the cheapest one-way fares to anywhere, judged against each route&rsquo;s own price history, plus region fare indices.</p></div>
+  <div class="pagehead"><h1>The Market &mdash; Cheapest One-Way Flights from the USA</h1><p>The full board &mdash; the cheapest one-way fares to anywhere, judged against each route&rsquo;s own price history, plus region fare indices.</p></div>
   <div class="summary">{market_pulse(market)}</div>
   <div class="sec-head"><h2>Fare heatmap</h2><span>one-way deals vs. their normal price</span></div>
   {heatmap_legend()}
@@ -3668,7 +3668,7 @@ def body_rtw(world):
 
     shell = """<style>.mf-ledger{margin-top:14px;background:#efe5cd;border:1px solid #d9c9a0;border-radius:12px;padding:14px}.mf-totals{display:flex;gap:12px;flex-wrap:wrap}.mf-tot{flex:1;min-width:150px;background:#efe5cd;border:1px solid #d9c9a0;border-radius:10px;padding:10px 12px}.mf-tot .mf-lbl{display:block;font-size:12px;color:var(--muted)}.mf-tot .mf-val{font-size:22px;font-weight:700}.mf-tot .mf-sub{display:block;font-size:11px;color:var(--muted);margin-top:2px}.mf-conf{border-color:rgba(46,139,87,.45)}.mf-conf .mf-val{color:#2e8b57}.mf-save{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}.mf-save input{flex:1;min-width:180px;background:#efe5cd;border:1px solid #d9c9a0;border-radius:8px;color:var(--ink);padding:8px 10px;font:inherit}.rtw-confwrap{display:flex;align-items:center;gap:6px;margin-top:6px}.rtw-bk{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);cursor:pointer}.rtw-bp{width:84px;background:#efe5cd;border:1px solid #d9c9a0;border-radius:6px;color:var(--ink);padding:3px 6px;font:inherit}.rtw-bp:disabled{opacity:.4}.mf-trips-h{font-size:12px;color:var(--muted);margin:14px 0 4px}.mf-trip{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 0;border-top:1px solid #d9c9a0}.mf-trip-nm{font-weight:600}.mf-trip-meta{font-size:12px;color:var(--muted)}.mf-mini{padding:3px 10px;font-size:12px}.rtw-mustchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.rtw-chip{display:inline-flex;align-items:center;gap:5px;background:#2f6b46;border:1px solid #d9c9a0;border-radius:999px;padding:3px 4px 3px 10px;font-size:12px;color:#fff}.rtw-chip button{background:none;border:none;color:var(--muted);cursor:pointer;font-size:15px;line-height:1;padding:0 3px}.rtw-chip button:hover{color:#fff}.rtw-mustbtns{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px;font-size:12px;color:var(--muted)}.rtw-mustbtns select{background:#efe5cd;border:1px solid #d9c9a0;border-radius:6px;color:var(--ink);padding:3px 6px;font:inherit}.rtw-mustnote{font-size:11px;color:var(--muted);margin-top:6px}</style>
 <div class="wrap">
-  <div class="pagehead"><h1>__COMPASS__ Ferdinand&rsquo;s World Loop</h1>
+  <div class="pagehead"><h1>__COMPASS__ Cheapest Around-the-World Flights</h1>
   <p>Five centuries after Magellan circled the globe, build your own cheapest way to do it today &mdash; one cheap one-way at a time. Set your start, stops, regions and budget, and we&rsquo;ll find the lowest-cost real loop our tracker can assemble right now.</p></div>
   <div class="tl-card">
     <div class="rtw-controls">
@@ -3974,7 +3974,7 @@ def body_consultant():
 
 def body_explore():
     return """<div class="wrap">
-  <div class="pagehead"><h1>Explore</h1><p>Plan a specific trip. Add your home airport(s) and we&rsquo;ll find the cheapest one-ways to <b>anywhere</b> &mdash; or type a destination to track a <b>specific route</b> and see every fare we have for it. Add several airports and we compare across all of them. Just want to browse the cheapest deals? That&rsquo;s the <a href="market.html" style="color:var(--gold)">Market</a>.</p></div>
+  <div class="pagehead"><h1>Find Cheap One-Way Flights from the USA</h1><p>Plan a specific trip. Add your home airport(s) and we&rsquo;ll find the cheapest one-ways to <b>anywhere</b> &mdash; or type a destination to track a <b>specific route</b> and see every fare we have for it. Add several airports and we compare across all of them. Just want to browse the cheapest deals? That&rsquo;s the <a href="market.html" style="color:var(--gold)">Market</a>.</p></div>
   <div class="airchips" id="ex-tabs" style="margin:0 0 14px;gap:8px">
     <button type="button" class="airchip on" id="ex-tab-plan-btn" onclick="exTab('plan')">Plan a trip (A &rarr; B)</button>
     <button type="button" class="airchip" id="ex-tab-explore-btn" onclick="exTab('explore')">Explore anywhere</button>
@@ -4085,7 +4085,7 @@ def body_lastminute(lm):
 
 def body_airports(home):
     return f"""<div class="wrap">
-  <div class="pagehead" id="airports"><h1>The Captain&rsquo;s Log</h1><p>Your home airports and tracked fares &mdash; a captain&rsquo;s log of raw data: coordinates, prices and deviations. Set your home airport to see the cheapest trips leaving from your city. Saved in this browser.</p></div>
+  <div class="pagehead" id="airports"><h1>Cheap Flights From Your Home Airport</h1><p>Your home airports and tracked fares &mdash; a captain&rsquo;s log of raw data: coordinates, prices and deviations. Set your home airport to see the cheapest trips leaving from your city. Saved in this browser.</p></div>
   <div class="citybar">
     <select id="city-pick">{city_options(home)}</select>
     <button onclick="addCity()">Add my airport</button>
