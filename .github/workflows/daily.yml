@@ -57,7 +57,7 @@ jobs:
         run: |
           cp site/*.html .
           cp site/favicon.svg site/favicon-32.png site/favicon-48.png site/favicon-96.png site/apple-touch-icon.png . 2>/dev/null || true
-          cp site/sitemap.xml site/robots.txt site/llms.txt site/deals.xml . 2>/dev/null || true
+          cp site/sitemap.xml site/robots.txt site/llms.txt site/deals.xml site/newsletter.xml . 2>/dev/null || true
           cp site/og-image.png . 2>/dev/null || true
 
       - name: Prune old dated data CSVs (keep newest per kind)
@@ -70,7 +70,7 @@ jobs:
         run: |
           git config user.name "magellan-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add -A -- '*.html' winners.json oneway_index.json favicon.svg favicon-32.png favicon-48.png favicon-96.png apple-touch-icon.png sitemap.xml robots.txt llms.txt og-image.png deals.xml
+          git add -A -- '*.html' winners.json oneway_index.json favicon.svg favicon-32.png favicon-48.png favicon-96.png apple-touch-icon.png sitemap.xml robots.txt llms.txt og-image.png deals.xml newsletter.xml
           git add -f explore_oneway_*.csv world_*.csv lastminute_*.csv data/market_latest.csv data/pricehistory.csv data/homebase.json data/sky_ids.json data/sky_calls.json data/featured_verified.json 2>/dev/null || true
           if git diff --cached --quiet; then echo "Nothing to publish."; exit 0; fi
           for i in 1 2 3 4 5; do
