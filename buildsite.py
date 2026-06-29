@@ -24,9 +24,11 @@ import glob
 import html
 import json
 import os
+import re
+import urllib.request
 from collections import defaultdict
 from datetime import datetime, timedelta
-from urllib.parse import quote_plus
+from urllib.parse import quote, quote_plus
 
 import dealsgen as dg
 
@@ -6023,6 +6025,38 @@ def _pct_badge(pct):
             f'font-weight:bold;padding:3px 9px;border-radius:11px;white-space:nowrap">&#9660; {pct:.0f}% below</span>')
 
 
+_HERO_PHOTO_CACHE = {}
+
+
+def _hero_photo(city):
+    """(image_url, short_blurb) for a destination, from Wikipedia's REST summary.
+    Build-time + in-memory cached, and wrapped so ANY failure (network/parse) just
+    returns ('','') and the hero renders without a photo. Never breaks the build."""
+    key = (city or "").strip()
+    if not key:
+        return ("", "")
+    if key in _HERO_PHOTO_CACHE:
+        return _HERO_PHOTO_CACHE[key]
+    out = ("", "")
+    try:
+        url = "https://en.wikipedia.org/api/rest_v1/page/summary/" + quote(key.replace(" ", "_"))
+        req = urllib.request.Request(url, headers={"User-Agent": "MagellanFlights-newsletter/1.0"})
+        with urllib.request.urlopen(req, timeout=4) as r:
+            data = json.loads(r.read().decode("utf-8"))
+        img = (data.get("thumbnail") or {}).get("source", "")
+        if img:
+            img = re.sub(r"/\d+px-", "/640px-", img)   # upsize the wikimedia thumbnail
+        blurb = (data.get("extract") or "").strip()
+        if blurb:
+            first = blurb.split(". ")[0].strip().rstrip(".")
+            blurb = (first + ".")[:190]
+        out = (img, blurb)
+    except Exception:
+        out = ("", "")
+    _HERO_PHOTO_CACHE[key] = out
+    return out
+
+
 def newsletter_issue_html(oneway, market):
     """Email-safe (inline-styled) research briefing: a book-now pick, the market by
     region (week-over-week), and this week's biggest below-normal one-way drops."""
@@ -6058,14 +6092,28 @@ def newsletter_issue_html(oneway, market):
         hnorm = hp / (1 - hpct / 100.0) if 0 < hpct < 90 else 0
         norm_str = (f' <s style="color:#9b9582;font-weight:normal;font-size:16px;vertical-align:middle">normally ~${hnorm:,.0f}</s>'
                     if hnorm > hp else '')
+        photo_url, blurb = _hero_photo(hcity)
+        photo_banner = (
+            f'<img src="{html.escape(photo_url, quote=True)}" width="600" alt="{hcity}" '
+            'style="display:block;width:100%;height:180px;object-fit:cover;border-radius:12px 12px 0 0">'
+        ) if photo_url else ''
+        blurb_html = (
+            f'<div style="font-size:13.5px;color:#5b5440;font-style:italic;line-height:1.55;margin:0 0 14px">{html.escape(blurb)}</div>'
+        ) if blurb else ''
+        # When there's a photo the card top corners come from the image, else from the cell.
+        body_radius = '0 0 12px 12px' if photo_banner else '14px'
         hero_html = (
             '<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:separate;margin:0 0 24px">'
-            '<tr><td style="background:#ffffff;border:2px solid #2f6b46;border-radius:14px;padding:22px 24px">'
+            '<tr><td style="border:2px solid #2f6b46;border-radius:14px;padding:0">'
+            f'{photo_banner}'
+            f'<div style="background:#ffffff;padding:22px 24px;border-radius:{body_radius}">'
             '<div style="font-family:Arial,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#2f6b46;font-weight:bold">&#128205; Book this week</div>'
             f'<div style="font-size:25px;font-weight:bold;margin:9px 0 2px;color:#2c2a1e">{_flag_email(ho.get("cc"))}{loc}</div>'
             f'<div style="font-size:13px;color:#9b9582;margin:0 0 12px">one-way from {horigin}</div>'
+            f'{blurb_html}'
             f'<div style="margin:0 0 16px"><span style="font-size:40px;font-weight:bold;color:#2f6b46;vertical-align:middle">${hp:,.0f}</span>{norm_str} &nbsp; {_pct_badge(hpct)}</div>'
             f'<a href="{hlink}" style="background:#2f6b46;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:9px;font-size:15px;font-weight:bold;display:inline-block">See live price &amp; book &rarr;</a>'
+            '</div>'
             '</td></tr></table>')
 
     # --- Section: the market this week, by region (deal density + WoW when credible) ---
@@ -6107,36 +6155,15 @@ def newsletter_issue_html(oneway, market):
             '<div style="font-size:13px;color:#7a715a;margin:0 0 10px;line-height:1.5">The steepest below-normal one-ways from the USA right now. Tap a city to book.</div>'
             f'<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border:1px solid #e3d8b8;border-radius:12px;overflow:hidden;margin:0 0 24px">{rows}</table>')
 
-    # --- Section: closest to you (a standout deal from each part of the country) ---
-    buckets = {"the East Coast": None, "the Middle": None, "the West Coast": None}
-    for pct, o, p in items:
-        reg = _us_region(o.get("origin", ""))
-        if reg and buckets.get(reg) is None:
-            buckets[reg] = (pct, o, p)
-    ap_rows = ""
-    for label in ("the East Coast", "the Middle", "the West Coast"):
-        val = buckets.get(label)
-        if not val:
-            continue
-        pct, o, p = val
-        city = html.escape(str(o.get("name", o["code"])).split(",")[0])
-        origin = html.escape(o.get("origin", ""))
-        link = html.escape(o.get("link", ""), quote=True)
-        ap_rows += (
-            '<tr>'
-            f'<td style="padding:11px 0;border-bottom:1px solid #e0d4b3;font-family:Arial,sans-serif;font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:#9b9582;white-space:nowrap;vertical-align:middle">{label.replace("the ", "")}</td>'
-            f'<td style="padding:11px 0 11px 14px;border-bottom:1px solid #e0d4b3;font-family:Georgia,serif;font-size:15px;color:#2c2a1e">'
-            f'{_flag_email(o.get("cc"))}<a href="{link}" style="color:#2c2a1e;text-decoration:none;font-weight:bold">{city}</a> '
-            f'<span style="color:#9b9582;font-size:12px">from {origin}</span></td>'
-            f'<td align="right" style="padding:11px 0;border-bottom:1px solid #e0d4b3;font-family:Georgia,serif;white-space:nowrap"><span style="font-size:16px;font-weight:bold;color:#2c2a1e">${p:,.0f}</span> &nbsp; {_pct_badge(pct)}</td>'
-            '</tr>')
-    airport_section = ""
-    if ap_rows:
-        airport_section = (
-            '<div style="font-size:18px;font-weight:bold;margin:6px 0 4px;color:#2c2a1e">Closest to you</div>'
-            '<div style="font-size:13px;color:#7a715a;margin:0 0 6px;line-height:1.5">A standout below-normal one-way from each part of the country &mdash; so there&rsquo;s a deal near you. '
-            f'<a href="{BASE_URL}/airports.html" style="color:#2f6b46">See deals from your exact airport &rarr;</a></div>'
-            f'<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:0 0 4px">{ap_rows}</table>')
+    # --- Section: deals from YOUR airport (CTA to the live, interactive page) ---
+    # Email can't take live input, so we route the personalization to the site.
+    airport_section = (
+        '<table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px"><tr>'
+        '<td style="background:#eef4ec;border:1px solid #cfe0d2;border-radius:12px;padding:22px 20px;text-align:center">'
+        '<div style="font-size:17px;font-weight:bold;color:#2c2a1e;margin-bottom:5px">&#9992; Want deals from <i>your</i> airport?</div>'
+        '<div style="font-size:13.5px;color:#5b5440;margin-bottom:14px;line-height:1.55">Pick your home airport and see the cheapest routes abroad leaving from near you &mdash; live, updated every day.</div>'
+        f'<a href="{BASE_URL}/airports.html" style="background:#2f6b46;color:#ffffff;text-decoration:none;padding:13px 26px;border-radius:9px;font-size:14px;font-weight:bold;display:inline-block">See cheapest routes from your airport &rarr;</a>'
+        '</td></tr></table>')
 
     return (
         '<div style="max-width:600px;margin:0 auto;font-family:Georgia,serif;color:#2c2a1e">'
