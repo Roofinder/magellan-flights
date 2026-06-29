@@ -117,7 +117,8 @@ FOOTER_NAV = [
                       ("cheap-europe-trip.html", "Continent trips"),
                       ("cheap-flights.html", "Cheap flights by airport")]),
     ("Learn", [("city-guides.html", "City guides"), ("guides.html", "Guides &amp; tips"),
-               ("blog.html", "Today&rsquo;s Daily Guide"), ("cheap-flight-index.html", "Cheap Flight Index"), ("essentials.html", "Travel kit"),
+               ("blog.html", "Today&rsquo;s Daily Guide"), ("cheap-flight-index.html", "Cheap Flight Index"),
+               ("travel-cards.html", "Travel cards"), ("essentials.html", "Travel kit"),
                ("our-story.html", "Our story")]),
     ("Your trips", [("watchlist.html", "My bucket list"), ("newsletter.html", "Free newsletter"),
                ("consultant.html", "Hire a consultant")]),
@@ -245,6 +246,11 @@ SEO = {
         "Our Story — Why Magellan Flights | Magellan Flights",
         "How Magellan Flights came to be, and how we track the cheapest flights from the USA "
         "like a market — judging every fare against its own price history so you book at the low."),
+    "travel-cards.html": (
+        "Best Travel Cards for Cheap-Flight Hunters (Honest Guide) | Magellan Flights",
+        "An honest guide to travel credit cards worth it for cheap-flight hunters: what to look "
+        "for, who each suits, and the catch. We only earn if you're approved, at no cost to you. "
+        "General information, not financial advice."),
 }
 
 # Questions AI assistants and Google's "People also ask" love to answer.
@@ -2809,7 +2815,7 @@ function homeSearch(e){ e.preventDefault();
 </script>"""
 
 
-def body_home(market, hist, cards, lastmin, oneway, summary, world):
+def body_home(market, hist, cards, lastmin, oneway, summary, world, home=None):
     labels = [("summary", "Market summary"), ("indices", "Fare indices"),
               ("movers", "Biggest movers"), ("deals", "Cheapest trips"),
               ("lastminute", "Last-minute getaways"), ("oneway", "One-way escapes")]
@@ -2862,6 +2868,15 @@ def body_home(market, hist, cards, lastmin, oneway, summary, world):
   </div>
 </section>
 <div class="wrap">
+  <section class="home-sec" id="from-your-airport" style="margin-top:10px">
+    <div class="sec-head"><h2>Cheap one-ways from your home airport</h2><span>the deals that actually matter to you</span></div>
+    <p style="color:var(--muted);margin:0 0 12px;max-width:640px">The one thing every flight-deal list gets wrong: showing you fares from airports you&rsquo;ll never use. Pick yours and see only the cheap one-ways that actually leave from near you.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <select aria-label="Choose your home airport" onchange="goHomeAirport(this.value)" style="flex:1;min-width:240px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:15px">{city_options(home or {})}</select>
+      <a class="btn-ghost" href="airports.html">Browse all airports &rarr;</a>
+    </div>
+    <script>function goHomeAirport(c){{if(!c)return;try{{localStorage.setItem('fs_home',JSON.stringify([c]));}}catch(e){{}}location.href='airports.html';}}</script>
+  </section>
   <section class="home-sec" id="deals" style="margin-top:10px">{oneway_winner(oneway, market)}
     <div style="text-align:center;margin-top:14px"><a class="btn-ghost" href="market.html">Search more one-way deals &rarr;</a></div>
   </section>
@@ -4178,6 +4193,68 @@ def body_essentials():
   <div class="pagehead"><h1>Travel essentials</h1><p>Everything else you need for the trip — hotels, data, insurance and more. Every booking supports {BRAND} at no extra cost to you.</p></div>
   <div class="grid">{essentials_cards()}</div>
   <div class="summary" style="margin-top:24px">Tip: the cheapest flight is just step one — booking your hotel, eSIM and activities here in one place keeps the whole trip organized.</div>
+</div>"""
+
+
+# Travel-card recommendations. The biggest revenue lever in flight media is the
+# credit-card affiliate (up to ~$200 per approved card vs ~1% on a flight). This
+# page is intentionally HONEST and GENERIC — it earns trust, not clicks. OWNER TODO:
+# after you join a card-affiliate program (e.g. via a network), replace each card's
+# "name" with the real product and set "href" to YOUR affiliate link. Keep it general
+# information, not personalized financial advice.
+TRAVEL_CARDS = [
+    {"tag": "Best all-rounder", "name": "A flexible travel-rewards card",
+     "good": "Earns transferable points on flights &amp; dining that move to airline partners, plus a large sign-up bonus that can cover a one-way or two.",
+     "watch": "Has an annual fee — worth it only if you take a few trips a year.", "href": "#"},
+    {"tag": "Best for beginners", "name": "A no-annual-fee starter card",
+     "good": "No annual fee and simple flat rewards on travel — a safe first travel card while you learn the game.",
+     "watch": "Smaller bonus and lower earn rate than premium cards.", "href": "#"},
+    {"tag": "Best for international one-ways", "name": "A no-foreign-transaction-fee card",
+     "good": "Skips the typical 3% foreign-transaction fee abroad — pairs perfectly with the cheap international one-ways we track.",
+     "watch": "Check the annual fee and how it handles the exchange rate.", "href": "#"},
+    {"tag": "Best for loyalists", "name": "An airline co-brand card",
+     "good": "Free checked bag, priority boarding and bonus miles on the one airline you fly most.",
+     "watch": "Miles are locked to that airline — less flexible than transferable points.", "href": "#"},
+]
+
+
+def travel_card_html(c):
+    live = c["href"] and c["href"] != "#"
+    btn = (f'<a class="book" href="{c["href"]}" target="_blank" rel="noopener sponsored" style="margin-top:14px;display:inline-block">See the card &amp; apply &rarr;</a>'
+           if live else '<span class="cp-soon" style="margin-top:14px;display:inline-block;color:var(--muted);font-size:13px">Pick coming soon</span>')
+    return (f'<div class="why-card"><span class="eyebrow" style="color:var(--green)">{c["tag"]}</span>'
+            f'<h3 style="margin:6px 0 8px">{c["name"]}</h3>'
+            f'<p style="margin:0 0 8px"><b style="color:var(--green)">Good for:</b> {c["good"]}</p>'
+            f'<p style="margin:0;color:var(--muted)"><b>The catch:</b> {c["watch"]}</p>{btn}</div>')
+
+
+def body_cards():
+    cards = "".join(travel_card_html(c) for c in TRAVEL_CARDS)
+    return f"""<div class="wrap" style="max-width:820px">
+  <div class="pagehead"><h1>Travel cards, honestly</h1>
+  <p>The right travel card can pay for a one-way flight or two with a single sign-up bonus — it&rsquo;s genuinely the biggest money-saver most deal-hunters ignore. So here&rsquo;s an honest, no-hype guide to the kinds of cards worth it, who each suits, and the catch.</p></div>
+
+  <div class="summary" style="margin:0 0 22px"><b>Our promise:</b> we only list cards we&rsquo;d actually use, and we always tell you the catch. We may earn a referral if you&rsquo;re approved through our links &mdash; at no extra cost to you. This is general information, <b>not personalized financial advice</b>; always check each card&rsquo;s current terms and whether it fits your situation.</div>
+
+  <div class="blog-sec"><h2>How a travel card pays for the flight</h2>
+  <p>A flight booking earns an affiliate site about 1% of the fare. A travel card&rsquo;s sign-up bonus is often worth <b>hundreds of dollars in flights</b> — which is exactly why every honest deal site you trust funds itself this way. Used responsibly (pay it off monthly, never carry a balance), one bonus can cover several of the below-normal one-ways we track.</p></div>
+
+  <div class="why-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:8px 0 6px">{cards}</div>
+
+  <div class="blog-sec" style="margin-top:22px"><h2>How to choose in 30 seconds</h2>
+  <ul class="blog-list">
+    <li><b>Travel a few times a year?</b> A flexible travel-rewards card&rsquo;s bonus usually beats its fee.</li>
+    <li><b>New to this?</b> Start with a no-annual-fee card and keep it simple.</li>
+    <li><b>Flying international one-ways?</b> Make sure it has no foreign-transaction fee.</li>
+    <li><b>Loyal to one airline?</b> The co-brand card&rsquo;s perks (bag, boarding) can pay for themselves.</li>
+    <li><b>Carrying a balance?</b> Skip rewards cards entirely — interest dwarfs any bonus.</li>
+  </ul></div>
+
+  <div class="signup" style="margin-top:24px"><div class="signup-inner">
+    <h2>Get the deals to use it on</h2>
+    <p>The weekly briefing sends the biggest below-normal one-ways from the USA — the perfect place to spend that sign-up bonus.</p>
+    <a class="book" href="newsletter.html" style="display:inline-block;font-size:16px;padding:12px 28px;margin-top:6px">Get the free weekly briefing &rarr;</a>
+  </div></div>
 </div>"""
 
 
@@ -5893,6 +5970,23 @@ def _email_move_suffix(delta):
     return f' &middot; <span style="color:#b4532f;font-size:12px;font-weight:bold">&#9650;${abs(delta):,.0f} wk</span>'
 
 
+_US_WEST = {"LAX","SFO","SEA","SAN","LAS","PHX","PDX","SJC","OAK","SLC","SMF","SNA","ONT","BUR","RNO","BOI","GEG","TUS","ANC","HNL","OGG","PSP","FAT","LGB","COS"}
+_US_CENTRAL = {"ORD","MDW","DFW","DAL","IAH","HOU","DEN","MSP","STL","MCI","AUS","SAT","OKC","TUL","OMA","ICT","DSM","MKE","MSN","XNA","BNA","MEM","MSY","ABQ","ELP","LIT","JAN","SDF","CMH","IND","CVG"}
+_US_EAST = {"JFK","EWR","LGA","BOS","IAD","DCA","BWI","PHL","MIA","FLL","MCO","ATL","CLT","RDU","TPA","PIT","BUF","PVD","BDL","ORF","JAX","SAV","CHS","RIC","CLE","DTW","GSP","PBI","RSW","GSO","ROC","SYR","ALB","MHT","PWM","DAB","MYR"}
+
+
+def _us_region(code):
+    """Coarse US region of a departure airport, for the newsletter's 'closest to you' block."""
+    c = (code or "").upper()
+    if c in _US_WEST:
+        return "the West Coast"
+    if c in _US_CENTRAL:
+        return "the Middle"
+    if c in _US_EAST:
+        return "the East Coast"
+    return None
+
+
 def newsletter_issue_html(oneway, market):
     """Email-safe (inline-styled) research briefing: a book-now pick, the market by
     region (week-over-week), and this week's biggest below-normal one-way drops."""
@@ -5955,6 +6049,37 @@ def newsletter_issue_html(oneway, market):
             '<div style="font-size:13px;color:#7a715a;margin:0 0 6px;line-height:1.5">The steepest below-normal one-ways from the USA right now. Tap a city to book.</div>'
             f'<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">{rows}</table>')
 
+    # --- Section: closest to you (a standout deal from each part of the country) ---
+    buckets = {"the East Coast": None, "the Middle": None, "the West Coast": None}
+    for pct, o, p in items:
+        reg = _us_region(o.get("origin", ""))
+        if reg and buckets.get(reg) is None:
+            buckets[reg] = (pct, o, p)
+    ap_rows = ""
+    for label in ("the East Coast", "the Middle", "the West Coast"):
+        val = buckets.get(label)
+        if not val:
+            continue
+        pct, o, p = val
+        city = html.escape(str(o.get("name", o["code"])).split(",")[0])
+        origin = html.escape(o.get("origin", ""))
+        link = html.escape(o.get("link", ""), quote=True)
+        ap_rows += (
+            '<tr>'
+            f'<td style="padding:10px 0;border-bottom:1px solid #d9c9a0;font-family:Georgia,serif;font-size:13px;color:#7a715a;white-space:nowrap;vertical-align:top">From {label}</td>'
+            f'<td style="padding:10px 0 10px 12px;border-bottom:1px solid #d9c9a0;font-family:Georgia,serif;font-size:15px;color:#2c2a1e">'
+            f'<a href="{link}" style="color:#2f6b46;text-decoration:none;font-weight:bold">{city}</a> '
+            f'<span style="color:#7a715a;font-size:13px">from {origin}</span></td>'
+            f'<td align="right" style="padding:10px 0;border-bottom:1px solid #d9c9a0;font-family:Georgia,serif;font-size:15px;font-weight:bold;color:#2c2a1e;white-space:nowrap">${p:,.0f} <span style="color:#2f6b46;font-size:12px">&#9660;{pct:.0f}%</span></td>'
+            '</tr>')
+    airport_section = ""
+    if ap_rows:
+        airport_section = (
+            '<div style="font-size:18px;font-weight:bold;margin:6px 0 4px;color:#2c2a1e">Closest to you</div>'
+            '<div style="font-size:13px;color:#7a715a;margin:0 0 6px;line-height:1.5">A standout below-normal one-way from each part of the country &mdash; so there&rsquo;s a deal near you. '
+            f'<a href="{BASE_URL}/airports.html" style="color:#2f6b46">See deals from your exact airport &rarr;</a></div>'
+            f'<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:0 0 4px">{ap_rows}</table>')
+
     return (
         '<div style="max-width:560px;margin:0 auto;background:#f3ecd8;padding:30px 26px;font-family:Georgia,serif;color:#2c2a1e">'
         '<div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#2f6b46;font-weight:bold">Magellan Flights &middot; Weekly Briefing</div>'
@@ -5962,6 +6087,7 @@ def newsletter_issue_html(oneway, market):
         f'<div style="font-size:13px;color:#9b9582;margin:0 0 18px">{issued} &middot; one email a week</div>'
         f'{hero_html}'
         f'{market_section}'
+        f'{airport_section}'
         f'{drops_section}'
         f'<div style="text-align:center;margin:24px 0 8px"><a href="{BASE_URL}/market.html" style="background:#2f6b46;color:#ffffff;text-decoration:none;padding:13px 26px;border-radius:8px;font-size:15px;font-weight:bold;display:inline-block">See the full live board &rarr;</a></div>'
         '<table width="100%" cellpadding="0" cellspacing="0" style="margin:18px 0 0"><tr><td style="background:#fffdf6;border:1px dashed #c9b88e;border-radius:10px;padding:16px 18px;text-align:center">'
@@ -6033,7 +6159,7 @@ def main():
     cards = "\n".join(card_html(m) for m in cards_src)
 
     pages = {
-        "index.html": ("Home", body_home(market, hist, cards, lastmin, oneway, summary, world)),
+        "index.html": ("Home", body_home(market, hist, cards, lastmin, oneway, summary, world, home)),
         "market.html": ("Market", body_market(market, hist, cards, lastmin, oneway)),
         "heatmap.html": ("The Heatmap", body_heatmap(oneway, market)),
         "explore.html": ("Explore", body_explore()),
@@ -6046,6 +6172,7 @@ def main():
         "airports.html": ("Captain's Log", body_airports(home)),
         "watchlist.html": ("Watchlist", body_watchlist(market)),
         "essentials.html": ("Travel essentials", body_essentials()),
+        "travel-cards.html": ("Travel cards", body_cards()),
         "guides.html": ("Guides", body_guides(market)),
         "cheap-flights.html": ("By airport", body_money_hub(MONEY_PAGES)),
         "cheap-flight-index.html": ("Cheap Flight Index", body_cflindex(market, today)),
