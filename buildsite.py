@@ -1723,7 +1723,7 @@ CSS = r"""<style>
   .ti-label{ flex:0 0 auto; position:relative; z-index:3; display:inline-flex; align-items:center; gap:6px; padding:8px 14px;
              background:#f3ecd8; color:#1c3d29; font-family:ui-monospace,Menlo,Consolas,monospace;
              font-size:11.5px; font-weight:700; letter-spacing:.10em; text-transform:uppercase; white-space:nowrap; }
-  .ticker.ow .ti-label{ background:transparent; color:#cfe4d6; border-right:1px solid rgba(255,255,255,.14); }
+  .ticker.ow .ti-label{ background:#f3ecd8; color:#1c3d29; border-right:1px solid rgba(255,255,255,.14); }
 
   /* ====================  Historical context banners  ==================== */
   .context-banner{ display:flex; gap:10px; align-items:flex-start; margin:0 0 14px;
