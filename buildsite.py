@@ -5792,6 +5792,7 @@ def body_newsletter(market, oneway):
         ("Is the newsletter free?", "Yes, completely free. We may earn a commission when you book through our links, at no extra cost to you."),
         ("How often will I hear from you?", "Once a week — a short research digest of the market's moves and one trip worth booking. No spam, ever."),
         ("What's in each issue?", "A research digest: how each country's fares moved week-over-week, the biggest movers judged against each route's own history, past and current top performers, and one recommended trip to book now while it's below normal."),
+        ("How do you decide a fare is “below normal”?", "We compare the cheapest one-way we've tracked for a route to that route's usual price — estimated from round-trip fares and the route's own price history. The bigger the gap, the better the deal. It's an honest research guide, not a guarantee or a prediction, and your live price is always confirmed on Aviasales before you book."),
         ("Can I unsubscribe anytime?", "Of course — one click in any email and you're off the list, no hard feelings."),
     ]
     faq_html = "".join(f'<details class="art-q"><summary>{html.escape(q)}</summary><p>{html.escape(a)}</p></details>'
@@ -5963,7 +5964,14 @@ def newsletter_issue_html(oneway, market):
         f'{market_section}'
         f'{drops_section}'
         f'<div style="text-align:center;margin:24px 0 8px"><a href="{BASE_URL}/market.html" style="background:#2f6b46;color:#ffffff;text-decoration:none;padding:13px 26px;border-radius:8px;font-size:15px;font-weight:bold;display:inline-block">See the full live board &rarr;</a></div>'
-        f'<div style="font-size:12px;color:#7a715a;text-align:center;margin:18px 0 0;line-height:1.5">You&rsquo;re getting this because you joined Magellan Flights at <a href="{BASE_URL}" style="color:#2f6b46">magellanflights.com</a>. Prices are recently-tracked fares; your live price is confirmed on Aviasales. Unsubscribe anytime.</div>'
+        '<table width="100%" cellpadding="0" cellspacing="0" style="margin:18px 0 0"><tr><td style="background:#fffdf6;border:1px dashed #c9b88e;border-radius:10px;padding:16px 18px;text-align:center">'
+        '<div style="font-size:14px;color:#2c2a1e;font-weight:bold;margin-bottom:3px">&#128233; Know a fellow deal-hunter?</div>'
+        '<div style="font-size:13px;color:#7a715a;margin-bottom:10px;line-height:1.5">Forward this email &mdash; they can get the weekly briefing free. The more of us watching the market, the better it gets.</div>'
+        f'<a href="{BASE_URL}/newsletter.html" style="color:#2f6b46;text-decoration:none;font-weight:bold;font-size:13px">Send a friend to magellanflights.com/newsletter &rarr;</a>'
+        '</td></tr></table>'
+        f'<div style="font-size:12px;color:#7a715a;text-align:center;margin:18px 0 0;line-height:1.55">'
+        '<b>How we judge &ldquo;below normal&rdquo;:</b> we compare the cheapest one-way we&rsquo;ve tracked to that route&rsquo;s usual price (estimated from round-trip fares and its own price history). It&rsquo;s an honest guide, not a guarantee &mdash; your live price is always confirmed on Aviasales.'
+        f'<br><br>You&rsquo;re getting this because you joined Magellan Flights at <a href="{BASE_URL}" style="color:#2f6b46">magellanflights.com</a>. Unsubscribe anytime.</div>'
         '</div>')
 
 
