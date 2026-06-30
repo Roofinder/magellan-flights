@@ -6045,6 +6045,58 @@ def _pct_badge(pct):
             f'font-weight:bold;padding:3px 9px;border-radius:11px;white-space:nowrap">&#9660; {pct:.0f}% below</span>')
 
 
+def _email_tile_color(pct):
+    """(bg, name_color, price_color) for a fare-heatmap tile — greener = more below
+    normal. Email-safe solid fills, all in the Atlas green family."""
+    if pct >= 40:
+        return ("#2f6b46", "#ffffff", "#cfe8d8")
+    if pct >= 30:
+        return ("#3f8159", "#ffffff", "#d7ecdf")
+    if pct >= 18:
+        return ("#5e9a78", "#ffffff", "#eaf3ee")
+    if pct >= 8:
+        return ("#7fb195", "#1f3d2b", "#234f34")
+    return ("#cdddca", "#3a5c47", "#6a7a64")
+
+
+def _email_heatmap(items):
+    """A compact 'fare heatmap' teaser: the top tracked fares as a grid of colored
+    tiles (greener = further below normal), linking to the full live heatmap. A
+    visual 'research tool' moment that drives clicks without a heavy image."""
+    pool = [x for x in items if x[0] >= 5][:42]      # real below-normal deals only
+    if len(pool) < 8:
+        pool = items[:12]
+    if len(pool) < 4:
+        return ""
+    n = len(pool)
+    # Sample 12 evenly across the range so the grid shows a real gradient
+    # (deepest-green best deals -> lighter good ones), like the live heatmap.
+    idxs = sorted(set(int(round(i * (n - 1) / 11.0)) for i in range(12)))
+    tiles = [pool[i] for i in idxs]
+    cells = []
+    for pct, o, p in tiles:
+        bg, tc, pc = _email_tile_color(pct)
+        city = html.escape(str(o.get("name", o["code"])).split(",")[0])
+        cells.append(
+            f'<td width="25%" style="background:{bg};border-radius:7px;padding:11px 5px;text-align:center">'
+            f'<div style="font-family:Arial,Helvetica,sans-serif;font-size:11.5px;font-weight:bold;color:{tc};line-height:1.25">{city}</div>'
+            f'<div style="font-family:\'Courier New\',Courier,monospace;font-size:13px;color:{pc}">${p:,.0f}</div></td>')
+    rows = ""
+    for i in range(0, len(cells), 4):
+        row = cells[i:i + 4]
+        row += ['<td width="25%"></td>'] * (4 - len(row))
+        rows += f'<tr>{"".join(row)}</tr>'
+    hm = f"{BASE_URL}/heatmap.html"
+    return (
+        _email_section("The fare heatmap",
+                       "Every tracked fare at a glance &mdash; the greener the tile, the further below normal.")
+        + f'<a href="{hm}" style="text-decoration:none;color:inherit"><table width="100%" cellpadding="0" cellspacing="0" '
+          f'style="border-collapse:separate;border-spacing:5px;margin:0 0 4px">{rows}</table></a>'
+        + f'<div style="text-align:center;margin-top:12px"><a href="{hm}" style="background:#2c2a1e;color:#ffffff;'
+          'text-decoration:none;padding:13px 28px;border-radius:9px;font-size:14px;font-weight:bold;display:inline-block;'
+          'font-family:Arial,Helvetica,sans-serif">See the full live heatmap &rarr;</a></div>')
+
+
 def _email_section(label, sub):
     """Editorial section header: an uppercase letter-spaced kicker over a brass
     hairline (the cartographer's ruling), with a quiet descriptive line."""
@@ -6194,6 +6246,9 @@ def newsletter_issue_html(oneway, market):
                        "The single lowest below-normal one-way to each part of the world right now.")
         + f'<table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px">{reg_rows}</table>') if reg_rows else ""
 
+    # --- Section: the fare heatmap (compact teaser -> full live heatmap) ---
+    heatmap_section = _email_heatmap(items)
+
     # --- Section: this week's biggest below-normal drops (excludes the hero) ---
     rows = ""
     for i, (pct, o, p) in enumerate(items[1:8]):
@@ -6239,7 +6294,7 @@ def newsletter_issue_html(oneway, market):
         f'{drops_section}'
         f'{airport_section}'
         f'{market_section}'
-        f'<div style="text-align:center;margin:8px 0 4px"><a href="{BASE_URL}/market.html" style="background:#2c2a1e;color:#ffffff;text-decoration:none;padding:14px 30px;border-radius:9px;font-size:15px;font-weight:bold;display:inline-block">See the full live board &rarr;</a></div>'
+        f'{heatmap_section}'
         '<table width="100%" cellpadding="0" cellspacing="0" style="margin:18px 0 0"><tr><td style="background:#ffffff;border:1px dashed #c9b88e;border-radius:12px;padding:18px 20px;text-align:center">'
         '<div style="font-size:15px;color:#2c2a1e;font-weight:bold;margin-bottom:4px">&#128233; Know a fellow deal-hunter?</div>'
         '<div style="font-size:13px;color:#7a715a;margin-bottom:10px;line-height:1.5">Forward this email &mdash; they can get the weekly briefing free. The more of us watching the market, the better it gets.</div>'
