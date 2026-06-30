@@ -6043,9 +6043,11 @@ def _hero_photo(city):
         req = urllib.request.Request(url, headers={"User-Agent": "MagellanFlights-newsletter/1.0"})
         with urllib.request.urlopen(req, timeout=4) as r:
             data = json.loads(r.read().decode("utf-8"))
+        # Use the API's thumbnail URL EXACTLY as given. Wikimedia only serves a
+        # fixed (and unpredictable) list of thumbnail widths, so any width edit can
+        # 400; the API-provided URL is always valid. ~320px, soft on a wide banner
+        # but it reliably loads.
         img = (data.get("thumbnail") or {}).get("source", "")
-        if img:
-            img = re.sub(r"/\d+px-", "/640px-", img)   # upsize the wikimedia thumbnail
         blurb = (data.get("extract") or "").strip()
         if blurb:
             first = blurb.split(". ")[0].strip().rstrip(".")
