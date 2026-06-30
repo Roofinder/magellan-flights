@@ -18,6 +18,7 @@ on:
       - '**.png'
       - 'winners.json'
       - 'oneway_index.json'
+      - 'oneway_pricelog.json'
       - '.github/**'
 
 permissions:
@@ -55,7 +56,7 @@ jobs:
         run: |
           git config user.name "magellan-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add -A -- '*.html' winners.json oneway_index.json favicon.svg favicon-32.png favicon-48.png favicon-96.png apple-touch-icon.png sitemap.xml robots.txt llms.txt og-image.png deals.xml newsletter.xml
+          git add -A -- '*.html' winners.json oneway_index.json oneway_pricelog.json favicon.svg favicon-32.png favicon-48.png favicon-96.png apple-touch-icon.png sitemap.xml robots.txt llms.txt og-image.png deals.xml newsletter.xml
           if git diff --cached --quiet; then echo "Nothing to publish."; exit 0; fi
           for i in 1 2 3 4 5; do
             git commit -m "Fast rebuild ($(date -u +%Y-%m-%dT%H:%MZ))" || true

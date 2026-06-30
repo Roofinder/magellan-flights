@@ -579,6 +579,7 @@ HOTEL_NIGHT = {"SE Asia": 40, "E Asia": 110, "S Asia": 35, "W Europe": 140,
 ESIM_COST = 15
 VERIFIED_ISO = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")  # build time = verify time
 HIST_SERIES = {}  # {code: [price per day, oldest..newest]} — filled in main()
+ONEWAY_PRICE_HISTORY = {}  # {code: [recent cheapest one-way prices]} — each route's own one-way baseline, filled in main()
 FEATURED_VERIFIED = {}  # {code: True} — featured deals cross-checked vs Skyscanner
 
 
@@ -1028,6 +1029,7 @@ def index_sparkline(series):
 
 
 OW_INDEX_LOG = os.path.join(HERE, "oneway_index.json")
+OW_PRICE_LOG = os.path.join(HERE, "oneway_pricelog.json")  # per-route one-way price history (rolling)
 
 
 def country_from_name(name):
@@ -1079,6 +1081,52 @@ def oneway_index_history():
         for reg, val in log[d].items():
             series[reg].append((d, val))
     return series
+
+
+def update_oneway_price_log(oneway, cap=40):
+    """Append today's cheapest one-way per destination to a rolling per-route log, so
+    each route accrues its OWN one-way price baseline over time. This is what lets the
+    Rare Fare detector tell a genuine drop from a route that is simply always cheap
+    (e.g. Kutaisi, whose one-way is structurally ~$240) — a benchmark can't, because
+    the global one-way/round-trip ratio over-states 'normal' for such routes."""
+    cheapest = {}
+    for o in oneway:
+        if (o.get("cc") or "").upper() == "US":
+            continue
+        c = o.get("code")
+        if not c:
+            continue
+        try:
+            p = float(o["price"])
+        except (TypeError, ValueError):
+            continue
+        if p <= 0:
+            continue
+        if c not in cheapest or p < cheapest[c]:
+            cheapest[c] = p
+    try:
+        log = json.load(open(OW_PRICE_LOG, encoding="utf-8"))
+        if not isinstance(log, dict):
+            log = {}
+    except Exception:
+        log = {}
+    for c, p in cheapest.items():
+        arr = log.get(c) or []
+        arr.append(round(p, 2))
+        log[c] = arr[-cap:]                       # keep only the most recent `cap` observations
+    try:
+        json.dump(log, open(OW_PRICE_LOG, "w", encoding="utf-8"))
+    except Exception:
+        pass
+
+
+def read_oneway_price_series():
+    """{code: [recent cheapest one-way prices, oldest..newest]} — each route's own baseline."""
+    try:
+        log = json.load(open(OW_PRICE_LOG, encoding="utf-8"))
+        return log if isinstance(log, dict) else {}
+    except Exception:
+        return {}
 
 
 def index_cards(oneway, hist):
@@ -6150,11 +6198,106 @@ def _hero_photo(city):
     return out
 
 
+def _mistake_fare(oneway, market):
+    """Spotlight the single most exceptional one-way of the week — a *possible*
+    mistake/error fare. Judged against each route's OWN recent one-way history
+    (ONEWAY_PRICE_HISTORY), NOT a global benchmark: the benchmark assumes a typical
+    one-way/round-trip ratio and so over-flags routes whose one-ways are structurally
+    cheap (Kutaisi's one-way is always ~$240 — not a mistake). A route trips this only
+    when today's fare is dramatically below what THAT route's own one-way usually costs.
+
+    Returns {o, price, typ, pct, code} or None. It needs a few of the route's own
+    observations before it will say anything, so it stays silent until that baseline
+    accrues — silence is the correct, honest default, not a bug. (The 4x/day CI runs
+    fill the baseline within a couple of days.)"""
+    cheapest = {}                                # cheapest CURRENT one-way per non-US destination
+    for o in oneway:
+        if (o.get("cc") or "").upper() == "US":
+            continue
+        code = o.get("code")
+        if not code:
+            continue
+        try:
+            p = float(o["price"])
+        except (TypeError, ValueError):
+            continue
+        if p <= 0:
+            continue
+        if code not in cheapest or p < float(cheapest[code]["price"]):
+            cheapest[code] = o
+    best = None
+    for code, o in cheapest.items():
+        try:
+            p = float(o["price"])
+        except (TypeError, ValueError):
+            continue
+        series = [v for v in ONEWAY_PRICE_HISTORY.get(code, []) if v and v > 0]
+        if len(series) < 5:                      # not enough of THIS route's own history yet -> stay silent
+            continue
+        s = sorted(series)
+        med = s[len(s) // 2]                      # the route's own normal one-way (robust to a stray low)
+        if med <= 0 or p <= 0:
+            continue
+        if p < med * 0.15:                        # absurdly below even its own normal -> phantom, not a fare
+            continue
+        if p > med * 0.60:                        # not dramatically below its own normal -> not a mistake
+            continue
+        pct = (med - p) / med * 100.0
+        if pct > 70.0:                            # cap; never over-claim a discount we can't stand behind
+            pct = 70.0
+        if best is None or pct > best["pct"]:
+            best = {"o": o, "price": p, "typ": med, "pct": pct, "code": code}
+    return best
+
+
+def _email_rare_fare(mf):
+    """The 'Rare Fare' alert — only rendered when _mistake_fare finds one. Framed
+    honestly: an exceptional drop that *may* be a pricing error and won't last, with a
+    verify-before-you-book caveat, so we never over-promise on a fare we can't re-check."""
+    if not mf:
+        return ""
+    o = mf["o"]
+    city = html.escape(str(o.get("name", o["code"])).split(",")[0])
+    country = html.escape(country_from_name(str(o.get("name", ""))))
+    loc = f"{city}, {country}" if country and country != city else city
+    origin = html.escape(o.get("origin", ""))
+    link = html.escape(o.get("link", BASE_URL + "/market.html"), quote=True)
+    p, typ = mf["price"], mf["typ"]
+    normally = (f'<s style="color:#9b9582;font-weight:normal;font-size:15px">normally ~${typ:,.0f}</s>'
+                if typ > p else '')
+    return (
+        '<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:separate;margin:0 0 26px">'
+        '<tr><td style="border:2px solid #2f6b46;border-radius:14px;background:#ffffff;padding:0">'
+        '<div style="background:#2f6b46;border-radius:11px 11px 0 0;padding:9px 18px">'
+        '<span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#ffffff;font-weight:bold">&#9889; Rare Fare Alert</span>'
+        '<span style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#bfe0cb;margin-left:8px">possible mistake fare</span>'
+        '</div>'
+        '<div style="padding:20px 22px">'
+        f'<div style="font-size:25px;font-weight:bold;color:#2c2a1e;line-height:1.15;margin-bottom:2px">{_flag_email(o.get("cc"))}{loc}</div>'
+        f'<div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#9b9582;margin-bottom:12px">one-way from {origin}</div>'
+        '<table cellpadding="0" cellspacing="0" style="margin:0 0 14px"><tr>'
+        f'<td style="font-family:Georgia,serif;font-size:44px;font-weight:bold;color:#2f6b46;line-height:0.9;vertical-align:middle">${p:,.0f}</td>'
+        f'<td style="padding-left:14px;vertical-align:middle">{normally}'
+        '<div style="margin-top:5px"><span style="background:#2f6b46;color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;padding:3px 9px;border-radius:11px;white-space:nowrap">&#9660; more than half off</span></div></td>'
+        '</tr></table>'
+        '<div style="font-size:13px;color:#5b5440;font-style:italic;line-height:1.55;margin-bottom:16px">A fare this far below normal is the kind that&rsquo;s sometimes an airline pricing error &mdash; and those can vanish within hours. We can&rsquo;t guarantee it&rsquo;ll still be live; confirm the price on the next screen before you book.</div>'
+        f'<a href="{link}" style="background:#2f6b46;color:#ffffff;text-decoration:none;padding:14px 30px;border-radius:9px;font-size:15px;font-weight:bold;display:inline-block;font-family:Arial,Helvetica,sans-serif">Verify &amp; book now &rarr;</a>'
+        '</div>'
+        '</td></tr></table>')
+
+
 def newsletter_issue_html(oneway, market):
     """Email-safe (inline-styled) research briefing: a book-now pick, the market by
     region (week-over-week), and this week's biggest below-normal one-way drops."""
     items = _hm_items(oneway, market)
     issued = datetime.now().strftime("%B %d, %Y")
+
+    # --- Rare Fare alert: one exceptional, possible-mistake fare (usually None) ---
+    mf = _mistake_fare(oneway, market)
+    mf_code = mf["o"].get("code") if mf else None
+    if mf_code:                                   # spotlight it once; drop it from the normal sections
+        items = [it for it in items if it[1].get("code") != mf_code]
+    rare_fare_section = _email_rare_fare(mf)
 
     # --- Fare Watch: a one-line market-mood signature (the honest home for "research") ---
     graded = [pct for pct, _, _ in items]
@@ -6290,6 +6433,7 @@ def newsletter_issue_html(oneway, market):
         '</div>'
         '<div style="background:#f3ecd8;padding:24px 26px">'
         f'{fare_watch}'
+        f'{rare_fare_section}'
         f'{hero_html}'
         f'{drops_section}'
         f'{airport_section}'
@@ -6346,9 +6490,11 @@ def main():
             for d in c.get(key, []):
                 d["t"] = lm_tags(d.get("cc", ""))
     update_oneway_index_log(oneway)
+    update_oneway_price_log(oneway)
     hist = oneway_index_history()
-    global HIST_SERIES, FEATURED_VERIFIED, MONEY_PAGES, MONEY_BY_FILE, ROUTE_PAGES, ROUTE_BY_FILE, REGION_TOUR_BY_FILE, DAILY_WINNER
+    global HIST_SERIES, ONEWAY_PRICE_HISTORY, FEATURED_VERIFIED, MONEY_PAGES, MONEY_BY_FILE, ROUTE_PAGES, ROUTE_BY_FILE, REGION_TOUR_BY_FILE, DAILY_WINNER
     HIST_SERIES = read_history_series()
+    ONEWAY_PRICE_HISTORY = read_oneway_price_series()
     DAILY_WINNER = compute_daily_winner(market, HIST_SERIES)
     update_winners_log(DAILY_WINNER)
     try:
