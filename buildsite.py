@@ -6025,19 +6025,32 @@ def _pct_badge(pct):
             f'font-weight:bold;padding:3px 9px;border-radius:11px;white-space:nowrap">&#9660; {pct:.0f}% below</span>')
 
 
+def _email_section(label, sub):
+    """Editorial section header: an uppercase letter-spaced kicker over a brass
+    hairline (the cartographer's ruling), with a quiet descriptive line."""
+    return (
+        '<table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 12px"><tr>'
+        '<td style="border-bottom:1px solid #d8c9a3;padding-bottom:8px">'
+        '<div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:2.5px;'
+        f'text-transform:uppercase;color:#2f6b46;font-weight:bold">{label}</div>'
+        f'<div style="font-size:12.5px;color:#9b9582;margin-top:4px;line-height:1.5">{sub}</div>'
+        '</td></tr></table>')
+
+
 _HERO_PHOTO_CACHE = {}
 
 
 def _hero_photo(city):
-    """(image_url, short_blurb) for a destination, from Wikipedia's REST summary.
-    Build-time + in-memory cached, and wrapped so ANY failure (network/parse) just
-    returns ('','') and the hero renders without a photo. Never breaks the build."""
+    """(image_url, short_blurb, coords) for a destination, from Wikipedia's REST
+    summary. Build-time + in-memory cached, wrapped so ANY failure just returns
+    ('','','') and the hero renders without it. Never breaks the build. coords is
+    a navigation-style 'NN.N°N  NN.N°E' string (the 'explorer's dateline')."""
     key = (city or "").strip()
     if not key:
-        return ("", "")
+        return ("", "", "")
     if key in _HERO_PHOTO_CACHE:
         return _HERO_PHOTO_CACHE[key]
-    out = ("", "")
+    out = ("", "", "")
     try:
         url = "https://en.wikipedia.org/api/rest_v1/page/summary/" + quote(key.replace(" ", "_"))
         req = urllib.request.Request(url, headers={"User-Agent": "MagellanFlights-newsletter/1.0"})
@@ -6052,9 +6065,15 @@ def _hero_photo(city):
         if blurb:
             first = blurb.split(". ")[0].strip().rstrip(".")
             blurb = (first + ".")[:190]
-        out = (img, blurb)
+        coords = ""
+        c = data.get("coordinates") or {}
+        if c.get("lat") is not None and c.get("lon") is not None:
+            la, lo = float(c["lat"]), float(c["lon"])
+            coords = (f"{abs(la):.1f}°{'N' if la >= 0 else 'S'}  "
+                      f"{abs(lo):.1f}°{'E' if lo >= 0 else 'W'}")
+        out = (img, blurb, coords)
     except Exception:
-        out = ("", "")
+        out = ("", "", "")
     _HERO_PHOTO_CACHE[key] = out
     return out
 
@@ -6094,27 +6113,37 @@ def newsletter_issue_html(oneway, market):
         hnorm = hp / (1 - hpct / 100.0) if 0 < hpct < 90 else 0
         norm_str = (f' <s style="color:#9b9582;font-weight:normal;font-size:16px;vertical-align:middle">normally ~${hnorm:,.0f}</s>'
                     if hnorm > hp else '')
-        photo_url, blurb = _hero_photo(hcity)
+        photo_url, blurb, coords = _hero_photo(hcity)
         photo_banner = (
             f'<img src="{html.escape(photo_url, quote=True)}" width="600" alt="{hcity}" '
-            'style="display:block;width:100%;height:180px;object-fit:cover;border-radius:12px 12px 0 0">'
+            'style="display:block;width:100%;height:190px;object-fit:cover;border-radius:13px 13px 0 0">'
         ) if photo_url else ''
         blurb_html = (
-            f'<div style="font-size:13.5px;color:#5b5440;font-style:italic;line-height:1.55;margin:0 0 14px">{html.escape(blurb)}</div>'
+            f'<div style="font-size:13.5px;color:#5b5440;font-style:italic;line-height:1.55;margin:2px 0 16px">{html.escape(blurb)}</div>'
         ) if blurb else ''
-        # When there's a photo the card top corners come from the image, else from the cell.
-        body_radius = '0 0 12px 12px' if photo_banner else '14px'
+        coords_cell = (
+            f'<td align="right" style="font-family:Arial,Helvetica,sans-serif;font-size:10.5px;letter-spacing:1.5px;color:#b0a173;white-space:nowrap;vertical-align:middle">&#9788; {html.escape(coords)}</td>'
+        ) if coords else ''
+        normally = (f'<div style="font-size:12px;color:#9b9582;text-decoration:line-through;margin-bottom:6px">normally ~${hnorm:,.0f}</div>'
+                    if hnorm > hp else '')
+        body_radius = '0 0 13px 13px' if photo_banner else '14px'
         hero_html = (
-            '<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:separate;margin:0 0 24px">'
-            '<tr><td style="border:2px solid #2f6b46;border-radius:14px;padding:0">'
+            '<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:separate;margin:0 0 28px">'
+            '<tr><td style="border:1px solid #2f6b46;border-radius:14px;padding:0">'
             f'{photo_banner}'
             f'<div style="background:#ffffff;padding:22px 24px;border-radius:{body_radius}">'
-            '<div style="font-family:Arial,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#2f6b46;font-weight:bold">&#128205; Book this week</div>'
-            f'<div style="font-size:25px;font-weight:bold;margin:9px 0 2px;color:#2c2a1e">{_flag_email(ho.get("cc"))}{loc}</div>'
-            f'<div style="font-size:13px;color:#9b9582;margin:0 0 12px">one-way from {horigin}</div>'
+            '<table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 2px"><tr>'
+            '<td style="font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:#2f6b46;font-weight:bold;vertical-align:middle">&#128205; Book this week</td>'
+            f'{coords_cell}'
+            '</tr></table>'
+            f'<div style="font-size:27px;font-weight:bold;margin:7px 0 2px;color:#2c2a1e;line-height:1.15">{_flag_email(ho.get("cc"))}{loc}</div>'
+            f'<div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#9b9582;margin:0 0 12px">one-way from {horigin}</div>'
             f'{blurb_html}'
-            f'<div style="margin:0 0 16px"><span style="font-size:40px;font-weight:bold;color:#2f6b46;vertical-align:middle">${hp:,.0f}</span>{norm_str} &nbsp; {_pct_badge(hpct)}</div>'
-            f'<a href="{hlink}" style="background:#2f6b46;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:9px;font-size:15px;font-weight:bold;display:inline-block">See live price &amp; book &rarr;</a>'
+            '<table cellpadding="0" cellspacing="0" style="margin:0 0 18px"><tr>'
+            f'<td style="font-family:Georgia,serif;font-size:46px;font-weight:bold;color:#2f6b46;line-height:0.9;vertical-align:middle">${hp:,.0f}</td>'
+            f'<td style="padding-left:14px;vertical-align:middle;font-family:Arial,Helvetica,sans-serif">{normally}{_pct_badge(hpct)}</td>'
+            '</tr></table>'
+            f'<a href="{hlink}" style="background:#2f6b46;color:#ffffff;text-decoration:none;padding:14px 30px;border-radius:9px;font-size:15px;font-weight:bold;display:inline-block;font-family:Arial,Helvetica,sans-serif">See live price &amp; book &rarr;</a>'
             '</div>'
             '</td></tr></table>')
 
@@ -6132,9 +6161,9 @@ def newsletter_issue_html(oneway, market):
     market_section = ""
     if idx_rows:
         market_section = (
-            '<div style="font-size:18px;font-weight:bold;margin:6px 0 4px;color:#2c2a1e">The market this week</div>'
-            '<div style="font-size:13px;color:#7a715a;margin:0 0 10px;line-height:1.5">By region: the average one-way fare and the share of routes sitting below their normal price right now. Higher &ldquo;below&rdquo; means more deals are open.</div>'
-            f'<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:0 0 24px">{idx_rows}</table>')
+            _email_section("The market, by region",
+                           "Average one-way fare per region and the share of routes below their normal price. Higher means more deals are open.")
+            + f'<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:0 0 24px">{idx_rows}</table>')
 
     # --- Section: this week's biggest below-normal drops (excludes the hero) ---
     rows = ""
@@ -6153,9 +6182,9 @@ def newsletter_issue_html(oneway, market):
     drops_section = ""
     if rows:
         drops_section = (
-            '<div style="font-size:19px;font-weight:bold;margin:6px 0 4px;color:#2c2a1e">This week&rsquo;s biggest drops</div>'
-            '<div style="font-size:13px;color:#7a715a;margin:0 0 10px;line-height:1.5">The steepest below-normal one-ways from the USA right now. Tap a city to book.</div>'
-            f'<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border:1px solid #e3d8b8;border-radius:12px;overflow:hidden;margin:0 0 24px">{rows}</table>')
+            _email_section("This week&rsquo;s biggest drops",
+                           "The steepest below-normal one-ways from the USA right now. Tap a city to book.")
+            + f'<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border:1px solid #e3d8b8;border-radius:12px;overflow:hidden;margin:0 0 26px">{rows}</table>')
 
     # --- Section: deals from YOUR airport (CTA to the live, interactive page) ---
     # Email can't take live input, so we route the personalization to the site.
@@ -6169,10 +6198,11 @@ def newsletter_issue_html(oneway, market):
 
     return (
         '<div style="max-width:600px;margin:0 auto;font-family:Georgia,serif;color:#2c2a1e">'
-        '<div style="background:#2f6b46;padding:30px 26px 24px;text-align:center;border-radius:16px 16px 0 0">'
-        '<div style="font-family:Arial,sans-serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#bfe0cb;font-weight:bold">&#9992; Magellan Flights</div>'
-        '<div style="font-size:28px;font-weight:bold;color:#ffffff;margin:9px 0 3px">The flight market this week</div>'
-        f'<div style="font-size:12px;color:#9fd0b0">{issued} &middot; one email a week</div>'
+        '<div style="background:#2f6b46;padding:30px 26px 26px;text-align:center;border-radius:16px 16px 0 0">'
+        '<div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#bfe0cb;font-weight:bold">&#9992;&nbsp; Magellan Flights</div>'
+        '<div style="font-family:Georgia,serif;font-size:34px;font-weight:bold;color:#ffffff;margin:11px 0 9px;letter-spacing:.5px">The Flight Market</div>'
+        '<div style="font-size:1px;line-height:1px"><span style="display:inline-block;width:84px;border-top:1px solid #7bb392">&nbsp;</span></div>'
+        f'<div style="font-family:Arial,Helvetica,sans-serif;font-size:10.5px;letter-spacing:2.5px;text-transform:uppercase;color:#9fd0b0;margin-top:9px">Weekly Briefing &middot; {issued}</div>'
         '</div>'
         '<div style="background:#f3ecd8;padding:24px 26px">'
         f'{fare_watch}'
