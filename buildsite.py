@@ -6036,8 +6036,12 @@ def _flag_email(cc):
 
 
 def _pct_badge(pct):
-    """Bold green 'NN% below' pill — the savings number as the hero element."""
-    return ('<span style="background:#2f6b46;color:#ffffff;font-family:Arial,sans-serif;font-size:11px;'
+    """Savings pill. Green '▼ NN% below' for real deals; a quiet 'near normal' tag
+    when a fare isn't actually below normal (so we never show '▼ -5% below')."""
+    if pct < 8:
+        return ('<span style="background:#cbbf9e;color:#5b5440;font-family:Arial,Helvetica,sans-serif;font-size:11px;'
+                'font-weight:bold;padding:3px 9px;border-radius:11px;white-space:nowrap">near normal</span>')
+    return ('<span style="background:#2f6b46;color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:11px;'
             f'font-weight:bold;padding:3px 9px;border-radius:11px;white-space:nowrap">&#9660; {pct:.0f}% below</span>')
 
 
@@ -6163,23 +6167,32 @@ def newsletter_issue_html(oneway, market):
             '</div>'
             '</td></tr></table>')
 
-    # --- Section: the market this week, by region (deal density + WoW when credible) ---
-    idx = _email_region_index(oneway, market)
-    idx_rows = ""
-    for reg, avg, density, n, delta in idx:
-        idx_rows += (
+    # --- Section: cheapest one-way to EACH region (actionable geographic spread) ---
+    rc = {}
+    for pct, o, p in items:
+        reg = continent_of(o.get("code", ""))
+        if reg not in INDEX_REGIONS:
+            continue
+        if reg not in rc or p < rc[reg][2]:
+            rc[reg] = (pct, o, p)
+    reg_rows = ""
+    for reg in sorted(rc, key=lambda r: rc[r][2]):          # cheapest region first
+        pct, o, p = rc[reg]
+        city = html.escape(str(o.get("name", o["code"])).split(",")[0])
+        origin = html.escape(o.get("origin", ""))
+        link = html.escape(o.get("link", ""), quote=True)
+        reg_rows += (
             '<tr>'
-            f'<td style="padding:9px 0;border-bottom:1px solid #e3d8b8;font-family:Georgia,serif;font-size:15px;color:#2c2a1e">{html.escape(reg)} '
-            f'<span style="color:#9b9582;font-size:12px">&middot; {n} routes</span></td>'
-            f'<td align="right" style="padding:9px 8px 9px 0;border-bottom:1px solid #e3d8b8;font-family:Georgia,serif;font-size:15px;color:#2c2a1e;white-space:nowrap">${avg:,.0f} avg{_email_move_suffix(delta)}</td>'
-            f'<td align="right" style="padding:9px 0;border-bottom:1px solid #e3d8b8;font-family:Georgia,serif;font-size:14px;font-weight:bold;color:#2f6b46;white-space:nowrap">{density*100:.0f}% below</td>'
+            f'<td style="padding:11px 0;border-bottom:1px solid #e0d4b3;font-family:Arial,Helvetica,sans-serif;font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:#9b9582;white-space:nowrap;vertical-align:middle">{html.escape(reg)}</td>'
+            f'<td style="padding:11px 0 11px 14px;border-bottom:1px solid #e0d4b3;font-family:Georgia,serif;font-size:15px;color:#2c2a1e">'
+            f'{_flag_email(o.get("cc"))}<a href="{link}" style="color:#2c2a1e;text-decoration:none;font-weight:bold">{city}</a> '
+            f'<span style="color:#9b9582;font-size:12px">from {origin}</span></td>'
+            f'<td align="right" style="padding:11px 0;border-bottom:1px solid #e0d4b3;font-family:Georgia,serif;white-space:nowrap"><span style="font-size:16px;font-weight:bold;color:#2c2a1e">${p:,.0f}</span> &nbsp;{_pct_badge(pct)}</td>'
             '</tr>')
-    market_section = ""
-    if idx_rows:
-        market_section = (
-            _email_section("The market, by region",
-                           "Average one-way fare per region and the share of routes below their normal price. Higher means more deals are open.")
-            + f'<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:0 0 24px">{idx_rows}</table>')
+    market_section = (
+        _email_section("Cheapest to each region",
+                       "The single lowest below-normal one-way to each part of the world right now.")
+        + f'<table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px">{reg_rows}</table>') if reg_rows else ""
 
     # --- Section: this week's biggest below-normal drops (excludes the hero) ---
     rows = ""
