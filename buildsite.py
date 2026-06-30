@@ -3450,7 +3450,13 @@ HM_REGION_ORDER = ["North America", "South America", "Europe", "Asia", "Middle E
 
 def _hm_items(oneway, market):
     """Sorted (pct, oneway-row, price) for each destination, best deal first.
-    pct = % the cheapest one-way sits below its usual one-way price (rt x 0.62)."""
+    pct = how far the cheapest one-way sits below its NORMAL one-way price, where
+    'normal' is estimated from the route's round-trip BENCHMARK (its typical price),
+    not the volatile current cheapest round-trip. Using the current cheapest RT made
+    discounts look fake (70-90%) because that price is itself often inflated; the
+    benchmark is the route's real baseline and improves as price history accrues.
+    Guards against stale/phantom cache lows, and caps the claim at a believable
+    ceiling so we never over-state a discount."""
     by_code = {}
     for m in market:
         c = m.get("code")
@@ -3471,12 +3477,22 @@ def _hm_items(oneway, market):
         rt = by_code.get(code)
         try:
             p = float(o["price"])
-            typ = float(rt["price"]) * 0.62 if (rt and rt.get("price")) else 0
+            bench = float(rt["benchmark"]) if (rt and rt.get("benchmark")) else 0.0
         except (TypeError, ValueError, KeyError):
             continue
+        # Estimated NORMAL one-way = benchmark RT x 0.46. 0.46 is the empirical
+        # median ratio of (cheapest one-way / round-trip benchmark) across tracked
+        # routes, so a *typical* cheap one-way sits at ~0% below normal and only
+        # genuinely-cheap fares show a real discount (was 0.62, which over-flagged
+        # nearly everything as a deal).
+        typ = bench * 0.46
         if p <= 0 or typ <= 0:
             continue
+        if p < bench * 0.12:                    # absurdly low vs the route's normal => stale/phantom
+            continue
         pct = (typ - p) / typ * 100.0
+        if pct > 55.0:                          # cap: never over-claim a discount we can't stand behind
+            pct = 55.0
         if code not in best or pct > best[code][0]:
             best[code] = (pct, o, p)
     return sorted(best.values(), key=lambda x: -x[0])
