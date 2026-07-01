@@ -5936,7 +5936,7 @@ def newsletter_weekly_rss(oneway, market):
     ])
 
 
-def body_newsletter(market, oneway):
+def body_newsletter(market, oneway, home=None):
     sample = sorted(market, key=lambda m: m.get("price", 1e9))[:5]
     sample_rows = "".join(
         f'<li>{flag_img(m["code"], "flag")} {html.escape(str(m["name"]).split(",")[0])} '
@@ -5959,10 +5959,13 @@ def body_newsletter(market, oneway):
     <p>Free forever &middot; one email a week &middot; the week&rsquo;s movers + one trip to book now.</p>
     <form onsubmit="return nlSub(event)" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;max-width:440px;margin:8px auto 0">
       <input id="nl-email" type="email" required placeholder="you@email.com" autocomplete="email" style="flex:1;min-width:210px;background:#fffdf6;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:15px">
+      <select id="nl-airport" aria-label="Your home airport (optional)" style="flex:1;min-width:210px;background:#fffdf6;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:15px">{city_options(home or {})}</select>
       <button class="book" type="submit" style="font-size:16px;padding:12px 26px">Join free &rarr;</button>
     </form>
-    <p style="font-size:12.5px;color:var(--muted);margin-top:10px">Free &middot; one email a week &middot; unsubscribe anytime.</p>
-    <script>function nlSub(e){{e.preventDefault();var v=(document.getElementById('nl-email').value||'').trim();if(!v)return false;var u="{BEEHIIV_URL}";window.location.href=u+(u.indexOf('?')<0?'?':'&')+'email='+encodeURIComponent(v);return false;}}</script>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:10px">Free &middot; one email a week &middot; unsubscribe anytime &middot; add your home airport for deals from your city.</p>
+    <script>
+    (function(){{try{{var h=JSON.parse(localStorage.getItem('fs_home')||'[]');if(h&&h.length){{var s=document.getElementById('nl-airport');if(s)s.value=h[0];}}}}catch(e){{}}}})();
+    function nlSub(e){{e.preventDefault();var v=(document.getElementById('nl-email').value||'').trim();if(!v)return false;var ap=(document.getElementById('nl-airport')||{{}}).value||'';if(ap){{try{{localStorage.setItem('fs_home',JSON.stringify([ap]));}}catch(e){{}}}}var u="{BEEHIIV_URL}";var q=u+(u.indexOf('?')<0?'?':'&')+'email='+encodeURIComponent(v);if(ap)q+='&home_airport='+encodeURIComponent(ap);window.location.href=q;return false;}}</script>
   </div></div>
   <div class="blog-sec"><h2>How it works</h2>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:6px">
@@ -6519,7 +6522,7 @@ def main():
         "blog.html": ("Daily Guide", body_blog(market, oneway)),
         "around-the-world.html": ("Ferdinand's World Loop", body_rtw(world)),
         "consultant.html": ("Hire a Trip Consultant", body_consultant()),
-        "newsletter.html": ("Free Newsletter", body_newsletter(market, oneway)),
+        "newsletter.html": ("Free Newsletter", body_newsletter(market, oneway, home)),
         "newsletter-issue.html": ("Weekly issue", body_newsletter_issue(oneway, market)),
         "lastminute.html": ("Last-minute", body_lastminute(lastmin)),
         "airports.html": ("Captain's Log", body_airports(home)),
