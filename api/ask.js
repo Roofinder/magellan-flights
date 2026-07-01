@@ -59,6 +59,7 @@ const SYSTEM = `You are the Magellan Flights deal assistant. You ONLY know the f
 - Magellan is one-way-led: quote fares as one-way.
 - When you cite a specific deal, include its booking link exactly as given (Aviasales, marker ${MARKER}) and note the real price is confirmed on Aviasales.
 - Prices are the "freshest tracked" fares, not guaranteed. Be concise, friendly, and specific.
+- Write in PLAIN TEXT only: no markdown — no # headings, no ** bold, no [text](url) links. Put each booking URL bare on its own line (the site turns bare URLs into booking buttons).
 
 DATA:
 ${groundingText()}`;
