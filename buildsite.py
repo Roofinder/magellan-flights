@@ -6437,10 +6437,55 @@ def newsletter_issue_html(oneway, market):
             f'<span style="font-size:19px;font-weight:bold;color:#2c2a1e">${p:,.0f}</span> &nbsp; {_pct_badge(pct)}</td></tr>')
     drops_section = ""
     if rows:
+        # Honest framing: these are the steepest below-NORMAL fares (vs each route's
+        # benchmark), not week-over-week drops — genuine drops get their own section.
         drops_section = (
-            _email_section("This week&rsquo;s biggest drops",
+            _email_section("Cheapest below normal right now",
                            "The steepest below-normal one-ways from the USA right now. Tap a city to book.")
             + f'<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border:1px solid #e3d8b8;border-radius:12px;overflow:hidden;margin:0 0 26px">{rows}</table>')
+
+    # --- Section: fares that GENUINELY dropped vs their own recent price history ---
+    # Uses each route's own one-way price log (ONEWAY_PRICE_HISTORY), so "dropped"
+    # means the fare actually fell this week — not merely cheap vs a broad benchmark.
+    fell_rows = ""
+    skip_codes = {mf_code} | ({items[0][1].get("code")} if items else set())
+    fell = []
+    for o in oneway:
+        code = o.get("code")
+        if not code or code in skip_codes:
+            continue
+        series = [v for v in ONEWAY_PRICE_HISTORY.get(code, []) if v and v > 0]
+        if len(series) < 10:
+            continue
+        base_pool = sorted(series[:-3])
+        base = base_pool[len(base_pool) // 2]
+        try:
+            now = float(o.get("price") or series[-1])
+        except (TypeError, ValueError):
+            continue
+        if base and now < base * 0.85 and (base - now) >= 30:
+            fell.append((round((base - now) / base * 100), o, now, base))
+    fell.sort(key=lambda t: -t[0])
+    for i, (dpct, o, now, base) in enumerate(fell[:3]):
+        city = html.escape(str(o.get("name", o["code"])).split(",")[0])
+        origin = html.escape(o.get("origin", ""))
+        link = html.escape(o.get("link", ""), quote=True)
+        bg = "#ffffff" if i % 2 == 0 else "#f7f0dd"
+        fell_rows += (
+            f'<tr style="background:{bg}">'
+            f'<td style="padding:13px 14px;font-family:Georgia,serif;font-size:16px;color:#2c2a1e">'
+            f'{_flag_email(o.get("cc"))}<a href="{link}" style="color:#2c2a1e;text-decoration:none;font-weight:bold">{city}</a> '
+            f'<span style="color:#9b9582;font-size:12px">from {origin}</span></td>'
+            f'<td align="right" style="padding:13px 14px;font-family:Georgia,serif;white-space:nowrap">'
+            f'<s style="color:#9b9582;font-size:13px">${base:,.0f}</s> '
+            f'<span style="font-size:19px;font-weight:bold;color:#2f6b46">${now:,.0f}</span> '
+            f'<span style="font-family:Arial,Helvetica,sans-serif;font-size:11.5px;font-weight:bold;color:#2f6b46">&#9660;{dpct}%</span></td></tr>')
+    fell_section = ""
+    if fell_rows:
+        fell_section = (
+            _email_section("&#128201; Dropped this week",
+                           "Fares that actually fell against their own recent price history &mdash; watch these.")
+            + f'<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border:1px solid #cfe0d2;border-radius:12px;overflow:hidden;margin:0 0 26px">{fell_rows}</table>')
 
     # --- Section: deals from YOUR airport (CTA to the live, interactive page) ---
     # Email can't take live input, so we route the personalization to the site.
@@ -6464,6 +6509,7 @@ def newsletter_issue_html(oneway, market):
         f'{fare_watch}'
         f'{rare_fare_section}'
         f'{hero_html}'
+        f'{fell_section}'
         f'{drops_section}'
         f'{airport_section}'
         f'{market_section}'
