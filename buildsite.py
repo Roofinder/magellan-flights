@@ -4258,6 +4258,31 @@ def body_airports(home):
 </div>"""
 
 
+def body_ask():
+    return rf"""<div class="wrap" style="max-width:760px">
+  <div class="pagehead"><h1>Ask Magellan</h1><p>Ask about our cheapest tracked one-way deals &mdash; what&rsquo;s below normal right now, deals to a region, or how the fare market looks. Answers come only from {BRAND}&rsquo;s live-tracked data &mdash; no made-up prices.</p></div>
+  <div class="signup" style="margin:0 0 18px"><div class="signup-inner">
+    <form onsubmit="return askSub(event)" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;max-width:560px;margin:0 auto">
+      <input id="ask-q" type="text" required autocomplete="off" placeholder="e.g. Where can I fly cheap right now?" style="flex:1;min-width:240px;background:#fffdf6;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:15px">
+      <button class="book" type="submit" style="font-size:16px;padding:12px 26px">Ask &rarr;</button>
+    </form>
+    <div style="text-align:center;margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;justify-content:center">
+      <button type="button" class="btn-ghost" onclick="askEx('What are the best flight deals right now?')" style="font-size:12.5px;padding:6px 12px">Best deals now</button>
+      <button type="button" class="btn-ghost" onclick="askEx('Which region is cheapest to fly to right now?')" style="font-size:12.5px;padding:6px 12px">Cheapest region</button>
+      <button type="button" class="btn-ghost" onclick="askEx('Any cheap deals to Africa?')" style="font-size:12.5px;padding:6px 12px">Deals to Africa</button>
+    </div>
+  </div></div>
+  <div id="ask-out"></div>
+  <p class="finehint" style="text-align:center;margin-top:14px">Prices are the freshest fares we&rsquo;ve tracked, confirmed live on Aviasales. Magellan is one-way-led.</p>
+  <script>
+  function askEx(q){{var i=document.getElementById('ask-q');i.value=q;askSub(new Event('submit'));}}
+  function askEsc(s){{return String(s).replace(/[&<>"]/g,function(c){{return {{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}}[c];}});}}
+  function askFmt(s){{return askEsc(s).replace(/https?:\/\/[^\s<]+/g,function(u){{return '<a href="'+u+'" target="_blank" rel="noopener nofollow sponsored" style="color:var(--gold);font-weight:600">Book on Aviasales &rarr;</a>';}}).replace(/\n/g,'<br>');}}
+  function askSub(e){{if(e&&e.preventDefault)e.preventDefault();var q=(document.getElementById('ask-q').value||'').trim();if(!q)return false;var out=document.getElementById('ask-out');out.innerHTML='<div class="wl-hint">Thinking&hellip;</div>';fetch('/api/ask',{{method:'POST',headers:{{'Content-Type':'application/json'}},body:JSON.stringify({{question:q}})}}).then(function(r){{return r.json().catch(function(){{return{{}};}}).then(function(d){{return{{ok:r.ok,d:d}};}});}}).then(function(res){{if(!res.ok||!res.d||!res.d.ok){{out.innerHTML='<div class="wl-hint">'+askEsc((res.d&&res.d.error)||'Something went wrong &mdash; try again in a moment.')+'</div>';return;}}out.innerHTML='<div class="panel" style="padding:20px;line-height:1.6">'+askFmt(res.d.answer||'')+'</div>';}}).catch(function(){{out.innerHTML='<div class="wl-hint">Network error &mdash; please try again.</div>';}});return false;}}
+  </script>
+</div>"""
+
+
 def body_essentials():
     return f"""<div class="wrap">
   <div class="pagehead"><h1>Travel essentials</h1><p>Everything else you need for the trip — hotels, data, insurance and more. Every booking supports {BRAND} at no extra cost to you.</p></div>
@@ -6519,6 +6544,7 @@ def main():
         "market.html": ("Market", body_market(market, hist, cards, lastmin, oneway)),
         "heatmap.html": ("The Heatmap", body_heatmap(oneway, market)),
         "explore.html": ("Explore", body_explore()),
+        "ask.html": ("Ask Magellan", body_ask()),
         "blog.html": ("Daily Guide", body_blog(market, oneway)),
         "around-the-world.html": ("Ferdinand's World Loop", body_rtw(world)),
         "consultant.html": ("Hire a Trip Consultant", body_consultant()),
