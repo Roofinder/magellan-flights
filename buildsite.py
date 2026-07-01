@@ -111,7 +111,8 @@ REGION_BTNS = ["all", "USA", "Abroad", "Asia", "SE Asia", "E Asia", "S Asia",
 # Primary nav — kept to five clear destinations. Secondary pages live in the
 # grouped footer (FOOTER_NAV) so nothing is lost and everything stays crawlable.
 NAV = [("index.html", "Home"), ("market.html", "Market"), ("explore.html", "Explore"),
-       ("around-the-world.html", "Around the World"), ("guides.html", "Guides"), ("cheap-flights.html", "By airport")]
+       ("around-the-world.html", "Around the World"), ("guides.html", "Guides"), ("cheap-flights.html", "By airport"),
+       ("ask.html", "Ask Magellan")]
 
 FOOTER_NAV = [
     ("Browse fares", [("market.html", "The Market"), ("explore.html", "Explore &amp; search"),

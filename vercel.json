@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "api/ask.js": {
+      "includeFiles": "{winners,oneway_index}.json"
+    }
+  },
   "redirects": [
     { "source": "/newsletter", "destination": "/newsletter.html", "permanent": true },
     { "source": "/heatmap", "destination": "/heatmap.html", "permanent": true },
