@@ -2899,6 +2899,13 @@ def body_home(market, hist, cards, lastmin, oneway, summary, world, home=None):
     except Exception:
         ncountries = nroutes
     nbook = sum(1 for m in market if signal_for(m["price"], m["benchmark"])[0] == "BOOK")
+    home_trips = {}
+    for _og in (home or {}):
+        _ow = oneway_winner_for(oneway, market, _og)
+        _atw = atw_highlight_for(world, _og)
+        if _ow or _atw:
+            home_trips[_og] = {"ow": _ow, "atw": _atw}
+    home_trips_js = json.dumps(home_trips)
     return f"""<section class="lander">
   <div class="lander-inner">
     <span class="eyebrow">The world is closer than you think</span>
@@ -2936,18 +2943,20 @@ def body_home(market, hist, cards, lastmin, oneway, summary, world, home=None):
     <p style="color:var(--muted);margin:0 0 12px;max-width:640px">The one thing every flight-deal list gets wrong: showing you fares from airports you&rsquo;ll never use. Pick yours and see only the cheap one-ways that actually leave from near you.</p>
     <div id="fya-welcome" style="display:none;background:rgba(47,107,70,.10);border:1px solid var(--line);border-radius:10px;padding:11px 15px;margin:0 0 12px;font-size:14.5px"></div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-      <select id="fya-select" aria-label="Choose your home airport" onchange="goHomeAirport(this.value)" style="flex:1;min-width:240px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:15px">{city_options(home or {})}</select>
+      <select id="fya-select" aria-label="Choose your home airport" onchange="mhSet(this.value)" style="flex:1;min-width:240px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:15px">{city_options(home or {})}</select>
       <a class="btn-ghost" href="airports.html">Browse all airports &rarr;</a>
     </div>
     <script>
-    function goHomeAirport(c){{if(!c)return;try{{localStorage.setItem('fs_home',JSON.stringify([c]));}}catch(e){{}}location.href='airports.html';}}
-    (function(){{try{{var h=JSON.parse(localStorage.getItem('fs_home')||'[]');if(h&&h.length){{var code=h[0];var sel=document.getElementById('fya-select');if(sel)sel.value=code;var nm=(sel&&sel.options[sel.selectedIndex])?sel.options[sel.selectedIndex].text:code;var w=document.getElementById('fya-welcome');if(w){{w.innerHTML='&#9989; Welcome back &mdash; your home airport is <b>'+nm+'</b>. <a href="airports.html" style="color:var(--gold);font-weight:600">See your deals &rarr;</a> &middot; <a href="#" onclick="try{{localStorage.removeItem(&quot;fs_home&quot;);}}catch(e){{}}location.reload();return false;" style="color:var(--muted)">change</a>';w.style.display='block';}}}}}}catch(e){{}}}})();
+    var HOME_TRIPS={home_trips_js};
+    function mhSet(c){{if(!c)return;try{{localStorage.setItem('mh_home',c);}}catch(e){{}}var u=new URL(location.href);u.searchParams.set('home',c);location.href=u.toString();}}
+    function mhClear(){{try{{localStorage.removeItem('mh_home');}}catch(e){{}}var u=new URL(location.href);u.searchParams.delete('home');location.href=u.toString();}}
+    (function(){{try{{var p=new URLSearchParams(location.search);var code=(p.get('home')||localStorage.getItem('mh_home')||'').toUpperCase();if(!code)return;var sel=document.getElementById('fya-select');if(sel)sel.value=code;var nm=(sel&&sel.selectedIndex>=0&&sel.options[sel.selectedIndex])?sel.options[sel.selectedIndex].text:code;var t=HOME_TRIPS[code];var w=document.getElementById('fya-welcome');var tail=' <a href="airports.html" style="color:var(--gold);font-weight:600">See all deals from here &rarr;</a> &middot; <a href="#" onclick="mhClear();return false" style="color:var(--muted)">change</a>';if(t){{if(t.ow){{var ow=document.getElementById('home-ow');if(ow)ow.innerHTML=t.ow;}}if(t.atw){{var aw=document.getElementById('home-atw');if(aw)aw.innerHTML=t.atw;}}if(w){{w.innerHTML='&#9992;&#65039; Showing your best trips from <b>'+nm+'</b>.'+tail;w.style.display='block';}}}}else{{if(w){{w.innerHTML='We don&rsquo;t track enough one-ways from <b>'+nm+'</b> yet &mdash; here are today&rsquo;s top picks.'+tail;w.style.display='block';}}}}}}catch(e){{}}}})();
     </script>
   </section>
-  <section class="home-sec" id="deals" style="margin-top:10px">{oneway_winner(oneway, market)}
+  <section class="home-sec" id="deals" style="margin-top:10px"><div id="home-ow">{oneway_winner(oneway, market)}</div>
     <div style="text-align:center;margin-top:14px"><a class="btn-ghost" href="market.html">Search more one-way deals &rarr;</a></div>
   </section>
-  <section class="home-sec">{atw_highlight(world)}
+  <section class="home-sec"><div id="home-atw">{atw_highlight(world)}</div>
     <div style="text-align:center;margin-top:14px"><a class="btn-ghost" href="around-the-world.html">Search more Around the World trips &rarr;</a></div>
   </section>
   <p class="finehint" style="text-align:center;margin-top:18px">These are recently-tracked one-way fares &mdash; tap any deal to see today&rsquo;s live price and book on Aviasales.</p>
@@ -3668,7 +3677,7 @@ WORLD_HUBS = {
 RTW_US_STARTS = ["JFK","LAX","MIA","ORD","SFO","BOS","ATL","SEA","DTW","IAH","DEN","DFW","TPA","HNL","PHX","LAS","RDU","CLT","MCO","BNA","CMH"]
 
 
-def round_the_world(world, min_stops=3, max_stops=5, gap_min=35, gap_max=175):
+def round_the_world(world, min_stops=3, max_stops=5, gap_min=35, gap_max=175, only_start=None):
     try:
         coords = json.load(open(os.path.join(HERE, "airport_coords.json"), encoding="utf-8"))
     except Exception:
@@ -3682,7 +3691,7 @@ def round_the_world(world, min_stops=3, max_stops=5, gap_min=35, gap_max=175):
     lon = {h: coords[h][1] for h in WORLD_HUBS if h in coords and isinstance(coords[h], list)}
     hubs = [h for h in WORLD_HUBS if h in lon]
     best = None
-    for start in RTW_US_STARTS:
+    for start in ([only_start] if only_start else RTW_US_STARTS):
         if start not in lon:
             continue
         rel = {h: ((lon[h] - lon[start]) % 360) for h in hubs}
@@ -3744,6 +3753,70 @@ def atw_highlight(world):
     route = " &rarr; ".join(html.escape(c) for c in ([trip["start"]] + [L["to"] for L in legs]))
     return (f'<a class="winner" href="around-the-world.html?start={html.escape(trip["start"], quote=True)}">'
             f'<span class="winner-badge">Today&rsquo;s best Around the World trip</span>'
+            f'<div class="winner-main"><div class="winner-city">{html.escape(trip["start_name"])} &rarr; around the world &rarr; home</div>'
+            f'<div class="winner-route">{trip["stops"]} stops &middot; {trip["flights"]} one-way flights &middot; {route} &middot; '
+            f'<span style="color:var(--gold)">live fares</span></div></div>'
+            f'<div class="winner-right"><span class="winner-price">${trip["total"]:,.0f}</span>'
+            f'<span style="color:var(--muted);font-size:13px">whole loop</span></div>'
+            f'<span class="winner-cta">Build this trip on Around the World &rarr;</span></a>')
+
+
+def oneway_winner_for(oneway, market, origin):
+    """The best one-way 'winner' deal from a specific origin airport (personalized)."""
+    by_code = {}
+    for m in market:
+        c = m["code"]
+        if c not in by_code or m["price"] < by_code[c]["price"]:
+            by_code[c] = m
+    cands = []
+    for o in oneway:
+        if (o.get("cc") or "").upper() == "US":
+            continue
+        if o.get("origin") != origin:
+            continue
+        rt_o = by_code.get(o["code"])
+        try:
+            typ_o = float(rt_o["price"]) * 0.62 if rt_o and rt_o.get("price") else 0
+            if typ_o > 0:
+                cands.append((float(o["price"]) / typ_o, o, rt_o))
+        except Exception:
+            continue
+    if not cands:
+        return ""
+    cands.sort(key=lambda x: x[0])
+    w, rt = cands[0][1], cands[0][2]
+    price = float(w["price"]); code = w["code"]
+    typ = (float(rt["price"]) * 0.62) if (rt and rt.get("price")) else 0
+    c, v = "g", "Low"
+    if typ:
+        if price > typ * 1.10:
+            c, v = "r", "High"
+        elif price > typ * 0.90:
+            c, v = "y", "Typical"
+    palette = {"g": ("rgba(46,139,87,.15)", "var(--green)"),
+               "y": ("rgba(47,107,70,.14)", "var(--gold)"),
+               "r": ("rgba(192,57,43,.13)", "var(--red)")}
+    bg, col = palette[c]
+    return (f'<a class="winner" href="{html.escape(w["link"], quote=True)}" target="_blank" rel="noopener">'
+            f'<span class="winner-badge">Your best one-way from {html.escape(origin)}</span>'
+            f'<div class="winner-main"><div class="winner-city">{html.escape(w["name"])}</div>'
+            f'<div class="winner-route">One-way from {html.escape(origin)} &middot; {html.escape(w.get("depart", ""))} &middot; '
+            f'<span style="color:var(--gold)">live price at booking</span></div></div>'
+            f'<div class="winner-right"><span class="winner-price">${price:,.0f}</span>'
+            f'<span style="color:var(--muted);font-size:13px">one-way</span>'
+            f'<span class="winner-off" style="background:{bg};color:{col}">{v}</span></div>'
+            f'<span class="winner-cta">See live price on Aviasales &rarr;</span></a>')
+
+
+def atw_highlight_for(world, start):
+    """The cheapest around-the-world loop starting from a specific airport (personalized)."""
+    trip = round_the_world(world, only_start=start)
+    if not trip:
+        return ""
+    legs = trip["legs"]
+    route = " &rarr; ".join(html.escape(c) for c in ([trip["start"]] + [L["to"] for L in legs]))
+    return (f'<a class="winner" href="around-the-world.html?start={html.escape(trip["start"], quote=True)}">'
+            f'<span class="winner-badge">Your Around the World from {html.escape(trip["start"])}</span>'
             f'<div class="winner-main"><div class="winner-city">{html.escape(trip["start_name"])} &rarr; around the world &rarr; home</div>'
             f'<div class="winner-route">{trip["stops"]} stops &middot; {trip["flights"]} one-way flights &middot; {route} &middot; '
             f'<span style="color:var(--gold)">live fares</span></div></div>'
