@@ -619,6 +619,18 @@
   .tl-form input, .tl-form select{ background:#efe5cd; color:var(--ink); border:1px solid var(--line); border-radius:9px; padding:10px 12px; font-size:14px; min-width:120px; }
   .tl-form input[maxlength="3"]{ text-transform:uppercase; letter-spacing:.08em; }
   .tl-form .tl-go{ border:0; cursor:pointer; }
+  .mm-card{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin-bottom:10px; box-shadow:0 6px 18px rgba(0,0,0,.10); }
+  .mm-card[data-best]{ border-color:var(--blue); }
+  .mm-head{ display:flex; align-items:center; gap:12px; margin-bottom:11px; }
+  .mm-city{ font-size:17px; font-weight:700; }
+  .mm-badge{ font-size:10.5px; font-weight:700; background:var(--blue); color:#fff; padding:2px 9px; border-radius:999px; margin-left:6px; vertical-align:middle; }
+  .mm-tot{ font-size:15px; font-weight:700; color:var(--ink); margin-top:2px; } .mm-tot span{ font-size:12px; font-weight:500; color:var(--muted); }
+  .mm-legs{ display:flex; gap:10px; flex-wrap:wrap; }
+  .mm-leg{ flex:1; min-width:180px; display:flex; align-items:center; gap:10px; background:#efe5cd; border:1px solid var(--line); border-radius:9px; padding:9px 12px; text-decoration:none; color:var(--ink); }
+  .mm-leg:hover{ border-color:var(--blue); }
+  .mm-who{ font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.05em; color:var(--blue); }
+  .mm-from{ font-size:12.5px; color:var(--muted); flex:1; }
+  .mm-price{ font-weight:800; }
   .tl-load{ text-align:center; padding:26px 10px; color:var(--muted); } .tl-load p{ margin:8px 0 0; font-size:13px; }
   .hop-leg{ border-top:1px solid var(--line); } .hop-leg:first-child{ border-top:0; }
   .hop-tag{ font-size:11.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--gold); padding:13px 16px 2px; }
