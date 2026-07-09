@@ -42,7 +42,9 @@ REF_FILES = {
 }
 
 DEFAULT_ORIGINS = ["JFK", "EWR", "BOS", "IAD", "ATL", "MIA", "ORD",
-                   "DFW", "IAH", "DEN", "LAX", "SFO", "SEA", "LAS", "PHX"]
+                   "DFW", "IAH", "DEN", "LAX", "SFO", "SEA", "LAS", "PHX",
+                   "DTW", "MSP", "CLT", "RDU", "PHL", "MCO", "SLC", "SAN",
+                   "BNA", "PDX", "TPA", "FLL", "DCA", "AUS"]
 
 
 # --------------------------------------------------------------------------- #
