@@ -3672,6 +3672,9 @@ WORLD_HUBS = {
     "MRU":"Mauritius","SEZ":"Seychelles","MLE":"Maldives","CMB":"Colombo","KTM":"Kathmandu","GOI":"Goa",
     "HKT":"Phuket","KBV":"Krabi","CNX":"Chiang Mai","DAD":"Da Nang","DPS":"Bali","CEB":"Cebu",
     "ZQN":"Queenstown","PPT":"Tahiti","CUN":"Cancun","PUJ":"Punta Cana","AUA":"Aruba","SJU":"San Juan",
+    "GDL":"Guadalajara","MTY":"Monterrey","SJD":"Los Cabos","PVR":"Puerto Vallarta","TIJ":"Tijuana","MID":"Merida",
+    "BJX":"Leon","QRO":"Queretaro","OAX":"Oaxaca","MZT":"Mazatlan","ZIH":"Ixtapa","ACA":"Acapulco","SLP":"San Luis Potosi",
+    "AGU":"Aguascalientes","VER":"Veracruz","CZM":"Cozumel","CUU":"Chihuahua","HMO":"Hermosillo",
     "CTG":"Cartagena","CUZ":"Cusco","UIO":"Quito",
 }
 RTW_US_STARTS = ["JFK","LAX","MIA","ORD","SFO","BOS","ATL","SEA","DTW","IAH","DEN","DFW","TPA","HNL","PHX","LAS","RDU","CLT","MCO","BNA","CMH"]
