@@ -6429,9 +6429,9 @@ def _email_rare_fare(mf):
         '</td></tr></table>')
 
 
-def newsletter_issue_html(oneway, market):
-    """Email-safe (inline-styled) research briefing: a book-now pick, the market by
-    region (week-over-week), and this week's biggest below-normal one-way drops."""
+def newsletter_issue_html(oneway, market, world=None):
+    """Email-safe (inline-styled) research briefing: a book-now pick, a featured
+    around-the-world loop, the market by region, and this week's biggest drops."""
     items = _hm_items(oneway, market)
     issued = datetime.now().strftime("%B %d, %Y")
 
@@ -6611,6 +6611,34 @@ def newsletter_issue_html(oneway, market):
         f'<a href="{BASE_URL}/airports.html" style="background:#2f6b46;color:#ffffff;text-decoration:none;padding:13px 26px;border-radius:9px;font-size:14px;font-weight:bold;display:inline-block">See cheapest routes from your airport &rarr;</a>'
         '</td></tr></table>')
 
+    # --- Section: Trip of the week — the cheapest around-the-world loop ---
+    if world is None:
+        try:
+            world = read_world(kind="any")
+        except Exception:
+            world = []
+    atw_section = ""
+    try:
+        _trip = round_the_world(world) if world else None
+    except Exception:
+        _trip = None
+    if _trip:
+        _route = " &rarr; ".join(html.escape(c) for c in ([_trip["start"]] + [L["to"] for L in _trip["legs"]]))
+        atw_section = (
+            _email_section("&#127758; Trip of the week: around the world",
+                           "The cheapest full loop we can build right now &mdash; every leg a real, bookable one-way.")
+            + '<table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 26px"><tr>'
+            '<td style="border:1px solid #2f6b46;border-radius:12px;padding:20px 22px;background:#ffffff">'
+            f'<div style="font-family:Georgia,serif;font-size:21px;font-weight:bold;color:#2c2a1e;margin:0 0 3px">{html.escape(_trip["start_name"])} &rarr; around the world &rarr; home</div>'
+            f'<div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#9b9582;margin:0 0 12px">{_trip["stops"]} stops &middot; {_trip["flights"]} one-way flights</div>'
+            '<table cellpadding="0" cellspacing="0" style="margin:0 0 14px"><tr>'
+            f'<td style="font-family:Georgia,serif;font-size:40px;font-weight:bold;color:#2f6b46;line-height:0.9;vertical-align:middle">${_trip["total"]:,.0f}</td>'
+            '<td style="padding-left:12px;vertical-align:middle;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#9b9582">for the<br>whole loop</td>'
+            '</tr></table>'
+            f'<div style="font-family:Georgia,serif;font-size:13.5px;color:#5b5440;line-height:1.6;margin:0 0 14px">{_route}</div>'
+            f'<a href="{BASE_URL}/around-the-world.html?start={html.escape(_trip["start"], quote=True)}" style="background:#2f6b46;color:#ffffff;text-decoration:none;padding:13px 26px;border-radius:9px;font-size:14px;font-weight:bold;display:inline-block;font-family:Arial,Helvetica,sans-serif">Build this trip &rarr;</a>'
+            '</td></tr></table>')
+
     return (
         '<div style="max-width:600px;margin:0 auto;font-family:Georgia,serif;color:#2c2a1e">'
         '<div style="background:#2f6b46;padding:30px 26px 26px;text-align:center;border-radius:16px 16px 0 0">'
@@ -6623,6 +6651,7 @@ def newsletter_issue_html(oneway, market):
         f'{fare_watch}'
         f'{rare_fare_section}'
         f'{hero_html}'
+        f'{atw_section}'
         f'{fell_section}'
         f'{drops_section}'
         f'{airport_section}'
