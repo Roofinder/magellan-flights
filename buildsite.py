@@ -1238,6 +1238,13 @@ def verified_tag():
             f'<i class="dotc"></i><span>tracked just now</span></div>')
 
 
+def share_icon():
+    return ('<svg class="shico" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+            'stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+            '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>'
+            '<path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>')
+
+
 def card_html(m):
     code = m["code"]
     _, pct = signal_for(m["price"], m["benchmark"])
@@ -1260,7 +1267,7 @@ def card_html(m):
             f'<p class="binfo"><b>Good to know:</b> {html.escape(info["note"])}</p>')
     return f"""
       <div class="flip"><div class="flip-inner">
-      <article class="card flip-front" data-lp data-b="{m['benchmark']}" data-o="{html.escape(m['origin'], quote=True)}" data-c="{code}" data-dep="{html.escape(m.get('depart', ''), quote=True)}" data-ret="{html.escape(m.get('return', ''), quote=True)}" data-ow="0">
+      <article class="card flip-front" data-lp data-b="{m['benchmark']}" data-o="{html.escape(m['origin'], quote=True)}" data-c="{code}" data-n="{html.escape(m['name'], quote=True)}" data-p="{m['price']:.0f}" data-dep="{html.escape(m.get('depart', ''), quote=True)}" data-ret="{html.escape(m.get('return', ''), quote=True)}" data-ow="0">
         <div class="card-top">{flag_img(code)}
           <div class="card-top-right">{badge}
             <button class="star" data-code="{code}" aria-label="watch">&#9734;</button></div></div>
@@ -1276,7 +1283,10 @@ def card_html(m):
         <p class="trip">A week here &asymp; <b>${wk:,}</b> <span>(flight ${m['price']:,.0f} &middot; hotel ~${hn}/nt &times;7 &middot; eSIM ${ESIM_COST})</span></p>
         {fx}
         <a class="book" href="{link}" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a>
-        <button class="flipbtn" onclick="flipCard(this)">&#9432; Things to know &rarr;</button>
+        <div class="cardacts">
+          <button class="sharebtn" onclick="shareDeal(this)" aria-label="Share this deal">{share_icon()} Share</button>
+          <button class="flipbtn" onclick="flipCard(this)">&#9432; Things to know &rarr;</button>
+        </div>
       </article>
       <article class="card flip-back">
         <h3 class="dest">{html.escape(m["name"])}</h3>
@@ -1701,6 +1711,24 @@ CSS = r"""<style>
   .flip-back{ position:absolute; inset:0; transform:rotateY(180deg); -webkit-backface-visibility:hidden; backface-visibility:hidden; }
   .flipbtn{ margin-top:12px; background:none; border:0; color:var(--muted); font-size:12.5px; cursor:pointer; width:100%; text-align:center; }
   .flipbtn:hover{ color:var(--blue); }
+  .cardacts{ display:flex; align-items:center; gap:10px; margin-top:12px; }
+  .cardacts .flipbtn{ margin-top:0; width:auto; flex:1; }
+  .sharebtn{ display:inline-flex; align-items:center; gap:6px; background:none; border:1px solid var(--line); color:var(--ink); font:inherit; font-size:12.5px; font-weight:600; padding:7px 12px; border-radius:8px; cursor:pointer; white-space:nowrap; }
+  .sharebtn:hover{ border-color:var(--blue); color:var(--blue); background:rgba(47,107,70,.06); }
+  .sharebtn .shico{ width:15px; height:15px; }
+  .share-backdrop{ position:fixed; inset:0; z-index:9998; background:rgba(0,0,0,.28); }
+  .sharepop{ position:fixed; z-index:9999; background:var(--card); border:1px solid var(--line); border-radius:14px; box-shadow:0 14px 44px rgba(0,0,0,.24); padding:16px 16px 15px; width:min(330px,92vw); }
+  .sharepop h4{ margin:0 0 5px; font-size:15px; }
+  .sharepop .sp-msg{ font-size:12.5px; color:var(--muted); margin:0 0 13px; line-height:1.5; }
+  .sharepop .sp-links{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .sharepop .sp-links a, .sharepop .sp-copy{ display:flex; align-items:center; justify-content:center; gap:6px; padding:9px 10px; border-radius:9px; border:1px solid var(--line); background:var(--bg); color:var(--ink); text-decoration:none; font-size:13px; font-weight:600; cursor:pointer; }
+  .sharepop .sp-links a:hover, .sharepop .sp-copy:hover{ border-color:var(--blue); color:var(--blue); }
+  .sharepop .sp-copy{ grid-column:1 / -1; }
+  .mf-toast{ position:fixed; left:50%; bottom:26px; transform:translateX(-50%); z-index:10000; background:#1f2d24; color:#fff; padding:11px 18px; border-radius:10px; font-size:13.5px; font-weight:600; box-shadow:0 8px 26px rgba(0,0,0,.3); }
+  .owr-acts{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+  .owr-share{ display:inline-flex; align-items:center; gap:5px; background:none; border:1px solid var(--line); color:var(--muted); font:inherit; font-size:12px; font-weight:600; padding:6px 10px; border-radius:8px; cursor:pointer; white-space:nowrap; }
+  .owr-share:hover{ border-color:var(--blue); color:var(--blue); background:rgba(47,107,70,.06); }
+  .owr-share .shico{ width:13px; height:13px; }
   .binfo-h{ font-weight:600; font-size:14px; margin:8px 0 10px; }
   .binfo{ font-size:13px; margin:5px 0; line-height:1.5; } .binfo b{ font-weight:600; }
   .finehint{ font-size:11px; color:var(--muted); margin:12px 0 0; }
@@ -2284,6 +2312,36 @@ function mfRel(iso){var t=new Date(iso).getTime();if(isNaN(t))return'';var s=Mat
 function mfFresh(){var ns=document.querySelectorAll('.pr-fresh[data-verified]');for(var i=0;i<ns.length;i++){var sp=ns[i].querySelector('span');if(sp)sp.textContent=mfRel(ns[i].getAttribute('data-verified'));}}
 mfFresh();
 function flipCard(btn){ var f=btn.closest('.flip'); if(f) f.classList.toggle('flipped'); }
+function mfToast(msg){ var t=document.createElement('div'); t.className='mf-toast'; t.textContent=msg; document.body.appendChild(t); setTimeout(function(){ t.style.transition='opacity .4s'; t.style.opacity='0'; setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); },400); },1900); }
+function shareClose(){ var b=document.getElementById('share-backdrop'); if(b) b.remove(); var p=document.getElementById('sharepop'); if(p) p.remove(); }
+function shareDeal(btn){ var c=btn.closest('[data-c]'); if(!c) return; var enc=encodeURIComponent;
+  var o=c.getAttribute('data-o')||'', code=c.getAttribute('data-c')||'', nm=c.getAttribute('data-n')||code, p=c.getAttribute('data-p')||'', dep=c.getAttribute('data-dep')||'', ret=c.getAttribute('data-ret')||'', ow=(c.getAttribute('data-ow')==='1');
+  var trip=ow?'oneway':'round', unit=ow?'one-way':'round-trip';
+  var url=location.origin+'/explore.html?from='+enc(o)+'&to='+enc(code)+'&trip='+trip+(dep?('&depart='+enc(dep)):'')+((!ow&&ret)?('&return='+enc(ret)):'');
+  var pn=Number(p); var ps=isNaN(pn)?p:pn.toLocaleString();
+  var text=o+' to '+nm+' for $'+ps+' '+unit+', tracked on Magellan Flights.';
+  if(navigator.share){ navigator.share({title:'Magellan Flights deal', text:text, url:url}).catch(function(){}); return; }
+  shareSheet(text, url); }
+function shareSheet(text, url){ shareClose(); var full=text+' '+url; var enc=encodeURIComponent;
+  var bd=document.createElement('div'); bd.className='share-backdrop'; bd.id='share-backdrop'; bd.onclick=shareClose; document.body.appendChild(bd);
+  var X='https://twitter.com/intent/tweet?text='+enc(text)+'&url='+enc(url);
+  var wa='https://wa.me/?text='+enc(full);
+  var fb='https://www.facebook.com/sharer/sharer.php?u='+enc(url);
+  var em='mailto:?subject='+enc('A flight deal I found')+'&body='+enc(full);
+  var pop=document.createElement('div'); pop.className='sharepop'; pop.id='sharepop'; pop.style.left='50%'; pop.style.top='50%'; pop.style.transform='translate(-50%,-50%)';
+  pop.innerHTML='<h4>Share this deal</h4><p class="sp-msg">'+text.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</p><div class="sp-links">'
+    +'<a href="'+X+'" target="_blank" rel="noopener">X</a>'
+    +'<a href="'+wa+'" target="_blank" rel="noopener">WhatsApp</a>'
+    +'<a href="'+fb+'" target="_blank" rel="noopener">Facebook</a>'
+    +'<a href="'+em+'">Email</a>'
+    +'<button class="sp-copy" type="button">Copy link and message</button></div>';
+  document.body.appendChild(pop);
+  pop.querySelector('.sp-copy').onclick=function(){ function done(){ shareClose(); mfToast('Copied. Paste it anywhere to share.'); }
+    if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(full).then(done).catch(function(){ fallbackCopy(full); done(); }); }
+    else { fallbackCopy(full); done(); } };
+}
+function fallbackCopy(s){ var ta=document.createElement('textarea'); ta.value=s; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); }catch(e){} ta.remove(); }
+window.shareDeal=shareDeal;
 function fmtRate(r){ return r>=100?Math.round(r).toLocaleString():(r>=10?r.toFixed(1):r.toFixed(2)); }
 function loadFX(){ fetch('https://open.er-api.com/v6/latest/USD').then(function(r){return r.json();}).then(function(d){
   if(d&&d.rates){ FX=d.rates; document.querySelectorAll('[data-cur]').forEach(function(el){ var c=el.dataset.cur;
@@ -3301,7 +3359,7 @@ def oneway_row(o, rt, pfx="m"):
     addret = ""; ret_html = ""
     pct_attr = f' data-pct="{dpct:.1f}"' if dpct is not None else ""
     return (f'<div class="owr" data-region="{continent_of(code)}" data-price="{price:.0f}" data-month="{(o.get("depart") or "")[:7]}"{pct_attr}>'
-            f'<div class="mv-row" data-lp data-o="{html.escape(o["origin"], quote=True)}" data-c="{code}" data-dep="{html.escape(o["depart"], quote=True)}" data-ow="1">'
+            f'<div class="mv-row" data-lp data-o="{html.escape(o["origin"], quote=True)}" data-c="{code}" data-n="{html.escape(o["name"], quote=True)}" data-p="{price:.0f}" data-dep="{html.escape(o["depart"], quote=True)}" data-ow="1">'
             f'<button class="star" data-code="{code}" aria-label="watch">&#9734;</button>'
             f'<div class="mv-dest">{flag_img(code)}<div class="mv-destcol"><div class="mv-name">{html.escape(o["name"])}</div>'
             f'<div class="mv-air">one-way from {html.escape(o["origin"])}</div>{verified_tag()}</div></div>'
@@ -3309,7 +3367,8 @@ def oneway_row(o, rt, pfx="m"):
             f'<div class="owr-price"><span class="mv-price">${price:,.0f}</span> <span class="ow-unit">one-way</span></div>'
             f'{pctbadge}'
             f'{addret}'
-            f'<a class="mini-book" href="{link}" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a></div>'
+            f'<div class="owr-acts"><button class="owr-share" onclick="shareDeal(this)" aria-label="Share this deal">{share_icon()}<span>Share</span></button>'
+            f'<a class="mini-book" href="{link}" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a></div></div>'
             f'</div>{ret_html}</div>')
 
 
@@ -4230,7 +4289,7 @@ def body_explore(home):
   <div class="pagehead"><h1>Find Cheap One-Way Flights from the USA</h1><p>Plan a specific trip. Add your home airport(s) and we&rsquo;ll find the cheapest one-ways to <b>anywhere</b> &mdash; or type a destination to track a <b>specific route</b> and see every fare we have for it. Add several airports and we compare across all of them. Just want to browse the cheapest deals? That&rsquo;s the <a href="market.html" style="color:var(--gold)">Market</a>.</p></div>
   <div class="airchips" id="ex-tabs" style="margin:0 0 14px;gap:8px">
     <button type="button" class="airchip on" id="ex-tab-plan-btn" onclick="exTab('plan')">Plan a trip (A &rarr; B)</button>
-    <button type="button" class="airchip" id="ex-tab-air-btn" onclick="exTab('air')">&#127968; From my airport</button>
+    <button type="button" class="airchip" id="ex-tab-air-btn" onclick="exTab('air')">From my airport</button>
     <button type="button" class="airchip" id="ex-tab-explore-btn" onclick="exTab('explore')">Explore anywhere</button>
     <button type="button" class="airchip" id="ex-tab-fav-btn" onclick="exTab('fav')">&#9733; Your favorites</button>
     <button type="button" class="airchip" id="ex-tab-meet-btn" onclick="exTab('meet')">Meet in the middle</button>
@@ -6314,6 +6373,48 @@ def _email_section(label, sub):
         '</td></tr></table>')
 
 
+DEAL_GUIDE_TIPS = [
+    ("Judge it against normal, not the sticker.",
+     "A price only means something next to the route&rsquo;s usual fare. The board shows how far below normal each one sits, so a deal is actually a deal and not just a big number."),
+    ("If you&rsquo;d really fly it, book it fast.",
+     "The cheapest one-ways are often a handful of seats. A genuine drop rarely waits for the weekend, so treat it like the seat is already gone."),
+    ("Stay flexible on dates and airport.",
+     "Shifting your departure by a day, or leaving from a nearby hub, is usually where the savings hide. Flexibility is the cheapest upgrade you have."),
+    ("Book the flight first, plan the rest after.",
+     "The cheap one-way out is the hard part. Lock the seat, then add the return, the hotel, and the eSIM once you know the trip is on."),
+    ("Confirm the live price before you pay.",
+     "We show the freshest fare we&rsquo;ve tracked. Your real, bookable price is always the one on Aviasales, so check it there before you commit."),
+]
+
+
+def _email_deal_guide():
+    """Evergreen 'Flight Deal Guide' section: a short, honest playbook for turning
+    one of the week's fares into a booked trip. No hype, just how to act on a deal."""
+    rows = []
+    for i, (head, body) in enumerate(DEAL_GUIDE_TIPS, 1):
+        rows.append(
+            '<tr>'
+            '<td width="34" valign="top" style="padding:0 0 14px">'
+            f'<div style="width:26px;height:26px;border-radius:50%;background:#2f6b46;color:#ffffff;'
+            'font-family:Georgia,serif;font-size:14px;font-weight:bold;text-align:center;line-height:26px">'
+            f'{i}</div></td>'
+            '<td valign="top" style="padding:0 0 14px">'
+            f'<div style="font-family:Georgia,serif;font-size:15px;font-weight:bold;color:#2c2a1e;margin:0 0 3px">{head}</div>'
+            f'<div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#5b5440;line-height:1.55">{body}</div>'
+            '</td></tr>')
+    return (
+        _email_section("The Flight Deal Guide",
+                       "New here? Five things that turn a cheap fare into a booked trip.")
+        + '<table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 26px"><tr>'
+        '<td style="border:1px solid #d8c9a3;border-radius:12px;padding:20px 22px 8px;background:#ffffff">'
+        '<table cellpadding="0" cellspacing="0" width="100%">'
+        + "".join(rows)
+        + '</table>'
+        f'<div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#9b9582;border-top:1px solid #ece3ce;padding-top:12px;margin-top:2px">'
+        f'Want the longer version? Read <a href="{BASE_URL}/how-to-find-cheap-flights.html" style="color:#2f6b46;font-weight:bold;text-decoration:none">our full guide to finding cheap flights</a>.</div>'
+        '</td></tr></table>')
+
+
 _HERO_PHOTO_CACHE = {}
 
 
@@ -6671,6 +6772,7 @@ def newsletter_issue_html(oneway, market, world=None):
         f'{airport_section}'
         f'{market_section}'
         f'{heatmap_section}'
+        f'{_email_deal_guide()}'
         '<table width="100%" cellpadding="0" cellspacing="0" style="margin:18px 0 0"><tr><td style="background:#ffffff;border:1px dashed #c9b88e;border-radius:12px;padding:18px 20px;text-align:center">'
         '<div style="font-size:15px;color:#2c2a1e;font-weight:bold;margin-bottom:4px">&#128233; Know a fellow deal-hunter?</div>'
         '<div style="font-size:13px;color:#7a715a;margin-bottom:10px;line-height:1.5">Forward this email &mdash; they can get the weekly briefing free. The more of us watching the market, the better it gets.</div>'
