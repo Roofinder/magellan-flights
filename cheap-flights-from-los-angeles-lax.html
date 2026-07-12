@@ -384,6 +384,8 @@
   .owr-share{ display:inline-flex; align-items:center; gap:5px; background:none; border:1px solid var(--line); color:var(--muted); font:inherit; font-size:12px; font-weight:600; padding:6px 10px; border-radius:8px; cursor:pointer; white-space:nowrap; }
   .owr-share:hover{ border-color:var(--blue); color:var(--blue); background:rgba(47,107,70,.06); }
   .owr-share .shico{ width:13px; height:13px; }
+  .deal-flash{ animation:dealflash 3s ease-out 1; border-radius:12px; }
+  @keyframes dealflash{ 0%,55%{ background:rgba(46,139,87,.20); box-shadow:0 0 0 3px rgba(46,139,87,.38); } 100%{ background:transparent; box-shadow:none; } }
   .binfo-h{ font-weight:600; font-size:14px; margin:8px 0 10px; }
   .binfo{ font-size:13px; margin:5px 0; line-height:1.5; } .binfo b{ font-weight:600; }
   .finehint{ font-size:11px; color:var(--muted); margin:12px 0 0; }
@@ -1025,8 +1027,8 @@ function mfToast(msg){ var t=document.createElement('div'); t.className='mf-toas
 function shareClose(){ var b=document.getElementById('share-backdrop'); if(b) b.remove(); var p=document.getElementById('sharepop'); if(p) p.remove(); }
 function shareDeal(btn){ var c=btn.closest('[data-c]'); if(!c) return; var enc=encodeURIComponent;
   var o=c.getAttribute('data-o')||'', code=c.getAttribute('data-c')||'', nm=c.getAttribute('data-n')||code, p=c.getAttribute('data-p')||'', dep=c.getAttribute('data-dep')||'', ret=c.getAttribute('data-ret')||'', ow=(c.getAttribute('data-ow')==='1');
-  var trip=ow?'oneway':'round', unit=ow?'one-way':'round-trip';
-  var url=location.origin+'/explore.html?from='+enc(o)+'&to='+enc(code)+'&trip='+trip+(dep?('&depart='+enc(dep)):'')+((!ow&&ret)?('&return='+enc(ret)):'');
+  var unit=ow?'one-way':'round-trip';
+  var url=location.origin+'/market.html?deal='+enc(o)+'-'+enc(code);
   var pn=Number(p); var ps=isNaN(pn)?p:pn.toLocaleString();
   var text=o+' to '+nm+' for $'+ps+' '+unit+', tracked on Magellan Flights.';
   if(navigator.share){ navigator.share({title:'Magellan Flights deal', text:text, url:url}).catch(function(){}); return; }
