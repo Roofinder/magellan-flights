@@ -1179,9 +1179,9 @@ def index_cards(oneway, hist):
 
 
 _MOVER_REGIONS = {
-    "Asia": ["BKK","DPS","HKT","SGN","HAN","NRT","KIX","ICN","SIN","KUL","MNL","DEL","BOM","HKG","TPE","KTM","PEK","PVG","CAN","CTU","CGK","REP","PNH","CMB","MLE","BLR","MAA","FUK","CEB","KHH", "CTS", "OKA", "CNX", "DAD", "USM", "GOI", "COK", "PEN", "SUB"],
+    "Asia": ["TYO","BKK","DPS","HKT","SGN","HAN","NRT","KIX","ICN","SIN","KUL","MNL","DEL","BOM","HKG","TPE","KTM","PEK","PVG","CAN","CTU","CGK","REP","PNH","CMB","MLE","BLR","MAA","FUK","CEB","KHH", "CTS", "OKA", "CNX", "DAD", "USM", "GOI", "COK", "PEN", "SUB"],
     "Middle East": ["DXB","DOH","IST","TLV","AUH","RUH","JED","AMM","BEY","MCT", "KWI", "BAH", "GYD", "TBS", "EVN"],
-    "Europe": ["LHR","CDG","FCO","BCN","MAD","LIS","AMS","FRA","ATH","DUB","KEF","PRG","CPH","MUC","ZRH","VIE","BRU","MXP","VCE","NCE","EDI","MAN","GVA","OSL","ARN","HEL","WAW","BUD","KRK","OPO", "HAM", "DUS", "BER", "STR", "CGN", "SOF", "OTP", "BEG", "ZAG", "SPU", "DBV", "TLL", "RIX", "VNO", "BLQ", "FLR", "NAP", "CTA", "AGP", "SVQ", "VLC", "FAO", "LYS", "MRS", "GLA", "BHX"],
+    "Europe": ["LON","PAR","LHR","CDG","FCO","BCN","MAD","LIS","AMS","FRA","ATH","DUB","KEF","PRG","CPH","MUC","ZRH","VIE","BRU","MXP","VCE","NCE","EDI","MAN","GVA","OSL","ARN","HEL","WAW","BUD","KRK","OPO", "HAM", "DUS", "BER", "STR", "CGN", "SOF", "OTP", "BEG", "ZAG", "SPU", "DBV", "TLL", "RIX", "VNO", "BLQ", "FLR", "NAP", "CTA", "AGP", "SVQ", "VLC", "FAO", "LYS", "MRS", "GLA", "BHX"],
     "Americas": ["MEX","CUN","SJD","PTY","SJO","SJU","PUJ","NAS","BOG","LIM","GRU","EZE","SCL","GIG","UIO","CTG","MDE","GUA","MBJ","AUA","CUR","BGI","KIN","GCM","BZE","SDQ","STT","LIR", "YYZ", "YVR", "YUL", "YYC", "SAL", "TGU", "MGA", "GYE", "FOR", "REC", "SSA", "FLN", "SXM", "ANU", "UVF", "GND", "POS", "PLS", "FPO"],
     "Oceania": ["SYD","MEL","AKL","NAN","BNE","PER","CHC","PPT", "CNS", "ADL", "WLG", "ZQN"],
     "Africa": ["CAI","CMN","JNB","NBO","RAK","ACC","LOS","ADD","CPT","DKR", "TUN", "AGA", "HRG", "SSH", "MBA", "ZNZ", "JRO", "MRU"],
@@ -4028,13 +4028,18 @@ function buildLoop(start, nStops, allowed, dir, mustH){
   var rel=relLon(start, dir);
   var cand=[]; for(var h in RHUBS){ if(h===start||rel[h]<=0) continue; if(allowed && !allowed[RHUBS[h].cont]) continue; cand.push(h); }
   cand.sort(function(a,b){ return rel[a]-rel[b]; });
+  var scont=RHUBS[start].cont;
   var dp={};
-  cand.forEach(function(h){ if(rel[h]>=GMIN&&rel[h]<=GMAX){ var p=legP(start,h); if(p!=null) dp[h+"|1"]={c:p,prev:null}; } });
+  // First leg must leave the start's continent, so a world loop never opens with
+  // a token hop to a neighbour (e.g. Chicago -> Vancouver) that reads as "staying put".
+  cand.forEach(function(h){ if(rel[h]>=GMIN&&rel[h]<=GMAX&&RHUBS[h].cont!==scont){ var p=legP(start,h); if(p!=null) dp[h+"|1"]={c:p,prev:null}; } });
   for(var k=2;k<=nStops;k++){
     cand.forEach(function(h){
       var best=null;
       cand.forEach(function(p){
-        if(rel[p]>=rel[h]) return; var gap=rel[h]-rel[p]; if(gap<GMIN||gap>GMAX) return;
+        if(rel[p]>=rel[h]) return;
+        if(RHUBS[p].cont===RHUBS[h].cont) return; // hop continent-to-continent around the globe
+        var gap=rel[h]-rel[p]; if(gap<GMIN||gap>GMAX) return;
         var d=dp[p+"|"+(k-1)]; if(!d) return; var lp=legP(p,h); if(lp==null) return;
         var c=d.c+lp; if(best==null||c<best.c) best={c:c,prev:p};
       });
