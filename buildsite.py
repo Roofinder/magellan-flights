@@ -2563,6 +2563,53 @@ window.addEventListener('load', window.renderBucket);
 </script>"""
 
 
+# Non-intrusive email capture: a dismissible slide-in that appears only AFTER the
+# visitor has engaged (scrolled a bit or ~22s in). Never blocks the page, remembers
+# a dismissal for 30 days, and hides for good once someone subscribes. Turns one-time
+# SEO/social visitors into repeat visitors via the weekly briefing.
+EMAIL_CAPTURE = ("""
+<div id="mf-capture" class="mf-capture" role="complementary" aria-label="Newsletter signup">
+  <button class="mfc-x" onclick="mfCaptureClose()" aria-label="Dismiss">&times;</button>
+  <div class="mfc-body">
+    <div class="mfc-title">Catch the cheap ones before they vanish</div>
+    <div class="mfc-sub">One email a week: the best fares we tracked and the one trip worth booking. Free, unsubscribe anytime.</div>
+    <form class="mfc-form" onsubmit="return mfCaptureSub(event)">
+      <input id="mfc-email" type="email" required placeholder="you@email.com" autocomplete="email" aria-label="Email address">
+      <button type="submit">Get deals</button>
+    </form>
+  </div>
+</div>
+<style>
+.mf-capture{ position:fixed; left:50%; bottom:18px; transform:translateX(-50%) translateY(180%); width:min(452px,94vw); background:var(--card,#fbf6e9); border:1px solid var(--line,#d9c9a0); border-radius:14px; box-shadow:0 16px 46px rgba(0,0,0,.24); padding:16px 18px 15px; z-index:9000; transition:transform .5s cubic-bezier(.2,.85,.25,1); }
+.mf-capture.show{ transform:translateX(-50%) translateY(0); }
+.mfc-x{ position:absolute; top:7px; right:11px; background:none; border:0; font-size:23px; line-height:1; color:var(--muted,#7a715a); cursor:pointer; padding:2px 4px; }
+.mfc-x:hover{ color:var(--ink,#2c2a1e); }
+.mfc-title{ font-family:"Fraunces",Georgia,serif; font-weight:700; font-size:17.5px; color:var(--ink,#2c2a1e); margin:0 22px 3px 0; }
+.mfc-sub{ font-size:12.5px; color:var(--muted,#7a715a); line-height:1.45; margin:0 0 11px; }
+.mfc-form{ display:flex; gap:8px; }
+.mfc-form input{ flex:1; min-width:0; background:#fffdf6; color:var(--ink,#2c2a1e); border:1px solid var(--line,#d9c9a0); border-radius:9px; padding:10px 12px; font-size:14px; }
+.mfc-form input:focus{ outline:none; border-color:var(--blue,#2f6b46); }
+.mfc-form button{ background:var(--blue,#2f6b46); color:#fff; border:0; border-radius:9px; padding:10px 17px; font-weight:600; font-size:14px; cursor:pointer; white-space:nowrap; }
+.mfc-form button:hover{ background:var(--blue-d,#245537); }
+.mfc-ok{ font-size:14.5px; color:var(--green,#2e8b57); font-weight:600; padding:4px 0; }
+@media (max-width:520px){ .mf-capture{ bottom:0; border-radius:14px 14px 0 0; width:100vw; } }
+</style>
+<script>
+(function(){
+  function subd(){ try{ if(localStorage.getItem('mf_sub')==='1') return true; var d=localStorage.getItem('mf_nl_dismiss'); if(d){ if((Date.now()-parseInt(d,10))/86400000 < 30) return true; } }catch(e){} return false; }
+  window.mfCaptureClose=function(){ var el=document.getElementById('mf-capture'); if(el){ el.classList.remove('show'); el.style.transform=''; } try{ localStorage.setItem('mf_nl_dismiss', String(Date.now())); }catch(e){} };
+  window.mfCaptureSub=function(e){ e.preventDefault(); var em=((document.getElementById('mfc-email')||{}).value||'').trim(); if(!em) return false; var ap=''; try{ var h=JSON.parse(localStorage.getItem('fs_home')||'[]'); if(h&&h.length) ap=h[0]; }catch(_){}
+    var done=function(){ try{ localStorage.setItem('mf_sub','1'); }catch(_){} var b=document.querySelector('#mf-capture .mfc-body'); if(b) b.innerHTML='<div class="mfc-ok">&#10003; You’re in. Check your inbox to confirm.</div>'; setTimeout(window.mfCaptureClose,2800); };
+    var fb=function(){ var u="__BEEHIIV__"; var q=u+(u.indexOf('?')<0?'?':'&')+'email='+encodeURIComponent(em)+(ap?('&home_airport='+encodeURIComponent(ap)):''); try{ localStorage.setItem('mf_sub','1'); }catch(_){} try{ window.open(q,'_blank','noopener'); }catch(_){} done(); };
+    fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em,home_airport:ap})}).then(function(r){ if(!r.ok) throw 0; done(); }).catch(fb); return false; };
+  if(subd()) return;
+  var shown=false; function reveal(){ if(shown||subd()) return; shown=true; var el=document.getElementById('mf-capture'); if(el){ el.classList.add('show'); el.style.transform='translateX(-50%) translateY(0)'; } }
+  setTimeout(reveal, 22000);
+  window.addEventListener('scroll', function(){ if(window.scrollY>680) reveal(); }, {passive:true});
+})();
+</script>""").replace("__BEEHIIV__", BEEHIIV_URL)
+
+
 def site_footer(today):
     cols = []
     for heading, links in FOOTER_NAV:
@@ -2656,7 +2703,9 @@ def render_page(active, title, body, market, oneway, onewaylm, home, lm, world, 
             f'<link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">\n'
             f'<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">\n'
             f'<link rel="apple-touch-icon" href="apple-touch-icon.png">\n'
-            f'{CSS}\n</head>\n{top_chrome(active, market)}\n{CHART_BG}\n{body}\n{CHAT_HTML}\n{WIDGET_HTML}\n{foot}\n{script}\n{POPUP_JS}\n</body>\n</html>').replace("__CCJS__", _cc).replace("__BMJS__", _bm).replace("__NAMESJS__", _names).replace("__MAJORJS__", _major).replace("__HERONAMESJS__", _heron)
+            f'{CSS}\n</head>\n{top_chrome(active, market)}\n{CHART_BG}\n{body}\n{CHAT_HTML}\n{WIDGET_HTML}\n'
+            f'{EMAIL_CAPTURE if active not in ("newsletter.html", "newsletter-issue.html") else ""}\n'
+            f'{foot}\n{script}\n{POPUP_JS}\n</body>\n</html>').replace("__CCJS__", _cc).replace("__BMJS__", _bm).replace("__NAMESJS__", _names).replace("__MAJORJS__", _major).replace("__HERONAMESJS__", _heron)
 
 
 # --------------------------------------------------------------------------- #
