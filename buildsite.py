@@ -2159,14 +2159,16 @@ function render(){
   if(ma){ ma.innerHTML = WA.length ? 'Following: ' + WA.map(function(a){ var m=MARKET.find(function(x){return x.a===a;}); return m?m.an:a; }).join(', ')
     : 'No airlines followed yet — tap one above to follow it.'; }
 }
-function dealRow(o,d){ var on=WF.indexOf(o+'|'+d.code)>=0;
-  return '<div class="mv-row" data-lp data-o="'+o+'" data-d="'+d.code+'" data-ow="0"><button class="star'+(on?' on':'')+'" onclick="toggleFlight(\''+o+'\',\''+d.code+'\')">'+(on?'&#9733;':'&#9734;')+'</button>'
+function dealRow(o,d){ var on=WF.indexOf(o+'|'+d.code)>=0; var ow=!d['return'];
+  var sub = ow ? ('one-way from '+o+(d.depart?(' &middot; '+d.depart):'')) : ('round-trip from '+o+' &middot; '+d.depart+' &rarr; '+d['return']);
+  return '<div class="mv-row" data-lp data-o="'+o+'" data-d="'+d.code+'" data-ow="'+(ow?1:0)+'"><button class="star'+(on?' on':'')+'" onclick="toggleFlight(\''+o+'\',\''+d.code+'\')">'+(on?'&#9733;':'&#9734;')+'</button>'
   + '<div class="mv-dest"><span class="flag flag-na" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/></svg></span>'
-  + '<div><div class="mv-name">'+d.name+'</div><div class="mv-air">round-trip from '+o+' &middot; '+d.depart+' &rarr; '+d['return']+'</div></div></div>'
-  + '<div class="mv-right"><span class="mv-price">$'+d.price.toLocaleString()+'</span>'
+  + '<div><div class="mv-name">'+d.name+'</div><div class="mv-air">'+sub+'</div></div></div>'
+  + '<div class="mv-right"><span class="mv-price">$'+d.price.toLocaleString()+'</span> <span class="ow-unit">'+(ow?'one-way':'round-trip')+'</span>'
   + '<a class="mini-book" href="'+d.link+'" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a></div></div>'; }
 function findDeal(o,c){ if(!HOME[o]) return null; var best=null;
-  ['deals','lastminute'].forEach(function(k){ (HOME[o][k]||[]).forEach(function(d){ if(d.code===c && (!best||d.price<best.price)) best=d; }); });
+  var keys = (ACTRIP==='ow') ? ['oneway'] : ['deals','lastminute'];
+  keys.forEach(function(k){ (HOME[o][k]||[]).forEach(function(d){ if(d.code===c && (!best||d.price<best.price)) best=d; }); });
   return best; }
 function toggleFlight(o,c){ var key=o+'|'+c; var i=WF.indexOf(key); if(i<0)WF.push(key); else WF.splice(i,1); save(); renderAirportWatch(); renderCities(); }
 function renderAirportWatch(){ var box=document.getElementById('airwatch'), hint=document.getElementById('aw-hint'); if(!box||!hint) return;
@@ -2187,23 +2189,27 @@ function renderCities(){ var chips=document.getElementById('citychips'), deals=d
   var valid=WC.filter(function(c){ return HOME[c]; });
   if(valid.length===0){ hint.style.display='block'; deals.innerHTML=''; syncChips('[data-acr]','acr',{},ACSEL); return; }
   hint.style.display='none';
-  var key = ACMODE==='lm' ? 'lastminute' : 'deals';
+  var ow=(ACTRIP==='ow');
+  document.querySelectorAll('[data-actrip]').forEach(function(b){ b.classList.toggle('on', (b.dataset.actrip==='ow')===ow); });
+  var mb=document.getElementById('ac-modebar'); if(mb) mb.style.display=ow?'none':'';
+  var key = ow ? 'oneway' : (ACMODE==='lm' ? 'lastminute' : 'deals');
   var pool=[]; valid.forEach(function(c){ pool=pool.concat(HOME[c][key]||[]); });
   var av=regAvail(pool);
   ACSEL=ACSEL.filter(function(r){ return r==='Abroad'?av['Abroad']:av[r]; });
   syncChips('[data-acr]','acr',av,ACSEL);
   document.querySelectorAll('[data-act]').forEach(function(b){ b.classList.toggle('on', b.dataset.act===ACMODE); });
-  var label = ACMODE==='lm' ? '— last-minute this week' : '— cheapest anytime';
+  var label = ow ? '&middot; cheapest one-way' : (ACMODE==='lm' ? '&middot; last-minute this week' : '&middot; cheapest anytime');
   deals.innerHTML=valid.map(function(c){
     var arr=(HOME[c][key]||[]).filter(function(d){ return regMatch(d, ACSEL); });
     var h='<div class="grouphdr">'+''+'From '+HOME[c].name+' ('+c+') '+label+'</div>';
     h += arr.length ? arr.map(function(d){ return dealRow(c,d); }).join('')
-                    : '<div class="wl-hint">No '+(ACMODE==='lm'?'last-minute ':'')+'deals for this selection.</div>';
+                    : '<div class="wl-hint">No '+(ow?'one-way ':(ACMODE==='lm'?'last-minute ':''))+'deals for this selection.</div>';
     return h; }).join('');
 }
-var ACSEL=[]; var ACMODE='any';
+var ACSEL=[]; var ACMODE='any'; var ACTRIP='rt';
 function toggleACR(r){ if(r==='all'){ ACSEL=[]; } else { var i=ACSEL.indexOf(r); if(i<0)ACSEL.push(r); else ACSEL.splice(i,1); } renderCities(); }
 function setACMode(m){ ACMODE=m; renderCities(); }
+function setACTrip(t){ ACTRIP=t; if(t==='ow') ACMODE='any'; renderCities(); }
 function cpAppend(cls, h){ var m=document.getElementById('cpmsgs'); if(!m) return; var d=document.createElement('div'); d.className='cp-msg '+cls; d.innerHTML='<span class="bub">'+h+'</span>'; m.appendChild(d); m.scrollTop=m.scrollHeight; }
 function chatToggle(){ var p=document.getElementById('chatpanel'); if(!p) return; p.classList.toggle('open');
   if(p.classList.contains('open') && !p.dataset.greeted){ cpAppend('bot', "Hi! I search the live deals on this site. Try:<br>&bull; \"cheapest one-way to Asia\"<br>&bull; \"last-minute to the Caribbean\"<br>&bull; \"where can I go under $300?\""); p.dataset.greeted='1'; } }
@@ -4286,7 +4292,8 @@ def body_explore(home):
   <div class="sec-head"><h2>&#11088; My watched flights</h2><span>star any deal below to track it</span></div>
   <div class="panel"><div id="airwatch"></div><div class="wl-hint" id="aw-hint">Star (&#9734;) any deal below to add it to your watched flights. Saved in this browser.</div></div>
   <div class="sec-head"><h2>Deals from your airport</h2><span>tap &#9734; to watch</span></div>
-  <div class="airchips" style="margin:6px 0 8px;"><button class="airchip on" data-act="any" onclick="setACMode('any')">Cheapest anytime</button><button class="airchip" data-act="lm" onclick="setACMode('lm')"><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#2f6b46" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.2v5l3.2 2"/></svg> Last-minute this week</button></div>
+  <div class="airchips" style="margin:6px 0 8px;"><button class="airchip on" data-actrip="rt" onclick="setACTrip('rt')">Round-trip</button><button class="airchip" data-actrip="ow" onclick="setACTrip('ow')">One-way</button></div>
+  <div class="airchips" id="ac-modebar" style="margin:6px 0 8px;"><button class="airchip on" data-act="any" onclick="setACMode('any')">Cheapest anytime</button><button class="airchip" data-act="lm" onclick="setACMode('lm')"><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#2f6b46" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.2v5l3.2 2"/></svg> Last-minute this week</button></div>
   <div class="airchips" style="margin:0 0 14px;">__ACREGIONS__</div>
   <div class="panel"><div id="citydeals"></div><div class="wl-hint" id="city-hint">Add your home airport (e.g. Raleigh, RDU) to see the cheapest trips leaving from your city.</div></div>
 </div>'''.replace("__CITYOPTS__", city_options(home)).replace("__ACREGIONS__", region_chip_bar("data-acr", "toggleACR")))
@@ -4442,6 +4449,10 @@ def body_airports(home):
     <div class="wl-hint" id="aw-hint">Star (&#9734;) any deal below to add it to your watched flights — saved in this browser.</div></div>
   <div class="sec-head"><h2>Deals from your airport</h2><span>tap &#9734; to watch</span></div>
   <div class="airchips" style="margin:6px 0 8px;">
+    <button class="airchip on" data-actrip="rt" onclick="setACTrip('rt')">Round-trip</button>
+    <button class="airchip" data-actrip="ow" onclick="setACTrip('ow')">One-way</button>
+  </div>
+  <div class="airchips" id="ac-modebar" style="margin:6px 0 8px;">
     <button class="airchip on" data-act="any" onclick="setACMode('any')">Cheapest anytime</button>
     <button class="airchip" data-act="lm" onclick="setACMode('lm')"><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#2f6b46" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.2v5l3.2 2"/></svg> Last-minute this week</button>
   </div>
@@ -6907,6 +6918,25 @@ def main():
         for key in ("deals", "lastminute"):
             for d in c.get(key, []):
                 d["t"] = lm_tags(d.get("cc", ""))
+    # Derive per-airport ONE-WAY deals from the global one-way dataset so the
+    # "From my airport" board can toggle between round-trip and one-way pricing
+    # (no extra scrape needed - reuses the one-ways we already track).
+    ow_by_origin = {}
+    for o in oneway:
+        ow_by_origin.setdefault(o.get("origin", ""), []).append(o)
+    for code, c in home.items():
+        rows = sorted(ow_by_origin.get(code, []), key=lambda x: float(x["price"]))
+        seen, owlist = set(), []
+        for o in rows:
+            dc = o.get("code")
+            if not dc or dc in seen:
+                continue
+            seen.add(dc)
+            cc = o.get("cc", "")
+            owlist.append({"code": dc, "name": o.get("name", dc), "price": round(float(o["price"])),
+                           "cc": cc, "depart": o.get("depart", ""), "link": o.get("link", "#"),
+                           "t": lm_tags(cc)})
+        c["oneway"] = owlist[:60]
     update_oneway_index_log(oneway)
     update_oneway_price_log(oneway)
     hist = oneway_index_history()
