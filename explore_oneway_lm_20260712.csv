@@ -2,516 +2,533 @@ rank,price,currency,origin,destination_code,destination_name,country_code,depart
 1,84,USD,LAX,LAS,"Las Vegas, United States",US,2026-07-22,0,https://www.aviasales.com/search/LAX2207LAS1?t=F917847018001784706660000081LAXLAS_6c1e6843c3598ef228d23fbc72eaba9a_6431&search_date=10072026&expected_price_uuid=019f4b9d-0a26-8030-2003-878a3f175cb9&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=7Mroem066ytjehVQOEiGmw&expected_price_source=share&expected_price_currency=usd&expected_price=84&marker=741311
 4,55,USD,ATL,CLE,"Cleveland, United States",US,2026-07-21,0,https://www.aviasales.com/search/ATL2107CLE1?t=F917846172001784623920000112ATLCLE_f1a7163df9a1d6c9a2e5a2173e0849a1_4227&search_date=06072026&expected_price_uuid=019f34f6-c6ab-8030-6d8b-cdf0425a0045&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Zk35sZEKHjAAvPY0qc3NfA&expected_price_source=share&expected_price_currency=usd&expected_price=55&marker=741311
 5,60,USD,IAD,FLL,"Fort Lauderdale, United States",US,2026-07-20,0,https://www.aviasales.com/search/IAD2007FLL1?t=F917845709401784580720000163IADFLL_2a679e583da35e2c63341b271a6ddf77_4620&search_date=10072026&expected_price_uuid=019f4e10-4a6e-8010-2489-0f1e17819a75&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=9r5yaoegUT7pwoVeYc0EaA&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=60&marker=741311
-6,63,USD,MIA,ATL,"Atlanta, United States",US,2026-07-22,0,https://www.aviasales.com/search/MIA2207ATL1?t=F917847412801784750400000152MIAATL_c241a70c8b707d402e38b602547a82cb_4806&search_date=09072026&expected_price_uuid=019f489e-5f54-8030-23a4-9dda7d67c6c6&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=ewJbpcwNzzsjrYZDIg2WTg&expected_price_source=share&expected_price_currency=usd&expected_price=63&marker=741311
-7,63,USD,TPA,GSP,"Greenville, United States",US,2026-07-19,0,https://www.aviasales.com/search/TPA1907GSP1?t=G417844677401784473260000092PIEGSP_bda89b9bea7c60bab7c340d26673474f_4853&search_date=11072026&expected_price_uuid=019f52f8-1b77-8010-2159-6c854aafde96&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=sRl2pQTaPvp7MxRFkxpMWw&expected_price_source=share&expected_price_currency=usd&expected_price=63&marker=741311
-8,64,USD,ATL,HOU,"Houston, United States",US,2026-07-22,0,https://www.aviasales.com/search/ATL2207HOU1?t=F917847555001784759940000134ATLIAH_7e414a4d5e0a1c60ade7fd360fa1b96d_4859&search_date=07072026&expected_price_uuid=019f3ef8-44a9-8030-e003-477d22d6333d&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=-FvQ-BgR-x7WCYalfcCU0g&expected_price_source=share&expected_price_currency=usd&expected_price=64&marker=741311
-9,68,USD,TPA,RDU,"Raleigh/Durham, United States",US,2026-07-22,0,https://www.aviasales.com/search/TPA2207RDU1?t=F917847497401784756940000120TPARDU_3f4eaa05d3e2123bedd197f170fccebf_5218&search_date=08072026&expected_price_uuid=019f4401-67d3-8010-6423-35bba9e0430a&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=cAAkRoQo5FS-dVnjeEHZWA&expected_price_source=share&expected_price_currency=usd&expected_price=68&marker=741311
-10,71,USD,IAD,JAX,"Jacksonville, United States",US,2026-07-17,0,https://www.aviasales.com/search/IAD1707JAX1?t=G417843139601784321400000124IADJAX_fc25245650d1d86906b4f4dbba6c2128_5468&search_date=06072026&expected_price_uuid=019f3949-4d2f-8010-a5e3-28131cde0bb1&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=ZMG8a7dm2dGIAKxcreon_A&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=71&marker=741311
-11,71,USD,BOS,TPA,"Tampa, United States",US,2026-07-18,0,https://www.aviasales.com/search/BOS1807TPA1?t=G417844004801784412480000200PSMPIE_1ccd9543d0c582bdef78ef72f351570e_5467&search_date=07072026&expected_price_uuid=019f39f9-f0d7-8010-ac07-194dec17a211&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=k6cxQzKsRDn0atJjqmguzA&expected_price_source=share&expected_price_currency=usd&expected_price=71&marker=741311
-12,73,USD,JFK,BNA,"Nashville, United States",US,2026-07-22,0,https://www.aviasales.com/search/JFK2207BNA1?t=B617847097201784715120000150JFKBNA_21b5a436b26398e6902545e1176618ca_5623&search_date=12072026&expected_price_uuid=019f548a-311f-8030-2551-1022bf674b0f&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Ak4O4dtWKd3yg-RvBVSU4Q&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=73&marker=741311
-13,78,USD,RDU,ORL,"Orlando, United States",US,2026-07-19,0,https://www.aviasales.com/search/RDU1907ORL1?t=F917844714601784478720000121RDUMCO_b86f18d56fab2b58293f04f5f40bc0c1_5988&search_date=07072026&expected_price_uuid=019f3d67-32bb-8010-2679-fbade92ddf6f&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Tq3rPjlv6upjz2HTgtutww&expected_price_source=share&expected_price_currency=usd&expected_price=78&marker=741311
-14,73,USD,ATL,DFW,"Dallas, United States",US,2026-07-21,0,https://www.aviasales.com/search/ATL2107DFW1?t=F917846312401784637000000156ATLDFW_d47b33b9affaafd2a5a86b10dd596b6c_5548&search_date=07072026&expected_price_uuid=019f3e6c-7ada-8010-2cbe-78772d79fbdc&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=t9VQCIBT14hjd3S-QbhtpA&expected_price_source=share&expected_price_currency=usd&expected_price=73&marker=741311
-15,80,USD,ORD,MSP,"Minneapolis, United States",US,2026-07-21,0,https://www.aviasales.com/search/ORD2107MSP1?t=SY17846349001784641260000106ORDMSP_4d38950fe162dc261e0b64446c187f1e_6129&search_date=06072026&expected_price_uuid=019f3526-9695-8030-ee9b-d2933077e2a1&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=sMu2zZqfYEcuor_okPHTDA&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=80&marker=741311
-16,84,USD,ATL,MSY,"New Orleans, United States",US,2026-07-20,0,https://www.aviasales.com/search/ATL2007MSY1?t=F917845622401784564820000103ATLMSY_40c71854410aa4d2f28d25023fba0d58_6478&search_date=05072026&expected_price_uuid=019f3403-50d0-8030-6566-0214ee4e9731&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=YsL8BNtI0OGhEBMMY6bUEA&expected_price_source=share&expected_price_currency=usd&expected_price=84&marker=741311
-17,84,USD,MIA,CLT,"Charlotte, United States",US,2026-07-21,0,https://www.aviasales.com/search/MIA2107CLT1?t=F917846455801784653920000139MIACLT_1176fa6962dc801fb8cda8049099c53c_6471&search_date=06072026&expected_price_uuid=019f3618-3679-8030-a939-882e852c4ae9&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=NM0K0-v2UdYxe8XDoD802w&expected_price_source=share&expected_price_currency=usd&expected_price=84&marker=741311
-18,84,USD,DEN,FSD,"Sioux Falls, United States",US,2026-07-22,0,https://www.aviasales.com/search/DEN2207FSD1?t=F917847385201784748180000101DENFSD_02d1a4b03812cdd3962392c90bd5682b_6471&search_date=12072026&expected_price_uuid=019f547a-a2d3-8030-e915-5a768e3992f8&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=VlDYje0_AzVE9QgRR4W73A&expected_price_source=share&expected_price_currency=usd&expected_price=84&marker=741311
-19,85,USD,FLL,SJU,"San Juan, Puerto Rico",PR,2026-07-16,0,https://www.aviasales.com/search/FLL1607SJU1?t=F917842078201784217900000168FLLSJU_3d93e21bc41da559ed14f393643b1e74_6545&search_date=10072026&expected_price_uuid=019f4e27-0adc-8010-6210-ac805b0143c7&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Tdd2ADYE8r0m35rppNQg8g&expected_price_source=share&expected_price_currency=usd&expected_price=85&marker=741311
-20,86,USD,PHX,FAR,"Fargo, United States",US,2026-07-22,0,https://www.aviasales.com/search/PHX2207FAR1?t=G417847309001784748780000178AZAFAR_2a553dc0b81c58e3fb3627b491c21819_6625&search_date=12072026&expected_price_uuid=019f54b6-f2a3-8030-6a48-db2149a1e093&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=N0pjk95AK7XhUmEypYOzlQ&expected_price_source=share&expected_price_currency=usd&expected_price=86&marker=741311
-21,87,USD,MCO,BUF,"Buffalo, United States",US,2026-07-21,0,https://www.aviasales.com/search/MCO2107BUF1?t=F917846506201784660760000169MCOBUF_48a2629ea2adec7cca98613153414991_6702&search_date=05072026&expected_price_uuid=019f34a3-4d25-8010-a3c9-4cc49312dc14&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=N5Frtf8qzjkqKOZpwQ6hxA&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=87&marker=741311
-22,112,USD,MCO,BOS,"Boston, United States",US,2026-07-18,0,https://www.aviasales.com/search/MCO1807BOS1?t=MX17843880001784399160000186MCOPSM_a0d97ae278b65baf8708bf3255a24704_8627&search_date=10072026&expected_price_uuid=019f4e75-f3e0-8010-6a97-0a02974ad0f3&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=RwxpcF8VxH8B_w11g6SfRg&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=112&marker=741311
-23,90,USD,DEN,SLC,"Salt Lake City, United States",US,2026-07-20,0,https://www.aviasales.com/search/DEN2007SLC1?t=F917845534801784559300000097DENSLC_dc2c3716ac6a5f532b63d57eb5073ae1_6907&search_date=05072026&expected_price_uuid=019f348f-7989-8030-ea0d-d7302e93d854&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=GPK7dfVhThn0qqEcrSB1GQ&expected_price_source=share&expected_price_currency=usd&expected_price=90&marker=741311
-24,90,USD,ATL,CHI,"Chicago, United States",US,2026-07-16,0,https://www.aviasales.com/search/ATL1607CHI1?t=F917842355401784239380000124ATLMDW_e2e284d6d421f9e12f8c229a1bbec851_6933&search_date=11072026&expected_price_uuid=019f4f8b-119c-8010-29c1-b5afcbec8175&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=cGiYV_wW7juXpIh0PBtRvA&expected_price_source=share&expected_price_currency=usd&expected_price=90&marker=741311
-25,93,USD,DFW,MTY,"Monterrey, Mexico",MX,2026-07-13,0,https://www.aviasales.com/search/DFW1307MTY1?t=VB17839767001783979400000105DFWMTY_18b8ff90a6f949859d200301ee39974b_7143&search_date=08072026&expected_price_uuid=019f42c2-4a84-8010-6db5-41a7b960d4dd&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=1MdCMDkLdyHTSw_hieHtfQ&expected_price_source=share&expected_price_currency=usd&expected_price=93&marker=741311
-26,93,USD,IAH,ONT,"Ontario, United States",US,2026-07-20,1,https://www.aviasales.com/search/IAH2007ONT1?t=F917845712401784591400000456IAHDENONT_934ccac896927b0906804622d97a4c66_7160&search_date=05072026&expected_price_uuid=019f32a4-d3ab-8010-2bf9-62c68665139e&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=1y7iQeBn_LWfS6U0xKkTow&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=93&marker=741311
-27,94,USD,DFW,QRO,"Queretaro, Mexico",MX,2026-07-21,0,https://www.aviasales.com/search/DFW2107QRO1?t=VB17846679001784672700000140DFWQRO_78630bbbe5b66b1ace3ce0f45ba7b2e4_7190&search_date=09072026&expected_price_uuid=019f4548-ca35-8010-2239-2fe2290542ed&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=PzN0zrUMDlC7Kfl1_UnBHw&expected_price_source=share&expected_price_currency=usd&expected_price=94&marker=741311
-28,99,USD,PHX,TVC,"Traverse City, United States",US,2026-07-18,0,https://www.aviasales.com/search/PHX1807TVC1?t=G417843844601784408580000222AZATVC_276ef675e24131f04404ec2668c3d257_7626&search_date=11072026&expected_price_uuid=019f52b2-aae4-8010-a89a-c539ef16dd4c&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=GnYvQAaXDiE9eNjpYygJlA&expected_price_source=share&expected_price_currency=usd&expected_price=99&marker=741311
-29,95,USD,MCO,BDL,"Hartford, United States",US,2026-07-21,0,https://www.aviasales.com/search/MCO2107BDL1?t=MX17846703601784680860000175MCOBDL_8e779cf5987c5df2d0f1d013cd9a8065_7321&search_date=06072026&expected_price_uuid=019f382b-d985-8030-2162-95aa7688fab5&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=4K2YlUTFjcaMofsJEOj-TA&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=95&marker=741311
-30,95,USD,LAX,GDL,"Guadalajara, Mexico",MX,2026-07-18,1,https://www.aviasales.com/search/LAX1807GDL1?t=VB17843331001784386500000830LAXMTYGDL_08197829b8571929ce6a38dd3f6241e8_7231&search_date=07072026&expected_price_uuid=019f3e94-7121-8010-2788-55036aecea6b&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=jtDf_lVkkajjPA-mR-qAIQ&expected_price_source=share&expected_price_currency=usd&expected_price=95&marker=741311
-31,96,USD,DEN,PHX,"Phoenix, United States",US,2026-07-14,0,https://www.aviasales.com/search/DEN1407PHX1?t=F917840205001784023860000116DENPHX_804622bdd9f3adb6baf03e40444465d4_7395&search_date=11072026&expected_price_uuid=019f5071-4420-8010-6cb0-9ef2ecb01698&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=21GMjS-_DZonjkZMb9gtXw&expected_price_source=share&expected_price_currency=usd&expected_price=96&marker=741311
-32,97,USD,LAS,SAN,"San Diego, United States",US,2026-07-18,0,https://www.aviasales.com/search/LAS1807SAN1?t=AS17843574001784361840000074LASSAN_6105114911a9aebc65c02c719177fe65_7445&search_date=10072026&expected_price_uuid=019f4e64-671e-8030-6a09-dcfb62fdf839&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=iSukGZPF6W4Ja_N9b2v5ZQ&expected_price_source=share&expected_price_currency=usd&expected_price=97&marker=741311
-33,97,USD,ORD,DTT,"Detroit, United States",US,2026-07-19,0,https://www.aviasales.com/search/ORD1907DTT1?t=UA17844904201784499540000092ORDDTW_1ec9158fad9b42bacb71066d97fe25fc_7363&search_date=09072026&expected_price_uuid=019f46e6-13a0-8030-a107-ee19ae1df2f6&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=T_oJ0dZyBBohU52so8EI0g&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=97&marker=741311
-34,97,USD,CLT,WAS,"Washington, United States",US,2026-07-14,0,https://www.aviasales.com/search/CLT1407WAS1?t=UA17840248201784030100000088CLTIAD_94a836c3852c80e08f7222ce49f33bad_7397&search_date=10072026&expected_price_uuid=019f499c-0b51-8010-6cb7-341b8466af38&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=me3JiDLWSXJk8WdlQsJGTw&expected_price_source=share&expected_price_currency=usd&expected_price=97&marker=741311
-35,97,USD,LAX,SAC,"Sacramento, United States",US,2026-07-17,0,https://www.aviasales.com/search/LAX1707SAC1?t=UA17843058001784311560000096LAXSMF_16cce8604a71c1b603b6b4218fcd0d57_7450&search_date=08072026&expected_price_uuid=019f4393-64d7-8010-68be-5ae17bbd5827&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=6OiUrsB9jLlugNPBd9fmUg&expected_price_source=share&expected_price_currency=usd&expected_price=97&marker=741311
-36,97,USD,PHX,DEN,"Denver, United States",US,2026-07-14,0,https://www.aviasales.com/search/PHX1407DEN1?t=F917840279401784038500000116PHXDEN_a407d53f54c473d43ddeb64192260909_7426&search_date=10072026&expected_price_uuid=019f4c9f-523f-8030-6c8b-34d8943ef09e&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=KEUnSg7qOT8aKjZN6Ck8Lw&expected_price_source=share&expected_price_currency=usd&expected_price=97&marker=741311
-37,97,USD,DEN,ASE,"Aspen, United States",US,2026-07-22,0,https://www.aviasales.com/search/DEN2207ASE1?t=UA17847411001784744940000064DENASE_387011880ae74efac116c83c02dde7ce_7472&search_date=12072026&expected_price_uuid=019f5478-21e1-8030-aa35-e36bd2bb8f75&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=bF0NERUfqYp2EgKIv5Qa6A&expected_price_source=share&expected_price_currency=usd&expected_price=97&marker=741311
-38,97,USD,IAH,MFE,"McAllen, United States",US,2026-07-18,0,https://www.aviasales.com/search/IAH1807MFE1?t=UA17844066001784411460000081IAHMFE_cf0cfe62eeef17de62a9c8613216ee50_7406&search_date=08072026&expected_price_uuid=019f4289-0cd8-8030-2b10-9f07ad2d3204&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=3RAQQo4GvCYYM0b7kWJ37Q&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=97&marker=741311
-39,97,USD,LAX,MRY,"Monterey, United States",US,2026-07-18,0,https://www.aviasales.com/search/LAX1807MRY1?t=UA17844003001784404740000074LAXMRY_4e8db5634337bd120d6538aea1bdbfd4_7409&search_date=08072026&expected_price_uuid=019f41ce-868a-8030-2342-3e1b2e324697&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=nXWjHL8dY4kYd-TtkHNXig&expected_price_source=share&expected_price_currency=usd&expected_price=97&marker=741311
-40,98,USD,BOS,RUT,"Rutland, United States",US,2026-07-15,0,https://www.aviasales.com/search/BOS1507RUT1?t=9K17841432001784148000000080BOSRUT_45298e183fbd422c9c9266515f521350_7546&search_date=05072026&expected_price_uuid=019f3323-d24f-8030-29bd-e89b80e4aa8d&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=vQJCJO9GOqwO1Pvku0tFsw&expected_price_source=share&expected_price_currency=usd&expected_price=98&marker=741311
-41,99,USD,LAX,TIJ,"Tijuana, Mexico",MX,2026-07-20,1,https://www.aviasales.com/search/LAX2007TIJ1?t=Y417845599001784598240000639LAXGDLTIJ_3ab8c9f7bdc7f40fad5152b38cf9ea4a_7603&search_date=09072026&expected_price_uuid=019f44a0-e397-8010-a733-6bd43bacf2ac&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=SLBsQu6HBOT9CTLEdfwXOA&expected_price_source=share&expected_price_currency=usd&expected_price=99&marker=741311
-42,100,USD,LAX,MEX,"Mexico City, Mexico",MX,2026-07-20,1,https://www.aviasales.com/search/LAX2007MEX1?t=Y417845771201784619360000644LAXGDLTLC_1605202956728332637353b5b09ca977_7680&search_date=09072026&expected_price_uuid=019f44a0-aebb-8010-2040-abe4f9a6eb0f&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=JQxgi2epVbYqm72OTohEew&expected_price_source=share&expected_price_currency=usd&expected_price=100&marker=741311
-43,101,USD,BOS,PHL,"Philadelphia, United States",US,2026-07-20,0,https://www.aviasales.com/search/BOS2007PHL1?t=B617845308001784536200000090BOSPHL_e7583542c895a43bc828081bed3f9fa4_7775&search_date=05072026&expected_price_uuid=019f3329-79ef-8030-2d89-cd28b683b49d&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=8k2CHezcywzks9QBYveDEQ&expected_price_source=share&expected_price_currency=usd&expected_price=101&marker=741311
-44,100,USD,IAH,OKC,"Oklahoma City, United States",US,2026-07-17,0,https://www.aviasales.com/search/IAH1707OKC1?t=UA17843191201784324820000095IAHOKC_18460a35958746a500f16ce15b4a827f_7655&search_date=10072026&expected_price_uuid=019f4c2e-9cfc-8010-669a-b638e5c10def&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=0srg_AP3wLk6MSPuDrfSJw&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=100&marker=741311
-45,102,USD,CLT,NYC,"New York, United States",US,2026-07-17,0,https://www.aviasales.com/search/CLT1707NYC1?t=UA17842716001784278740000119CLTEWR_66aba59fd1e4bd10fc53d42014dfb8b5_7857&search_date=10072026&expected_price_uuid=019f4e5b-9b9c-8030-ee01-5d1f9cd4f30e&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=cs1vtLwK3SS0KCPsdCX0JA&expected_price_source=share&expected_price_currency=usd&expected_price=102&marker=741311
-46,103,USD,DFW,CUN,"Cancun, Mexico",MX,2026-07-21,1,https://www.aviasales.com/search/DFW2107CUN1?t=Y417846676001784714580000783DFWMEXCUN_980b96a14ee1769a7628d8de5c7c633c_7829&search_date=10072026&expected_price_uuid=019f49e3-588e-8010-2920-ae2b569ac793&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=0zRlAFOjbCeBcS1YRO9cDA&expected_price_source=share&expected_price_currency=usd&expected_price=103&marker=741311
-48,107,USD,IAH,VER,"Veracruz, Mexico",MX,2026-07-15,1,https://www.aviasales.com/search/IAH1507VER1?t=Y417841553201784188140000607IAHQROVER_de1fc0c0adf6674e5c2a367d0d817da8_8242&search_date=11072026&expected_price_uuid=019f4f69-695e-8010-2411-4d3c2a1b123a&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=r8inQFeYRAtBD-5sPhgiNw&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=107&marker=741311
-49,108,USD,FLL,AVP,"Wilkes-Barre, United States",US,2026-07-18,0,https://www.aviasales.com/search/FLL1807AVP1?t=MX17843550001784365620000177FLLAVP_5897c1ca6f8a1a2e2cf5aa74e1af10fc_8319&search_date=12072026&expected_price_uuid=019f53ba-6e2f-8010-6203-238abb3b630f&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=uusNoBcjgDhZff3XFHhs6g&expected_price_source=share&expected_price_currency=usd&expected_price=108&marker=741311
-50,111,USD,SAN,SFO,"San Francisco, United States",US,2026-07-21,0,https://www.aviasales.com/search/SAN2107SFO1?t=F917846631601784669880000112SANSFO_03c53afaa84399c15752b963e0f12985_8561&search_date=06072026&expected_price_uuid=019f3819-e136-8010-20f2-e967fd3b2616&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=AHmE56Oddjh2OIFWcqtSmw&expected_price_source=share&expected_price_currency=usd&expected_price=111&marker=741311
-51,112,USD,SFO,SEA,"Seattle, United States",US,2026-07-21,0,https://www.aviasales.com/search/SFO2107SEA1?t=AS17846173801784625180000130SFOSEA_08ea0b39504390703d3d94bb3b7a7310_8532&search_date=09072026&expected_price_uuid=019f4924-ca53-8030-ab00-05716ba01b08&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=iA00ydBpoCNxLNJFmA-zhQ&expected_price_source=share&expected_price_currency=usd&expected_price=112&marker=741311
-53,115,USD,DEN,CNY,"Moab, United States",US,2026-07-20,0,https://www.aviasales.com/search/DEN2007CNY1?t=LF17845506001784556300000095DENCNY_1facf969da7e39d74928bd1493fbc71c_8721&search_date=10072026&expected_price_uuid=019f4aa9-3cb8-8030-651e-3efa9ce80a06&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=tMZhGU75IpbIZxgwiriRjA&expected_price_source=share&expected_price_currency=usd&expected_price=115&marker=741311
-54,116,USD,IAD,MYR,"Myrtle Beach, United States",US,2026-07-14,0,https://www.aviasales.com/search/IAD1407MYR1?t=UA17840169001784023140000104IADMYR_5c79de439abbe663b013a5d796814c30_8818&search_date=09072026&expected_price_uuid=019f494a-f2f1-8010-69b4-e1060aaee3af&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=qZY1yOJtbqab8JvEd2yngQ&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=116&marker=741311
-55,118,USD,MCO,MIA,"Miami, United States",US,2026-07-21,0,https://www.aviasales.com/search/MCO2107MIA1?t=AA17846136601784617920000071MCOMIA_b3c3abe6fa26438bf44b59b54fbdab03_8998&search_date=07072026&expected_price_uuid=019f3cd5-5446-8010-6bc1-a3d613e57ce9&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=9WXv__Gd8KuzLmMaaTmlWw&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=118&marker=741311
-56,119,USD,PHL,PBI,"West Palm Beach, United States",US,2026-07-18,0,https://www.aviasales.com/search/PHL1807PBI1?t=F917843924401784402700000171PHLPBI_41e7d615e64c0a79cca834f6d21047de_9104&search_date=08072026&expected_price_uuid=019f3f41-2a6d-8030-28f5-f72746225352&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=OfU9wzhdctssIlyDg5ql_Q&expected_price_source=share&expected_price_currency=usd&expected_price=119&marker=741311
-57,119,USD,ORD,MEM,"Memphis, United States",US,2026-07-15,0,https://www.aviasales.com/search/ORD1507MEM1?t=UA17841504001784157660000121ORDMEM_3c81f6c7eb489c728f07665e6e5b67a4_9085&search_date=09072026&expected_price_uuid=019f47f1-3e35-8010-6597-3a76192c6bb3&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=N57xk97Wzd4AVqzRs3fX7Q&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=119&marker=741311
-58,120,USD,LAX,BOI,"Boise, United States",US,2026-07-22,0,https://www.aviasales.com/search/LAX2207BOI1?t=AS17847495001784760300000120LAXBOI_2d24f7125ae8026854dc992d6c388fb8_9243&search_date=12072026&expected_price_uuid=019f5481-c74d-8030-aef7-44fbff9dce81&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=wQmyC9PQ0k-NazCbaSwq0Q&expected_price_source=share&expected_price_currency=usd&expected_price=120&marker=741311
-59,121,USD,ATL,YYC,"Calgary, Canada",CA,2026-07-22,1,https://www.aviasales.com/search/ATL2207YYC1?t=UA17846982001784721480000508ATLIADYYC_b9db1e7e8543a847a2530dd6a1b6bf36_9302&search_date=07072026&expected_price_uuid=019f3b35-8e06-8030-6e4b-068b696f38c1&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=TeLxCx988S-IG0-p2ENm_Q&expected_price_source=share&expected_price_currency=usd&expected_price=121&marker=741311
-60,126,USD,MCO,PDX,"Portland, United States",US,2026-07-13,1,https://www.aviasales.com/search/MCO1307PDX1?t=F917839753801784046660001368MCODENPDX_39b9533d966dab139f32f265b81479a0_9670&search_date=06072026&expected_price_uuid=019f394d-4faa-8010-a637-608b50d61a82&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=4ACokU5GBzCXnCwamRmMYA&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=126&marker=741311
-61,129,USD,MCO,SDQ,"Santo Domingo, Dominican Republic",DO,2026-07-13,1,https://www.aviasales.com/search/MCO1307SDQ1?t=F917839605001784026980001108MCOPHLSDQ_731f38e9b16b92c8be3d5a2b8e67efe4_9802&search_date=10072026&expected_price_uuid=019f4985-1478-8010-6647-7944770a46f5&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=ccAJcCQxbQQsBWE6Xlaj-A&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=129&marker=741311
-62,129,USD,DFW,TRC,"Torreon, Mexico",MX,2026-07-20,1,https://www.aviasales.com/search/DFW2007TRC1?t=Y417845511401784578860000522DFWGDLTRC_d5bf029488831f17d96d3a6065873dce_9937&search_date=11072026&expected_price_uuid=019f530d-5768-8010-2aad-f497ef7407cb&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=XJ3Nleqp9dGMq8fzPTMNbg&expected_price_source=share&expected_price_currency=usd&expected_price=129&marker=741311
-63,130,USD,MCO,ALB,"Albany, United States",US,2026-07-22,0,https://www.aviasales.com/search/MCO2207ALB1?t=B617847509401784761620000178MCOALB_a7921da72835c44333d1f32817aff440_9906&search_date=07072026&expected_price_uuid=019f3bb8-4288-8010-ac80-fdbe69e7be99&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=sHdQBBha-pRNYVan9F3x4Q&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=130&marker=741311
-64,131,USD,ORD,AUS,"Austin, United States",US,2026-07-14,1,https://www.aviasales.com/search/ORD1407AUS1?t=F917840127001784047140000574ORDATLAUS_676b00fc20238a83fdf922a768eb330a_10022&search_date=08072026&expected_price_uuid=019f403d-09d5-8010-a358-68e4e8cb6a9e&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=0cp9SUGn4qgomX1PBzef0A&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=131&marker=741311
-65,132,USD,ORD,BJX,"Leon/Guanajuato, Mexico",MX,2026-07-16,1,https://www.aviasales.com/search/ORD1607BJX1?t=VB17841654001784203800000700ORDMTYBJX_944d935c0576b84e93cd2a9977bc31e1_10054&search_date=07072026&expected_price_uuid=019f3cc4-45d1-8010-2863-9b7a1567e132&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=SokVpQfj8llNuY3XxIbruw&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=132&marker=741311
-66,132,USD,FLL,YOW,"Ottawa, Canada",CA,2026-07-20,0,https://www.aviasales.com/search/FLL2007YOW1?t=PD17845470001784559420000207FLLYOW_c3f3e020fee7a361709dc3bdd1b5d181_10179&search_date=05072026&expected_price_uuid=019f327d-785d-8030-e636-8a61c6dc5810&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=rbo9_HbZPycNjlPtN4-Xrg&expected_price_source=share&expected_price_currency=usd&expected_price=132&marker=741311
-67,133,USD,FLL,EYW,"Key West, United States",US,2026-07-16,1,https://www.aviasales.com/search/FLL1607EYW1?t=MX17842125601784303460001515FLLTPAPIEEYW_822a2ee8191c7d921e6928be6075a628_10244&search_date=06072026&expected_price_uuid=019f3522-a08c-8030-6464-4630f49ebe50&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=RyV_ebTO0pEa23YNBR3hTw&expected_price_source=share&expected_price_currency=usd&expected_price=133&marker=741311
-68,135,USD,MCO,ISP,"Ronkonkoma, United States",US,2026-07-18,0,https://www.aviasales.com/search/MCO1807ISP1?t=F917843586001784368380000163MCOISP_fb56a49acffe0869503f7dfc2d6993c1_10391&search_date=05072026&expected_price_uuid=019f3431-df01-8010-6af7-57e2f3d1513b&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Cu-DvPhDcqkA-dYfEaMLvA&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=135&marker=741311
-69,134,USD,MCO,PIT,"Pittsburgh, United States",US,2026-07-21,1,https://www.aviasales.com/search/MCO2107PIT1?t=MX17846178001784638500000345MCOCHSPIT_c1ad35e37109282656e9feb323896a67_10440&search_date=06072026&expected_price_uuid=019f375a-8f55-8030-af3f-b2f9f6079094&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=z8V_Kqn4xPYWKoNpmweyUg&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=134&marker=741311
-70,136,USD,DFW,LBB,"Lubbock, United States",US,2026-07-21,1,https://www.aviasales.com/search/DFW2107LBB1?t=UA17846106001784632800000370DFWIAHLBB_124ec838ea2c6b297f15bed100d9f9f4_10427&search_date=09072026&expected_price_uuid=019f4469-b3c4-8010-6173-37f9fb3d6311&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=FkUIwCsBh5MWfiaiPE8jSA&expected_price_source=share&expected_price_currency=usd&expected_price=136&marker=741311
-71,137,USD,BOS,FMY,"Fort Myers, United States",US,2026-07-21,1,https://www.aviasales.com/search/BOS2107FMY1?t=AA17846535001784674620000352BOSPHLRSW_0a567cc54a1b8a76cbdc98c900e60c0a_10456&search_date=08072026&expected_price_uuid=019f401f-ff18-8010-ac2f-f5319bb825a7&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=UkNUuZEAzISxtAHVVGsCug&expected_price_source=share&expected_price_currency=usd&expected_price=137&marker=741311
-72,137,USD,LAX,LAP,"La Paz, Mexico",MX,2026-07-17,1,https://www.aviasales.com/search/LAX1707LAP1?t=Y417842491601784287500000639LAXGDLLAP_715cd70ec2c7fa38ee2569559737f1bb_10481&search_date=07072026&expected_price_uuid=019f3d7d-7c9e-8030-62e6-88a965f4c4c9&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=ka-8D2JPYBvvSpYsZ2519A&expected_price_source=share&expected_price_currency=usd&expected_price=137&marker=741311
-73,139,USD,PDX,OAK,"Oakland, United States",US,2026-07-21,0,https://www.aviasales.com/search/PDX2107OAK1?t=AS17846551801784661780000110PDXOAK_26fb06c2aba9229ec64a38d9c51a6a3e_10707&search_date=11072026&expected_price_uuid=019f51cc-b6a2-8030-e472-3379bd23e381&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=QM50jnYy0--RGuGCYqO7_g&expected_price_source=share&expected_price_currency=usd&expected_price=139&marker=741311
-74,139,USD,BNA,AVL,"Asheville, United States",US,2026-07-16,1,https://www.aviasales.com/search/BNA1607AVL1?t=G417842331401784329140001540BNAFLLAVL_15bbd06e198b3fc78fc4470cfd30e353_10703&search_date=06072026&expected_price_uuid=019f3978-1fe5-8030-e9c2-65e4abb6b7f9&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=YO-O59wOAvaqS4qWe3KrLQ&expected_price_source=share&expected_price_currency=usd&expected_price=139&marker=741311
-75,139,USD,LAS,PVR,"Puerto Vallarta, Mexico",MX,2026-07-15,1,https://www.aviasales.com/search/LAS1507PVR1?t=WN17841498001784210700000955LASDENPVR_dfa544d080ccc61454329c8951f830a6_10670&search_date=11072026&expected_price_uuid=019f522f-36dc-8010-292d-faa823c9b917&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=JLpqL7QFNvmzTzGLlnR5PQ&expected_price_source=share&expected_price_currency=usd&expected_price=139&marker=741311
-76,140,USD,MIA,PVD,"Providence, United States",US,2026-07-14,1,https://www.aviasales.com/search/MIA1407PVD1?t=UA17840322001784064780000543MIAORDPVD_e1737c52c00fa31e2d83f4186eb9cc8c_10769&search_date=11072026&expected_price_uuid=019f52c4-1d9f-8010-29bb-5d6131bfb7af&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=pjN18oU0zpQTqMrBGsEAaA&expected_price_source=share&expected_price_currency=usd&expected_price=140&marker=741311
-77,142,USD,MIA,YMQ,"Montreal, Canada",CA,2026-07-22,0,https://www.aviasales.com/search/MIA2207YMQ1?t=AC17847081001784720580000208MIAYUL_ddbf0da94fde09de6d1cd11077227c24_10839&search_date=07072026&expected_price_uuid=019f3e05-648d-8030-2de1-13ce6e796d09&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=eEKnSw21yXGbD-2yPfkJoA&expected_price_source=share&expected_price_currency=usd&expected_price=142&marker=741311
-78,142,USD,LAX,GEG,"Spokane, United States",US,2026-07-17,1,https://www.aviasales.com/search/LAX1707GEG1?t=HA17843175001784326500000150LAXGEG_ca6d1860b9efac84703eae84174d441c_10863&search_date=08072026&expected_price_uuid=019f4006-2e58-8010-675b-75740c72d37e&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=GdfIfyVLHIx0-k3Ys4vJrQ&expected_price_source=share&expected_price_currency=usd&expected_price=142&marker=741311
-79,143,USD,FLL,LEX,"Lexington, United States",US,2026-07-16,0,https://www.aviasales.com/search/FLL1607LEX1?t=G417842026601784211360000145FLLLEX_6dbbc6814341dcd986fd9033c4e45bbc_11012&search_date=06072026&expected_price_uuid=019f39c3-0546-8030-2749-0fffab769ec4&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=SlYI6FiyfxpITS6NajP3uA&expected_price_source=share&expected_price_currency=usd&expected_price=143&marker=741311
-80,144,USD,RDU,CMH,"Columbus, United States",US,2026-07-22,1,https://www.aviasales.com/search/RDU2207CMH1?t=F917847306601784751240000343RDUMCOCMH_d4090c724dcc7d2b21fa970bb5d1fca0_11091&search_date=12072026&expected_price_uuid=019f5495-961f-8030-e6c8-4cf974a2a766&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=ypE5--G_4RRiHKSCJuoqHQ&expected_price_source=share&expected_price_currency=usd&expected_price=144&marker=741311
-81,144,USD,TPA,IND,"Indianapolis, United States",US,2026-07-17,1,https://www.aviasales.com/search/TPA1707IND1?t=UA17843146201784332740000302TPAIADIND_fa26aa16525d0d142f822cab5cc633df_10979&search_date=10072026&expected_price_uuid=019f4974-3963-8010-2069-b7263f8d8ff1&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=NdDAvmQztlgS9xug_I_M6A&expected_price_source=share&expected_price_currency=usd&expected_price=144&marker=741311
-82,145,USD,DFW,MKC,"Kansas City, United States",US,2026-07-20,1,https://www.aviasales.com/search/DFW2007MKC1?t=F917845246801784552400000462DFWDENMCI_3803dab3b7471cd00173147e91e30f8d_11180&search_date=05072026&expected_price_uuid=019f3292-2c79-8030-6f2a-ae6a4daf6bb3&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=UbsWnxZbQtUOOBNzL6ksvw&expected_price_source=share&expected_price_currency=usd&expected_price=145&marker=741311
-83,146,USD,ATL,TUL,"Tulsa, United States",US,2026-07-16,1,https://www.aviasales.com/search/ATL1607TUL1?t=WN17842374001784247600000230ATLBNATUL_6dcd1607072a939a0dc0966498153c87_11076&search_date=10072026&expected_price_uuid=019f4a00-7a37-8010-ad08-51c92c5c9958&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=0heYX0DGa35JV3iz8fOU2A&expected_price_source=share&expected_price_currency=usd&expected_price=146&marker=741311
-84,146,USD,ORD,SRQ,"Sarasota, United States",US,2026-07-14,0,https://www.aviasales.com/search/ORD1407SRQ1?t=UA17840274001784041920000182ORDSRQ_e41f8666c4424cb060b0d62f06c46303_11246&search_date=11072026&expected_price_uuid=019f5049-7925-8010-6905-d0fa69a971cb&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Bm4JofrhP6jNpvVOEu-AVg&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=146&marker=741311
-85,147,USD,MCO,NAS,"Nassau, Bahamas",BS,2026-07-19,0,https://www.aviasales.com/search/MCO1907NAS1?t=B617844481201784453100000083MCONAS_31e36deff76e2ebd3363f71664493222_11428&search_date=06072026&expected_price_uuid=019f376a-6da4-8030-63aa-1b5dd87b092a&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Qph5zjbJcY-ItOFXTsmAiA&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=147&marker=741311
-86,147,USD,RDU,CID,"Cedar Rapids, United States",US,2026-07-15,1,https://www.aviasales.com/search/RDU1507CID1?t=F917841183601784210760001600RDUDENCID_beac4f0c3f87cf2762ea62843ced721b_11213&search_date=09072026&expected_price_uuid=019f47e7-daa0-8010-2620-77e3ea0555cf&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=7FRSphNR5SWJIt5MjQNidw&expected_price_source=share&expected_price_currency=usd&expected_price=147&marker=741311
-87,149,USD,MCO,HPN,"Westchester County, United States",US,2026-07-14,1,https://www.aviasales.com/search/MCO1407HPN1?t=MX17840130001784028420000257MCOCHSHPN_fba09f0ff00fa515970bd46a79709198_11324&search_date=07072026&expected_price_uuid=019f3e65-663d-8010-2f0e-f44241d0af1e&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=KjfIGJhX2NH0iLXc-8UQRg&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=149&marker=741311
-88,149,USD,DFW,ABQ,"Albuquerque, United States",US,2026-07-18,0,https://www.aviasales.com/search/DFW1807ABQ1?t=AA17844114601784414640000113DFWABQ_7e3f5147808515f835ad4862fad29c3d_11491&search_date=12072026&expected_price_uuid=019f5423-61cb-8010-ad44-1d17be67f2a3&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=AgR5yYzQoAp-7_-hNJREnA&expected_price_source=share&expected_price_currency=usd&expected_price=149&marker=741311
-89,148,USD,LAS,TUS,"Tucson, United States",US,2026-07-20,1,https://www.aviasales.com/search/LAS2007TUS1?t=UA17845716001784589960000306LASSFOTUS_a4839e77a1adbf4fe28d6903101f1ac4_11354&search_date=07072026&expected_price_uuid=019f3dda-0d00-8010-ab33-22aa5b479298&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=lnv2HsSXPhli8waeRjcrHA&expected_price_source=share&expected_price_currency=usd&expected_price=148&marker=741311
-90,150,USD,JFK,MBJ,"Montego Bay, Jamaica",JM,2026-07-21,1,https://www.aviasales.com/search/JFK2107MBJ1?t=AA17846135401784640660000512JFKCLTMBJ_73d006638b35de89c271daf9e1a5cfe3_11458&search_date=09072026&expected_price_uuid=019f492a-09c5-8010-63ff-7a5d3523228b&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=1pXlWF3oyTQ-lYKt6KIXiA&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=150&marker=741311
-91,152,USD,IAH,STL,"Saint Louis, United States",US,2026-07-18,1,https://www.aviasales.com/search/IAH1807STL1?t=F917843806201784484900001738IAHLASSTL_ede75b9752699122d9ba84f45010968d_11712&search_date=10072026&expected_price_uuid=019f4d0b-3ca2-8010-603d-986de2252996&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=I27ZIOBk6-keZvUuMoIKeA&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=152&marker=741311
-92,152,USD,DEN,ALS,"Alamosa, United States",US,2026-07-17,0,https://www.aviasales.com/search/DEN1707ALS1?t=KG17842920001784295000000050DENALS_6e3790a24ff692c0666a7a5037b25665_11605&search_date=07072026&expected_price_uuid=019f3c4c-bd1c-8010-2c1a-8cc3d677fd41&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=xc3tNxSGxeMUrOoRrMBZYA&expected_price_source=share&expected_price_currency=usd&expected_price=152&marker=741311
-93,152,USD,DEN,KOA,"Kailua-Kona, United States",US,2026-07-22,1,https://www.aviasales.com/search/DEN2207KOA1?t=AS17847001201784730900000753DENSEAKOA_cd8d1a01597d1b3d1a3cacfc5e4f919e_11729&search_date=11072026&expected_price_uuid=019f4f46-0a85-8010-a0ed-0c61010ce323&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=lKuuy3S1YGKMNNOyLJFSEQ&expected_price_source=share&expected_price_currency=usd&expected_price=152&marker=741311
-94,153,USD,PDX,MFR,"Medford, United States",US,2026-07-18,0,https://www.aviasales.com/search/PDX1807MFR1?t=HA17844122401784415960000062PDXMFR_04ca1851b88aeae244e721e2c5212c35_11751&search_date=08072026&expected_price_uuid=019f4387-b35e-8030-ace6-dabf3deb6a8b&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=i7OCj7IHUYCQVvYuxE7csg&expected_price_source=share&expected_price_currency=usd&expected_price=153&marker=741311
-95,154,USD,LAS,RNO,"Reno, United States",US,2026-07-20,0,https://www.aviasales.com/search/LAS2007RNO1?t=F917845441801784549340000086LASRNO_24f2b93945c159784fbf108c078dbf4f_11862&search_date=11072026&expected_price_uuid=019f51b7-329b-8010-a14a-0bfc89018e51&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=ZnBVO1qqTW8BoA7JVWFgGw&expected_price_source=share&expected_price_currency=usd&expected_price=154&marker=741311
-96,154,USD,FLL,HVN,"New Haven, United States",US,2026-07-20,2,https://www.aviasales.com/search/FLL2007HVN1?t=MX17845634401784636760001222FLLTPACHSHVN_7ca8950771a17bdc8c48df0e826a4e5c_11704&search_date=07072026&expected_price_uuid=019f3e68-5693-8010-200f-efe3497558ff&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=LyGW9g-Q5qa3yiV-CS1bNQ&expected_price_source=share&expected_price_currency=usd&expected_price=154&marker=741311
-97,155,USD,IAH,SGF,"Springfield, United States",US,2026-07-21,1,https://www.aviasales.com/search/IAH2107SGF1?t=AA17846426401784657040000240IAHDFWSGF_2bbdcc06299e25e4627be5c95721d3ea_11915&search_date=09072026&expected_price_uuid=019f44ab-b5c6-8010-aa4e-9ae4c6f34cd7&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=tyocJIhpnzTNmSqiWd_Fxg&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=155&marker=741311
-98,156,USD,SEA,PSC,"Pasco, United States",US,2026-07-17,0,https://www.aviasales.com/search/SEA1707PSC1?t=AS17842783201784281980000061SEAPSC_f01d7b1165d8f810f5cae3e2d8a9aef7_12028&search_date=07072026&expected_price_uuid=019f3a8e-2211-8030-6c11-8844d348ff51&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=wv0RsBPZZgWwzhmt6492ww&expected_price_source=share&expected_price_currency=usd&expected_price=156&marker=741311
-99,157,USD,RDU,TYS,"Knoxville, United States",US,2026-07-17,1,https://www.aviasales.com/search/RDU1707TYS1?t=F917842986601784331180000542RDUMCOTYS_3667250913f20b37fce4bcc11b84d486_12011&search_date=07072026&expected_price_uuid=019f3d6c-d725-8030-e5e2-d35d021fca9b&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=XUsV9XDVpv-8XlGsWNPSMA&expected_price_source=share&expected_price_currency=usd&expected_price=157&marker=741311
-100,156,USD,LAS,YEA,"Edmonton, Canada",CA,2026-07-20,2,https://www.aviasales.com/search/LAS2007YEA1?t=WS17845362001784589900000835LASYYCYLWYEG_6afaa9846afa493c17038a7618778a4e_12053&search_date=05072026&expected_price_uuid=019f34ad-7608-8030-2abc-24a61759eac8&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Z8JIWAT3JNycoVE0ec98yg&expected_price_source=share&expected_price_currency=usd&expected_price=156&marker=741311
-101,157,USD,SEA,PSP,"Palm Springs, United States",US,2026-07-21,1,https://www.aviasales.com/search/SEA2107PSP1?t=UA17846534401784673000000326SEALAXPSP_466a5bd8ef2329f83fc09635a6ff5a0f_12076&search_date=11072026&expected_price_uuid=019f4eea-be30-8010-2c94-2c81bdde4b9b&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=4o3XuQFid8J8JZHoyNkohw&expected_price_source=share&expected_price_currency=usd&expected_price=157&marker=741311
-102,158,USD,DFW,SAT,"San Antonio, United States",US,2026-07-22,1,https://www.aviasales.com/search/DFW2207SAT1?t=F917847217201784752620000515DFWLASSAT_aec8ced89c1c565c5edd3a22230f5529_12119&search_date=07072026&expected_price_uuid=019f3d3c-75fa-8030-6c1a-d669c0e430b2&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=tu_XJsytzz_YSTFqmk-GJg&expected_price_source=share&expected_price_currency=usd&expected_price=158&marker=741311
-103,160,USD,JFK,SLK,"Saranac Lake, United States",US,2026-07-22,0,https://www.aviasales.com/search/JFK2207SLK1?t=9K17847249001784733060000136JFKSLK_86659301947769060ff6b13f922bd2e8_12243&search_date=12072026&expected_price_uuid=019f55b6-1989-8030-6a8e-e7cabdcd5136&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=w4_pRRCNClkqx1eEQahvrg&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=160&marker=741311
-104,161,USD,LAS,FYV,"Fayetteville, United States",US,2026-07-17,1,https://www.aviasales.com/search/LAS1707FYV1?t=F917843132401784381760001022LASDENXNA_39c66b44eb0e1bd91b3d87bbb2ee87da_12317&search_date=07072026&expected_price_uuid=019f3d9b-6084-8030-e439-2761244815a2&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=vuADhVGTJeonGOqD-LQIcA&expected_price_source=share&expected_price_currency=usd&expected_price=161&marker=741311
-105,162,USD,ORD,MSN,"Madison, United States",US,2026-07-13,0,https://www.aviasales.com/search/ORD1307MSN1?t=UA17839800001783984320000072ORDMSN_b9434d136122a25a75727e6f1241e19b_12472&search_date=05072026&expected_price_uuid=019f3343-3f26-8010-2254-af6f475967c9&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=iOeK-uzB67HiU-sbzknLUA&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=162&marker=741311
-106,162,USD,LAX,ACV,"Arcata, United States",US,2026-07-15,0,https://www.aviasales.com/search/LAX1507ACV1?t=UA17841465001784153880000123LAXACV_e2a416411a3d13616b8a1080930b29d8_12471&search_date=05072026&expected_price_uuid=019f3439-8f58-8030-6e50-e711d8747160&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=o_BDCCH87Cz355F_e7hJFg&expected_price_source=share&expected_price_currency=usd&expected_price=162&marker=741311
-107,163,USD,IAH,TGZ,"Tuxtla Gutierrez, Mexico",MX,2026-07-15,1,https://www.aviasales.com/search/IAH1507TGZ1?t=Y417841489001784183880000643IAHMEXTGZ_29f65ed2a55024f5f2642c43dcff90dd_12556&search_date=11072026&expected_price_uuid=019f4f6e-7a43-8010-a2c1-7192160b2618&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH1%7CR0%7CTBC0&itinerary_key=8q8lMsSpi6MVZANvk_cC6A&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=163&marker=741311
-108,165,USD,PHX,YWG,"Winnipeg, Canada",CA,2026-07-22,2,https://www.aviasales.com/search/PHX2207YWG1?t=WS17847072001784756400000700PHXYYCYEGYWG_640b1458e484cf08a0ff04c8341f2ccf_12542&search_date=07072026&expected_price_uuid=019f3e16-93e4-8030-69f0-7ee9f2ca6405&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=miX7tAtDJVR4x0xJgDd1Hg&expected_price_source=share&expected_price_currency=usd&expected_price=165&marker=741311
-109,166,USD,IAH,LIT,"Little Rock, United States",US,2026-07-13,1,https://www.aviasales.com/search/IAH1307LIT1?t=F917839805401784055660001252IAHDENLIT_03fa05fd55c4b23691b27a3d86a53494_12630&search_date=09072026&expected_price_uuid=019f4866-51e8-8010-662d-53169b637ce4&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=K1taKKIHHObzczSLWDFAkw&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=166&marker=741311
-110,168,USD,BNA,PGD,"Punta Gorda, United States",US,2026-07-13,0,https://www.aviasales.com/search/BNA1307PGD1?t=G417839423201783953360000124BNAPGD_82d7b83b2f1af77e79c463e0fc51a162_12903&search_date=08072026&expected_price_uuid=019f4354-304c-8010-6934-045a682ba9cc&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=nt8OxSz_ZZCmI6d9xgLLlg&expected_price_source=share&expected_price_currency=usd&expected_price=168&marker=741311
-111,168,USD,LAX,MLM,"Morelia, Mexico",MX,2026-07-16,1,https://www.aviasales.com/search/LAX1607MLM1?t=VB17841603001784214300000840LAXMTYMLM_8e4201cf7548888bf3cb7e4392feee1b_12785&search_date=07072026&expected_price_uuid=019f3e67-9353-8010-aa56-b69bcc1a8037&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=nZibcGQjWrHs4vr4W9h1-Q&expected_price_source=share&expected_price_currency=usd&expected_price=168&marker=741311
-112,168,USD,PHX,OMA,"Omaha, United States",US,2026-07-22,1,https://www.aviasales.com/search/PHX2207OMA1?t=F917847388801784834100001467PHXDENOMA_6b3c440207b2cb9b0fa40545e179fcda_12908&search_date=12072026&expected_price_uuid=019f54a2-ba5e-8030-603e-ec2b590eb8ea&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=FbEotEVnHj8Xeb9sfKjLbg&expected_price_source=share&expected_price_currency=usd&expected_price=168&marker=741311
-113,168,USD,DFW,SAL,"San Salvador, El Salvador",SV,2026-07-14,0,https://www.aviasales.com/search/DFW1407SAL1?t=AV17840535001784062200000205DFWSAL_11cc6b10ff877039f69e2fd22f44f1be_12936&search_date=09072026&expected_price_uuid=019f44c0-5e4e-8010-aefc-d80c3ba64ecf&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Hk0rTUTGPWmr4488ymuqpQ&expected_price_source=share&expected_price_currency=usd&expected_price=168&marker=741311
-114,170,USD,SEA,JNU,"Juneau, United States",US,2026-07-12,1,https://www.aviasales.com/search/SEA1207JNU1?t=HA17838644401783891500000511SEAKTNJNU_b03bc5fe72a8c7defd97196e6f62a939_13056&search_date=09072026&expected_price_uuid=019f454b-bde3-8010-a1a4-af4267a1eefe&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=uyg3qlWBIdKu_ldCgD_PMQ&expected_price_source=share&expected_price_currency=usd&expected_price=170&marker=741311
-115,170,USD,SAN,SBA,"Santa Barbara, United States",US,2026-07-20,0,https://www.aviasales.com/search/SAN2007SBA1?t=AS17845867201784591040000072SANSBA_16c616fd0ca3e5c31d59da0ecbc4e3b5_13090&search_date=10072026&expected_price_uuid=019f4d3a-f0d1-8030-6c34-8ac339c41f80&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Yo3noZyTsZCRyHnrtYQe8Q&expected_price_source=share&expected_price_currency=usd&expected_price=170&marker=741311
-117,172,USD,DCA,BZE,"Belize City, Belize",BZ,2026-07-21,1,https://www.aviasales.com/search/DCA2107BZE1?t=UA17846136001784632500000435DCAIAHBZE_99c30ba92cdac8d0ef528e1af91e88db_13228&search_date=06072026&expected_price_uuid=019f35f4-64f6-8010-6c21-2ac6ea1c306a&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=g-g7PlKlEhE0hfgkoVvroA&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=172&marker=741311
-120,174,USD,TPA,PWM,"Portland, United States",US,2026-07-15,1,https://www.aviasales.com/search/TPA1507PWM1?t=MX17840988001784132160000556TPARDUPWM_76dc5e8b0085b68b886eec6dbc530348_13516&search_date=06072026&expected_price_uuid=019f3766-a083-8010-ab75-7e1bb29a8644&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=xF_LupDWU63upvScYJ6Nwg&expected_price_source=share&expected_price_currency=usd&expected_price=174&marker=741311
-121,176,USD,ORD,ELP,"El Paso, United States",US,2026-07-22,1,https://www.aviasales.com/search/ORD2207ELP1?t=F917847574201784826780001216ORDDENELP_0ac650d862474e3444573e7fb5f6cb6b_13525&search_date=12072026&expected_price_uuid=019f548d-4d38-8030-2b4b-038dd3859f4e&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=X2DgagHAaeOJ91h08N8YxA&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=176&marker=741311
-122,176,USD,CLT,PNS,"Pensacola, United States",US,2026-07-15,1,https://www.aviasales.com/search/CLT1507PNS1?t=LF17841135001784124900000250CLTMSLPNS_f74dad2af39bf0a60d01404d9399dde9_13548&search_date=05072026&expected_price_uuid=019f3461-536e-8030-e063-2baae31a17c1&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=zPxqfMm-u-55gc3MyQG39Q&expected_price_source=share&expected_price_currency=usd&expected_price=176&marker=741311
-123,176,USD,IAH,FOD,"Fort Dodge, United States",US,2026-07-17,1,https://www.aviasales.com/search/IAH1707FOD1?t=UA17842893001784310900000360IAHORDFOD_44b3d486a15574488ebd6fc981aeaa04_13395&search_date=09072026&expected_price_uuid=019f4817-b03c-8010-abe9-38b2bd788147&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=URR4Rb7nBPJCwqTg4aF-Jw&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=176&marker=741311
-124,177,USD,DFW,MAF,"Midland, United States",US,2026-07-13,0,https://www.aviasales.com/search/DFW1307MAF1?t=AA17839749001783979580000078DFWMAF_8897d7af61037c01c8f11575a9228b73_13422&search_date=10072026&expected_price_uuid=019f4adf-da48-8010-afd6-8ab703a8eb10&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=_GP1oXdq24UTuXnRSSIoDA&expected_price_source=share&expected_price_currency=usd&expected_price=177&marker=741311
-125,177,USD,DFW,TAP,"Tapachula, Mexico",MX,2026-07-13,1,https://www.aviasales.com/search/DFW1307TAP1?t=Y417839764001784015400000710DFWMEXTAP_feb843c4f9304c6cf9136c022bf64c3f_13542&search_date=10072026&expected_price_uuid=019f4c8c-7f1a-8010-6a0d-07a69f28e3d1&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=vU8YxKPUdYlOzqPJKAQEnw&expected_price_source=share&expected_price_currency=usd&expected_price=177&marker=741311
-126,179,USD,TPA,RAP,"Rapid City, United States",US,2026-07-14,1,https://www.aviasales.com/search/TPA1407RAP1?t=UA17840466001784070960000526TPAORDRAP_d1a457e9b1d4387414c6b00476e0b191_13618&search_date=09072026&expected_price_uuid=019f47cb-31de-8010-665c-f646374a2a68&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=8SdwQmgn82aqUsJMX_TrWw&expected_price_source=share&expected_price_currency=usd&expected_price=179&marker=741311
-127,179,USD,RDU,STI,"Santiago, Dominican Republic",DO,2026-07-20,1,https://www.aviasales.com/search/RDU2007STI1?t=F917845767601784627940000853RDUPHLSTI_213a4d785a302bb7162ec845b7064984_13640&search_date=07072026&expected_price_uuid=019f3ed9-1833-8010-6ce2-2a09946be133&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=K8x6lae7zW7I5pELceHb5g&expected_price_source=share&expected_price_currency=usd&expected_price=179&marker=741311
-128,182,USD,FLL,RIC,"Richmond, United States",US,2026-07-16,0,https://www.aviasales.com/search/FLL1607RIC1?t=B617841929401784201220000138FLLRIC_efbb1e47fb59fbe815f3e73e26d73654_13833&search_date=07072026&expected_price_uuid=019f3efb-cebb-8010-2cd9-0e32ebb5507f&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=lp9l6pLE1oJjIuq4NYh6Jg&expected_price_source=share&expected_price_currency=usd&expected_price=182&marker=741311
-129,183,USD,ORD,MZT,"Mazatlan, Mexico",MX,2026-07-17,1,https://www.aviasales.com/search/ORD1707MZT1?t=Y417842737001784298600000535ORDMEXMZT_c446b5efb24e816cb244de0b95266b4e_14116&search_date=07072026&expected_price_uuid=019f39fd-81d9-8010-aa73-23e63eef90f8&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=V9JbZtIzUnZmspJsTGfPZw&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=183&marker=741311
-130,184,USD,ORD,IRK,"Kirksville, United States",US,2026-07-12,0,https://www.aviasales.com/search/ORD1207IRK1?t=LF17838819001783887300000090ORDIRK_ce6c7d8c84264aa4ed1e4040089f8ace_14173&search_date=12072026&expected_price_uuid=019f5426-20f7-8030-6ccc-63fa25168c99&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Ul3UTbZrWEWReJFAN0HKwQ&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=184&marker=741311
-131,184,USD,SFO,YVR,"Vancouver, Canada",CA,2026-07-22,0,https://www.aviasales.com/search/SFO2207YVR1?t=F817847459001784754600000145SFOYVR_d73980efa8bce88002b871adac7f5a3f_14000&search_date=07072026&expected_price_uuid=019f3c6c-3fb8-8030-2a64-2b9d4c5fd33c&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Pp0z0TzwnHSGOqpXHkxHzg&expected_price_source=share&expected_price_currency=usd&expected_price=184&marker=741311
-132,184,USD,FLL,AIY,"Atlantic City, United States",US,2026-07-18,0,https://www.aviasales.com/search/FLL1807AIY1?t=G417843634001784373120000162FLLACY_f24b0c5dca74058bd9b9d174e9e0cb32_14171&search_date=12072026&expected_price_uuid=019f5557-086f-8030-e503-45c491d98b41&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=jEeblIDuuH4HAuYcPNfuBg&expected_price_source=share&expected_price_currency=usd&expected_price=184&marker=741311
-133,185,USD,BOS,SDF,"Louisville, United States",US,2026-07-17,0,https://www.aviasales.com/search/BOS1707SDF1?t=AA17842953001784304960000161BOSSDF_ea13d697ac0a5ae71567e895f25c0ef4_14125&search_date=07072026&expected_price_uuid=019f3c55-e16a-8030-e133-7e7b2246e308&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=1-6n2iq-dF4vVF8FWyb0HA&expected_price_source=share&expected_price_currency=usd&expected_price=185&marker=741311
-134,186,USD,DEN,FAT,"Fresno, United States",US,2026-07-21,1,https://www.aviasales.com/search/DEN2107FAT1?t=F917846511001784713620001102DENLASFAT_de2cfd91f7f4ed4727b406c84016c502_14284&search_date=06072026&expected_price_uuid=019f3625-7adb-8030-272d-ddc2a8454801&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=x5G66qpUaW89rhCax5oONw&expected_price_source=share&expected_price_currency=usd&expected_price=186&marker=741311
-135,186,USD,SFO,AMA,"Amarillo, United States",US,2026-07-18,1,https://www.aviasales.com/search/SFO1807AMA1?t=UA17843508001784384460000441SFOIAHAMA_726f06da1f52785b2fd4b4637ab7f782_14261&search_date=08072026&expected_price_uuid=019f3f61-275b-8010-aac0-84010f829990&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=lyiyHh7720MN8I04ZvpPgg&expected_price_source=share&expected_price_currency=usd&expected_price=186&marker=741311
-136,188,USD,PHL,MOB,"Mobile, United States",US,2026-07-13,1,https://www.aviasales.com/search/PHL1307MOB1?t=UA17839554001783974300000375PHLIADMOB_d5ad7b3fcf0cdeadaf2eac692dd5d161_14441&search_date=08072026&expected_price_uuid=019f440c-902d-8010-2cd6-a09142001498&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=PMoRKr59JIP3lnSPWrmq8Q&expected_price_source=share&expected_price_currency=usd&expected_price=188&marker=741311
-137,190,USD,DFW,GUA,"Guatemala City, Guatemala",GT,2026-07-12,1,https://www.aviasales.com/search/DFW1207GUA1?t=AV17838645001783901400000675DFWSALGUA_5fc025f5427dce7a6cfaa7a305a2762b_14653&search_date=10072026&expected_price_uuid=019f4d16-b4c5-8010-263b-8d03518c7fcb&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=YU6sp0Tr39O9cbEOOXaneA&expected_price_source=share&expected_price_currency=usd&expected_price=190&marker=741311
-138,190,USD,ATL,GRR,"Grand Rapids, United States",US,2026-07-13,1,https://www.aviasales.com/search/ATL1307GRR1?t=F917839188601783946760000465ATLMCOGRR_ff5acc121e66c0d70bab95a2b1bd05b2_14536&search_date=08072026&expected_price_uuid=019f4037-9276-8010-6034-85044ff82dec&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=3FP9u4x_KK-DjP60rds1tQ&expected_price_source=share&expected_price_currency=usd&expected_price=190&marker=741311
-139,192,USD,ORD,LWB,"Lewisburg, United States",US,2026-07-22,0,https://www.aviasales.com/search/ORD2207LWB1?t=AA17847337201784744160000114ORDLWB_0820305c5614492b8735074325557bfb_14785&search_date=06072026&expected_price_uuid=019f35ca-27b4-8030-e7ff-8c1c882085b6&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=8zudO5Hq2GoaFOtW_Zi4xA&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=192&marker=741311
-141,195,USD,BOS,ACK,"Nantucket, United States",US,2026-07-19,0,https://www.aviasales.com/search/BOS1907ACK1?t=B617844631201784466180000051BOSACK_fa38fb3bf302497d83264131725a6c4d_14859&search_date=10072026&expected_price_uuid=019f4956-0fb3-8010-2f0a-9e88254d7550&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=0U0vj1lXhfCySg8FysMf4Q&expected_price_source=share&expected_price_currency=usd&expected_price=195&marker=741311
-142,195,USD,MIA,ILM,"Wilmington, United States",US,2026-07-13,0,https://www.aviasales.com/search/MIA1307ILM1?t=AA17839798801783987140000121MIAILM_e741eadd8b4978c3d1b6f4ddc493c143_15016&search_date=06072026&expected_price_uuid=019f399b-3e79-8010-a054-308d706d5a0b&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=InhK4FC7nCTiy4Hr2gdj9Q&expected_price_source=share&expected_price_currency=usd&expected_price=195&marker=741311
-143,195,USD,DFW,GNV,"Gainesville, United States",US,2026-07-14,0,https://www.aviasales.com/search/DFW1407GNV1?t=AA17840589001784071560000151DFWGNV_a1b8389f0e0ca182c9e80d7de456ced3_15015&search_date=06072026&expected_price_uuid=019f38db-84fd-8010-236f-e589f2f16115&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=XfW8-5FXRInQ-nfbkODctg&expected_price_source=share&expected_price_currency=usd&expected_price=195&marker=741311
-144,196,USD,DCA,KIN,"Kingston, Jamaica",JM,2026-07-14,1,https://www.aviasales.com/search/DCA1407KIN1?t=B617840418001784072220000567DCAFLLKIN_8533e27da4c40f8cc0a6806e88acf707_15096&search_date=05072026&expected_price_uuid=019f32fb-a910-8010-6dcc-ab92af37f968&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=p8zeGY3K60UBuRuYqqzmRQ&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=196&marker=741311
-145,196,USD,PHL,DAB,"Daytona Beach, United States",US,2026-07-12,1,https://www.aviasales.com/search/PHL1207DAB1?t=AA17838849001783901100000270PHLCLTDAB_03fbcda548cf38c67c25589948f2bcb6_14863&search_date=10072026&expected_price_uuid=019f49ef-5a1d-8010-6ce0-2c274bba415f&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=xRY6_CHf6R6qA0rPZ-MNbA&expected_price_source=share&expected_price_currency=usd&expected_price=196&marker=741311
-146,196,USD,CLT,BTR,"Baton Rouge, United States",US,2026-07-22,0,https://www.aviasales.com/search/CLT2207BTR1?t=AA17847513001784755800000135CLTBTR_4333cc35e6ca22eb092d21f7278bf740_15097&search_date=12072026&expected_price_uuid=019f548f-9308-8030-66bf-cb6efc732668&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=UTdqFGDAcF557n90pg42QA&expected_price_source=share&expected_price_currency=usd&expected_price=196&marker=741311
-148,198,USD,DFW,MKE,"Milwaukee, United States",US,2026-07-20,1,https://www.aviasales.com/search/DFW2007MKE1?t=F917845788001784620680000698DFWMCOMKE_5ca03c19bfdb87340e98364ccec99df1_15103&search_date=09072026&expected_price_uuid=019f487d-ab04-8010-2e73-a05fadb0a458&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=aMEvkWu3cXcw0jnF5mq7Mg&expected_price_source=share&expected_price_currency=usd&expected_price=198&marker=741311
-149,203,USD,LAS,SJD,"San Jose del Cabo, Mexico",MX,2026-07-22,2,https://www.aviasales.com/search/LAS2207SJD1?t=VB17847336001784801340001129LASMTYMEXSJD_4dd29644aaf26c58acf842d30a3e86f5_15630&search_date=10072026&expected_price_uuid=019f4d5e-0ef1-8010-2958-7e8cca6a28e2&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=GFRjC3V1eFC7KaSuzrKo4Q&expected_price_source=share&expected_price_currency=usd&expected_price=203&marker=741311
-150,203,USD,SEA,SIT,"Sitka, United States",US,2026-07-17,0,https://www.aviasales.com/search/SEA1707SIT1?t=AS17843230801784328240000146SEASIT_ce09ca89e4b57fa1394efdffb35e1513_15637&search_date=11072026&expected_price_uuid=019f517c-7aa4-8030-aaac-d0babae6969c&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=CUK8OzOsGqcbtAlShUK2hA&expected_price_source=share&expected_price_currency=usd&expected_price=203&marker=741311
-151,204,USD,LAS,YTO,"Toronto, Canada",CA,2026-07-21,0,https://www.aviasales.com/search/LAS2107YTO1?t=PD17846271001784653740000264LASYYZ_0ddd96f73a4e3f3328ccd62234938365_15834&search_date=06072026&expected_price_uuid=019f3724-900b-8030-e594-3ddbefbe4abc&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=XKZl3rvGTZBjON2qb245qg&expected_price_source=share&expected_price_currency=usd&expected_price=204&marker=741311
-153,205,USD,DEN,MLI,"Moline, United States",US,2026-07-22,1,https://www.aviasales.com/search/DEN2207MLI1?t=G417847204601784811780001462DENPHXAZAMLI_b3928ff89f1cf19fb0521f6d6e98dc85_15772&search_date=12072026&expected_price_uuid=019f548d-6830-8030-6c97-c8c60fe2ee7d&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=3K7ljQ0rj-SNuDQWmH8IRg&expected_price_source=share&expected_price_currency=usd&expected_price=205&marker=741311
-154,206,USD,JFK,AGS,"Augusta, United States",US,2026-07-12,1,https://www.aviasales.com/search/JFK1207AGS1?t=AA17838702001783894140000399JFKCLTAGS_42cc91c70978d1e7f5b73916cea70d09_15857&search_date=08072026&expected_price_uuid=019f42ab-b0f3-8010-2877-645f7f5f600e&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=bDWd2mxVv2mufhmj3qOynA&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=206&marker=741311
-155,206,USD,LAX,TQO,"Tulum, Mexico",MX,2026-07-20,1,https://www.aviasales.com/search/LAX2007TQO1?t=Y417845083601784560500000749LAXGDLTQO_d424f737e9c609eff0918cf9c2f2c01b_15680&search_date=09072026&expected_price_uuid=019f475a-e9cb-8010-2f59-905b2fe7add4&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=pc9CtxzTWxR-RfhbkW2GjQ&expected_price_source=share&expected_price_currency=usd&expected_price=206&marker=741311
-156,207,USD,BOS,ORF,"Norfolk, United States",US,2026-07-21,0,https://www.aviasales.com/search/BOS2107ORF1?t=B617846476201784653800000103BOSORF_00390df39b0111a0924bd2f585b51533_15959&search_date=11072026&expected_price_uuid=019f5376-1066-8030-6076-1c2a41b5e867&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=0dmj59u1E2ifXN5A46ZubA&expected_price_source=share&expected_price_currency=usd&expected_price=207&marker=741311
-157,207,USD,ATL,GPT,"Gulfport, United States",US,2026-07-19,1,https://www.aviasales.com/search/ATL1907GPT1?t=MX17844898801784533260000783ATLTPAGPT_07095768c3dc2f804022ba118a8b28ac_15784&search_date=09072026&expected_price_uuid=019f476f-a5af-8030-e120-2d89b2eac7bf&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=RahiIfHJIvLwX3u4JJHSxA&expected_price_source=share&expected_price_currency=usd&expected_price=207&marker=741311
-158,209,USD,DFW,CRP,"Corpus Christi, United States",US,2026-07-16,1,https://www.aviasales.com/search/DFW1607CRP1?t=F917841928201784214840000367DFWDENCRP_1bc12549b245f8cae420698d27bfb560_16092&search_date=10072026&expected_price_uuid=019f4e24-6f31-8010-2ff9-c26b0064fc87&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=g-HpVFwk3i2jwZnq09Ai6g&expected_price_source=share&expected_price_currency=usd&expected_price=209&marker=741311
-159,210,USD,ATL,SPI,"Springfield, United States",US,2026-07-15,2,https://www.aviasales.com/search/ATL1507SPI1?t=AA17840966401784125440000540ATLCLTORDSPI_42ffe3ee8b05e978f794d8d62f0876f7_16167&search_date=11072026&expected_price_uuid=019f525d-efc6-8010-22e4-c8b136f86139&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=kiac68bnkh46LzwUOCZc4A&expected_price_source=share&expected_price_currency=usd&expected_price=210&marker=741311
-160,211,USD,MCO,SAV,"Savannah, United States",US,2026-07-20,2,https://www.aviasales.com/search/MCO2007SAV1?t=F917845682401784729220002683MCOATLCMHLCKSAV_4bcf10c888f57b88e65870f777f40501_16095&search_date=10072026&expected_price_uuid=019f495e-ec4f-8030-6a4f-34c4f4adc4c8&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=uRTC9H2XubtUjBrJlac8Vw&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=211&marker=741311
-161,215,USD,PHX,FCA,"Kalispell, United States",US,2026-07-19,2,https://www.aviasales.com/search/PHX1907FCA1?t=G417844525001784540400001405AZASNALASFCA_04126a5ac3a3bf92cc939e38540c6665_16563&search_date=06072026&expected_price_uuid=019f35a2-1ace-8010-a647-13d080685857&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=5lNpkztUSwZrjF39Br64iA&expected_price_source=share&expected_price_currency=usd&expected_price=215&marker=741311
-163,216,USD,DFW,IDA,"Idaho Falls, United States",US,2026-07-14,0,https://www.aviasales.com/search/DFW1407IDA1?t=AA17840239201784031780000191DFWIDA_19af5ed8695f5e873bdb93816cdb779e_16638&search_date=11072026&expected_price_uuid=019f5114-d4f0-8010-62f1-204b673edd3f&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=jcVdAV7UHqExwcnSXMtHlQ&expected_price_source=share&expected_price_currency=usd&expected_price=216&marker=741311
-164,219,USD,DFW,CHS,"Charleston, United States",US,2026-07-15,1,https://www.aviasales.com/search/DFW1507CHS1?t=WN17841015001784125200000335DALAUSCHS_6c975d3fb72b73d1afad79aae4932033_16820&search_date=08072026&expected_price_uuid=019f4356-245e-8030-a04f-5e1c834f2148&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=vpmN6ZfV43nVhLBhiDGkHw&expected_price_source=share&expected_price_currency=usd&expected_price=219&marker=741311
-165,220,USD,PHL,JAC,"Jackson, United States",US,2026-07-19,1,https://www.aviasales.com/search/PHL1907JAC1?t=AA17844655201784490120000530PHLDFWJAC_468d8f4ba2de1c884a34d0bd00958c0e_16780&search_date=09072026&expected_price_uuid=019f47bd-e796-8030-ef90-1adf9cf859b1&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=P1dXD-cKUt_m1s1-iYUBaQ&expected_price_source=share&expected_price_currency=usd&expected_price=220&marker=741311
-166,222,USD,MCO,PAR,"Paris, France",FR,2026-07-20,2,https://www.aviasales.com/search/MCO2007PAR1?t=Z017845794001784718600001960MCOLGWIBZORY_edc205230d82c84235396ee93a155d51_17100&search_date=11072026&expected_price_uuid=019f523e-cddf-8010-2b57-4a4be5c7ce8f&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=QFIV45yYgt8ZXUStSKj9JQ&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=222&marker=741311
-167,223,USD,LAX,SJO,"San Jose, Costa Rica",CR,2026-07-21,1,https://www.aviasales.com/search/LAX2107SJO1?t=F917846748001784794800001940LAXMCOSJO_98b3e561b150e557d87b855a83a2a8ea_17331&search_date=06072026&expected_price_uuid=019f373e-bd89-8030-a365-0096b65da307&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=K0XFBCN3BvZhYyGhTetRcA&expected_price_source=share&expected_price_currency=usd&expected_price=223&marker=741311
-168,223,USD,PHL,BQN,"Aguadilla, Puerto Rico",PR,2026-07-13,2,https://www.aviasales.com/search/PHL1307BQN1?t=UA17839391401783984140000750PHLIADDCAEWRBQN_f6f4785a8e8ca062c65565c71869f7f2_17070&search_date=12072026&expected_price_uuid=019f5590-0bb0-8010-af2b-2f30ce1c9ffe&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=tO0soik8qMQ8XsCY-dcDtg&expected_price_source=share&expected_price_currency=usd&expected_price=223&marker=741311
-169,224,USD,DEN,PGA,"Page, United States",US,2026-07-22,2,https://www.aviasales.com/search/DEN2207PGA1?t=LF17847234001784826900001785DENCNYPHXPGA_3aad6631f648b38b37069889f0280c46_17232&search_date=12072026&expected_price_uuid=019f5409-bf75-8030-a167-3ed5a890c785&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=SRjtE7G_Dp3TFMAXcvubhg&expected_price_source=share&expected_price_currency=usd&expected_price=224&marker=741311
-170,225,USD,JFK,PBC,"Puebla, Mexico",MX,2026-07-13,1,https://www.aviasales.com/search/JFK1307PBC1?t=VB17839062001783980900001365JFKMTYPBC_3e1383f205b70e62b030737a56f34f16_17339&search_date=06072026&expected_price_uuid=019f39a8-3f66-8010-643e-1e4f9bc194f5&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=fdwaPHBJPllavUaIjTszYQ&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=225&marker=741311
-171,226,USD,MSP,DSM,"Des Moines, United States",US,2026-07-19,1,https://www.aviasales.com/search/MSP1907DSM1?t=F917844993001784554440000919MSPDENDSM_c6584fe703fc23883426bcba630d1fe8_17386&search_date=06072026&expected_price_uuid=019f35ba-4d3f-8030-e632-e81ffe8f1ca9&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=79Fss77wMZinayRPQHvPLw&expected_price_source=share&expected_price_currency=usd&expected_price=226&marker=741311
-172,227,USD,PHX,GCN,"Flagstaff, United States",US,2026-07-18,0,https://www.aviasales.com/search/PHX1807GCN1?t=AA17843690401784372880000064PHXFLG_4bf99b9f6c74d5e587843bab6f622b96_17365&search_date=08072026&expected_price_uuid=019f3fb5-5327-8030-64c1-a7ae54917240&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=OFtPzi9_0iWs-EC0sW2VaA&expected_price_source=share&expected_price_currency=usd&expected_price=227&marker=741311
-173,228,USD,ATL,JAN,"Jackson, United States",US,2026-07-21,1,https://www.aviasales.com/search/ATL2107JAN1?t=WN17846148001784634300000385ATLHOUJAN_58aba1aa7f1d37cef600a74b40794658_17562&search_date=10072026&expected_price_uuid=019f4e6d-1481-8030-6d2a-d96b8c1281b1&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=AXM8ktEGsvTtMLuku-L7Kw&expected_price_source=share&expected_price_currency=usd&expected_price=228&marker=741311
-174,231,USD,DFW,TLH,"Tallahassee, United States",US,2026-07-15,0,https://www.aviasales.com/search/DFW1507TLH1?t=AA17841087601784121060000145DFWTLH_3d2d33abee1f4939d248a63a6fdff3ee_17628&search_date=08072026&expected_price_uuid=019f4286-9cb0-8030-6bb4-a2dd03134e03&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=vWV9vC5-ede_DYP_1BoTHA&expected_price_source=share&expected_price_currency=usd&expected_price=231&marker=741311
-175,231,USD,DEN,PVU,"Provo, United States",US,2026-07-18,1,https://www.aviasales.com/search/DEN1807PVU1?t=F917843967001784462280001093DENPHXPVU_d8b9d98a25ed062af01cf5ad7e474418_17619&search_date=09072026&expected_price_uuid=019f4842-68a8-8010-6ddc-28a100f12380&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=_DdC9sXRvFUjQqua-gSGrQ&expected_price_source=share&expected_price_currency=usd&expected_price=231&marker=741311
-176,232,USD,BOS,LON,"London, United Kingdom",GB,2026-07-20,1,https://www.aviasales.com/search/BOS2007LON1?t=FI17845806001784634300000595BOSKEFLGW_3877515bd00e349bc1b8a2cb562604a4_17878&search_date=05072026&expected_price_uuid=019f3322-3c39-8030-af4d-da5f086c857d&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=aVPHo_w7u5CmXPex8ObJaA&expected_price_source=share&expected_price_currency=usd&expected_price=232&marker=741311
-177,232,USD,FLL,IAG,"Niagara Falls, United States",US,2026-07-16,1,https://www.aviasales.com/search/FLL1607IAG1?t=G417842173001784294160001281FLLMYRIAG_57f4b73d0ca40b30ea507536f3e8bd76_17690&search_date=09072026&expected_price_uuid=019f475e-b502-8010-a886-6136c7e54b46&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=UV9cdzXqXdv4lcvLYkq9fw&expected_price_source=share&expected_price_currency=usd&expected_price=232&marker=741311
-178,235,USD,IAD,BGI,"Bridgetown, Barbados",BB,2026-07-16,2,https://www.aviasales.com/search/IAD1607BGI1?t=AC17842398001784301900001035IADYOWYYZBGI_d96ab64d4f4c5c5abd60d26453ff244d_17818&search_date=09072026&expected_price_uuid=019f46ea-8999-8010-2d3f-3617b36e8d11&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=md0AlPO-SoxrnRPAiIkVqg&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=235&marker=741311
-179,235,USD,ORD,BOG,"Bogota, Colombia",CO,2026-07-15,1,https://www.aviasales.com/search/ORD1507BOG1?t=CM17841025201784196600001568ORDPTYBOG_c5839f20b4757ff72af4a93dc7f3f92a_18095&search_date=06072026&expected_price_uuid=019f3912-e128-8010-accc-cf0177806ec8&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=QN4EHvR6SyZdxyyjLsuTuw&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=235&marker=741311
-180,236,USD,JFK,EDI,"Edinburgh, United Kingdom",GB,2026-07-19,1,https://www.aviasales.com/search/JFK1907EDI1?t=FI17844930001784553600000710JFKKEFEDI_c4424ef642d33f5e0c5318cefa8cf14d_18218&search_date=06072026&expected_price_uuid=019f3831-72e4-8030-6e83-6b06467324ef&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=aJ5xNa9KYtpN-6PBF69jHA&origin_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=236&marker=741311
-181,235,USD,FLL,YHZ,"Halifax, Canada",CA,2026-07-21,1,https://www.aviasales.com/search/FLL2107YHZ1?marker=741311
-182,237,USD,MIA,MID,"Merida, Mexico",MX,2026-07-19,1,https://www.aviasales.com/search/MIA1907MID1?marker=741311
-183,238,USD,IAD,HSV,"Huntsville, United States",US,2026-07-12,1,https://www.aviasales.com/search/IAD1207HSV1?marker=741311
-184,239,USD,PHL,SYR,"Syracuse, United States",US,2026-07-21,1,https://www.aviasales.com/search/PHL2107SYR1?marker=741311
-185,252,USD,ORD,PIA,"Peoria, United States",US,2026-07-20,0,https://www.aviasales.com/search/ORD2007PIA1?marker=741311
-186,252,USD,IAH,BRO,"Brownsville, United States",US,2026-07-17,1,https://www.aviasales.com/search/IAH1707BRO1?marker=741311
-187,252,USD,LAS,MWA,"Marion, United States",US,2026-07-15,1,https://www.aviasales.com/search/LAS1507MWA1?marker=741311
-188,253,USD,ORD,DAY,"Dayton, United States",US,2026-07-14,0,https://www.aviasales.com/search/ORD1407DAY1?marker=741311
-189,254,USD,PDX,YUM,"Yuma, United States",US,2026-07-12,1,https://www.aviasales.com/search/PDX1207YUM1?marker=741311
-190,257,USD,MIA,STT,"Saint Thomas, U.S. Virgin Islands",VI,2026-07-13,1,https://www.aviasales.com/search/MIA1307STT1?marker=741311
-191,258,USD,ORD,LIH,"Kauai Island, United States",US,2026-07-15,1,https://www.aviasales.com/search/ORD1507LIH1?marker=741311
+6,63,USD,MIA,ATL,"Atlanta, United States",US,2026-07-22,0,https://www.aviasales.com/search/MIA2207ATL1?marker=741311
+7,63,USD,TPA,GSP,"Greenville, United States",US,2026-07-19,0,https://www.aviasales.com/search/TPA1907GSP1?marker=741311
+8,64,USD,ATL,HOU,"Houston, United States",US,2026-07-22,0,https://www.aviasales.com/search/ATL2207HOU1?marker=741311
+9,68,USD,TPA,RDU,"Raleigh/Durham, United States",US,2026-07-22,0,https://www.aviasales.com/search/TPA2207RDU1?marker=741311
+10,71,USD,IAD,JAX,"Jacksonville, United States",US,2026-07-17,0,https://www.aviasales.com/search/IAD1707JAX1?marker=741311
+11,71,USD,BOS,TPA,"Tampa, United States",US,2026-07-18,0,https://www.aviasales.com/search/BOS1807TPA1?marker=741311
+12,73,USD,JFK,BNA,"Nashville, United States",US,2026-07-22,0,https://www.aviasales.com/search/JFK2207BNA1?marker=741311
+13,78,USD,RDU,ORL,"Orlando, United States",US,2026-07-19,0,https://www.aviasales.com/search/RDU1907ORL1?marker=741311
+14,78,USD,ATL,DFW,"Dallas, United States",US,2026-07-21,0,https://www.aviasales.com/search/ATL2107DFW1?marker=741311
+15,79,USD,ORD,MSP,"Minneapolis, United States",US,2026-07-21,0,https://www.aviasales.com/search/ORD2107MSP1?marker=741311
+16,84,USD,ATL,MSY,"New Orleans, United States",US,2026-07-20,0,https://www.aviasales.com/search/ATL2007MSY1?marker=741311
+17,84,USD,MIA,CLT,"Charlotte, United States",US,2026-07-21,0,https://www.aviasales.com/search/MIA2107CLT1?marker=741311
+18,84,USD,DEN,FSD,"Sioux Falls, United States",US,2026-07-22,0,https://www.aviasales.com/search/DEN2207FSD1?marker=741311
+19,85,USD,FLL,SJU,"San Juan, Puerto Rico",PR,2026-07-16,0,https://www.aviasales.com/search/FLL1607SJU1?marker=741311
+20,86,USD,PHX,FAR,"Fargo, United States",US,2026-07-22,0,https://www.aviasales.com/search/PHX2207FAR1?marker=741311
+21,87,USD,MCO,BUF,"Buffalo, United States",US,2026-07-21,0,https://www.aviasales.com/search/MCO2107BUF1?marker=741311
+22,89,USD,DEN,SLC,"Salt Lake City, United States",US,2026-07-20,0,https://www.aviasales.com/search/DEN2007SLC1?marker=741311
+23,89,USD,MCO,BOS,"Boston, United States",US,2026-07-18,0,https://www.aviasales.com/search/MCO1807BOS1?marker=741311
+24,90,USD,ATL,CHI,"Chicago, United States",US,2026-07-16,0,https://www.aviasales.com/search/ATL1607CHI1?marker=741311
+25,93,USD,DFW,MTY,"Monterrey, Mexico",MX,2026-07-13,0,https://www.aviasales.com/search/DFW1307MTY1?marker=741311
+26,93,USD,DFW,QRO,"Queretaro, Mexico",MX,2026-07-21,0,https://www.aviasales.com/search/DFW2107QRO1?marker=741311
+27,93,USD,IAH,ONT,"Ontario, United States",US,2026-07-20,1,https://www.aviasales.com/search/IAH2007ONT1?marker=741311
+28,94,USD,PHX,TVC,"Traverse City, United States",US,2026-07-18,0,https://www.aviasales.com/search/PHX1807TVC1?marker=741311
+29,94,USD,MCO,BDL,"Hartford, United States",US,2026-07-21,0,https://www.aviasales.com/search/MCO2107BDL1?marker=741311
+30,95,USD,LAX,GDL,"Guadalajara, Mexico",MX,2026-07-18,1,https://www.aviasales.com/search/LAX1807GDL1?marker=741311
+31,96,USD,DEN,PHX,"Phoenix, United States",US,2026-07-14,0,https://www.aviasales.com/search/DEN1407PHX1?marker=741311
+32,96,USD,LAS,SAN,"San Diego, United States",US,2026-07-18,0,https://www.aviasales.com/search/LAS1807SAN1?marker=741311
+33,97,USD,CLT,WAS,"Washington, United States",US,2026-07-14,0,https://www.aviasales.com/search/CLT1407WAS1?marker=741311
+34,97,USD,ORD,DTT,"Detroit, United States",US,2026-07-19,0,https://www.aviasales.com/search/ORD1907DTT1?marker=741311
+35,97,USD,LAX,SAC,"Sacramento, United States",US,2026-07-17,0,https://www.aviasales.com/search/LAX1707SAC1?marker=741311
+36,97,USD,PHX,DEN,"Denver, United States",US,2026-07-14,0,https://www.aviasales.com/search/PHX1407DEN1?marker=741311
+37,97,USD,DEN,ASE,"Aspen, United States",US,2026-07-22,0,https://www.aviasales.com/search/DEN2207ASE1?marker=741311
+38,97,USD,IAH,MFE,"McAllen, United States",US,2026-07-18,0,https://www.aviasales.com/search/IAH1807MFE1?marker=741311
+39,97,USD,LAX,MRY,"Monterey, United States",US,2026-07-18,0,https://www.aviasales.com/search/LAX1807MRY1?marker=741311
+40,98,USD,BOS,RUT,"Rutland, United States",US,2026-07-15,0,https://www.aviasales.com/search/BOS1507RUT1?marker=741311
+41,99,USD,LAX,TIJ,"Tijuana, Mexico",MX,2026-07-20,1,https://www.aviasales.com/search/LAX2007TIJ1?marker=741311
+42,100,USD,LAX,MEX,"Mexico City, Mexico",MX,2026-07-20,1,https://www.aviasales.com/search/LAX2007MEX1?marker=741311
+43,100,USD,BOS,PHL,"Philadelphia, United States",US,2026-07-20,0,https://www.aviasales.com/search/BOS2007PHL1?marker=741311
+44,100,USD,IAH,OKC,"Oklahoma City, United States",US,2026-07-17,0,https://www.aviasales.com/search/IAH1707OKC1?marker=741311
+45,101,USD,CLT,NYC,"New York, United States",US,2026-07-18,0,https://www.aviasales.com/search/CLT1807NYC1?marker=741311
+46,102,USD,DFW,CUN,"Cancun, Mexico",MX,2026-07-21,1,https://www.aviasales.com/search/DFW2107CUN1?marker=741311
+47,106,USD,FLL,CVG,"Cincinnati, United States",US,2026-07-15,0,https://www.aviasales.com/search/FLL1507CVG1?marker=741311
+48,106,USD,IAH,VER,"Veracruz, Mexico",MX,2026-07-15,1,https://www.aviasales.com/search/IAH1507VER1?marker=741311
+49,107,USD,FLL,AVP,"Wilkes-Barre, United States",US,2026-07-18,0,https://www.aviasales.com/search/FLL1807AVP1?marker=741311
+50,110,USD,SAN,SFO,"San Francisco, United States",US,2026-07-21,0,https://www.aviasales.com/search/SAN2107SFO1?marker=741311
+51,111,USD,SFO,SEA,"Seattle, United States",US,2026-07-21,0,https://www.aviasales.com/search/SFO2107SEA1?marker=741311
+52,113,USD,TPA,SWF,"Newburgh, United States",US,2026-07-21,0,https://www.aviasales.com/search/TPA2107SWF1?marker=741311
+53,114,USD,DEN,CNY,"Moab, United States",US,2026-07-20,0,https://www.aviasales.com/search/DEN2007CNY1?marker=741311
+54,115,USD,IAD,MYR,"Myrtle Beach, United States",US,2026-07-14,0,https://www.aviasales.com/search/IAD1407MYR1?marker=741311
+55,117,USD,MCO,MIA,"Miami, United States",US,2026-07-21,0,https://www.aviasales.com/search/MCO2107MIA1?marker=741311
+56,118,USD,PHL,PBI,"West Palm Beach, United States",US,2026-07-18,0,https://www.aviasales.com/search/PHL1807PBI1?marker=741311
+57,119,USD,ORD,MEM,"Memphis, United States",US,2026-07-15,0,https://www.aviasales.com/search/ORD1507MEM1?marker=741311
+58,119,USD,LAX,BOI,"Boise, United States",US,2026-07-22,0,https://www.aviasales.com/search/LAX2207BOI1?marker=741311
+59,122,USD,LAX,YYC,"Calgary, Canada",CA,2026-07-22,1,https://www.aviasales.com/search/LAX2207YYC1?marker=741311
+60,125,USD,MCO,PDX,"Portland, United States",US,2026-07-13,1,https://www.aviasales.com/search/MCO1307PDX1?marker=741311
+61,128,USD,DFW,TRC,"Torreon, Mexico",MX,2026-07-20,1,https://www.aviasales.com/search/DFW2007TRC1?marker=741311
+62,128,USD,MCO,SDQ,"Santo Domingo, Dominican Republic",DO,2026-07-13,1,https://www.aviasales.com/search/MCO1307SDQ1?marker=741311
+63,129,USD,MCO,ALB,"Albany, United States",US,2026-07-22,0,https://www.aviasales.com/search/MCO2207ALB1?marker=741311
+64,130,USD,ORD,AUS,"Austin, United States",US,2026-07-14,1,https://www.aviasales.com/search/ORD1407AUS1?marker=741311
+65,131,USD,ORD,BJX,"Leon/Guanajuato, Mexico",MX,2026-07-16,1,https://www.aviasales.com/search/ORD1607BJX1?marker=741311
+66,132,USD,FLL,EYW,"Key West, United States",US,2026-07-16,1,https://www.aviasales.com/search/FLL1607EYW1?marker=741311
+67,134,USD,MCO,ISP,"Ronkonkoma, United States",US,2026-07-18,0,https://www.aviasales.com/search/MCO1807ISP1?marker=741311
+68,134,USD,MCO,PIT,"Pittsburgh, United States",US,2026-07-21,1,https://www.aviasales.com/search/MCO2107PIT1?marker=741311
+69,135,USD,DFW,LBB,"Lubbock, United States",US,2026-07-21,1,https://www.aviasales.com/search/DFW2107LBB1?marker=741311
+70,136,USD,BOS,FMY,"Fort Myers, United States",US,2026-07-21,1,https://www.aviasales.com/search/BOS2107FMY1?marker=741311
+71,136,USD,LAX,LAP,"La Paz, Mexico",MX,2026-07-17,1,https://www.aviasales.com/search/LAX1707LAP1?marker=741311
+72,138,USD,PDX,OAK,"Oakland, United States",US,2026-07-21,0,https://www.aviasales.com/search/PDX2107OAK1?marker=741311
+73,138,USD,BNA,AVL,"Asheville, United States",US,2026-07-16,1,https://www.aviasales.com/search/BNA1607AVL1?marker=741311
+74,138,USD,LAS,PVR,"Puerto Vallarta, Mexico",MX,2026-07-15,1,https://www.aviasales.com/search/LAS1507PVR1?marker=741311
+75,139,USD,MIA,PVD,"Providence, United States",US,2026-07-14,1,https://www.aviasales.com/search/MIA1407PVD1?marker=741311
+76,141,USD,MIA,YMQ,"Montreal, Canada",CA,2026-07-22,0,https://www.aviasales.com/search/MIA2207YMQ1?marker=741311
+77,141,USD,LAX,GEG,"Spokane, United States",US,2026-07-17,1,https://www.aviasales.com/search/LAX1707GEG1?marker=741311
+78,142,USD,FLL,LEX,"Lexington, United States",US,2026-07-16,0,https://www.aviasales.com/search/FLL1607LEX1?marker=741311
+79,143,USD,TPA,IND,"Indianapolis, United States",US,2026-07-17,1,https://www.aviasales.com/search/TPA1707IND1?marker=741311
+80,143,USD,RDU,CMH,"Columbus, United States",US,2026-07-22,1,https://www.aviasales.com/search/RDU2207CMH1?marker=741311
+81,145,USD,ATL,TUL,"Tulsa, United States",US,2026-07-16,1,https://www.aviasales.com/search/ATL1607TUL1?marker=741311
+82,145,USD,ORD,SRQ,"Sarasota, United States",US,2026-07-14,0,https://www.aviasales.com/search/ORD1407SRQ1?marker=741311
+83,146,USD,RDU,CID,"Cedar Rapids, United States",US,2026-07-15,1,https://www.aviasales.com/search/RDU1507CID1?marker=741311
+84,146,USD,MCO,NAS,"Nassau, Bahamas",BS,2026-07-19,0,https://www.aviasales.com/search/MCO1907NAS1?marker=741311
+85,148,USD,DFW,ABQ,"Albuquerque, United States",US,2026-07-18,0,https://www.aviasales.com/search/DFW1807ABQ1?marker=741311
+86,148,USD,MCO,HPN,"Westchester County, United States",US,2026-07-14,1,https://www.aviasales.com/search/MCO1407HPN1?marker=741311
+87,148,USD,LAS,TUS,"Tucson, United States",US,2026-07-20,1,https://www.aviasales.com/search/LAS2007TUS1?marker=741311
+88,149,USD,IAH,MKC,"Kansas City, United States",US,2026-07-17,0,https://www.aviasales.com/search/IAH1707MKC1?marker=741311
+89,149,USD,JFK,MBJ,"Montego Bay, Jamaica",JM,2026-07-21,1,https://www.aviasales.com/search/JFK2107MBJ1?marker=741311
+90,151,USD,IAH,STL,"Saint Louis, United States",US,2026-07-18,1,https://www.aviasales.com/search/IAH1807STL1?marker=741311
+91,151,USD,DEN,ALS,"Alamosa, United States",US,2026-07-17,0,https://www.aviasales.com/search/DEN1707ALS1?marker=741311
+92,152,USD,DEN,KOA,"Kailua-Kona, United States",US,2026-07-22,1,https://www.aviasales.com/search/DEN2207KOA1?marker=741311
+93,152,USD,PDX,MFR,"Medford, United States",US,2026-07-18,0,https://www.aviasales.com/search/PDX1807MFR1?marker=741311
+94,153,USD,LAS,RNO,"Reno, United States",US,2026-07-20,0,https://www.aviasales.com/search/LAS2007RNO1?marker=741311
+95,153,USD,FLL,HVN,"New Haven, United States",US,2026-07-20,2,https://www.aviasales.com/search/FLL2007HVN1?marker=741311
+96,154,USD,IAH,SGF,"Springfield, United States",US,2026-07-21,1,https://www.aviasales.com/search/IAH2107SGF1?marker=741311
+97,155,USD,SEA,PSC,"Pasco, United States",US,2026-07-17,0,https://www.aviasales.com/search/SEA1707PSC1?marker=741311
+98,156,USD,RDU,TYS,"Knoxville, United States",US,2026-07-17,1,https://www.aviasales.com/search/RDU1707TYS1?marker=741311
+99,156,USD,LAS,YEA,"Edmonton, Canada",CA,2026-07-20,2,https://www.aviasales.com/search/LAS2007YEA1?marker=741311
+100,156,USD,SEA,PSP,"Palm Springs, United States",US,2026-07-21,1,https://www.aviasales.com/search/SEA2107PSP1?marker=741311
+101,157,USD,DFW,SAT,"San Antonio, United States",US,2026-07-22,1,https://www.aviasales.com/search/DFW2207SAT1?marker=741311
+102,159,USD,JFK,SLK,"Saranac Lake, United States",US,2026-07-22,0,https://www.aviasales.com/search/JFK2207SLK1?marker=741311
+103,160,USD,LAS,FYV,"Fayetteville, United States",US,2026-07-17,1,https://www.aviasales.com/search/LAS1707FYV1?marker=741311
+104,161,USD,ORD,MSN,"Madison, United States",US,2026-07-13,0,https://www.aviasales.com/search/ORD1307MSN1?marker=741311
+105,161,USD,LAX,ACV,"Arcata, United States",US,2026-07-15,0,https://www.aviasales.com/search/LAX1507ACV1?marker=741311
+106,162,USD,IAH,TGZ,"Tuxtla Gutierrez, Mexico",MX,2026-07-15,1,https://www.aviasales.com/search/IAH1507TGZ1?marker=741311
+107,164,USD,PHX,YWG,"Winnipeg, Canada",CA,2026-07-22,2,https://www.aviasales.com/search/PHX2207YWG1?marker=741311
+108,165,USD,PHL,BQN,"Aguadilla, Puerto Rico",PR,2026-07-13,1,https://www.aviasales.com/search/PHL1307BQN1?marker=741311
+109,165,USD,IAH,LIT,"Little Rock, United States",US,2026-07-13,1,https://www.aviasales.com/search/IAH1307LIT1?marker=741311
+110,167,USD,BNA,PGD,"Punta Gorda, United States",US,2026-07-13,0,https://www.aviasales.com/search/BNA1307PGD1?marker=741311
+111,167,USD,LAX,MLM,"Morelia, Mexico",MX,2026-07-16,1,https://www.aviasales.com/search/LAX1607MLM1?marker=741311
+112,167,USD,PHX,OMA,"Omaha, United States",US,2026-07-22,1,https://www.aviasales.com/search/PHX2207OMA1?marker=741311
+113,168,USD,DFW,SAL,"San Salvador, El Salvador",SV,2026-07-14,0,https://www.aviasales.com/search/DFW1407SAL1?marker=741311
+114,169,USD,SEA,JNU,"Juneau, United States",US,2026-07-12,1,https://www.aviasales.com/search/SEA1207JNU1?marker=741311
+115,169,USD,SAN,SBA,"Santa Barbara, United States",US,2026-07-20,0,https://www.aviasales.com/search/SAN2007SBA1?marker=741311
+116,170,USD,FLL,FPO,"Freeport, Bahamas",BS,2026-07-20,0,https://www.aviasales.com/search/FLL2007FPO1?marker=741311
+117,171,USD,DCA,BZE,"Belize City, Belize",BZ,2026-07-21,1,https://www.aviasales.com/search/DCA2107BZE1?marker=741311
+118,173,USD,LAS,PAE,"Everett, United States",US,2026-07-20,0,https://www.aviasales.com/search/LAS2007PAE1?marker=741311
+119,173,USD,TPA,PWM,"Portland, United States",US,2026-07-15,1,https://www.aviasales.com/search/TPA1507PWM1?marker=741311
+120,175,USD,ORD,ELP,"El Paso, United States",US,2026-07-22,1,https://www.aviasales.com/search/ORD2207ELP1?marker=741311
+121,175,USD,CLT,PNS,"Pensacola, United States",US,2026-07-15,1,https://www.aviasales.com/search/CLT1507PNS1?marker=741311
+122,175,USD,IAH,FOD,"Fort Dodge, United States",US,2026-07-17,1,https://www.aviasales.com/search/IAH1707FOD1?marker=741311
+123,176,USD,DFW,MAF,"Midland, United States",US,2026-07-13,0,https://www.aviasales.com/search/DFW1307MAF1?marker=741311
+124,176,USD,DFW,TAP,"Tapachula, Mexico",MX,2026-07-13,1,https://www.aviasales.com/search/DFW1307TAP1?marker=741311
+125,178,USD,TPA,RAP,"Rapid City, United States",US,2026-07-14,1,https://www.aviasales.com/search/TPA1407RAP1?marker=741311
+126,179,USD,RDU,STI,"Santiago, Dominican Republic",DO,2026-07-20,1,https://www.aviasales.com/search/RDU2007STI1?marker=741311
+127,181,USD,MCO,YOW,"Ottawa, Canada",CA,2026-07-22,1,https://www.aviasales.com/search/MCO2207YOW1?marker=741311
+128,181,USD,FLL,RIC,"Richmond, United States",US,2026-07-16,0,https://www.aviasales.com/search/FLL1607RIC1?marker=741311
+129,182,USD,ORD,MZT,"Mazatlan, Mexico",MX,2026-07-17,1,https://www.aviasales.com/search/ORD1707MZT1?marker=741311
+130,183,USD,SFO,YVR,"Vancouver, Canada",CA,2026-07-22,0,https://www.aviasales.com/search/SFO2207YVR1?marker=741311
+131,183,USD,FLL,AIY,"Atlantic City, United States",US,2026-07-18,0,https://www.aviasales.com/search/FLL1807AIY1?marker=741311
+132,184,USD,BOS,SDF,"Louisville, United States",US,2026-07-17,0,https://www.aviasales.com/search/BOS1707SDF1?marker=741311
+133,185,USD,DEN,FAT,"Fresno, United States",US,2026-07-21,1,https://www.aviasales.com/search/DEN2107FAT1?marker=741311
+134,185,USD,SFO,AMA,"Amarillo, United States",US,2026-07-18,1,https://www.aviasales.com/search/SFO1807AMA1?marker=741311
+135,187,USD,PHL,MOB,"Mobile, United States",US,2026-07-13,1,https://www.aviasales.com/search/PHL1307MOB1?marker=741311
+136,189,USD,DFW,GUA,"Guatemala City, Guatemala",GT,2026-07-12,1,https://www.aviasales.com/search/DFW1207GUA1?marker=741311
+137,189,USD,ATL,GRR,"Grand Rapids, United States",US,2026-07-13,1,https://www.aviasales.com/search/ATL1307GRR1?marker=741311
+138,190,USD,ATL,SYR,"Syracuse, United States",US,2026-07-22,1,https://www.aviasales.com/search/ATL2207SYR1?marker=741311
+139,191,USD,ORD,LWB,"Lewisburg, United States",US,2026-07-22,0,https://www.aviasales.com/search/ORD2207LWB1?marker=741311
+140,194,USD,DFW,GNV,"Gainesville, United States",US,2026-07-14,0,https://www.aviasales.com/search/DFW1407GNV1?marker=741311
+141,194,USD,BOS,ACK,"Nantucket, United States",US,2026-07-19,0,https://www.aviasales.com/search/BOS1907ACK1?marker=741311
+142,194,USD,MIA,ILM,"Wilmington, United States",US,2026-07-13,0,https://www.aviasales.com/search/MIA1307ILM1?marker=741311
+143,195,USD,PHL,DAB,"Daytona Beach, United States",US,2026-07-12,1,https://www.aviasales.com/search/PHL1207DAB1?marker=741311
+144,195,USD,DCA,KIN,"Kingston, Jamaica",JM,2026-07-14,1,https://www.aviasales.com/search/DCA1407KIN1?marker=741311
+145,195,USD,PHX,SJC,"San Jose, United States",US,2026-07-21,1,https://www.aviasales.com/search/PHX2107SJC1?marker=741311
+146,195,USD,CLT,BTR,"Baton Rouge, United States",US,2026-07-22,0,https://www.aviasales.com/search/CLT2207BTR1?marker=741311
+147,197,USD,DFW,MKE,"Milwaukee, United States",US,2026-07-20,1,https://www.aviasales.com/search/DFW2007MKE1?marker=741311
+148,197,USD,PDX,LGB,"Long Beach, United States",US,2026-07-21,1,https://www.aviasales.com/search/PDX2107LGB1?marker=741311
+149,201,USD,SLC,HNL,"Honolulu, United States",US,2026-07-12,1,https://www.aviasales.com/search/SLC1207HNL1?marker=741311
+150,202,USD,LAS,SJD,"San Jose del Cabo, Mexico",MX,2026-07-22,2,https://www.aviasales.com/search/LAS2207SJD1?marker=741311
+151,202,USD,SEA,SIT,"Sitka, United States",US,2026-07-17,0,https://www.aviasales.com/search/SEA1707SIT1?marker=741311
+152,203,USD,LAS,YTO,"Toronto, Canada",CA,2026-07-21,0,https://www.aviasales.com/search/LAS2107YTO1?marker=741311
+153,204,USD,ORD,IRK,"Kirksville, United States",US,2026-07-12,0,https://www.aviasales.com/search/ORD1207IRK1?marker=741311
+154,204,USD,DEN,MLI,"Moline, United States",US,2026-07-22,1,https://www.aviasales.com/search/DEN2207MLI1?marker=741311
+155,205,USD,JFK,AGS,"Augusta, United States",US,2026-07-12,1,https://www.aviasales.com/search/JFK1207AGS1?marker=741311
+156,205,USD,LAX,TQO,"Tulum, Mexico",MX,2026-07-20,1,https://www.aviasales.com/search/LAX2007TQO1?marker=741311
+157,206,USD,BOS,ORF,"Norfolk, United States",US,2026-07-21,0,https://www.aviasales.com/search/BOS2107ORF1?marker=741311
+158,206,USD,ATL,GPT,"Gulfport, United States",US,2026-07-19,1,https://www.aviasales.com/search/ATL1907GPT1?marker=741311
+159,208,USD,DFW,CRP,"Corpus Christi, United States",US,2026-07-16,1,https://www.aviasales.com/search/DFW1607CRP1?marker=741311
+160,209,USD,ATL,SPI,"Springfield, United States",US,2026-07-15,2,https://www.aviasales.com/search/ATL1507SPI1?marker=741311
+161,210,USD,MCO,SAV,"Savannah, United States",US,2026-07-20,2,https://www.aviasales.com/search/MCO2007SAV1?marker=741311
+162,210,USD,DCA,PUJ,"Punta Cana, Dominican Republic",DO,2026-07-21,1,https://www.aviasales.com/search/DCA2107PUJ1?marker=741311
+163,214,USD,PHX,FCA,"Kalispell, United States",US,2026-07-19,2,https://www.aviasales.com/search/PHX1907FCA1?marker=741311
+164,215,USD,DFW,IDA,"Idaho Falls, United States",US,2026-07-14,0,https://www.aviasales.com/search/DFW1407IDA1?marker=741311
+165,215,USD,ORD,BZN,"Belgrade, United States",US,2026-07-12,1,https://www.aviasales.com/search/ORD1207BZN1?marker=741311
+166,218,USD,DFW,CHS,"Charleston, United States",US,2026-07-15,1,https://www.aviasales.com/search/DFW1507CHS1?marker=741311
+167,219,USD,PHL,JAC,"Jackson, United States",US,2026-07-19,1,https://www.aviasales.com/search/PHL1907JAC1?marker=741311
+168,221,USD,MCO,PAR,"Paris, France",FR,2026-07-20,2,https://www.aviasales.com/search/MCO2007PAR1?marker=741311
+169,222,USD,LAX,SJO,"San Jose, Costa Rica",CR,2026-07-21,1,https://www.aviasales.com/search/LAX2107SJO1?marker=741311
+170,222,USD,SAN,OAJ,"Richlands, United States",US,2026-07-22,1,https://www.aviasales.com/search/SAN2207OAJ1?marker=741311
+171,223,USD,DEN,PGA,"Page, United States",US,2026-07-22,2,https://www.aviasales.com/search/DEN2207PGA1?marker=741311
+172,224,USD,JFK,PBC,"Puebla, Mexico",MX,2026-07-13,1,https://www.aviasales.com/search/JFK1307PBC1?marker=741311
+173,224,USD,MSP,DSM,"Des Moines, United States",US,2026-07-19,1,https://www.aviasales.com/search/MSP1907DSM1?marker=741311
+174,226,USD,PHX,GCN,"Flagstaff, United States",US,2026-07-18,0,https://www.aviasales.com/search/PHX1807GCN1?marker=741311
+175,227,USD,ATL,JAN,"Jackson, United States",US,2026-07-21,1,https://www.aviasales.com/search/ATL2107JAN1?marker=741311
+176,230,USD,DFW,TLH,"Tallahassee, United States",US,2026-07-15,0,https://www.aviasales.com/search/DFW1507TLH1?marker=741311
+177,230,USD,DEN,PVU,"Provo, United States",US,2026-07-18,1,https://www.aviasales.com/search/DEN1807PVU1?marker=741311
+178,231,USD,BOS,LON,"London, United Kingdom",GB,2026-07-20,1,https://www.aviasales.com/search/BOS2007LON1?marker=741311
+179,231,USD,FLL,IAG,"Niagara Falls, United States",US,2026-07-16,1,https://www.aviasales.com/search/FLL1607IAG1?marker=741311
+180,234,USD,ORD,BOG,"Bogota, Colombia",CO,2026-07-15,1,https://www.aviasales.com/search/ORD1507BOG1?marker=741311
+181,234,USD,IAD,BGI,"Bridgetown, Barbados",BB,2026-07-16,2,https://www.aviasales.com/search/IAD1607BGI1?marker=741311
+182,235,USD,JFK,EDI,"Edinburgh, United Kingdom",GB,2026-07-19,1,https://www.aviasales.com/search/JFK1907EDI1?marker=741311
+183,235,USD,FLL,YHZ,"Halifax, Canada",CA,2026-07-21,1,https://www.aviasales.com/search/FLL2107YHZ1?marker=741311
+184,237,USD,MIA,MID,"Merida, Mexico",MX,2026-07-19,1,https://www.aviasales.com/search/MIA1907MID1?marker=741311
+185,238,USD,IAD,HSV,"Huntsville, United States",US,2026-07-12,1,https://www.aviasales.com/search/IAD1207HSV1?marker=741311
+186,252,USD,ORD,PIA,"Peoria, United States",US,2026-07-20,0,https://www.aviasales.com/search/ORD2007PIA1?marker=741311
+187,252,USD,IAH,BRO,"Brownsville, United States",US,2026-07-17,1,https://www.aviasales.com/search/IAH1707BRO1?marker=741311
+188,252,USD,LAS,MWA,"Marion, United States",US,2026-07-15,1,https://www.aviasales.com/search/LAS1507MWA1?marker=741311
+189,253,USD,ORD,DAY,"Dayton, United States",US,2026-07-14,0,https://www.aviasales.com/search/ORD1407DAY1?marker=741311
+190,254,USD,PDX,YUM,"Yuma, United States",US,2026-07-12,1,https://www.aviasales.com/search/PDX1207YUM1?marker=741311
+191,257,USD,MIA,STT,"Saint Thomas, U.S. Virgin Islands",VI,2026-07-13,1,https://www.aviasales.com/search/MIA1307STT1?marker=741311
 192,258,USD,DFW,VPS,"Fort Walton Beach, United States",US,2026-07-12,1,https://www.aviasales.com/search/DFW1207VPS1?marker=741311
-193,260,USD,ORD,ABE,"Allentown, United States",US,2026-07-22,0,https://www.aviasales.com/search/ORD2207ABE1?marker=741311
-194,263,USD,DFW,HAR,"Middletown, United States",US,2026-07-22,0,https://www.aviasales.com/search/DFW2207HAR1?marker=741311
-195,264,USD,PHL,OAX,"Oaxaca, Mexico",MX,2026-07-13,1,https://www.aviasales.com/search/PHL1307OAX1?marker=741311
-196,265,USD,ORD,FNT,"Flint, United States",US,2026-07-20,0,https://www.aviasales.com/search/ORD2007FNT1?marker=741311
-197,270,USD,SFO,TYO,"Tokyo, Japan",JP,2026-07-20,0,https://www.aviasales.com/search/SFO2007TYO1?marker=741311
-198,272,USD,CLT,SAP,"San Pedro Sula, Honduras",HN,2026-07-20,1,https://www.aviasales.com/search/CLT2007SAP1?marker=741311
-199,272,USD,DEN,LSE,"La Crosse, United States",US,2026-07-22,2,https://www.aviasales.com/search/DEN2207LSE1?marker=741311
-200,273,USD,IAD,UIO,"Quito, Ecuador",EC,2026-07-15,1,https://www.aviasales.com/search/IAD1507UIO1?marker=741311
-201,274,USD,JFK,LYS,"Lyon, France",FR,2026-07-21,2,https://www.aviasales.com/search/JFK2107LYS1?marker=741311
-202,276,USD,IAD,CAE,"Columbia, United States",US,2026-07-15,0,https://www.aviasales.com/search/IAD1507CAE1?marker=741311
-203,277,USD,DEN,MTJ,"Montrose, United States",US,2026-07-22,0,https://www.aviasales.com/search/DEN2207MTJ1?marker=741311
-204,279,USD,BOS,AUA,"Oranjestad, Aruba",AW,2026-07-17,1,https://www.aviasales.com/search/BOS1707AUA1?marker=741311
-205,281,USD,ORD,AMS,"Amsterdam, Netherlands",NL,2026-07-22,2,https://www.aviasales.com/search/ORD2207AMS1?marker=741311
-206,281,USD,ORD,LNK,"Lincoln, United States",US,2026-07-16,0,https://www.aviasales.com/search/ORD1607LNK1?marker=741311
-207,283,USD,SFO,OGG,"Kahului, United States",US,2026-07-20,0,https://www.aviasales.com/search/SFO2007OGG1?marker=741311
-208,284,USD,SEA,ROM,"Rome, Italy",IT,2026-07-16,0,https://www.aviasales.com/search/SEA1607ROM1?marker=741311
-209,284,USD,JFK,WAW,"Warsaw, Poland",PL,2026-07-21,1,https://www.aviasales.com/search/JFK2107WAW1?marker=741311
-210,290,USD,SEA,CLO,"Cali, Colombia",CO,2026-07-14,1,https://www.aviasales.com/search/SEA1407CLO1?marker=741311
-211,291,USD,JFK,BRU,"Brussels, Belgium",BE,2026-07-19,1,https://www.aviasales.com/search/JFK1907BRU1?marker=741311
-212,291,USD,JFK,GEO,"Georgetown, Guyana",GY,2026-07-21,0,https://www.aviasales.com/search/JFK2107GEO1?marker=741311
-213,292,USD,DFW,BHM,"Birmingham, United States",US,2026-07-19,1,https://www.aviasales.com/search/DFW1907BHM1?marker=741311
-214,294,USD,IAD,LIM,"Lima, Peru",PE,2026-07-14,2,https://www.aviasales.com/search/IAD1407LIM1?marker=741311
-215,295,USD,JFK,ANC,"Anchorage, United States",US,2026-07-15,0,https://www.aviasales.com/search/JFK1507ANC1?marker=741311
-216,295,USD,PHX,LEB,"Lebanon, United States",US,2026-07-22,2,https://www.aviasales.com/search/PHX2207LEB1?marker=741311
-217,296,USD,JFK,CHO,"Charlottesville, United States",US,2026-07-12,1,https://www.aviasales.com/search/JFK1207CHO1?marker=741311
-218,297,USD,JFK,EIN,"Eindhoven, Netherlands",NL,2026-07-12,1,https://www.aviasales.com/search/JFK1207EIN1?marker=741311
-219,297,USD,TPA,BLV,"Belleville, United States",US,2026-07-15,0,https://www.aviasales.com/search/TPA1507BLV1?marker=741311
-220,299,USD,JFK,GVA,"Geneva, Switzerland",CH,2026-07-20,1,https://www.aviasales.com/search/JFK2007GVA1?marker=741311
-221,299,USD,JFK,BGR,"Bangor, United States",US,2026-07-21,1,https://www.aviasales.com/search/JFK2107BGR1?marker=741311
+193,258,USD,ORD,LIH,"Kauai Island, United States",US,2026-07-15,1,https://www.aviasales.com/search/ORD1507LIH1?marker=741311
+194,260,USD,ORD,ABE,"Allentown, United States",US,2026-07-22,0,https://www.aviasales.com/search/ORD2207ABE1?marker=741311
+195,263,USD,DFW,HAR,"Middletown, United States",US,2026-07-22,0,https://www.aviasales.com/search/DFW2207HAR1?marker=741311
+196,264,USD,PHL,OAX,"Oaxaca, Mexico",MX,2026-07-13,1,https://www.aviasales.com/search/PHL1307OAX1?marker=741311
+197,265,USD,ORD,FNT,"Flint, United States",US,2026-07-20,0,https://www.aviasales.com/search/ORD2007FNT1?marker=741311
+198,270,USD,SFO,TYO,"Tokyo, Japan",JP,2026-07-20,0,https://www.aviasales.com/search/SFO2007TYO1?marker=741311
+199,272,USD,CLT,SAP,"San Pedro Sula, Honduras",HN,2026-07-20,1,https://www.aviasales.com/search/CLT2007SAP1?marker=741311
+200,272,USD,DEN,LSE,"La Crosse, United States",US,2026-07-22,2,https://www.aviasales.com/search/DEN2207LSE1?marker=741311
+201,272,USD,MCO,HRL,"Harlingen, United States",US,2026-07-19,2,https://www.aviasales.com/search/MCO1907HRL1?marker=741311
+202,273,USD,IAD,UIO,"Quito, Ecuador",EC,2026-07-15,1,https://www.aviasales.com/search/IAD1507UIO1?marker=741311
+203,274,USD,JFK,LYS,"Lyon, France",FR,2026-07-21,2,https://www.aviasales.com/search/JFK2107LYS1?marker=741311
+204,276,USD,IAD,CAE,"Columbia, United States",US,2026-07-15,0,https://www.aviasales.com/search/IAD1507CAE1?marker=741311
+205,277,USD,DEN,MTJ,"Montrose, United States",US,2026-07-22,0,https://www.aviasales.com/search/DEN2207MTJ1?marker=741311
+206,279,USD,BOS,AUA,"Oranjestad, Aruba",AW,2026-07-17,1,https://www.aviasales.com/search/BOS1707AUA1?marker=741311
+207,281,USD,ORD,AMS,"Amsterdam, Netherlands",NL,2026-07-22,2,https://www.aviasales.com/search/ORD2207AMS1?marker=741311
+208,281,USD,ORD,LNK,"Lincoln, United States",US,2026-07-16,0,https://www.aviasales.com/search/ORD1607LNK1?marker=741311
+209,283,USD,SFO,OGG,"Kahului, United States",US,2026-07-20,0,https://www.aviasales.com/search/SFO2007OGG1?marker=741311
+210,284,USD,SEA,ROM,"Rome, Italy",IT,2026-07-16,0,https://www.aviasales.com/search/SEA1607ROM1?marker=741311
+211,284,USD,JFK,WAW,"Warsaw, Poland",PL,2026-07-21,1,https://www.aviasales.com/search/JFK2107WAW1?marker=741311
+212,288,USD,LAX,BHM,"Birmingham, United States",US,2026-07-22,1,https://www.aviasales.com/search/LAX2207BHM1?marker=741311
+213,290,USD,SEA,CLO,"Cali, Colombia",CO,2026-07-14,1,https://www.aviasales.com/search/SEA1407CLO1?marker=741311
+214,291,USD,JFK,BRU,"Brussels, Belgium",BE,2026-07-19,1,https://www.aviasales.com/search/JFK1907BRU1?marker=741311
+215,291,USD,JFK,GEO,"Georgetown, Guyana",GY,2026-07-21,0,https://www.aviasales.com/search/JFK2107GEO1?marker=741311
+216,294,USD,IAD,LIM,"Lima, Peru",PE,2026-07-14,2,https://www.aviasales.com/search/IAD1407LIM1?marker=741311
+217,295,USD,JFK,ANC,"Anchorage, United States",US,2026-07-15,0,https://www.aviasales.com/search/JFK1507ANC1?marker=741311
+218,295,USD,PHX,LEB,"Lebanon, United States",US,2026-07-22,2,https://www.aviasales.com/search/PHX2207LEB1?marker=741311
+219,296,USD,JFK,CHO,"Charlottesville, United States",US,2026-07-12,1,https://www.aviasales.com/search/JFK1207CHO1?marker=741311
+220,297,USD,JFK,EIN,"Eindhoven, Netherlands",NL,2026-07-12,1,https://www.aviasales.com/search/JFK1207EIN1?marker=741311
+221,297,USD,TPA,BLV,"Belleville, United States",US,2026-07-15,0,https://www.aviasales.com/search/TPA1507BLV1?marker=741311
 222,299,USD,DFW,MHT,"Manchester, United States",US,2026-07-22,1,https://www.aviasales.com/search/DFW2207MHT1?marker=741311
-223,299,USD,SFO,EUG,"Eugene, United States",US,2026-07-22,1,https://www.aviasales.com/search/SFO2207EUG1?marker=741311
-224,302,USD,ORD,YQT,"Thunder Bay, Canada",CA,2026-07-20,1,https://www.aviasales.com/search/ORD2007YQT1?marker=741311
-225,303,USD,JFK,AGP,"Malaga, Spain",ES,2026-07-18,1,https://www.aviasales.com/search/JFK1807AGP1?marker=741311
-226,303,USD,LAX,ATW,"Appleton, United States",US,2026-07-20,1,https://www.aviasales.com/search/LAX2007ATW1?marker=741311
-227,307,USD,ORD,PUW,"Pullman, United States",US,2026-07-22,1,https://www.aviasales.com/search/ORD2207PUW1?marker=741311
-228,307,USD,SFO,MXL,"Mexicali, Mexico",MX,2026-07-18,3,https://www.aviasales.com/search/SFO1807MXL1?marker=741311
-229,309,USD,JFK,FRA,"Frankfurt, Germany",DE,2026-07-14,1,https://www.aviasales.com/search/JFK1407FRA1?marker=741311
-230,311,USD,SFO,SEL,"Seoul, South Korea",KR,2026-07-13,0,https://www.aviasales.com/search/SFO1307SEL1?marker=741311
-231,311,USD,TPA,YSJ,"Saint John, Canada",CA,2026-07-21,2,https://www.aviasales.com/search/TPA2107YSJ1?marker=741311
-232,314,USD,MIA,BUE,"Buenos Aires, Argentina",AR,2026-07-17,1,https://www.aviasales.com/search/MIA1707BUE1?marker=741311
-233,314,USD,ORD,SBY,"Salisbury-Ocean City, United States",US,2026-07-20,2,https://www.aviasales.com/search/ORD2007SBY1?marker=741311
-234,316,USD,LAX,CHA,"Chattanooga, United States",US,2026-07-13,2,https://www.aviasales.com/search/LAX1307CHA1?marker=741311
-235,317,USD,JFK,BEG,"Belgrade, Serbia",RS,2026-07-19,1,https://www.aviasales.com/search/JFK1907BEG1?marker=741311
-236,317,USD,JFK,SLU,"Saint Lucia, Saint Lucia",LC,2026-07-17,1,https://www.aviasales.com/search/JFK1707SLU1?marker=741311
-237,319,USD,ORD,MUC,"Munich, Germany",DE,2026-07-21,2,https://www.aviasales.com/search/ORD2107MUC1?marker=741311
-238,321,USD,ATL,EWN,"New Bern, United States",US,2026-07-15,2,https://www.aviasales.com/search/ATL1507EWN1?marker=741311
-239,321,USD,RDU,ELD,"El Dorado, United States",US,2026-07-22,2,https://www.aviasales.com/search/RDU2207ELD1?marker=741311
-240,322,USD,LAX,PKB,"Parkersburg, United States",US,2026-07-20,2,https://www.aviasales.com/search/LAX2007PKB1?marker=741311
-241,323,USD,LAX,SBN,"South Bend, United States",US,2026-07-13,1,https://www.aviasales.com/search/LAX1307SBN1?marker=741311
-242,325,USD,JFK,CTA,"Catania, Italy",IT,2026-07-13,1,https://www.aviasales.com/search/JFK1307CTA1?marker=741311
-243,325,USD,JFK,VLC,"Valencia, Spain",ES,2026-07-12,1,https://www.aviasales.com/search/JFK1207VLC1?marker=741311
-244,326,USD,JFK,TSR,"Timisoara, Romania",RO,2026-07-22,1,https://www.aviasales.com/search/JFK2207TSR1?marker=741311
-245,329,USD,IAD,MIL,"Milan, Italy",IT,2026-07-22,2,https://www.aviasales.com/search/IAD2207MIL1?marker=741311
-246,329,USD,JFK,EAT,"Wenatchee, United States",US,2026-07-18,1,https://www.aviasales.com/search/JFK1807EAT1?marker=741311
-247,332,USD,JFK,ANU,"Saint John's, Antigua and Barbuda",AG,2026-07-12,0,https://www.aviasales.com/search/JFK1207ANU1?marker=741311
-248,332,USD,PHL,ORH,"Worcester, United States",US,2026-07-22,0,https://www.aviasales.com/search/PHL2207ORH1?marker=741311
-249,336,USD,JFK,REU,"Reus, Spain",ES,2026-07-14,1,https://www.aviasales.com/search/JFK1407REU1?marker=741311
-250,336,USD,ORD,LIS,"Lisbon, Portugal",PT,2026-07-21,2,https://www.aviasales.com/search/ORD2107LIS1?marker=741311
-251,338,USD,LAX,PTY,"Panama City, Panama",PA,2026-07-22,2,https://www.aviasales.com/search/LAX2207PTY1?marker=741311
-252,338,USD,JFK,PRG,"Prague, Czech Republic",CZ,2026-07-20,1,https://www.aviasales.com/search/JFK2007PRG1?marker=741311
-253,338,USD,ORD,MGA,"Managua, Nicaragua",NI,2026-07-17,1,https://www.aviasales.com/search/ORD1707MGA1?marker=741311
-254,338,USD,LAX,ATH,"Athens, Greece",GR,2026-07-14,1,https://www.aviasales.com/search/LAX1407ATH1?marker=741311
-255,340,USD,JFK,BER,"Berlin, Germany",DE,2026-07-13,2,https://www.aviasales.com/search/JFK1307BER1?marker=741311
-256,341,USD,BOS,NCE,"Nice, France",FR,2026-07-22,1,https://www.aviasales.com/search/BOS2207NCE1?marker=741311
-257,342,USD,ORD,CPH,"Copenhagen, Denmark",DK,2026-07-20,2,https://www.aviasales.com/search/ORD2007CPH1?marker=741311
-258,342,USD,SFO,COS,"Colorado Springs, United States",US,2026-07-20,1,https://www.aviasales.com/search/SFO2007COS1?marker=741311
-259,344,USD,LAX,SAO,"Sao Paulo, Brazil",BR,2026-07-15,1,https://www.aviasales.com/search/LAX1507SAO1?marker=741311
-260,346,USD,RDU,STX,"Saint Croix, U.S. Virgin Islands",VI,2026-07-17,2,https://www.aviasales.com/search/RDU1707STX1?marker=741311
-261,348,USD,IAD,GOT,"Gothenburg, Sweden",SE,2026-07-12,1,https://www.aviasales.com/search/IAD1207GOT1?marker=741311
-262,349,USD,LAX,REX,"Reynosa, Mexico",MX,2026-07-22,2,https://www.aviasales.com/search/LAX2207REX1?marker=741311
+223,299,USD,JFK,GVA,"Geneva, Switzerland",CH,2026-07-20,1,https://www.aviasales.com/search/JFK2007GVA1?marker=741311
+224,299,USD,JFK,BGR,"Bangor, United States",US,2026-07-21,1,https://www.aviasales.com/search/JFK2107BGR1?marker=741311
+225,299,USD,SFO,EUG,"Eugene, United States",US,2026-07-22,1,https://www.aviasales.com/search/SFO2207EUG1?marker=741311
+226,302,USD,ORD,YQT,"Thunder Bay, Canada",CA,2026-07-20,1,https://www.aviasales.com/search/ORD2007YQT1?marker=741311
+227,303,USD,JFK,AGP,"Malaga, Spain",ES,2026-07-18,1,https://www.aviasales.com/search/JFK1807AGP1?marker=741311
+228,303,USD,LAX,ATW,"Appleton, United States",US,2026-07-20,1,https://www.aviasales.com/search/LAX2007ATW1?marker=741311
+229,307,USD,ORD,PUW,"Pullman, United States",US,2026-07-22,1,https://www.aviasales.com/search/ORD2207PUW1?marker=741311
+230,307,USD,SFO,MXL,"Mexicali, Mexico",MX,2026-07-18,3,https://www.aviasales.com/search/SFO1807MXL1?marker=741311
+231,309,USD,JFK,FRA,"Frankfurt, Germany",DE,2026-07-14,1,https://www.aviasales.com/search/JFK1407FRA1?marker=741311
+232,311,USD,SFO,SEL,"Seoul, South Korea",KR,2026-07-13,0,https://www.aviasales.com/search/SFO1307SEL1?marker=741311
+233,311,USD,TPA,YSJ,"Saint John, Canada",CA,2026-07-21,2,https://www.aviasales.com/search/TPA2107YSJ1?marker=741311
+234,314,USD,MIA,BUE,"Buenos Aires, Argentina",AR,2026-07-17,1,https://www.aviasales.com/search/MIA1707BUE1?marker=741311
+235,314,USD,ORD,SBY,"Salisbury-Ocean City, United States",US,2026-07-20,2,https://www.aviasales.com/search/ORD2007SBY1?marker=741311
+236,316,USD,LAX,CHA,"Chattanooga, United States",US,2026-07-13,2,https://www.aviasales.com/search/LAX1307CHA1?marker=741311
+237,317,USD,JFK,BEG,"Belgrade, Serbia",RS,2026-07-19,1,https://www.aviasales.com/search/JFK1907BEG1?marker=741311
+238,317,USD,JFK,SLU,"Saint Lucia, Saint Lucia",LC,2026-07-17,1,https://www.aviasales.com/search/JFK1707SLU1?marker=741311
+239,319,USD,ORD,MUC,"Munich, Germany",DE,2026-07-21,2,https://www.aviasales.com/search/ORD2107MUC1?marker=741311
+240,321,USD,ATL,EWN,"New Bern, United States",US,2026-07-15,2,https://www.aviasales.com/search/ATL1507EWN1?marker=741311
+241,321,USD,RDU,ELD,"El Dorado, United States",US,2026-07-22,2,https://www.aviasales.com/search/RDU2207ELD1?marker=741311
+242,322,USD,LAX,PKB,"Parkersburg, United States",US,2026-07-20,2,https://www.aviasales.com/search/LAX2007PKB1?marker=741311
+243,323,USD,LAX,SBN,"South Bend, United States",US,2026-07-13,1,https://www.aviasales.com/search/LAX1307SBN1?marker=741311
+244,325,USD,JFK,CTA,"Catania, Italy",IT,2026-07-13,1,https://www.aviasales.com/search/JFK1307CTA1?marker=741311
+245,325,USD,JFK,VLC,"Valencia, Spain",ES,2026-07-12,1,https://www.aviasales.com/search/JFK1207VLC1?marker=741311
+246,326,USD,JFK,TSR,"Timisoara, Romania",RO,2026-07-22,1,https://www.aviasales.com/search/JFK2207TSR1?marker=741311
+247,329,USD,IAD,MIL,"Milan, Italy",IT,2026-07-22,2,https://www.aviasales.com/search/IAD2207MIL1?marker=741311
+248,329,USD,JFK,EAT,"Wenatchee, United States",US,2026-07-18,1,https://www.aviasales.com/search/JFK1807EAT1?marker=741311
+249,332,USD,JFK,ANU,"Saint John's, Antigua and Barbuda",AG,2026-07-12,1,https://www.aviasales.com/search/JFK1207ANU1?marker=741311
+250,332,USD,PHL,ORH,"Worcester, United States",US,2026-07-22,0,https://www.aviasales.com/search/PHL2207ORH1?marker=741311
+251,336,USD,ORD,LIS,"Lisbon, Portugal",PT,2026-07-21,2,https://www.aviasales.com/search/ORD2107LIS1?marker=741311
+252,336,USD,JFK,REU,"Reus, Spain",ES,2026-07-14,1,https://www.aviasales.com/search/JFK1407REU1?marker=741311
+253,338,USD,LAX,ATH,"Athens, Greece",GR,2026-07-14,1,https://www.aviasales.com/search/LAX1407ATH1?marker=741311
+254,338,USD,JFK,PRG,"Prague, Czech Republic",CZ,2026-07-20,1,https://www.aviasales.com/search/JFK2007PRG1?marker=741311
+255,338,USD,LAX,PTY,"Panama City, Panama",PA,2026-07-22,2,https://www.aviasales.com/search/LAX2207PTY1?marker=741311
+256,338,USD,ORD,MGA,"Managua, Nicaragua",NI,2026-07-17,1,https://www.aviasales.com/search/ORD1707MGA1?marker=741311
+257,341,USD,BOS,NCE,"Nice, France",FR,2026-07-22,1,https://www.aviasales.com/search/BOS2207NCE1?marker=741311
+258,342,USD,ORD,CPH,"Copenhagen, Denmark",DK,2026-07-20,2,https://www.aviasales.com/search/ORD2007CPH1?marker=741311
+259,342,USD,SFO,COS,"Colorado Springs, United States",US,2026-07-20,1,https://www.aviasales.com/search/SFO2007COS1?marker=741311
+260,344,USD,LAX,SAO,"Sao Paulo, Brazil",BR,2026-07-15,1,https://www.aviasales.com/search/LAX1507SAO1?marker=741311
+261,346,USD,RDU,STX,"Saint Croix, U.S. Virgin Islands",VI,2026-07-17,2,https://www.aviasales.com/search/RDU1707STX1?marker=741311
+262,348,USD,IAD,GOT,"Gothenburg, Sweden",SE,2026-07-12,1,https://www.aviasales.com/search/IAD1207GOT1?marker=741311
 263,349,USD,SEA,HOT,"Hot Springs, United States",US,2026-07-19,2,https://www.aviasales.com/search/SEA1907HOT1?marker=741311
-264,350,USD,JFK,PGV,"Greenville, United States",US,2026-07-14,2,https://www.aviasales.com/search/JFK1407PGV1?marker=741311
-265,351,USD,JFK,MHK,"Manhattan, United States",US,2026-07-22,1,https://www.aviasales.com/search/JFK2207MHK1?marker=741311
-266,351,USD,DTW,PLN,"Pellston, United States",US,2026-07-16,1,https://www.aviasales.com/search/DTW1607PLN1?marker=741311
-267,352,USD,BOS,BHB,"Bar Harbor, United States",US,2026-07-16,0,https://www.aviasales.com/search/BOS1607BHB1?marker=741311
-268,352,USD,LAS,HTS,"Huntington, United States",US,2026-07-16,2,https://www.aviasales.com/search/LAS1607HTS1?marker=741311
-269,353,USD,IAD,STO,"Stockholm, Sweden",SE,2026-07-12,1,https://www.aviasales.com/search/IAD1207STO1?marker=741311
-270,353,USD,MIA,VRA,"Varadero, Cuba",CU,2026-07-21,0,https://www.aviasales.com/search/MIA2107VRA1?marker=741311
-271,354,USD,IAD,EVV,"Evansville, United States",US,2026-07-20,3,https://www.aviasales.com/search/IAD2007EVV1?marker=741311
-272,354,USD,BOS,SCE,"State College, United States",US,2026-07-16,1,https://www.aviasales.com/search/BOS1607SCE1?marker=741311
-273,355,USD,PHL,AOO,"Altoona, United States",US,2026-07-16,1,https://www.aviasales.com/search/PHL1607AOO1?marker=741311
-274,359,USD,JFK,NAP,"Naples, Italy",IT,2026-07-15,2,https://www.aviasales.com/search/JFK1507NAP1?marker=741311
-275,360,USD,JFK,SOF,"Sofia, Bulgaria",BG,2026-07-17,1,https://www.aviasales.com/search/JFK1707SOF1?marker=741311
-276,361,USD,LAX,BCN,"Barcelona, Spain",ES,2026-07-19,1,https://www.aviasales.com/search/LAX1907BCN1?marker=741311
+264,349,USD,LAX,REX,"Reynosa, Mexico",MX,2026-07-22,2,https://www.aviasales.com/search/LAX2207REX1?marker=741311
+265,350,USD,JFK,PGV,"Greenville, United States",US,2026-07-14,2,https://www.aviasales.com/search/JFK1407PGV1?marker=741311
+266,351,USD,JFK,NAP,"Naples, Italy",IT,2026-07-18,2,https://www.aviasales.com/search/JFK1807NAP1?marker=741311
+267,351,USD,JFK,MHK,"Manhattan, United States",US,2026-07-22,1,https://www.aviasales.com/search/JFK2207MHK1?marker=741311
+268,351,USD,DTW,PLN,"Pellston, United States",US,2026-07-16,1,https://www.aviasales.com/search/DTW1607PLN1?marker=741311
+269,352,USD,BOS,BHB,"Bar Harbor, United States",US,2026-07-16,0,https://www.aviasales.com/search/BOS1607BHB1?marker=741311
+270,352,USD,LAS,HTS,"Huntington, United States",US,2026-07-16,2,https://www.aviasales.com/search/LAS1607HTS1?marker=741311
+271,353,USD,IAD,STO,"Stockholm, Sweden",SE,2026-07-12,1,https://www.aviasales.com/search/IAD1207STO1?marker=741311
+272,353,USD,MIA,VRA,"Varadero, Cuba",CU,2026-07-21,0,https://www.aviasales.com/search/MIA2107VRA1?marker=741311
+273,354,USD,BOS,SCE,"State College, United States",US,2026-07-16,1,https://www.aviasales.com/search/BOS1607SCE1?marker=741311
+274,354,USD,IAD,EVV,"Evansville, United States",US,2026-07-20,3,https://www.aviasales.com/search/IAD2007EVV1?marker=741311
+275,355,USD,PHL,AOO,"Altoona, United States",US,2026-07-16,1,https://www.aviasales.com/search/PHL1607AOO1?marker=741311
+276,360,USD,JFK,SOF,"Sofia, Bulgaria",BG,2026-07-17,1,https://www.aviasales.com/search/JFK1707SOF1?marker=741311
 277,361,USD,BOS,COU,"Columbia, United States",US,2026-07-17,3,https://www.aviasales.com/search/BOS1707COU1?marker=741311
-278,362,USD,BOS,REK,"Reykjavik, Iceland",IS,2026-07-13,2,https://www.aviasales.com/search/BOS1307REK1?marker=741311
-279,364,USD,DFW,MNL,"Manila, Philippines",PH,2026-07-20,1,https://www.aviasales.com/search/DFW2007MNL1?marker=741311
-280,367,USD,JFK,TIV,"Tivat, Montenegro",ME,2026-07-22,2,https://www.aviasales.com/search/JFK2207TIV1?marker=741311
-281,368,USD,FLL,RTB,"Roatan, Honduras",HN,2026-07-21,2,https://www.aviasales.com/search/FLL2107RTB1?marker=741311
-282,369,USD,LAX,SKG,"Thessaloniki, Greece",GR,2026-07-12,1,https://www.aviasales.com/search/LAX1207SKG1?marker=741311
-283,371,USD,ORD,VIE,"Vienna, Austria",AT,2026-07-20,2,https://www.aviasales.com/search/ORD2007VIE1?marker=741311
-284,374,USD,BOS,DXB,"Dubai, United Arab Emirates",AE,2026-07-21,1,https://www.aviasales.com/search/BOS2107DXB1?marker=741311
-285,374,USD,MIA,MAD,"Madrid, Spain",ES,2026-07-19,0,https://www.aviasales.com/search/MIA1907MAD1?marker=741311
-286,375,USD,PHL,GSO,"Greensboro/High Point, United States",US,2026-07-17,1,https://www.aviasales.com/search/PHL1707GSO1?marker=741311
-287,378,USD,MCO,IST,"Istanbul, Turkiye",TR,2026-07-22,1,https://www.aviasales.com/search/MCO2207IST1?marker=741311
-288,379,USD,LAX,BUD,"Budapest, Hungary",HU,2026-07-21,2,https://www.aviasales.com/search/LAX2107BUD1?marker=741311
-289,380,USD,PDX,CNM,"Carlsbad, United States",US,2026-07-20,2,https://www.aviasales.com/search/PDX2007CNM1?marker=741311
+278,361,USD,LAX,BCN,"Barcelona, Spain",ES,2026-07-19,1,https://www.aviasales.com/search/LAX1907BCN1?marker=741311
+279,362,USD,BOS,REK,"Reykjavik, Iceland",IS,2026-07-13,2,https://www.aviasales.com/search/BOS1307REK1?marker=741311
+280,364,USD,DFW,MNL,"Manila, Philippines",PH,2026-07-20,1,https://www.aviasales.com/search/DFW2007MNL1?marker=741311
+281,367,USD,JFK,TIV,"Tivat, Montenegro",ME,2026-07-22,2,https://www.aviasales.com/search/JFK2207TIV1?marker=741311
+282,368,USD,FLL,RTB,"Roatan, Honduras",HN,2026-07-21,2,https://www.aviasales.com/search/FLL2107RTB1?marker=741311
+283,369,USD,LAX,SKG,"Thessaloniki, Greece",GR,2026-07-12,1,https://www.aviasales.com/search/LAX1207SKG1?marker=741311
+284,371,USD,ORD,VIE,"Vienna, Austria",AT,2026-07-20,2,https://www.aviasales.com/search/ORD2007VIE1?marker=741311
+285,374,USD,BOS,DXB,"Dubai, United Arab Emirates",AE,2026-07-21,1,https://www.aviasales.com/search/BOS2107DXB1?marker=741311
+286,374,USD,MIA,MAD,"Madrid, Spain",ES,2026-07-19,0,https://www.aviasales.com/search/MIA1907MAD1?marker=741311
+287,375,USD,PHL,GSO,"Greensboro/High Point, United States",US,2026-07-17,1,https://www.aviasales.com/search/PHL1707GSO1?marker=741311
+288,378,USD,MCO,IST,"Istanbul, Turkiye",TR,2026-07-22,1,https://www.aviasales.com/search/MCO2207IST1?marker=741311
+289,379,USD,LAX,BUD,"Budapest, Hungary",HU,2026-07-21,2,https://www.aviasales.com/search/LAX2107BUD1?marker=741311
 290,380,USD,SAN,DBV,"Dubrovnik, Croatia",HR,2026-07-18,2,https://www.aviasales.com/search/SAN1807DBV1?marker=741311
-291,381,USD,DFW,FRS,"Flores, Guatemala",GT,2026-07-12,2,https://www.aviasales.com/search/DFW1207FRS1?marker=741311
-292,383,USD,DEN,GUC,"Gunnison, United States",US,2026-07-22,0,https://www.aviasales.com/search/DEN2207GUC1?marker=741311
-293,384,USD,BNA,FAY,"Fayetteville, United States",US,2026-07-19,1,https://www.aviasales.com/search/BNA1907FAY1?marker=741311
-294,386,USD,JFK,PMF,"Parma, Italy",IT,2026-07-21,2,https://www.aviasales.com/search/JFK2107PMF1?marker=741311
-295,387,USD,JFK,BTV,"Burlington, United States",US,2026-07-22,1,https://www.aviasales.com/search/JFK2207BTV1?marker=741311
+291,380,USD,PDX,CNM,"Carlsbad, United States",US,2026-07-20,2,https://www.aviasales.com/search/PDX2007CNM1?marker=741311
+292,381,USD,DFW,FRS,"Flores, Guatemala",GT,2026-07-12,2,https://www.aviasales.com/search/DFW1207FRS1?marker=741311
+293,383,USD,DEN,GUC,"Gunnison, United States",US,2026-07-22,0,https://www.aviasales.com/search/DEN2207GUC1?marker=741311
+294,384,USD,BNA,FAY,"Fayetteville, United States",US,2026-07-19,1,https://www.aviasales.com/search/BNA1907FAY1?marker=741311
+295,386,USD,JFK,PMF,"Parma, Italy",IT,2026-07-21,2,https://www.aviasales.com/search/JFK2107PMF1?marker=741311
 296,387,USD,LAX,BKK,"Bangkok, Thailand",TH,2026-07-19,1,https://www.aviasales.com/search/LAX1907BKK1?marker=741311
-297,390,USD,MSP,YKM,"Yakima, United States",US,2026-07-22,1,https://www.aviasales.com/search/MSP2207YKM1?marker=741311
-298,391,USD,BOS,SHJ,"Sharjah, United Arab Emirates",AE,2026-07-21,2,https://www.aviasales.com/search/BOS2107SHJ1?marker=741311
-299,392,USD,JFK,STR,"Stuttgart, Germany",DE,2026-07-17,1,https://www.aviasales.com/search/JFK1707STR1?marker=741311
-300,392,USD,MCO,ECP,"Panama City, United States",US,2026-07-17,1,https://www.aviasales.com/search/MCO1707ECP1?marker=741311
-301,393,USD,JFK,BLI,"Bellingham, United States",US,2026-07-21,1,https://www.aviasales.com/search/JFK2107BLI1?marker=741311
-302,396,USD,LAX,DLH,"Duluth, United States",US,2026-07-15,2,https://www.aviasales.com/search/LAX1507DLH1?marker=741311
-303,399,USD,JFK,RIO,"Rio De Janeiro, Brazil",BR,2026-07-16,1,https://www.aviasales.com/search/JFK1607RIO1?marker=741311
-304,399,USD,RDU,SHD,"Staunton, United States",US,2026-07-22,1,https://www.aviasales.com/search/RDU2207SHD1?marker=741311
-305,402,USD,SAN,TPE,"Taipei, Taiwan",TW,2026-07-20,1,https://www.aviasales.com/search/SAN2007TPE1?marker=741311
-306,403,USD,SEA,WYS,"West Yellowstone, United States",US,2026-07-20,1,https://www.aviasales.com/search/SEA2007WYS1?marker=741311
-307,403,USD,LAX,LRD,"Laredo, United States",US,2026-07-21,2,https://www.aviasales.com/search/LAX2107LRD1?marker=741311
-308,404,USD,JFK,ITO,"Hilo, United States",US,2026-07-13,2,https://www.aviasales.com/search/JFK1307ITO1?marker=741311
-309,408,USD,LAX,RKS,"Rock Springs, United States",US,2026-07-16,1,https://www.aviasales.com/search/LAX1607RKS1?marker=741311
+297,387,USD,JFK,BTV,"Burlington, United States",US,2026-07-22,1,https://www.aviasales.com/search/JFK2207BTV1?marker=741311
+298,390,USD,MSP,YKM,"Yakima, United States",US,2026-07-22,1,https://www.aviasales.com/search/MSP2207YKM1?marker=741311
+299,391,USD,BOS,SHJ,"Sharjah, United Arab Emirates",AE,2026-07-21,2,https://www.aviasales.com/search/BOS2107SHJ1?marker=741311
+300,392,USD,JFK,STR,"Stuttgart, Germany",DE,2026-07-17,1,https://www.aviasales.com/search/JFK1707STR1?marker=741311
+301,392,USD,MCO,ECP,"Panama City, United States",US,2026-07-17,1,https://www.aviasales.com/search/MCO1707ECP1?marker=741311
+302,393,USD,JFK,BLI,"Bellingham, United States",US,2026-07-21,1,https://www.aviasales.com/search/JFK2107BLI1?marker=741311
+303,396,USD,LAX,DLH,"Duluth, United States",US,2026-07-15,2,https://www.aviasales.com/search/LAX1507DLH1?marker=741311
+304,399,USD,JFK,RIO,"Rio De Janeiro, Brazil",BR,2026-07-16,1,https://www.aviasales.com/search/JFK1607RIO1?marker=741311
+305,399,USD,RDU,SHD,"Staunton, United States",US,2026-07-22,1,https://www.aviasales.com/search/RDU2207SHD1?marker=741311
+306,402,USD,SAN,TPE,"Taipei, Taiwan",TW,2026-07-20,1,https://www.aviasales.com/search/SAN2007TPE1?marker=741311
+307,403,USD,SEA,WYS,"West Yellowstone, United States",US,2026-07-20,1,https://www.aviasales.com/search/SEA2007WYS1?marker=741311
+308,403,USD,LAX,LRD,"Laredo, United States",US,2026-07-21,2,https://www.aviasales.com/search/LAX2107LRD1?marker=741311
+309,404,USD,JFK,ITO,"Hilo, United States",US,2026-07-13,2,https://www.aviasales.com/search/JFK1307ITO1?marker=741311
 310,408,USD,SEA,RST,"Rochester, United States",US,2026-07-20,2,https://www.aviasales.com/search/SEA2007RST1?marker=741311
-311,410,USD,JFK,RTM,"Rotterdam, Netherlands",NL,2026-07-12,3,https://www.aviasales.com/search/JFK1207RTM1?marker=741311
-312,412,USD,SAN,TUP,"Tupelo, United States",US,2026-07-22,3,https://www.aviasales.com/search/SAN2207TUP1?marker=741311
-313,413,USD,LAX,HKG,"Hong Kong, Hong Kong",HK,2026-07-14,1,https://www.aviasales.com/search/LAX1407HKG1?marker=741311
-314,415,USD,ORD,CYS,"Cheyenne, United States",US,2026-07-22,1,https://www.aviasales.com/search/ORD2207CYS1?marker=741311
-315,416,USD,BOS,BJS,"Beijing, China",CN,2026-07-22,1,https://www.aviasales.com/search/BOS2207BJS1?marker=741311
-316,416,USD,ORD,FLR,"Florence, Italy",IT,2026-07-22,3,https://www.aviasales.com/search/ORD2207FLR1?marker=741311
-317,416,USD,MIA,BLA,"Barcelona, Venezuela",VE,2026-07-22,2,https://www.aviasales.com/search/MIA2207BLA1?marker=741311
-318,416,USD,MIA,ZRH,"Zurich, Switzerland",CH,2026-07-20,1,https://www.aviasales.com/search/MIA2007ZRH1?marker=741311
-319,418,USD,AUS,ALC,"Alicante, Spain",ES,2026-07-17,3,https://www.aviasales.com/search/AUS1707ALC1?marker=741311
-320,423,USD,DEN,EGE,"Vail, United States",US,2026-07-18,2,https://www.aviasales.com/search/DEN1807EGE1?marker=741311
-321,423,USD,RDU,ART,"Watertown, United States",US,2026-07-17,1,https://www.aviasales.com/search/RDU1707ART1?marker=741311
-322,427,USD,JFK,LCA,"Larnaca, Cyprus",CY,2026-07-12,2,https://www.aviasales.com/search/JFK1207LCA1?marker=741311
-323,432,USD,JFK,PEI,"Pereira, Colombia",CO,2026-07-15,3,https://www.aviasales.com/search/JFK1507PEI1?marker=741311
-324,433,USD,SEA,SCK,"Stockton, United States",US,2026-07-19,2,https://www.aviasales.com/search/SEA1907SCK1?marker=741311
-325,434,USD,JFK,CLJ,"Cluj, Romania",RO,2026-07-15,2,https://www.aviasales.com/search/JFK1507CLJ1?marker=741311
+311,408,USD,LAX,RKS,"Rock Springs, United States",US,2026-07-16,1,https://www.aviasales.com/search/LAX1607RKS1?marker=741311
+312,410,USD,JFK,RTM,"Rotterdam, Netherlands",NL,2026-07-12,3,https://www.aviasales.com/search/JFK1207RTM1?marker=741311
+313,412,USD,SAN,TUP,"Tupelo, United States",US,2026-07-22,3,https://www.aviasales.com/search/SAN2207TUP1?marker=741311
+314,413,USD,LAX,HKG,"Hong Kong, Hong Kong",HK,2026-07-14,1,https://www.aviasales.com/search/LAX1407HKG1?marker=741311
+315,415,USD,ORD,CYS,"Cheyenne, United States",US,2026-07-22,1,https://www.aviasales.com/search/ORD2207CYS1?marker=741311
+316,416,USD,BOS,BJS,"Beijing, China",CN,2026-07-22,1,https://www.aviasales.com/search/BOS2207BJS1?marker=741311
+317,416,USD,ORD,FLR,"Florence, Italy",IT,2026-07-22,3,https://www.aviasales.com/search/ORD2207FLR1?marker=741311
+318,416,USD,MIA,BLA,"Barcelona, Venezuela",VE,2026-07-22,2,https://www.aviasales.com/search/MIA2207BLA1?marker=741311
+319,416,USD,MIA,ZRH,"Zurich, Switzerland",CH,2026-07-20,1,https://www.aviasales.com/search/MIA2007ZRH1?marker=741311
+320,418,USD,AUS,ALC,"Alicante, Spain",ES,2026-07-17,3,https://www.aviasales.com/search/AUS1707ALC1?marker=741311
+321,423,USD,DEN,EGE,"Vail, United States",US,2026-07-18,2,https://www.aviasales.com/search/DEN1807EGE1?marker=741311
+322,423,USD,RDU,ART,"Watertown, United States",US,2026-07-17,1,https://www.aviasales.com/search/RDU1707ART1?marker=741311
+323,427,USD,JFK,LCA,"Larnaca, Cyprus",CY,2026-07-12,2,https://www.aviasales.com/search/JFK1207LCA1?marker=741311
+324,432,USD,JFK,PEI,"Pereira, Colombia",CO,2026-07-15,3,https://www.aviasales.com/search/JFK1507PEI1?marker=741311
+325,433,USD,SEA,SCK,"Stockton, United States",US,2026-07-19,2,https://www.aviasales.com/search/SEA1907SCK1?marker=741311
 326,434,USD,ORD,VRN,"Verona, Italy",IT,2026-07-14,2,https://www.aviasales.com/search/ORD1407VRN1?marker=741311
-327,436,USD,IAD,GPS,"Galapagos Islands, Ecuador",EC,2026-07-15,2,https://www.aviasales.com/search/IAD1507GPS1?marker=741311
-328,437,USD,MIA,DUS,"Dusseldorf, Germany",DE,2026-07-13,1,https://www.aviasales.com/search/MIA1307DUS1?marker=741311
-329,437,USD,TPA,GGT,"George Town, Bahamas",BS,2026-07-12,2,https://www.aviasales.com/search/TPA1207GGT1?marker=741311
+327,434,USD,JFK,CLJ,"Cluj, Romania",RO,2026-07-15,2,https://www.aviasales.com/search/JFK1507CLJ1?marker=741311
+328,436,USD,IAD,GPS,"Galapagos Islands, Ecuador",EC,2026-07-15,2,https://www.aviasales.com/search/IAD1507GPS1?marker=741311
+329,437,USD,MIA,DUS,"Dusseldorf, Germany",DE,2026-07-13,1,https://www.aviasales.com/search/MIA1307DUS1?marker=741311
 330,439,USD,MIA,TIA,"Tirana, Albania",AL,2026-07-21,2,https://www.aviasales.com/search/MIA2107TIA1?marker=741311
-331,442,USD,IAD,DLM,"Dalaman, Turkiye",TR,2026-07-20,3,https://www.aviasales.com/search/IAD2007DLM1?marker=741311
-332,442,USD,JFK,RIX,"Riga, Latvia",LV,2026-07-14,2,https://www.aviasales.com/search/JFK1407RIX1?marker=741311
+331,439,USD,TPA,GGT,"George Town, Bahamas",BS,2026-07-12,2,https://www.aviasales.com/search/TPA1207GGT1?marker=741311
+332,442,USD,IAD,DLM,"Dalaman, Turkiye",TR,2026-07-20,3,https://www.aviasales.com/search/IAD2007DLM1?marker=741311
 333,442,USD,ORD,ZAG,"Zagreb, Croatia",HR,2026-07-15,2,https://www.aviasales.com/search/ORD1507ZAG1?marker=741311
-334,445,USD,SEA,MCW,"Mason City, United States",US,2026-07-22,2,https://www.aviasales.com/search/SEA2207MCW1?marker=741311
-335,446,USD,SFO,BUH,"Bucharest, Romania",RO,2026-07-20,3,https://www.aviasales.com/search/SFO2007BUH1?marker=741311
-336,448,USD,JFK,ITH,"Ithaca, United States",US,2026-07-17,2,https://www.aviasales.com/search/JFK1707ITH1?marker=741311
-337,449,USD,SFO,SGN,"Ho Chi Minh City, Vietnam",VN,2026-07-16,1,https://www.aviasales.com/search/SFO1607SGN1?marker=741311
-338,450,USD,PHL,PHF,"Newport News, United States",US,2026-07-17,1,https://www.aviasales.com/search/PHL1707PHF1?marker=741311
-339,452,USD,MIA,BHX,"Birmingham, United Kingdom",GB,2026-07-14,1,https://www.aviasales.com/search/MIA1407BHX1?marker=741311
-340,453,USD,JFK,BOJ,"Bourgas, Bulgaria",BG,2026-07-17,2,https://www.aviasales.com/search/JFK1707BOJ1?marker=741311
-341,456,USD,MSP,OGD,"Ogden, United States",US,2026-07-22,2,https://www.aviasales.com/search/MSP2207OGD1?marker=741311
-342,457,USD,JFK,VAR,"Varna, Bulgaria",BG,2026-07-17,2,https://www.aviasales.com/search/JFK1707VAR1?marker=741311
-343,457,USD,JFK,HEL,"Helsinki, Finland",FI,2026-07-12,2,https://www.aviasales.com/search/JFK1207HEL1?marker=741311
-344,460,USD,JFK,VNO,"Vilnius, Lithuania",LT,2026-07-20,2,https://www.aviasales.com/search/JFK2007VNO1?marker=741311
-345,461,USD,LAX,SZX,"Shenzhen, China",CN,2026-07-14,1,https://www.aviasales.com/search/LAX1407SZX1?marker=741311
-346,462,USD,DFW,JMS,"Jamestown, United States",US,2026-07-22,1,https://www.aviasales.com/search/DFW2207JMS1?marker=741311
-347,462,USD,CLT,DUB,"Dublin, Ireland",IE,2026-07-15,3,https://www.aviasales.com/search/CLT1507DUB1?marker=741311
-348,465,USD,LAX,PMO,"Palermo, Italy",IT,2026-07-19,3,https://www.aviasales.com/search/LAX1907PMO1?marker=741311
-349,465,USD,MCO,HOG,"Holguin, Cuba",CU,2026-07-17,2,https://www.aviasales.com/search/MCO1707HOG1?marker=741311
-350,466,USD,LAX,HKT,"Phuket, Thailand",TH,2026-07-14,1,https://www.aviasales.com/search/LAX1407HKT1?marker=741311
-351,466,USD,ORD,CAG,"Cagliari, Italy",IT,2026-07-13,2,https://www.aviasales.com/search/ORD1307CAG1?marker=741311
-352,467,USD,LAS,DIK,"Dickinson, United States",US,2026-07-20,1,https://www.aviasales.com/search/LAS2007DIK1?marker=741311
-353,470,USD,LAX,EVN,"Yerevan, Armenia",AM,2026-07-12,4,https://www.aviasales.com/search/LAX1207EVN1?marker=741311
-354,470,USD,LAX,IBZ,"Ibiza, Spain",ES,2026-07-13,3,https://www.aviasales.com/search/LAX1307IBZ1?marker=741311
-355,471,USD,MCO,SCU,"Santiago, Cuba",CU,2026-07-17,1,https://www.aviasales.com/search/MCO1707SCU1?marker=741311
-356,475,USD,LAX,SIN,"Singapore, Singapore",SG,2026-07-16,1,https://www.aviasales.com/search/LAX1607SIN1?marker=741311
-357,475,USD,SEA,POP,"Puerto Plata, Dominican Republic",DO,2026-07-12,1,https://www.aviasales.com/search/SEA1207POP1?marker=741311
-358,480,USD,BNA,CAI,"Cairo, Egypt",EG,2026-07-20,3,https://www.aviasales.com/search/BNA2007CAI1?marker=741311
-359,482,USD,ORD,OSL,"Oslo, Norway",NO,2026-07-19,2,https://www.aviasales.com/search/ORD1907OSL1?marker=741311
-360,482,USD,DEN,RAK,"Marrakech, Morocco",MA,2026-07-17,2,https://www.aviasales.com/search/DEN1707RAK1?marker=741311
-361,482,USD,PHX,BLB,"Balboa, Panama",PA,2026-07-22,3,https://www.aviasales.com/search/PHX2207BLB1?marker=741311
-362,482,USD,LAX,MVD,"Montevideo, Uruguay",UY,2026-07-22,2,https://www.aviasales.com/search/LAX2207MVD1?marker=741311
-363,483,USD,LAX,TAS,"Tashkent, Uzbekistan",UZ,2026-07-21,1,https://www.aviasales.com/search/LAX2107TAS1?marker=741311
-364,484,USD,JFK,LUX,"Luxembourg, Luxembourg",LU,2026-07-21,3,https://www.aviasales.com/search/JFK2107LUX1?marker=741311
-365,485,USD,JFK,DRO,"Durango, United States",US,2026-07-17,1,https://www.aviasales.com/search/JFK1707DRO1?marker=741311
-366,485,USD,LAX,VCE,"Venice, Italy",IT,2026-07-22,1,https://www.aviasales.com/search/LAX2207VCE1?marker=741311
-367,487,USD,JFK,JED,"Jeddah, Saudi Arabia",SA,2026-07-20,1,https://www.aviasales.com/search/JFK2007JED1?marker=741311
-368,487,USD,DFW,HYD,"Hyderabad, India",IN,2026-07-13,2,https://www.aviasales.com/search/DFW1307HYD1?marker=741311
-369,487,USD,LAX,TGD,"Podgorica, Montenegro",ME,2026-07-18,3,https://www.aviasales.com/search/LAX1807TGD1?marker=741311
-370,489,USD,IAD,RMO,"Chisinau, Moldova",MD,2026-07-18,3,https://www.aviasales.com/search/IAD1807RMO1?marker=741311
-371,489,USD,SFO,CAN,"Guangzhou, China",CN,2026-07-19,2,https://www.aviasales.com/search/SFO1907CAN1?marker=741311
-372,490,USD,ATL,RIW,"Riverton, United States",US,2026-07-15,1,https://www.aviasales.com/search/ATL1507RIW1?marker=741311
-373,490,USD,IAH,LCE,"La Ceiba, Honduras",HN,2026-07-13,2,https://www.aviasales.com/search/IAH1307LCE1?marker=741311
-374,491,USD,BOS,BAK,"Baku, Azerbaijan",AZ,2026-07-20,1,https://www.aviasales.com/search/BOS2007BAK1?marker=741311
-375,491,USD,MCO,MOW,"Moscow, Russia",RU,2026-07-19,2,https://www.aviasales.com/search/MCO1907MOW1?marker=741311
-376,495,USD,JFK,PRN,"Pristina, Kosovo",XK,2026-07-21,1,https://www.aviasales.com/search/JFK2107PRN1?marker=741311
-377,497,USD,BNA,DOH,"Doha, Qatar",QA,2026-07-20,4,https://www.aviasales.com/search/BNA2007DOH1?marker=741311
-378,497,USD,LAX,CTU,"Chengdu, China",CN,2026-07-14,1,https://www.aviasales.com/search/LAX1407CTU1?marker=741311
-379,497,USD,MCO,MAN,"Manchester, United Kingdom",GB,2026-07-13,2,https://www.aviasales.com/search/MCO1307MAN1?marker=741311
-380,504,USD,DEN,RHI,"Rhinelander, United States",US,2026-07-21,1,https://www.aviasales.com/search/DEN2107RHI1?marker=741311
-381,511,USD,JFK,CUZ,"Cuzco, Peru",PE,2026-07-16,3,https://www.aviasales.com/search/JFK1607CUZ1?marker=741311
-382,513,USD,JFK,SSH,"Sharm el Sheikh, Egypt",EG,2026-07-18,2,https://www.aviasales.com/search/JFK1807SSH1?marker=741311
-383,514,USD,JFK,MED,"Madinah, Saudi Arabia",SA,2026-07-19,1,https://www.aviasales.com/search/JFK1907MED1?marker=741311
-384,515,USD,JFK,AUH,"Abu Dhabi, United Arab Emirates",AE,2026-07-21,1,https://www.aviasales.com/search/JFK2107AUH1?marker=741311
-385,516,USD,JFK,GRO,"Girona, Spain",ES,2026-07-18,1,https://www.aviasales.com/search/JFK1807GRO1?marker=741311
-386,516,USD,MIA,RBA,"Rabat, Morocco",MA,2026-07-17,2,https://www.aviasales.com/search/MIA1707RBA1?marker=741311
-387,517,USD,IAH,OGL,"Georgetown, Guyana",GY,2026-07-15,3,https://www.aviasales.com/search/IAH1507OGL1?marker=741311
-388,522,USD,DFW,AYT,"Antalya, Turkiye",TR,2026-07-13,1,https://www.aviasales.com/search/DFW1307AYT1?marker=741311
-389,524,USD,MIA,NQT,"Leicestershire, United Kingdom",GB,2026-07-12,2,https://www.aviasales.com/search/MIA1207NQT1?marker=741311
-390,524,USD,RDU,ALG,"Algiers, Algeria",DZ,2026-07-13,3,https://www.aviasales.com/search/RDU1307ALG1?marker=741311
-391,527,USD,MIA,TBS,"Tbilisi, Georgia",GE,2026-07-21,2,https://www.aviasales.com/search/MIA2107TBS1?marker=741311
-392,529,USD,JFK,DKR,"Dakar, Senegal",SN,2026-07-14,1,https://www.aviasales.com/search/JFK1407DKR1?marker=741311
-393,533,USD,IAD,LPB,"La Paz, Bolivia",BO,2026-07-14,2,https://www.aviasales.com/search/IAD1407LPB1?marker=741311
-394,535,USD,PHL,BJV,"Bodrum, Turkiye",TR,2026-07-14,3,https://www.aviasales.com/search/PHL1407BJV1?marker=741311
-395,537,USD,LAX,DAD,"Da Nang, Vietnam",VN,2026-07-21,2,https://www.aviasales.com/search/LAX2107DAD1?marker=741311
-396,537,USD,MIA,TLL,"Tallinn, Estonia",EE,2026-07-20,3,https://www.aviasales.com/search/MIA2007TLL1?marker=741311
-397,539,USD,LAX,SCL,"Santiago, Chile",CL,2026-07-19,1,https://www.aviasales.com/search/LAX1907SCL1?marker=741311
-398,541,USD,ATL,SZG,"Salzburg, Austria",AT,2026-07-17,3,https://www.aviasales.com/search/ATL1707SZG1?marker=741311
-399,542,USD,SFO,DEL,"Delhi, India",IN,2026-07-20,2,https://www.aviasales.com/search/SFO2007DEL1?marker=741311
-400,546,USD,IAD,BSZ,"Bishkek, Kyrgyzstan",KG,2026-07-22,3,https://www.aviasales.com/search/IAD2207BSZ1?marker=741311
-401,558,USD,SEA,HNH,"Hoonah, United States",US,2026-07-17,1,https://www.aviasales.com/search/SEA1707HNH1?marker=741311
-402,559,USD,LAX,BTS,"Bratislava, Slovakia",SK,2026-07-15,2,https://www.aviasales.com/search/LAX1507BTS1?marker=741311
-403,560,USD,MCO,AER,"Adler/Sochi, Russia",RU,2026-07-21,4,https://www.aviasales.com/search/MCO2107AER1?marker=741311
-404,563,USD,JFK,ALA,"Almaty, Kazakhstan",KZ,2026-07-16,2,https://www.aviasales.com/search/JFK1607ALA1?marker=741311
-405,563,USD,ORD,OLB,"Olbia, Italy",IT,2026-07-16,2,https://www.aviasales.com/search/ORD1607OLB1?marker=741311
-406,566,USD,MIA,MLA,"Malta, Malta",MT,2026-07-12,2,https://www.aviasales.com/search/MIA1207MLA1?marker=741311
-407,568,USD,SFO,BSB,"Brasilia, Brazil",BR,2026-07-12,1,https://www.aviasales.com/search/SFO1207BSB1?marker=741311
-408,575,USD,DFW,KUT,"Kutaisi, Georgia",GE,2026-07-19,3,https://www.aviasales.com/search/DFW1907KUT1?marker=741311
-409,576,USD,LAX,TLS,"Toulouse, France",FR,2026-07-14,1,https://www.aviasales.com/search/LAX1407TLS1?marker=741311
-410,578,USD,JFK,AQI,"Qaisumah, Saudi Arabia",SA,2026-07-14,2,https://www.aviasales.com/search/JFK1407AQI1?marker=741311
-411,583,USD,MIA,TER,"Terceira, Portugal",PT,2026-07-14,3,https://www.aviasales.com/search/MIA1407TER1?marker=741311
-412,585,USD,ORD,OPO,"Porto, Portugal",PT,2026-07-13,3,https://www.aviasales.com/search/ORD1307OPO1?marker=741311
-413,589,USD,FLL,LRM,"La Romana, Dominican Republic",DO,2026-07-14,3,https://www.aviasales.com/search/FLL1407LRM1?marker=741311
-414,591,USD,SFO,LOP,"Praya, Indonesia",ID,2026-07-21,2,https://www.aviasales.com/search/SFO2107LOP1?marker=741311
-415,591,USD,SEA,OTH,"North Bend, United States",US,2026-07-22,2,https://www.aviasales.com/search/SEA2207OTH1?marker=741311
-416,595,USD,JFK,KRR,"Krasnodar, Russia",RU,2026-07-12,3,https://www.aviasales.com/search/JFK1207KRR1?marker=741311
-417,598,USD,JFK,HRG,"Hurghada, Egypt",EG,2026-07-22,3,https://www.aviasales.com/search/JFK2207HRG1?marker=741311
-418,598,USD,LAX,CIT,"Shymkent, Kazakhstan",KZ,2026-07-22,2,https://www.aviasales.com/search/LAX2207CIT1?marker=741311
-419,602,USD,ORD,LED,"Saint Petersburg, Russia",RU,2026-07-22,3,https://www.aviasales.com/search/ORD2207LED1?marker=741311
-420,602,USD,LAX,VEL,"Vernal, United States",US,2026-07-22,3,https://www.aviasales.com/search/LAX2207VEL1?marker=741311
-421,606,USD,LAX,TOL,"Toledo, United States",US,2026-07-13,3,https://www.aviasales.com/search/LAX1307TOL1?marker=741311
-422,616,USD,LAX,HFE,"Hefei, China",CN,2026-07-12,1,https://www.aviasales.com/search/LAX1207HFE1?marker=741311
-423,632,USD,MIA,BUS,"Batumi, Georgia",GE,2026-07-22,1,https://www.aviasales.com/search/MIA2207BUS1?marker=741311
-424,633,USD,TPA,SKP,"Skopje, North Macedonia",MK,2026-07-13,2,https://www.aviasales.com/search/TPA1307SKP1?marker=741311
-425,636,USD,JFK,SHA,"Shanghai, China",CN,2026-07-13,1,https://www.aviasales.com/search/JFK1307SHA1?marker=741311
-426,642,USD,IAH,ISB,"Islamabad, Pakistan",PK,2026-07-15,1,https://www.aviasales.com/search/IAH1507ISB1?marker=741311
-427,642,USD,LAX,TUN,"Tunis, Tunisia",TN,2026-07-22,2,https://www.aviasales.com/search/LAX2207TUN1?marker=741311
-428,647,USD,LAS,DPS,"Denpasar (Bali), Indonesia",ID,2026-07-21,3,https://www.aviasales.com/search/LAS2107DPS1?marker=741311
-429,649,USD,JFK,SVX,"Yekaterinburg, Russia",RU,2026-07-19,2,https://www.aviasales.com/search/JFK1907SVX1?marker=741311
-430,651,USD,MCO,LOS,"Lagos, Nigeria",NG,2026-07-21,2,https://www.aviasales.com/search/MCO2107LOS1?marker=741311
-431,656,USD,IAD,LHE,"Lahore, Pakistan",PK,2026-07-16,1,https://www.aviasales.com/search/IAD1607LHE1?marker=741311
-432,657,USD,MSP,AGB,"Augsburg, Germany",DE,2026-07-15,1,https://www.aviasales.com/search/MSP1507AGB1?marker=741311
-433,659,USD,LAX,VVO,"Vladivostok, Russia",RU,2026-07-17,3,https://www.aviasales.com/search/LAX1707VVO1?marker=741311
-434,663,USD,JFK,KZN,"Kazan, Russia",RU,2026-07-21,3,https://www.aviasales.com/search/JFK2107KZN1?marker=741311
-435,665,USD,JFK,PQC,"Phu Quoc, Vietnam",VN,2026-07-16,1,https://www.aviasales.com/search/JFK1607PQC1?marker=741311
-436,666,USD,ORD,BGW,"Baghdad, Iraq",IQ,2026-07-15,1,https://www.aviasales.com/search/ORD1507BGW1?marker=741311
-437,667,USD,IAH,CCS,"Caracas, Venezuela",VE,2026-07-14,2,https://www.aviasales.com/search/IAH1407CCS1?marker=741311
-438,668,USD,JFK,HAN,"Hanoi, Vietnam",VN,2026-07-14,1,https://www.aviasales.com/search/JFK1407HAN1?marker=741311
-439,669,USD,ATL,NBO,"Nairobi, Kenya",KE,2026-07-17,2,https://www.aviasales.com/search/ATL1707NBO1?marker=741311
-440,672,USD,SEA,GUM,"Guam, Guam",GU,2026-07-20,2,https://www.aviasales.com/search/SEA2007GUM1?marker=741311
-441,681,USD,FLL,SID,"Sal, Cape Verde",CV,2026-07-21,2,https://www.aviasales.com/search/FLL2107SID1?marker=741311
-442,683,USD,JFK,MLE,"Male, Maldives",MV,2026-07-13,3,https://www.aviasales.com/search/JFK1307MLE1?marker=741311
-443,688,USD,LAX,MRV,"Mineralnye Vody, Russia",RU,2026-07-20,3,https://www.aviasales.com/search/LAX2007MRV1?marker=741311
-444,688,USD,DFW,SYX,"Sanya, China",CN,2026-07-22,3,https://www.aviasales.com/search/DFW2207SYX1?marker=741311
-445,690,USD,JFK,SLL,"Salalah, Oman",OM,2026-07-16,1,https://www.aviasales.com/search/JFK1607SLL1?marker=741311
-446,696,USD,SFO,UBN,"Ulaanbaatar, Mongolia",MN,2026-07-15,1,https://www.aviasales.com/search/SFO1507UBN1?marker=741311
-447,698,USD,IAD,NBC,"Naberezhnye Chelny, Russia",RU,2026-07-21,4,https://www.aviasales.com/search/IAD2107NBC1?marker=741311
-448,700,USD,ORD,UFA,"Ufa, Russia",RU,2026-07-21,3,https://www.aviasales.com/search/ORD2107UFA1?marker=741311
-449,708,USD,JFK,RTW,"Saratov, Russia",RU,2026-07-14,3,https://www.aviasales.com/search/JFK1407RTW1?marker=741311
-450,712,USD,IAD,KBL,"Kabul, Afghanistan",AF,2026-07-19,2,https://www.aviasales.com/search/IAD1907KBL1?marker=741311
-451,715,USD,JFK,MGF,"Maringa, Brazil",BR,2026-07-16,1,https://www.aviasales.com/search/JFK1607MGF1?marker=741311
-452,720,USD,LAX,UGC,"Urgench, Uzbekistan",UZ,2026-07-15,3,https://www.aviasales.com/search/LAX1507UGC1?marker=741311
-453,722,USD,ORD,NQZ,"Astana, Kazakhstan",KZ,2026-07-21,1,https://www.aviasales.com/search/ORD2107NQZ1?marker=741311
-454,724,USD,LAX,PER,"Perth, Australia",AU,2026-07-22,3,https://www.aviasales.com/search/LAX2207PER1?marker=741311
-455,727,USD,JFK,BHK,"Bukhara, Uzbekistan",UZ,2026-07-22,1,https://www.aviasales.com/search/JFK2207BHK1?marker=741311
-456,728,USD,JFK,MSQ,"Minsk, Belarus",BY,2026-07-22,4,https://www.aviasales.com/search/JFK2207MSQ1?marker=741311
-457,728,USD,LAX,CNS,"Cairns, Australia",AU,2026-07-21,1,https://www.aviasales.com/search/LAX2107CNS1?marker=741311
-458,731,USD,LAX,SCO,"Aktau, Kazakhstan",KZ,2026-07-16,2,https://www.aviasales.com/search/LAX1607SCO1?marker=741311
-459,735,USD,FLL,XMN,"Xiamen, China",CN,2026-07-21,2,https://www.aviasales.com/search/FLL2107XMN1?marker=741311
-460,736,USD,IAD,IJK,"Izhevsk, Russia",RU,2026-07-21,4,https://www.aviasales.com/search/IAD2107IJK1?marker=741311
-461,740,USD,ORD,NHA,"Nha Trang, Vietnam",VN,2026-07-22,2,https://www.aviasales.com/search/ORD2207NHA1?marker=741311
-462,746,USD,IAD,ABJ,"Abidjan, Ivory Coast",CI,2026-07-20,1,https://www.aviasales.com/search/IAD2007ABJ1?marker=741311
-463,747,USD,ORD,FEG,"Fergana, Uzbekistan",UZ,2026-07-21,3,https://www.aviasales.com/search/ORD2107FEG1?marker=741311
-464,748,USD,ORD,DYU,"Dushanbe, Tajikistan",TJ,2026-07-12,3,https://www.aviasales.com/search/ORD1207DYU1?marker=741311
-465,755,USD,MIA,KUL,"Kuala Lumpur, Malaysia",MY,2026-07-17,3,https://www.aviasales.com/search/MIA1707KUL1?marker=741311
-466,762,USD,JFK,HRB,"Harbin, China",CN,2026-07-19,2,https://www.aviasales.com/search/JFK1907HRB1?marker=741311
-467,770,USD,ORD,IGT,"Magas, Russia",RU,2026-07-21,4,https://www.aviasales.com/search/ORD2107IGT1?marker=741311
-468,770,USD,IAH,ARH,"Arkhangelsk, Russia",RU,2026-07-21,4,https://www.aviasales.com/search/IAH2107ARH1?marker=741311
-469,780,USD,DFW,SKD,"Samarkand, Uzbekistan",UZ,2026-07-17,2,https://www.aviasales.com/search/DFW1707SKD1?marker=741311
-470,783,USD,JFK,HUI,"Hue, Vietnam",VN,2026-07-16,2,https://www.aviasales.com/search/JFK1607HUI1?marker=741311
-471,784,USD,JFK,PEE,"Perm, Russia",RU,2026-07-18,3,https://www.aviasales.com/search/JFK1807PEE1?marker=741311
-472,786,USD,FLL,OGZ,"Vladikavkaz, Russia",RU,2026-07-21,4,https://www.aviasales.com/search/FLL2107OGZ1?marker=741311
-473,791,USD,SLC,SUG,"Surigao, Philippines",PH,2026-07-14,4,https://www.aviasales.com/search/SLC1407SUG1?marker=741311
-474,798,USD,IAH,OSS,"Osh, Kyrgyzstan",KG,2026-07-19,3,https://www.aviasales.com/search/IAH1907OSS1?marker=741311
-475,820,USD,MIA,AHU,"Al Hoceima, Morocco",MA,2026-07-15,3,https://www.aviasales.com/search/MIA1507AHU1?marker=741311
-476,822,USD,JFK,HPH,"Haiphong, Vietnam",VN,2026-07-16,3,https://www.aviasales.com/search/JFK1607HPH1?marker=741311
-477,822,USD,SEA,OUA,"Ouagadougou, Burkina Faso",BF,2026-07-18,2,https://www.aviasales.com/search/SEA1807OUA1?marker=741311
-478,825,USD,IAH,MEL,"Melbourne, Australia",AU,2026-07-21,2,https://www.aviasales.com/search/IAH2107MEL1?marker=741311
-479,827,USD,CLT,CSY,"Cheboksary, Russia",RU,2026-07-21,4,https://www.aviasales.com/search/CLT2107CSY1?marker=741311
-480,832,USD,SFO,OOL,"Coolangatta (Gold Coast), Australia",AU,2026-07-21,3,https://www.aviasales.com/search/SFO2107OOL1?marker=741311
-481,839,USD,JFK,MMK,"Murmansk, Russia",RU,2026-07-13,4,https://www.aviasales.com/search/JFK1307MMK1?marker=741311
-482,843,USD,JFK,VCS,"Con Dao, Vietnam",VN,2026-07-16,2,https://www.aviasales.com/search/JFK1607VCS1?marker=741311
-483,843,USD,ORD,SYD,"Sydney, Australia",AU,2026-07-20,1,https://www.aviasales.com/search/ORD2007SYD1?marker=741311
-484,843,USD,IAH,BJM,"Bujumbura, Burundi",BI,2026-07-13,2,https://www.aviasales.com/search/IAH1307BJM1?marker=741311
-485,845,USD,LAX,OVB,"Novosibirsk, Russia",RU,2026-07-12,3,https://www.aviasales.com/search/LAX1207OVB1?marker=741311
-486,849,USD,DCA,CRK,"Luzon Island, Philippines",PH,2026-07-16,2,https://www.aviasales.com/search/DCA1607CRK1?marker=741311
-487,858,USD,JFK,ZNZ,"Zanzibar, Tanzania",TZ,2026-07-20,1,https://www.aviasales.com/search/JFK2007ZNZ1?marker=741311
-488,864,USD,IAH,JPA,"Joao Pessoa, Brazil",BR,2026-07-22,3,https://www.aviasales.com/search/IAH2207JPA1?marker=741311
-489,865,USD,MCO,BOB,"Bora Bora, French Polynesia",PF,2026-07-21,3,https://www.aviasales.com/search/MCO2107BOB1?marker=741311
-490,869,USD,IAD,DAC,"Dhaka, Bangladesh",BD,2026-07-16,1,https://www.aviasales.com/search/IAD1607DAC1?marker=741311
-491,869,USD,MIA,GOJ,"Nizhniy Novgorod, Russia",RU,2026-07-13,4,https://www.aviasales.com/search/MIA1307GOJ1?marker=741311
-492,883,USD,SEA,YFO,"Flin Flon, Canada",CA,2026-07-19,2,https://www.aviasales.com/search/SEA1907YFO1?marker=741311
-493,887,USD,SFO,KHV,"Khabarovsk, Russia",RU,2026-07-15,2,https://www.aviasales.com/search/SFO1507KHV1?marker=741311
-494,891,USD,JFK,KGD,"Kaliningrad, Russia",RU,2026-07-17,4,https://www.aviasales.com/search/JFK1707KGD1?marker=741311
-495,891,USD,SEA,KJA,"Krasnojarsk, Russia",RU,2026-07-15,2,https://www.aviasales.com/search/SEA1507KJA1?marker=741311
-496,902,USD,MCO,BNE,"Brisbane, Australia",AU,2026-07-13,2,https://www.aviasales.com/search/MCO1307BNE1?marker=741311
-497,905,USD,SLC,IAO,"Sayak (Siargao), Philippines",PH,2026-07-14,3,https://www.aviasales.com/search/SLC1407IAO1?marker=741311
-498,914,USD,JFK,GRV,"Groznyy, Russia",RU,2026-07-21,3,https://www.aviasales.com/search/JFK2107GRV1?marker=741311
-499,914,USD,LAX,KUN,"Kaunas, Lithuania",LT,2026-07-16,2,https://www.aviasales.com/search/LAX1607KUN1?marker=741311
-500,927,USD,JFK,HGH,"Hangzhou, China",CN,2026-07-12,3,https://www.aviasales.com/search/JFK1207HGH1?marker=741311
-501,934,USD,IAH,JNB,"Johannesburg, South Africa",ZA,2026-07-21,2,https://www.aviasales.com/search/IAH2107JNB1?marker=741311
-502,946,USD,LAX,ADL,"Adelaide, Australia",AU,2026-07-20,3,https://www.aviasales.com/search/LAX2007ADL1?marker=741311
-503,974,USD,JFK,MQF,"Magnitogorsk, Russia",RU,2026-07-12,4,https://www.aviasales.com/search/JFK1207MQF1?marker=741311
-504,997,USD,BOS,ACC,"Accra, Ghana",GH,2026-07-18,2,https://www.aviasales.com/search/BOS1807ACC1?marker=741311
-505,1012,USD,LAX,ZQN,"Queenstown, New Zealand",NZ,2026-07-21,1,https://www.aviasales.com/search/LAX2107ZQN1?marker=741311
-506,1015,USD,JFK,CHC,"Christchurch, New Zealand",NZ,2026-07-22,2,https://www.aviasales.com/search/JFK2207CHC1?marker=741311
-507,1036,USD,MIA,CPT,"Cape Town, South Africa",ZA,2026-07-16,2,https://www.aviasales.com/search/MIA1607CPT1?marker=741311
-508,1046,USD,DFW,NMA,"Namangan, Uzbekistan",UZ,2026-07-19,3,https://www.aviasales.com/search/DFW1907NMA1?marker=741311
-509,1060,USD,DFW,MCX,"Makhachkala, Russia",RU,2026-07-17,2,https://www.aviasales.com/search/DFW1707MCX1?marker=741311
-510,1066,USD,DTW,LAD,"Luanda, Angola",AO,2026-07-20,2,https://www.aviasales.com/search/DTW2007LAD1?marker=741311
-511,1070,USD,SFO,OMS,"Omsk, Russia",RU,2026-07-14,2,https://www.aviasales.com/search/SFO1407OMS1?marker=741311
-512,1073,USD,ORD,AZN,"Andijan, Uzbekistan",UZ,2026-07-15,3,https://www.aviasales.com/search/ORD1507AZN1?marker=741311
-513,1085,USD,LAX,YKS,"Yakutsk, Russia",RU,2026-07-13,4,https://www.aviasales.com/search/LAX1307YKS1?marker=741311
-514,1088,USD,DTW,ASF,"Astrakhan, Russia",RU,2026-07-14,4,https://www.aviasales.com/search/DTW1407ASF1?marker=741311
-515,1092,USD,ORD,STW,"Stavropol, Russia",RU,2026-07-15,3,https://www.aviasales.com/search/ORD1507STW1?marker=741311
-516,1108,USD,SEA,KGF,"Karaganda, Kazakhstan",KZ,2026-07-16,3,https://www.aviasales.com/search/SEA1607KGF1?marker=741311
-517,1119,USD,MIA,PKC,"Petropavlovsk-Kamchatsky, Russia",RU,2026-07-19,4,https://www.aviasales.com/search/MIA1907PKC1?marker=741311
-518,1122,USD,LAX,UUD,"Ulan-Ude, Russia",RU,2026-07-13,4,https://www.aviasales.com/search/LAX1307UUD1?marker=741311
-519,1156,USD,MIA,IKT,"Irkutsk, Russia",RU,2026-07-16,2,https://www.aviasales.com/search/MIA1607IKT1?marker=741311
-520,1180,USD,LAX,ABA,"Abakan, Russia",RU,2026-07-16,3,https://www.aviasales.com/search/LAX1607ABA1?marker=741311
-521,1183,USD,SEA,VFA,"Victoria Falls, Zimbabwe",ZW,2026-07-20,2,https://www.aviasales.com/search/SEA2007VFA1?marker=741311
-522,1236,USD,LAX,WLG,"Wellington, New Zealand",NZ,2026-07-20,3,https://www.aviasales.com/search/LAX2007WLG1?marker=741311
-523,1446,USD,JFK,JAV,"Ilulissat, Greenland",GL,2026-07-14,1,https://www.aviasales.com/search/JFK1407JAV1?marker=741311
-524,1686,USD,MIA,GDX,"Magadan, Russia",RU,2026-07-13,3,https://www.aviasales.com/search/MIA1307GDX1?marker=741311
-525,1706,USD,JFK,NOS,"Nossi-be, Madagascar",MG,2026-07-17,3,https://www.aviasales.com/search/JFK1707NOS1?marker=741311
-526,1719,USD,JFK,FNJ,"Pyongyang, North Korea",KP,2026-07-19,1,https://www.aviasales.com/search/JFK1907FNJ1?marker=741311
-527,2002,USD,LAX,CEK,"Chelyabinsk, Russia",RU,2026-07-22,2,https://www.aviasales.com/search/LAX2207CEK1?marker=741311
+334,442,USD,JFK,RIX,"Riga, Latvia",LV,2026-07-14,2,https://www.aviasales.com/search/JFK1407RIX1?marker=741311
+335,445,USD,LAX,BER,"Berlin, Germany",DE,2026-07-13,1,https://www.aviasales.com/search/LAX1307BER1?marker=741311
+336,445,USD,SEA,MCW,"Mason City, United States",US,2026-07-22,2,https://www.aviasales.com/search/SEA2207MCW1?marker=741311
+337,446,USD,SFO,BUH,"Bucharest, Romania",RO,2026-07-20,3,https://www.aviasales.com/search/SFO2007BUH1?marker=741311
+338,448,USD,JFK,ITH,"Ithaca, United States",US,2026-07-17,2,https://www.aviasales.com/search/JFK1707ITH1?marker=741311
+339,449,USD,SFO,SGN,"Ho Chi Minh City, Vietnam",VN,2026-07-16,1,https://www.aviasales.com/search/SFO1607SGN1?marker=741311
+340,450,USD,PHL,PHF,"Newport News, United States",US,2026-07-17,1,https://www.aviasales.com/search/PHL1707PHF1?marker=741311
+341,452,USD,MIA,BHX,"Birmingham, United Kingdom",GB,2026-07-14,1,https://www.aviasales.com/search/MIA1407BHX1?marker=741311
+342,453,USD,JFK,BOJ,"Bourgas, Bulgaria",BG,2026-07-17,2,https://www.aviasales.com/search/JFK1707BOJ1?marker=741311
+343,456,USD,MSP,OGD,"Ogden, United States",US,2026-07-22,2,https://www.aviasales.com/search/MSP2207OGD1?marker=741311
+344,457,USD,JFK,VAR,"Varna, Bulgaria",BG,2026-07-17,2,https://www.aviasales.com/search/JFK1707VAR1?marker=741311
+345,457,USD,JFK,HEL,"Helsinki, Finland",FI,2026-07-12,2,https://www.aviasales.com/search/JFK1207HEL1?marker=741311
+346,460,USD,JFK,VNO,"Vilnius, Lithuania",LT,2026-07-20,2,https://www.aviasales.com/search/JFK2007VNO1?marker=741311
+347,461,USD,LAX,SZX,"Shenzhen, China",CN,2026-07-14,1,https://www.aviasales.com/search/LAX1407SZX1?marker=741311
+348,462,USD,DFW,JMS,"Jamestown, United States",US,2026-07-22,1,https://www.aviasales.com/search/DFW2207JMS1?marker=741311
+349,462,USD,CLT,DUB,"Dublin, Ireland",IE,2026-07-15,3,https://www.aviasales.com/search/CLT1507DUB1?marker=741311
+350,465,USD,LAX,PMO,"Palermo, Italy",IT,2026-07-19,3,https://www.aviasales.com/search/LAX1907PMO1?marker=741311
+351,465,USD,MCO,HOG,"Holguin, Cuba",CU,2026-07-17,2,https://www.aviasales.com/search/MCO1707HOG1?marker=741311
+352,466,USD,LAX,HKT,"Phuket, Thailand",TH,2026-07-14,1,https://www.aviasales.com/search/LAX1407HKT1?marker=741311
+353,466,USD,ORD,CAG,"Cagliari, Italy",IT,2026-07-13,2,https://www.aviasales.com/search/ORD1307CAG1?marker=741311
+354,467,USD,LAS,DIK,"Dickinson, United States",US,2026-07-20,1,https://www.aviasales.com/search/LAS2007DIK1?marker=741311
+355,470,USD,LAX,IBZ,"Ibiza, Spain",ES,2026-07-13,3,https://www.aviasales.com/search/LAX1307IBZ1?marker=741311
+356,471,USD,MCO,SCU,"Santiago, Cuba",CU,2026-07-17,1,https://www.aviasales.com/search/MCO1707SCU1?marker=741311
+357,472,USD,JFK,TUN,"Tunis, Tunisia",TN,2026-07-13,1,https://www.aviasales.com/search/JFK1307TUN1?marker=741311
+358,475,USD,LAX,SIN,"Singapore, Singapore",SG,2026-07-16,1,https://www.aviasales.com/search/LAX1607SIN1?marker=741311
+359,475,USD,SEA,POP,"Puerto Plata, Dominican Republic",DO,2026-07-12,1,https://www.aviasales.com/search/SEA1207POP1?marker=741311
+360,480,USD,BNA,CAI,"Cairo, Egypt",EG,2026-07-20,3,https://www.aviasales.com/search/BNA2007CAI1?marker=741311
+361,482,USD,ORD,OSL,"Oslo, Norway",NO,2026-07-19,2,https://www.aviasales.com/search/ORD1907OSL1?marker=741311
+362,482,USD,DEN,RAK,"Marrakech, Morocco",MA,2026-07-17,2,https://www.aviasales.com/search/DEN1707RAK1?marker=741311
+363,482,USD,PHX,BLB,"Balboa, Panama",PA,2026-07-22,3,https://www.aviasales.com/search/PHX2207BLB1?marker=741311
+364,482,USD,LAX,MVD,"Montevideo, Uruguay",UY,2026-07-22,2,https://www.aviasales.com/search/LAX2207MVD1?marker=741311
+365,483,USD,LAX,TAS,"Tashkent, Uzbekistan",UZ,2026-07-21,1,https://www.aviasales.com/search/LAX2107TAS1?marker=741311
+366,484,USD,JFK,LUX,"Luxembourg, Luxembourg",LU,2026-07-21,3,https://www.aviasales.com/search/JFK2107LUX1?marker=741311
+367,485,USD,JFK,DRO,"Durango, United States",US,2026-07-17,1,https://www.aviasales.com/search/JFK1707DRO1?marker=741311
+368,485,USD,LAX,VCE,"Venice, Italy",IT,2026-07-22,1,https://www.aviasales.com/search/LAX2207VCE1?marker=741311
+369,487,USD,DFW,HYD,"Hyderabad, India",IN,2026-07-13,2,https://www.aviasales.com/search/DFW1307HYD1?marker=741311
+370,487,USD,JFK,JED,"Jeddah, Saudi Arabia",SA,2026-07-20,1,https://www.aviasales.com/search/JFK2007JED1?marker=741311
+371,487,USD,LAX,TGD,"Podgorica, Montenegro",ME,2026-07-18,3,https://www.aviasales.com/search/LAX1807TGD1?marker=741311
+372,488,USD,SEA,EVN,"Yerevan, Armenia",AM,2026-07-16,1,https://www.aviasales.com/search/SEA1607EVN1?marker=741311
+373,489,USD,SFO,CAN,"Guangzhou, China",CN,2026-07-19,2,https://www.aviasales.com/search/SFO1907CAN1?marker=741311
+374,489,USD,IAD,RMO,"Chisinau, Moldova",MD,2026-07-18,3,https://www.aviasales.com/search/IAD1807RMO1?marker=741311
+375,490,USD,ATL,RIW,"Riverton, United States",US,2026-07-15,1,https://www.aviasales.com/search/ATL1507RIW1?marker=741311
+376,490,USD,IAH,LCE,"La Ceiba, Honduras",HN,2026-07-13,2,https://www.aviasales.com/search/IAH1307LCE1?marker=741311
+377,491,USD,MCO,MOW,"Moscow, Russia",RU,2026-07-19,2,https://www.aviasales.com/search/MCO1907MOW1?marker=741311
+378,491,USD,BOS,BAK,"Baku, Azerbaijan",AZ,2026-07-20,1,https://www.aviasales.com/search/BOS2007BAK1?marker=741311
+379,493,USD,JFK,BAH,"Manama, Bahrain",BH,2026-07-22,1,https://www.aviasales.com/search/JFK2207BAH1?marker=741311
+380,495,USD,JFK,PRN,"Pristina, Kosovo",XK,2026-07-21,1,https://www.aviasales.com/search/JFK2107PRN1?marker=741311
+381,497,USD,BNA,DOH,"Doha, Qatar",QA,2026-07-20,4,https://www.aviasales.com/search/BNA2007DOH1?marker=741311
+382,497,USD,LAX,CTU,"Chengdu, China",CN,2026-07-14,1,https://www.aviasales.com/search/LAX1407CTU1?marker=741311
+383,497,USD,MCO,MAN,"Manchester, United Kingdom",GB,2026-07-13,2,https://www.aviasales.com/search/MCO1307MAN1?marker=741311
+384,504,USD,DEN,RHI,"Rhinelander, United States",US,2026-07-21,1,https://www.aviasales.com/search/DEN2107RHI1?marker=741311
+385,511,USD,JFK,CUZ,"Cuzco, Peru",PE,2026-07-16,3,https://www.aviasales.com/search/JFK1607CUZ1?marker=741311
+386,513,USD,JFK,SSH,"Sharm el Sheikh, Egypt",EG,2026-07-18,2,https://www.aviasales.com/search/JFK1807SSH1?marker=741311
+387,514,USD,JFK,MED,"Madinah, Saudi Arabia",SA,2026-07-19,1,https://www.aviasales.com/search/JFK1907MED1?marker=741311
+388,515,USD,JFK,AUH,"Abu Dhabi, United Arab Emirates",AE,2026-07-21,1,https://www.aviasales.com/search/JFK2107AUH1?marker=741311
+389,516,USD,JFK,GRO,"Girona, Spain",ES,2026-07-18,1,https://www.aviasales.com/search/JFK1807GRO1?marker=741311
+390,516,USD,MIA,RBA,"Rabat, Morocco",MA,2026-07-17,2,https://www.aviasales.com/search/MIA1707RBA1?marker=741311
+391,517,USD,IAH,OGL,"Georgetown, Guyana",GY,2026-07-15,3,https://www.aviasales.com/search/IAH1507OGL1?marker=741311
+392,522,USD,DFW,AYT,"Antalya, Turkiye",TR,2026-07-13,1,https://www.aviasales.com/search/DFW1307AYT1?marker=741311
+393,524,USD,MIA,NQT,"Leicestershire, United Kingdom",GB,2026-07-12,2,https://www.aviasales.com/search/MIA1207NQT1?marker=741311
+394,524,USD,RDU,ALG,"Algiers, Algeria",DZ,2026-07-13,3,https://www.aviasales.com/search/RDU1307ALG1?marker=741311
+395,527,USD,MIA,TBS,"Tbilisi, Georgia",GE,2026-07-21,2,https://www.aviasales.com/search/MIA2107TBS1?marker=741311
+396,529,USD,JFK,DKR,"Dakar, Senegal",SN,2026-07-14,1,https://www.aviasales.com/search/JFK1407DKR1?marker=741311
+397,530,USD,JFK,VIX,"Vitoria, Brazil",BR,2026-07-19,2,https://www.aviasales.com/search/JFK1907VIX1?marker=741311
+398,533,USD,IAD,LPB,"La Paz, Bolivia",BO,2026-07-14,2,https://www.aviasales.com/search/IAD1407LPB1?marker=741311
+399,534,USD,IAD,KHI,"Karachi, Pakistan",PK,2026-07-20,1,https://www.aviasales.com/search/IAD2007KHI1?marker=741311
+400,535,USD,PHL,BJV,"Bodrum, Turkiye",TR,2026-07-14,3,https://www.aviasales.com/search/PHL1407BJV1?marker=741311
+401,537,USD,LAX,DAD,"Da Nang, Vietnam",VN,2026-07-21,2,https://www.aviasales.com/search/LAX2107DAD1?marker=741311
+402,537,USD,MIA,TLL,"Tallinn, Estonia",EE,2026-07-20,3,https://www.aviasales.com/search/MIA2007TLL1?marker=741311
+403,539,USD,LAX,SCL,"Santiago, Chile",CL,2026-07-19,1,https://www.aviasales.com/search/LAX1907SCL1?marker=741311
+404,541,USD,ATL,SZG,"Salzburg, Austria",AT,2026-07-17,3,https://www.aviasales.com/search/ATL1707SZG1?marker=741311
+405,542,USD,SFO,DEL,"Delhi, India",IN,2026-07-20,2,https://www.aviasales.com/search/SFO2007DEL1?marker=741311
+406,546,USD,IAD,BSZ,"Bishkek, Kyrgyzstan",KG,2026-07-22,3,https://www.aviasales.com/search/IAD2207BSZ1?marker=741311
+407,558,USD,SEA,HNH,"Hoonah, United States",US,2026-07-17,1,https://www.aviasales.com/search/SEA1707HNH1?marker=741311
+408,559,USD,LAX,BTS,"Bratislava, Slovakia",SK,2026-07-15,2,https://www.aviasales.com/search/LAX1507BTS1?marker=741311
+409,560,USD,MCO,AER,"Adler/Sochi, Russia",RU,2026-07-21,4,https://www.aviasales.com/search/MCO2107AER1?marker=741311
+410,563,USD,JFK,ALA,"Almaty, Kazakhstan",KZ,2026-07-16,2,https://www.aviasales.com/search/JFK1607ALA1?marker=741311
+411,563,USD,ORD,OLB,"Olbia, Italy",IT,2026-07-16,2,https://www.aviasales.com/search/ORD1607OLB1?marker=741311
+412,566,USD,MIA,MLA,"Malta, Malta",MT,2026-07-12,2,https://www.aviasales.com/search/MIA1207MLA1?marker=741311
+413,568,USD,SFO,BSB,"Brasilia, Brazil",BR,2026-07-12,1,https://www.aviasales.com/search/SFO1207BSB1?marker=741311
+414,574,USD,SFO,IZM,"Izmir, Turkiye",TR,2026-07-16,1,https://www.aviasales.com/search/SFO1607IZM1?marker=741311
+415,575,USD,DFW,KUT,"Kutaisi, Georgia",GE,2026-07-19,3,https://www.aviasales.com/search/DFW1907KUT1?marker=741311
+416,576,USD,LAX,TLS,"Toulouse, France",FR,2026-07-14,1,https://www.aviasales.com/search/LAX1407TLS1?marker=741311
+417,578,USD,JFK,AQI,"Qaisumah, Saudi Arabia",SA,2026-07-14,2,https://www.aviasales.com/search/JFK1407AQI1?marker=741311
+418,583,USD,MIA,TER,"Terceira, Portugal",PT,2026-07-14,3,https://www.aviasales.com/search/MIA1407TER1?marker=741311
+419,585,USD,ORD,OPO,"Porto, Portugal",PT,2026-07-13,3,https://www.aviasales.com/search/ORD1307OPO1?marker=741311
+420,589,USD,FLL,LRM,"La Romana, Dominican Republic",DO,2026-07-14,3,https://www.aviasales.com/search/FLL1407LRM1?marker=741311
+421,591,USD,SFO,LOP,"Praya, Indonesia",ID,2026-07-21,2,https://www.aviasales.com/search/SFO2107LOP1?marker=741311
+422,591,USD,SEA,OTH,"North Bend, United States",US,2026-07-22,2,https://www.aviasales.com/search/SEA2207OTH1?marker=741311
+423,595,USD,JFK,KRR,"Krasnodar, Russia",RU,2026-07-12,3,https://www.aviasales.com/search/JFK1207KRR1?marker=741311
+424,598,USD,JFK,HRG,"Hurghada, Egypt",EG,2026-07-22,3,https://www.aviasales.com/search/JFK2207HRG1?marker=741311
+425,598,USD,LAX,CIT,"Shymkent, Kazakhstan",KZ,2026-07-22,2,https://www.aviasales.com/search/LAX2207CIT1?marker=741311
+426,602,USD,ORD,LED,"Saint Petersburg, Russia",RU,2026-07-22,3,https://www.aviasales.com/search/ORD2207LED1?marker=741311
+427,602,USD,LAX,VEL,"Vernal, United States",US,2026-07-22,3,https://www.aviasales.com/search/LAX2207VEL1?marker=741311
+428,606,USD,LAX,TOL,"Toledo, United States",US,2026-07-13,3,https://www.aviasales.com/search/LAX1307TOL1?marker=741311
+429,616,USD,LAX,HFE,"Hefei, China",CN,2026-07-12,1,https://www.aviasales.com/search/LAX1207HFE1?marker=741311
+430,632,USD,MIA,BUS,"Batumi, Georgia",GE,2026-07-22,1,https://www.aviasales.com/search/MIA2207BUS1?marker=741311
+431,633,USD,TPA,SKP,"Skopje, North Macedonia",MK,2026-07-13,2,https://www.aviasales.com/search/TPA1307SKP1?marker=741311
+432,636,USD,JFK,SHA,"Shanghai, China",CN,2026-07-13,1,https://www.aviasales.com/search/JFK1307SHA1?marker=741311
+433,642,USD,IAH,ISB,"Islamabad, Pakistan",PK,2026-07-15,1,https://www.aviasales.com/search/IAH1507ISB1?marker=741311
+434,647,USD,LAS,DPS,"Denpasar (Bali), Indonesia",ID,2026-07-21,3,https://www.aviasales.com/search/LAS2107DPS1?marker=741311
+435,649,USD,JFK,SVX,"Yekaterinburg, Russia",RU,2026-07-19,2,https://www.aviasales.com/search/JFK1907SVX1?marker=741311
+436,651,USD,MCO,LOS,"Lagos, Nigeria",NG,2026-07-21,2,https://www.aviasales.com/search/MCO2107LOS1?marker=741311
+437,656,USD,IAD,LHE,"Lahore, Pakistan",PK,2026-07-16,1,https://www.aviasales.com/search/IAD1607LHE1?marker=741311
+438,657,USD,MSP,AGB,"Augsburg, Germany",DE,2026-07-15,1,https://www.aviasales.com/search/MSP1507AGB1?marker=741311
+439,659,USD,LAX,VVO,"Vladivostok, Russia",RU,2026-07-17,3,https://www.aviasales.com/search/LAX1707VVO1?marker=741311
+440,663,USD,JFK,KZN,"Kazan, Russia",RU,2026-07-21,3,https://www.aviasales.com/search/JFK2107KZN1?marker=741311
+441,665,USD,JFK,PQC,"Phu Quoc, Vietnam",VN,2026-07-16,1,https://www.aviasales.com/search/JFK1607PQC1?marker=741311
+442,666,USD,ORD,BGW,"Baghdad, Iraq",IQ,2026-07-15,1,https://www.aviasales.com/search/ORD1507BGW1?marker=741311
+443,667,USD,IAH,CCS,"Caracas, Venezuela",VE,2026-07-14,2,https://www.aviasales.com/search/IAH1407CCS1?marker=741311
+444,668,USD,JFK,HAN,"Hanoi, Vietnam",VN,2026-07-14,1,https://www.aviasales.com/search/JFK1407HAN1?marker=741311
+445,669,USD,ATL,NBO,"Nairobi, Kenya",KE,2026-07-17,2,https://www.aviasales.com/search/ATL1707NBO1?marker=741311
+446,672,USD,SEA,GUM,"Guam, Guam",GU,2026-07-20,2,https://www.aviasales.com/search/SEA2007GUM1?marker=741311
+447,681,USD,FLL,SID,"Sal, Cape Verde",CV,2026-07-21,2,https://www.aviasales.com/search/FLL2107SID1?marker=741311
+448,683,USD,JFK,MLE,"Male, Maldives",MV,2026-07-13,3,https://www.aviasales.com/search/JFK1307MLE1?marker=741311
+449,688,USD,DFW,SYX,"Sanya, China",CN,2026-07-22,3,https://www.aviasales.com/search/DFW2207SYX1?marker=741311
+450,688,USD,LAX,MRV,"Mineralnye Vody, Russia",RU,2026-07-20,3,https://www.aviasales.com/search/LAX2007MRV1?marker=741311
+451,690,USD,JFK,SLL,"Salalah, Oman",OM,2026-07-16,1,https://www.aviasales.com/search/JFK1607SLL1?marker=741311
+452,696,USD,SFO,UBN,"Ulaanbaatar, Mongolia",MN,2026-07-15,1,https://www.aviasales.com/search/SFO1507UBN1?marker=741311
+453,698,USD,IAD,NBC,"Naberezhnye Chelny, Russia",RU,2026-07-21,4,https://www.aviasales.com/search/IAD2107NBC1?marker=741311
+454,700,USD,ORD,UFA,"Ufa, Russia",RU,2026-07-21,3,https://www.aviasales.com/search/ORD2107UFA1?marker=741311
+455,708,USD,JFK,RTW,"Saratov, Russia",RU,2026-07-14,3,https://www.aviasales.com/search/JFK1407RTW1?marker=741311
+456,712,USD,IAD,KBL,"Kabul, Afghanistan",AF,2026-07-19,2,https://www.aviasales.com/search/IAD1907KBL1?marker=741311
+457,715,USD,JFK,MGF,"Maringa, Brazil",BR,2026-07-16,1,https://www.aviasales.com/search/JFK1607MGF1?marker=741311
+458,720,USD,LAX,UGC,"Urgench, Uzbekistan",UZ,2026-07-15,3,https://www.aviasales.com/search/LAX1507UGC1?marker=741311
+459,722,USD,ORD,NQZ,"Astana, Kazakhstan",KZ,2026-07-21,1,https://www.aviasales.com/search/ORD2107NQZ1?marker=741311
+460,724,USD,LAX,PER,"Perth, Australia",AU,2026-07-22,3,https://www.aviasales.com/search/LAX2207PER1?marker=741311
+461,727,USD,JFK,BHK,"Bukhara, Uzbekistan",UZ,2026-07-22,1,https://www.aviasales.com/search/JFK2207BHK1?marker=741311
+462,728,USD,JFK,MSQ,"Minsk, Belarus",BY,2026-07-22,4,https://www.aviasales.com/search/JFK2207MSQ1?marker=741311
+463,728,USD,LAX,CNS,"Cairns, Australia",AU,2026-07-21,1,https://www.aviasales.com/search/LAX2107CNS1?marker=741311
+464,731,USD,LAX,SCO,"Aktau, Kazakhstan",KZ,2026-07-16,2,https://www.aviasales.com/search/LAX1607SCO1?marker=741311
+465,735,USD,FLL,XMN,"Xiamen, China",CN,2026-07-21,2,https://www.aviasales.com/search/FLL2107XMN1?marker=741311
+466,736,USD,IAD,IJK,"Izhevsk, Russia",RU,2026-07-21,4,https://www.aviasales.com/search/IAD2107IJK1?marker=741311
+467,740,USD,ORD,NHA,"Nha Trang, Vietnam",VN,2026-07-22,2,https://www.aviasales.com/search/ORD2207NHA1?marker=741311
+468,746,USD,IAD,ABJ,"Abidjan, Ivory Coast",CI,2026-07-20,1,https://www.aviasales.com/search/IAD2007ABJ1?marker=741311
+469,747,USD,ORD,FEG,"Fergana, Uzbekistan",UZ,2026-07-21,3,https://www.aviasales.com/search/ORD2107FEG1?marker=741311
+470,748,USD,ORD,DYU,"Dushanbe, Tajikistan",TJ,2026-07-12,3,https://www.aviasales.com/search/ORD1207DYU1?marker=741311
+471,755,USD,MIA,KUL,"Kuala Lumpur, Malaysia",MY,2026-07-17,3,https://www.aviasales.com/search/MIA1707KUL1?marker=741311
+472,762,USD,JFK,HRB,"Harbin, China",CN,2026-07-19,2,https://www.aviasales.com/search/JFK1907HRB1?marker=741311
+473,770,USD,ORD,IGT,"Magas, Russia",RU,2026-07-21,4,https://www.aviasales.com/search/ORD2107IGT1?marker=741311
+474,770,USD,IAH,ARH,"Arkhangelsk, Russia",RU,2026-07-21,4,https://www.aviasales.com/search/IAH2107ARH1?marker=741311
+475,780,USD,DFW,SKD,"Samarkand, Uzbekistan",UZ,2026-07-17,2,https://www.aviasales.com/search/DFW1707SKD1?marker=741311
+476,783,USD,JFK,HUI,"Hue, Vietnam",VN,2026-07-16,2,https://www.aviasales.com/search/JFK1607HUI1?marker=741311
+477,784,USD,JFK,PEE,"Perm, Russia",RU,2026-07-18,3,https://www.aviasales.com/search/JFK1807PEE1?marker=741311
+478,786,USD,FLL,OGZ,"Vladikavkaz, Russia",RU,2026-07-21,4,https://www.aviasales.com/search/FLL2107OGZ1?marker=741311
+479,791,USD,SLC,SUG,"Surigao, Philippines",PH,2026-07-14,4,https://www.aviasales.com/search/SLC1407SUG1?marker=741311
+480,797,USD,BOS,RAI,"Praia, Cape Verde",CV,2026-07-18,1,https://www.aviasales.com/search/BOS1807RAI1?marker=741311
+481,798,USD,IAH,OSS,"Osh, Kyrgyzstan",KG,2026-07-19,3,https://www.aviasales.com/search/IAH1907OSS1?marker=741311
+482,820,USD,MIA,AHU,"Al Hoceima, Morocco",MA,2026-07-15,3,https://www.aviasales.com/search/MIA1507AHU1?marker=741311
+483,822,USD,JFK,HPH,"Haiphong, Vietnam",VN,2026-07-16,3,https://www.aviasales.com/search/JFK1607HPH1?marker=741311
+484,822,USD,SEA,OUA,"Ouagadougou, Burkina Faso",BF,2026-07-18,2,https://www.aviasales.com/search/SEA1807OUA1?marker=741311
+485,825,USD,IAH,MEL,"Melbourne, Australia",AU,2026-07-21,2,https://www.aviasales.com/search/IAH2107MEL1?marker=741311
+486,831,USD,CLT,CSY,"Cheboksary, Russia",RU,2026-07-21,4,https://www.aviasales.com/search/CLT2107CSY1?marker=741311
+487,832,USD,SFO,OOL,"Coolangatta (Gold Coast), Australia",AU,2026-07-21,3,https://www.aviasales.com/search/SFO2107OOL1?marker=741311
+488,839,USD,JFK,MMK,"Murmansk, Russia",RU,2026-07-13,4,https://www.aviasales.com/search/JFK1307MMK1?marker=741311
+489,843,USD,ORD,SYD,"Sydney, Australia",AU,2026-07-20,1,https://www.aviasales.com/search/ORD2007SYD1?marker=741311
+490,843,USD,JFK,VCS,"Con Dao, Vietnam",VN,2026-07-16,2,https://www.aviasales.com/search/JFK1607VCS1?marker=741311
+491,843,USD,IAH,BJM,"Bujumbura, Burundi",BI,2026-07-13,2,https://www.aviasales.com/search/IAH1307BJM1?marker=741311
+492,845,USD,LAX,OVB,"Novosibirsk, Russia",RU,2026-07-12,3,https://www.aviasales.com/search/LAX1207OVB1?marker=741311
+493,849,USD,DCA,CRK,"Luzon Island, Philippines",PH,2026-07-16,2,https://www.aviasales.com/search/DCA1607CRK1?marker=741311
+494,858,USD,JFK,ZNZ,"Zanzibar, Tanzania",TZ,2026-07-20,1,https://www.aviasales.com/search/JFK2007ZNZ1?marker=741311
+495,864,USD,IAH,JPA,"Joao Pessoa, Brazil",BR,2026-07-22,3,https://www.aviasales.com/search/IAH2207JPA1?marker=741311
+496,865,USD,MCO,BOB,"Bora Bora, French Polynesia",PF,2026-07-21,3,https://www.aviasales.com/search/MCO2107BOB1?marker=741311
+497,869,USD,IAD,DAC,"Dhaka, Bangladesh",BD,2026-07-16,1,https://www.aviasales.com/search/IAD1607DAC1?marker=741311
+498,869,USD,MIA,GOJ,"Nizhniy Novgorod, Russia",RU,2026-07-13,4,https://www.aviasales.com/search/MIA1307GOJ1?marker=741311
+499,883,USD,SEA,YFO,"Flin Flon, Canada",CA,2026-07-19,2,https://www.aviasales.com/search/SEA1907YFO1?marker=741311
+500,887,USD,SFO,KHV,"Khabarovsk, Russia",RU,2026-07-15,2,https://www.aviasales.com/search/SFO1507KHV1?marker=741311
+501,891,USD,JFK,KGD,"Kaliningrad, Russia",RU,2026-07-17,4,https://www.aviasales.com/search/JFK1707KGD1?marker=741311
+502,902,USD,MCO,BNE,"Brisbane, Australia",AU,2026-07-13,2,https://www.aviasales.com/search/MCO1307BNE1?marker=741311
+503,905,USD,SLC,IAO,"Sayak (Siargao), Philippines",PH,2026-07-14,3,https://www.aviasales.com/search/SLC1407IAO1?marker=741311
+504,914,USD,JFK,GRV,"Groznyy, Russia",RU,2026-07-21,3,https://www.aviasales.com/search/JFK2107GRV1?marker=741311
+505,914,USD,LAX,KUN,"Kaunas, Lithuania",LT,2026-07-16,2,https://www.aviasales.com/search/LAX1607KUN1?marker=741311
+506,922,USD,JFK,KJA,"Krasnojarsk, Russia",RU,2026-07-22,3,https://www.aviasales.com/search/JFK2207KJA1?marker=741311
+507,927,USD,JFK,HGH,"Hangzhou, China",CN,2026-07-12,3,https://www.aviasales.com/search/JFK1207HGH1?marker=741311
+508,934,USD,IAH,JNB,"Johannesburg, South Africa",ZA,2026-07-21,2,https://www.aviasales.com/search/IAH2107JNB1?marker=741311
+509,946,USD,LAX,ADL,"Adelaide, Australia",AU,2026-07-20,3,https://www.aviasales.com/search/LAX2007ADL1?marker=741311
+510,974,USD,JFK,MQF,"Magnitogorsk, Russia",RU,2026-07-12,4,https://www.aviasales.com/search/JFK1207MQF1?marker=741311
+511,997,USD,BOS,ACC,"Accra, Ghana",GH,2026-07-18,2,https://www.aviasales.com/search/BOS1807ACC1?marker=741311
+512,999,USD,ORD,CEK,"Chelyabinsk, Russia",RU,2026-07-22,4,https://www.aviasales.com/search/ORD2207CEK1?marker=741311
+513,1012,USD,LAX,ZQN,"Queenstown, New Zealand",NZ,2026-07-21,1,https://www.aviasales.com/search/LAX2107ZQN1?marker=741311
+514,1015,USD,JFK,CHC,"Christchurch, New Zealand",NZ,2026-07-22,2,https://www.aviasales.com/search/JFK2207CHC1?marker=741311
+515,1036,USD,MIA,CPT,"Cape Town, South Africa",ZA,2026-07-16,2,https://www.aviasales.com/search/MIA1607CPT1?marker=741311
+516,1046,USD,DFW,NMA,"Namangan, Uzbekistan",UZ,2026-07-19,3,https://www.aviasales.com/search/DFW1907NMA1?marker=741311
+517,1060,USD,DFW,MCX,"Makhachkala, Russia",RU,2026-07-17,2,https://www.aviasales.com/search/DFW1707MCX1?marker=741311
+518,1066,USD,DTW,LAD,"Luanda, Angola",AO,2026-07-20,2,https://www.aviasales.com/search/DTW2007LAD1?marker=741311
+519,1070,USD,SFO,OMS,"Omsk, Russia",RU,2026-07-14,2,https://www.aviasales.com/search/SFO1407OMS1?marker=741311
+520,1073,USD,ORD,AZN,"Andijan, Uzbekistan",UZ,2026-07-15,3,https://www.aviasales.com/search/ORD1507AZN1?marker=741311
+521,1085,USD,LAX,YKS,"Yakutsk, Russia",RU,2026-07-13,4,https://www.aviasales.com/search/LAX1307YKS1?marker=741311
+522,1088,USD,DTW,ASF,"Astrakhan, Russia",RU,2026-07-14,4,https://www.aviasales.com/search/DTW1407ASF1?marker=741311
+523,1092,USD,ORD,STW,"Stavropol, Russia",RU,2026-07-15,3,https://www.aviasales.com/search/ORD1507STW1?marker=741311
+524,1108,USD,SEA,KGF,"Karaganda, Kazakhstan",KZ,2026-07-16,3,https://www.aviasales.com/search/SEA1607KGF1?marker=741311
+525,1112,USD,RDU,TOF,"Tomsk, Russia",RU,2026-07-15,4,https://www.aviasales.com/search/RDU1507TOF1?marker=741311
+526,1119,USD,MIA,PKC,"Petropavlovsk-Kamchatsky, Russia",RU,2026-07-19,4,https://www.aviasales.com/search/MIA1907PKC1?marker=741311
+527,1122,USD,LAX,UUD,"Ulan-Ude, Russia",RU,2026-07-13,4,https://www.aviasales.com/search/LAX1307UUD1?marker=741311
+528,1156,USD,MIA,IKT,"Irkutsk, Russia",RU,2026-07-16,2,https://www.aviasales.com/search/MIA1607IKT1?marker=741311
+529,1180,USD,LAX,ABA,"Abakan, Russia",RU,2026-07-16,3,https://www.aviasales.com/search/LAX1607ABA1?marker=741311
+530,1183,USD,SEA,VFA,"Victoria Falls, Zimbabwe",ZW,2026-07-20,2,https://www.aviasales.com/search/SEA2007VFA1?marker=741311
+531,1236,USD,LAX,WLG,"Wellington, New Zealand",NZ,2026-07-20,3,https://www.aviasales.com/search/LAX2007WLG1?marker=741311
+532,1446,USD,JFK,JAV,"Ilulissat, Greenland",GL,2026-07-14,1,https://www.aviasales.com/search/JFK1407JAV1?marker=741311
+533,1686,USD,MIA,GDX,"Magadan, Russia",RU,2026-07-13,3,https://www.aviasales.com/search/MIA1307GDX1?marker=741311
+534,1706,USD,JFK,NOS,"Nossi-be, Madagascar",MG,2026-07-17,3,https://www.aviasales.com/search/JFK1707NOS1?marker=741311
+535,1719,USD,JFK,FNJ,"Pyongyang, North Korea",KP,2026-07-19,1,https://www.aviasales.com/search/JFK1907FNJ1?marker=741311
