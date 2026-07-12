@@ -815,6 +815,11 @@ window.addEventListener('load', window.renderBucket);
     var done=function(){ try{ localStorage.setItem('mf_sub','1'); }catch(_){} var b=document.querySelector('#mf-capture .mfc-body'); if(b) b.innerHTML='<div class="mfc-ok">&#10003; You’re in. Check your inbox to confirm.</div>'; setTimeout(window.mfCaptureClose,2800); };
     var fb=function(){ var u="https://daltons-newsletter-44b474.beehiiv.com/"; var q=u+(u.indexOf('?')<0?'?':'&')+'email='+encodeURIComponent(em)+(ap?('&home_airport='+encodeURIComponent(ap)):''); try{ localStorage.setItem('mf_sub','1'); }catch(_){} try{ window.open(q,'_blank','noopener'); }catch(_){} done(); };
     fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em,home_airport:ap})}).then(function(r){ if(!r.ok) throw 0; done(); }).catch(fb); return false; };
+  // Inline signup blocks placed in-page (mid-content) reuse the same subscribe flow.
+  window.mfInlineSub=function(e){ e.preventDefault(); var f=e.target; var inp=f.querySelector('input[type=email]'); var em=inp?((inp.value||'').trim()):''; if(!em) return false; var ap=''; try{ var h=JSON.parse(localStorage.getItem('fs_home')||'[]'); if(h&&h.length) ap=h[0]; }catch(_){}
+    var done=function(){ try{ localStorage.setItem('mf_sub','1'); }catch(_){} f.innerHTML='<p style="font-size:1.05rem;color:var(--green);font-weight:600;margin:8px 0">&#10003; You’re in. Check your inbox to confirm.</p>'; };
+    var fb=function(){ var u="https://daltons-newsletter-44b474.beehiiv.com/"; var q=u+(u.indexOf('?')<0?'?':'&')+'email='+encodeURIComponent(em)+(ap?('&home_airport='+encodeURIComponent(ap)):''); try{ localStorage.setItem('mf_sub','1'); }catch(_){} try{ window.open(q,'_blank','noopener'); }catch(_){} done(); };
+    fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em,home_airport:ap})}).then(function(r){ if(!r.ok) throw 0; done(); }).catch(fb); return false; };
   if(subd()) return;
   var shown=false; function reveal(){ if(shown||subd()) return; shown=true; var el=document.getElementById('mf-capture'); if(el){ el.classList.add('show'); el.style.transform='translateX(-50%) translateY(0)'; } }
   setTimeout(reveal, 22000);
