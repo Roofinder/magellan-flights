@@ -1179,9 +1179,9 @@ def index_cards(oneway, hist):
 
 
 _MOVER_REGIONS = {
-    "Asia": ["TYO","BKK","DPS","HKT","SGN","HAN","NRT","KIX","ICN","SIN","KUL","MNL","DEL","BOM","HKG","TPE","KTM","PEK","PVG","CAN","CTU","CGK","REP","PNH","CMB","MLE","BLR","MAA","FUK","CEB","KHH", "CTS", "OKA", "CNX", "DAD", "USM", "GOI", "COK", "PEN", "SUB"],
+    "Asia": ["BKK","DPS","HKT","SGN","HAN","NRT","KIX","ICN","SIN","KUL","MNL","DEL","BOM","HKG","TPE","KTM","PEK","PVG","CAN","CTU","CGK","REP","PNH","CMB","MLE","BLR","MAA","FUK","CEB","KHH", "CTS", "OKA", "CNX", "DAD", "USM", "GOI", "COK", "PEN", "SUB"],
     "Middle East": ["DXB","DOH","IST","TLV","AUH","RUH","JED","AMM","BEY","MCT", "KWI", "BAH", "GYD", "TBS", "EVN"],
-    "Europe": ["LON","PAR","LHR","CDG","FCO","BCN","MAD","LIS","AMS","FRA","ATH","DUB","KEF","PRG","CPH","MUC","ZRH","VIE","BRU","MXP","VCE","NCE","EDI","MAN","GVA","OSL","ARN","HEL","WAW","BUD","KRK","OPO", "HAM", "DUS", "BER", "STR", "CGN", "SOF", "OTP", "BEG", "ZAG", "SPU", "DBV", "TLL", "RIX", "VNO", "BLQ", "FLR", "NAP", "CTA", "AGP", "SVQ", "VLC", "FAO", "LYS", "MRS", "GLA", "BHX"],
+    "Europe": ["LHR","CDG","FCO","BCN","MAD","LIS","AMS","FRA","ATH","DUB","KEF","PRG","CPH","MUC","ZRH","VIE","BRU","MXP","VCE","NCE","EDI","MAN","GVA","OSL","ARN","HEL","WAW","BUD","KRK","OPO", "HAM", "DUS", "BER", "STR", "CGN", "SOF", "OTP", "BEG", "ZAG", "SPU", "DBV", "TLL", "RIX", "VNO", "BLQ", "FLR", "NAP", "CTA", "AGP", "SVQ", "VLC", "FAO", "LYS", "MRS", "GLA", "BHX"],
     "Americas": ["MEX","CUN","SJD","PTY","SJO","SJU","PUJ","NAS","BOG","LIM","GRU","EZE","SCL","GIG","UIO","CTG","MDE","GUA","MBJ","AUA","CUR","BGI","KIN","GCM","BZE","SDQ","STT","LIR", "YYZ", "YVR", "YUL", "YYC", "SAL", "TGU", "MGA", "GYE", "FOR", "REC", "SSA", "FLN", "SXM", "ANU", "UVF", "GND", "POS", "PLS", "FPO"],
     "Oceania": ["SYD","MEL","AKL","NAN","BNE","PER","CHC","PPT", "CNS", "ADL", "WLG", "ZQN"],
     "Africa": ["CAI","CMN","JNB","NBO","RAK","ACC","LOS","ADD","CPT","DKR", "TUN", "AGA", "HRG", "SSH", "MBA", "ZNZ", "JRO", "MRU"],
@@ -4028,18 +4028,13 @@ function buildLoop(start, nStops, allowed, dir, mustH){
   var rel=relLon(start, dir);
   var cand=[]; for(var h in RHUBS){ if(h===start||rel[h]<=0) continue; if(allowed && !allowed[RHUBS[h].cont]) continue; cand.push(h); }
   cand.sort(function(a,b){ return rel[a]-rel[b]; });
-  var scont=RHUBS[start].cont;
   var dp={};
-  // First leg must leave the start's continent, so a world loop never opens with
-  // a token hop to a neighbour (e.g. Chicago -> Vancouver) that reads as "staying put".
-  cand.forEach(function(h){ if(rel[h]>=GMIN&&rel[h]<=GMAX&&RHUBS[h].cont!==scont){ var p=legP(start,h); if(p!=null) dp[h+"|1"]={c:p,prev:null}; } });
+  cand.forEach(function(h){ if(rel[h]>=GMIN&&rel[h]<=GMAX){ var p=legP(start,h); if(p!=null) dp[h+"|1"]={c:p,prev:null}; } });
   for(var k=2;k<=nStops;k++){
     cand.forEach(function(h){
       var best=null;
       cand.forEach(function(p){
-        if(rel[p]>=rel[h]) return;
-        if(RHUBS[p].cont===RHUBS[h].cont) return; // hop continent-to-continent around the globe
-        var gap=rel[h]-rel[p]; if(gap<GMIN||gap>GMAX) return;
+        if(rel[p]>=rel[h]) return; var gap=rel[h]-rel[p]; if(gap<GMIN||gap>GMAX) return;
         var d=dp[p+"|"+(k-1)]; if(!d) return; var lp=legP(p,h); if(lp==null) return;
         var c=d.c+lp; if(best==null||c<best.c) best={c:c,prev:p};
       });
@@ -4560,86 +4555,6 @@ def body_watchlist(market):
 # stay Aviasales/Travelpayouts. {LIVE_*} tokens are filled from today's data.
 # --------------------------------------------------------------------------- #
 ARTICLES = [
-    {
-        "slug": "flight-deal-guide",
-        "title": "The Flight Deal Guide: How to Book a Cheap Fare | Magellan Flights",
-        "h1": "The Flight Deal Guide",
-        "description": "A short, honest playbook for turning a cheap fare into a booked "
-                       "trip: how to tell a real deal from a big number, and how to act "
-                       "before the seat is gone.",
-        "primary": "how to book a flight deal",
-        "secondary": ["how to find flight deals", "how to know if a flight is a good deal",
-                      "how to book cheap flights fast", "are cheap flight deals real"],
-        "kicker": "Deal playbook",
-        "published": "2026-07-12", "updated": "2026-07-12", "read_min": 4,
-        "money_href": "market.html", "money_label": "today's cheapest flight deals",
-        "lede": "A cheap fare is only the start. The real skill is telling a genuine deal "
-                "from a big round number, and then moving before the seat is gone. This is "
-                "the short playbook we use on every fare on the board, so you can do the "
-                "same in a few minutes.",
-        "quick_answer": "Judge a fare against its normal price, not the sticker. If it is "
-                        "genuinely below normal and you would fly it, book it fast, because "
-                        "the cheapest one-ways are often just a few seats. Stay flexible on "
-                        "dates and airport, book the flight before the rest of the trip, and "
-                        "always confirm the live price on Aviasales before you pay.",
-        "sections": [
-            ("Judge it against normal, not the sticker",
-             "<p>A price on its own tells you almost nothing. $600 to Tokyo can be a steal "
-             "or a rip-off depending on what that route usually costs. The only number that "
-             "matters is how a fare compares to its own history.</p>"
-             "<p>That is the whole idea behind the <a href='market.html'>deal board</a>: "
-             "every fare is judged against its normal price, so you can see at a glance how "
-             "far below normal it sits. A deal is a fare that has actually dropped, not just "
-             "a big number.</p>"),
-            ("If you would really fly it, book it fast",
-             "<p>The cheapest one-ways are often a handful of seats at that price. Once they "
-             "sell, the fare jumps back to normal. A genuine drop rarely waits for the "
-             "weekend.</p>"
-             "<p>So the test is simple: if it is a trip you would actually take, treat the "
-             "seat like it is already gone and book it. Hesitating is the most common way "
-             "people watch a real deal disappear.</p>"),
-            ("Stay flexible on dates and airport",
-             "<p>Flexibility is the cheapest upgrade you have. Shifting your departure by a "
-             "day, or leaving from a nearby airport, is usually where the savings hide.</p>"
-             "<ul class='blog-list'>"
-             "<li>Check a day earlier and a day later before you settle on a date.</li>"
-             "<li>Look at nearby hubs. A cheap flight to a big airport plus a short hop can "
-             "beat a direct fare.</li>"
-             "<li>Midweek departures (Tuesday, Wednesday) are usually cheaper than Friday "
-             "or Sunday.</li></ul>"),
-            ("Book the flight first, plan the rest after",
-             "<p>The cheap one-way out is the hard part, and the thing most likely to "
-             "vanish. Lock that in first. The return, the hotel, and the eSIM can all wait "
-             "until you know the trip is on.</p>"
-             "<p>Reversing that order, planning the whole trip before you book, is how "
-             "people talk themselves out of a fare that was there the day before.</p>"),
-            ("Confirm the live price before you pay",
-             "<p>We show the freshest fare we have tracked, but prices move all day as seats "
-             "sell. Your real, bookable price is always the one you see at checkout on the "
-             "airline or on <a href='market.html'>Aviasales</a>.</p>"
-             "<p>Click through, confirm the price and the dates match, then book. If it has "
-             "moved a little, the same flexibility rules apply: a nearby date or airport "
-             "often gets you back to the number you wanted.</p>"),
-        ],
-        "faqs": [
-            ("How do I know if a flight is actually a good deal?",
-             "Compare it to the route's normal price, not to a number in your head. A fare "
-             "is a good deal when it has dropped below what that route usually costs. A "
-             "tracker that shows each route's normal price makes this obvious at a glance."),
-            ("Are cheap flight deals real, or a bait and switch?",
-             "Real deals exist, but you have to confirm the live price before you pay. The "
-             "fare in a deal list is the freshest price tracked; the bookable price is the "
-             "one at checkout on the airline or Aviasales. Always verify there."),
-            ("How fast do I need to book a flight deal?",
-             "Fast. The cheapest fares are often only a few seats, and they can sell out "
-             "within hours. If it is a trip you would take, book it rather than waiting for "
-             "a better moment."),
-            ("Should I book the flight or plan the trip first?",
-             "Book the flight first. The cheap one-way is the scarce part and the most "
-             "likely to disappear. You can add the return, hotel, and other bookings once "
-             "the seat is locked in."),
-        ],
-    },
     {
         "slug": "cheapest-day-to-book-flights",
         "title": "The Cheapest Day to Book Flights (What the Data Shows) | Magellan Flights",
@@ -6473,30 +6388,31 @@ DEAL_GUIDE_TIPS = [
 
 
 def _email_deal_guide():
-    """Highlight for the week: a compact teaser for the standalone Flight Deal Guide
-    (published in Guides), with the five headlines and a link to the full page."""
+    """Evergreen 'Flight Deal Guide' section: a short, honest playbook for turning
+    one of the week's fares into a booked trip. No hype, just how to act on a deal."""
     rows = []
-    for i, (head, _body) in enumerate(DEAL_GUIDE_TIPS, 1):
+    for i, (head, body) in enumerate(DEAL_GUIDE_TIPS, 1):
         rows.append(
             '<tr>'
-            '<td width="30" valign="top" style="padding:0 0 10px">'
-            '<div style="width:24px;height:24px;border-radius:50%;background:#2f6b46;color:#ffffff;'
-            'font-family:Georgia,serif;font-size:13px;font-weight:bold;text-align:center;line-height:24px">'
+            '<td width="34" valign="top" style="padding:0 0 14px">'
+            f'<div style="width:26px;height:26px;border-radius:50%;background:#2f6b46;color:#ffffff;'
+            'font-family:Georgia,serif;font-size:14px;font-weight:bold;text-align:center;line-height:26px">'
             f'{i}</div></td>'
-            '<td valign="top" style="padding:0 0 10px">'
-            f'<div style="font-family:Georgia,serif;font-size:14.5px;font-weight:bold;color:#2c2a1e">{head}</div>'
+            '<td valign="top" style="padding:0 0 14px">'
+            f'<div style="font-family:Georgia,serif;font-size:15px;font-weight:bold;color:#2c2a1e;margin:0 0 3px">{head}</div>'
+            f'<div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#5b5440;line-height:1.55">{body}</div>'
             '</td></tr>')
     return (
-        _email_section("This week&rsquo;s guide: The Flight Deal Guide",
-                       "Five things that turn a cheap fare into a booked trip.")
+        _email_section("The Flight Deal Guide",
+                       "New here? Five things that turn a cheap fare into a booked trip.")
         + '<table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 26px"><tr>'
-        '<td style="border:1px solid #d8c9a3;border-radius:12px;padding:20px 22px 16px;background:#ffffff">'
+        '<td style="border:1px solid #d8c9a3;border-radius:12px;padding:20px 22px 8px;background:#ffffff">'
         '<table cellpadding="0" cellspacing="0" width="100%">'
         + "".join(rows)
         + '</table>'
-        '<div style="text-align:center;margin-top:6px">'
-        f'<a href="{BASE_URL}/flight-deal-guide.html" style="background:#2f6b46;color:#ffffff;text-decoration:none;padding:12px 24px;border-radius:9px;font-size:14px;font-weight:bold;display:inline-block;font-family:Arial,Helvetica,sans-serif">Read the full guide &rarr;</a>'
-        '</div></td></tr></table>')
+        f'<div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#9b9582;border-top:1px solid #ece3ce;padding-top:12px;margin-top:2px">'
+        f'Want the longer version? Read <a href="{BASE_URL}/how-to-find-cheap-flights.html" style="color:#2f6b46;font-weight:bold;text-decoration:none">our full guide to finding cheap flights</a>.</div>'
+        '</td></tr></table>')
 
 
 _HERO_PHOTO_CACHE = {}
