@@ -2530,7 +2530,7 @@ def render_page(active, title, body, market, oneway, onewaylm, home, lm, world, 
               .replace("__ONEWAYJS__", "var OW = " + json.dumps(ow_arr(oneway)) +
                        ";\nvar OWLM = " + json.dumps(ow_arr(onewaylm)) + ";")
               .replace("__LMJS__", lm_js(lm))
-              .replace("__HOMEJS__", json.dumps(home if active in ("airports.html", "watchlist.html") else {}))
+              .replace("__HOMEJS__", json.dumps(home if active in ("airports.html", "watchlist.html", "explore.html") else {}))
               .replace("__ACOJS__", MAP_COORDS if active == "world.html" else "{}")
               .replace("__ASTRO__", ASTRO_SVG))
     foot = site_footer(today)
@@ -4214,11 +4214,23 @@ def body_consultant():
 </div>"""
 
 
-def body_explore():
-    return """<div class="wrap">
+def body_explore(home):
+    _air_card = ('''<div class="tl-card" id="ex-tab-air" style="display:none">
+  <p style="font-size:13.5px;color:var(--muted);margin:0 0 12px">The simplest way to fly cheap: pick your home airport and see the cheapest one-ways and last-minute deals leaving from your city right now. Star &#9734; any deal to watch it. Everything saves in this browser.</p>
+  <div class="citybar"><select id="city-pick">__CITYOPTS__</select><button onclick="addCity()">Add my airport</button></div>
+  <div class="citychips" id="citychips"></div>
+  <div class="sec-head"><h2>&#11088; My watched flights</h2><span>star any deal below to track it</span></div>
+  <div class="panel"><div id="airwatch"></div><div class="wl-hint" id="aw-hint">Star (&#9734;) any deal below to add it to your watched flights. Saved in this browser.</div></div>
+  <div class="sec-head"><h2>Deals from your airport</h2><span>tap &#9734; to watch</span></div>
+  <div class="airchips" style="margin:6px 0 8px;"><button class="airchip on" data-act="any" onclick="setACMode('any')">Cheapest anytime</button><button class="airchip" data-act="lm" onclick="setACMode('lm')"><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#2f6b46" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.2v5l3.2 2"/></svg> Last-minute this week</button></div>
+  <div class="airchips" style="margin:0 0 14px;">__ACREGIONS__</div>
+  <div class="panel"><div id="citydeals"></div><div class="wl-hint" id="city-hint">Add your home airport (e.g. Raleigh, RDU) to see the cheapest trips leaving from your city.</div></div>
+</div>'''.replace("__CITYOPTS__", city_options(home)).replace("__ACREGIONS__", region_chip_bar("data-acr", "toggleACR")))
+    _html = """<div class="wrap">
   <div class="pagehead"><h1>Find Cheap One-Way Flights from the USA</h1><p>Plan a specific trip. Add your home airport(s) and we&rsquo;ll find the cheapest one-ways to <b>anywhere</b> &mdash; or type a destination to track a <b>specific route</b> and see every fare we have for it. Add several airports and we compare across all of them. Just want to browse the cheapest deals? That&rsquo;s the <a href="market.html" style="color:var(--gold)">Market</a>.</p></div>
   <div class="airchips" id="ex-tabs" style="margin:0 0 14px;gap:8px">
     <button type="button" class="airchip on" id="ex-tab-plan-btn" onclick="exTab('plan')">Plan a trip (A &rarr; B)</button>
+    <button type="button" class="airchip" id="ex-tab-air-btn" onclick="exTab('air')">&#127968; From my airport</button>
     <button type="button" class="airchip" id="ex-tab-explore-btn" onclick="exTab('explore')">Explore anywhere</button>
     <button type="button" class="airchip" id="ex-tab-fav-btn" onclick="exTab('fav')">&#9733; Your favorites</button>
     <button type="button" class="airchip" id="ex-tab-meet-btn" onclick="exTab('meet')">Meet in the middle</button>
@@ -4272,6 +4284,7 @@ def body_explore():
     <div class="airchips" id="mm-regions" style="margin:8px 0 2px;display:none"><span style="font-size:12px;color:var(--muted);margin-right:4px;align-self:center">Meet in:</span><button type="button" class="airchip on" data-mmr="all" onclick="mmReg('all')">Anywhere</button><button type="button" class="airchip" data-mmr="Americas" onclick="mmReg('Americas')">Americas</button><button type="button" class="airchip" data-mmr="Europe" onclick="mmReg('Europe')">Europe</button><button type="button" class="airchip" data-mmr="Asia" onclick="mmReg('Asia')">Asia</button><button type="button" class="airchip" data-mmr="Middle East" onclick="mmReg('Middle East')">Middle East</button><button type="button" class="airchip" data-mmr="Africa" onclick="mmReg('Africa')">Africa</button><button type="button" class="airchip" data-mmr="Oceania" onclick="mmReg('Oceania')">Oceania</button></div>
     <div class="panel" style="margin-top:10px"><div id="mm-out"><div class="wl-hint">Enter both home airports and hit search &mdash; we&rsquo;ll rank the cheapest places to meet.</div></div></div>
   </div>
+  __AIRPORT_TAB_CARD__
   <p class="finehint" style="text-align:center">Live fares from Aviasales. Star &#9734; a deal to add it to your favorites. Want to chain multiple stops into one trip? Try <a href="around-the-world.html" style="color:var(--blue)">Around the World</a>.</p>
 </div>
 <script>
@@ -4327,7 +4340,7 @@ renderOrigs(); renderChips(); exToBind(); exMonthFill(); exSearch(); bindAC(go('
 setTimeout(function(){ try{ var p=new URLSearchParams(location.search); var f=p.get('from'), t=p.get('to'); if(f&&t){ var ef=go('ep-from'),et=go('ep-to'),ed=go('ep-depart'),er=go('ep-return'); if(ef)ef.value=f; if(et)et.value=t; var dep=p.get('depart'),ret=p.get('return'),trip=p.get('trip'); if(dep&&ed)ed.value=dep; if(ret&&er)er.value=ret; window.EP_NS=(p.get('nonstop')==='1'); if(window.exPlanTrip)exPlanTrip(trip||(ret?'round':'oneway')); if(window.exTab)exTab('plan'); if(window.exPlanSearch)exPlanSearch(); } else if(t){ var et2=go('ex-to'); if(et2) et2.value=((typeof NAMES!=='undefined'&&NAMES[t])?NAMES[t]:t); EX_TO_CODE=(''+t).toUpperCase(); EX_TRIP='oneway'; EX_ORIG=['JFK','LAX','ORD','DFW','MIA','SFO']; renderOrigs(); if(window.exTab)exTab('explore'); if(window.exSearch)exSearch(); } }catch(e){} }, 0);
 /* ---- Plan a trip: conventional From -> To -> Depart/Return route search ---- */
 var EP_TRIP='round';
-window.exTab=function(m){ go('ex-tab-plan').style.display=(m==='plan')?'':'none'; go('ex-tab-explore').style.display=(m==='explore')?'':'none'; var _fv=go('ex-tab-fav'); if(_fv) _fv.style.display=(m==='fav')?'':'none'; var _mt=go('ex-tab-meet'); if(_mt) _mt.style.display=(m==='meet')?'':'none'; go('ex-tab-plan-btn').classList.toggle('on',m==='plan'); go('ex-tab-explore-btn').classList.toggle('on',m==='explore'); var _fb=go('ex-tab-fav-btn'); if(_fb) _fb.classList.toggle('on',m==='fav'); var _mb=go('ex-tab-meet-btn'); if(_mb) _mb.classList.toggle('on',m==='meet'); if(m==='fav'&&window.exFavRender) window.exFavRender(); };
+window.exTab=function(m){ go('ex-tab-plan').style.display=(m==='plan')?'':'none'; go('ex-tab-explore').style.display=(m==='explore')?'':'none'; var _ar=go('ex-tab-air'); if(_ar) _ar.style.display=(m==='air')?'':'none'; var _fv=go('ex-tab-fav'); if(_fv) _fv.style.display=(m==='fav')?'':'none'; var _mt=go('ex-tab-meet'); if(_mt) _mt.style.display=(m==='meet')?'':'none'; go('ex-tab-plan-btn').classList.toggle('on',m==='plan'); go('ex-tab-explore-btn').classList.toggle('on',m==='explore'); var _ab=go('ex-tab-air-btn'); if(_ab) _ab.classList.toggle('on',m==='air'); var _fb=go('ex-tab-fav-btn'); if(_fb) _fb.classList.toggle('on',m==='fav'); var _mb=go('ex-tab-meet-btn'); if(_mb) _mb.classList.toggle('on',m==='meet'); if(m==='fav'&&window.exFavRender) window.exFavRender(); if(m==='air'){ if(window.renderCities) window.renderCities(); if(window.renderAirportWatch) window.renderAirportWatch(); } };
 var MM_A_CODE='', MM_B_CODE='', MM_TRIP='round', MM_REG='all', MM_ROWS=[], MM_A='', MM_B='', MM_UNIT='round-trip';
 window.mmAAC=function(){ MM_A_CODE=''; airportFilter(go('mm-a'), go('mm-a-ac')); };
 window.mmBAC=function(){ MM_B_CODE=''; airportFilter(go('mm-b'), go('mm-b-ac')); };
@@ -4341,6 +4354,7 @@ window.exPlanSearch=function(){ var oraw=(go('ep-from').value||'').trim(); var o
 function exPlanRender(o,d,rt,data,broadenedFrom){ var out=go('ep-out'); if(!data.length){ out.innerHTML='<div class="wl-hint">No cached fares for '+o+' &rarr; '+d+(rt?' on those dates':'')+' right now. Try clearing the dates, a nearby date, or a major hub (JFK, LAX, ORD). Your live, bookable price is always on Aviasales.</div>'; return; } var note=broadenedFrom?('<div class="wl-hint" style="margin:0 0 10px">No '+(rt?'round-trips':'fares')+' cached for '+broadenedFrom+' exactly &mdash; showing the cheapest we have. Confirm your live dates on Aviasales.</div>'):''; var nm=(typeof NAMES!=='undefined'&&NAMES[d])?(' <span style="color:var(--muted);font-weight:400">'+NAMES[d]+'</span>'):''; out.innerHTML=note+'<div style="font-weight:600;margin:0 0 8px">'+o+' &rarr; '+d+nm+'</div>'+data.slice(0,20).map(function(f){ var dp=(f.departure_at||'').slice(0,10), rtd=(f.return_at||'').slice(0,10), p=Math.round(f.price); var sub=dp+(rt&&rtd?(' &rarr; '+rtd):''); return '<div class="mv-row"><div class="mv-dest">'+owFlag(d)+'<div class="mv-destcol"><div class="mv-name">'+o+' &rarr; '+d+'</div><div class="mv-air">'+sub+'</div></div></div><div class="mv-right"><span class="mv-price"><span class="lp-dot" title="Freshest tracked fare — your live, bookable price is confirmed on Aviasales"></span>$'+p.toLocaleString()+'</span> <span class="ow-unit">'+(rt?'round-trip':'one-way')+'</span><a class="mini-book" href="'+f.link+'" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a></div></div>'; }).join(''); }
 })();
 </script>"""
+    return _html.replace("__AIRPORT_TAB_CARD__", _air_card)
 
 
 def body_lastminute(lm):
@@ -6733,7 +6747,7 @@ def main():
         "index.html": ("Home", body_home(market, hist, cards, lastmin, oneway, summary, world, home)),
         "market.html": ("Market", body_market(market, hist, cards, lastmin, oneway)),
         "heatmap.html": ("The Heatmap", body_heatmap(oneway, market)),
-        "explore.html": ("Explore", body_explore()),
+        "explore.html": ("Explore", body_explore(home)),
         "ask.html": ("Ask Magellan", body_ask()),
         "blog.html": ("Daily Guide", body_blog(market, oneway)),
         "around-the-world.html": ("Ferdinand's World Loop", body_rtw(world)),
