@@ -366,6 +366,24 @@
   .flip-back{ position:absolute; inset:0; transform:rotateY(180deg); -webkit-backface-visibility:hidden; backface-visibility:hidden; }
   .flipbtn{ margin-top:12px; background:none; border:0; color:var(--muted); font-size:12.5px; cursor:pointer; width:100%; text-align:center; }
   .flipbtn:hover{ color:var(--blue); }
+  .cardacts{ display:flex; align-items:center; gap:10px; margin-top:12px; }
+  .cardacts .flipbtn{ margin-top:0; width:auto; flex:1; }
+  .sharebtn{ display:inline-flex; align-items:center; gap:6px; background:none; border:1px solid var(--line); color:var(--ink); font:inherit; font-size:12.5px; font-weight:600; padding:7px 12px; border-radius:8px; cursor:pointer; white-space:nowrap; }
+  .sharebtn:hover{ border-color:var(--blue); color:var(--blue); background:rgba(47,107,70,.06); }
+  .sharebtn .shico{ width:15px; height:15px; }
+  .share-backdrop{ position:fixed; inset:0; z-index:9998; background:rgba(0,0,0,.28); }
+  .sharepop{ position:fixed; z-index:9999; background:var(--card); border:1px solid var(--line); border-radius:14px; box-shadow:0 14px 44px rgba(0,0,0,.24); padding:16px 16px 15px; width:min(330px,92vw); }
+  .sharepop h4{ margin:0 0 5px; font-size:15px; }
+  .sharepop .sp-msg{ font-size:12.5px; color:var(--muted); margin:0 0 13px; line-height:1.5; }
+  .sharepop .sp-links{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .sharepop .sp-links a, .sharepop .sp-copy{ display:flex; align-items:center; justify-content:center; gap:6px; padding:9px 10px; border-radius:9px; border:1px solid var(--line); background:var(--bg); color:var(--ink); text-decoration:none; font-size:13px; font-weight:600; cursor:pointer; }
+  .sharepop .sp-links a:hover, .sharepop .sp-copy:hover{ border-color:var(--blue); color:var(--blue); }
+  .sharepop .sp-copy{ grid-column:1 / -1; }
+  .mf-toast{ position:fixed; left:50%; bottom:26px; transform:translateX(-50%); z-index:10000; background:#1f2d24; color:#fff; padding:11px 18px; border-radius:10px; font-size:13.5px; font-weight:600; box-shadow:0 8px 26px rgba(0,0,0,.3); }
+  .owr-acts{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+  .owr-share{ display:inline-flex; align-items:center; gap:5px; background:none; border:1px solid var(--line); color:var(--muted); font:inherit; font-size:12px; font-weight:600; padding:6px 10px; border-radius:8px; cursor:pointer; white-space:nowrap; }
+  .owr-share:hover{ border-color:var(--blue); color:var(--blue); background:rgba(47,107,70,.06); }
+  .owr-share .shico{ width:13px; height:13px; }
   .binfo-h{ font-weight:600; font-size:14px; margin:8px 0 10px; }
   .binfo{ font-size:13px; margin:5px 0; line-height:1.5; } .binfo b{ font-weight:600; }
   .finehint{ font-size:11px; color:var(--muted); margin:12px 0 0; }
@@ -1001,6 +1019,36 @@ function mfRel(iso){var t=new Date(iso).getTime();if(isNaN(t))return'';var s=Mat
 function mfFresh(){var ns=document.querySelectorAll('.pr-fresh[data-verified]');for(var i=0;i<ns.length;i++){var sp=ns[i].querySelector('span');if(sp)sp.textContent=mfRel(ns[i].getAttribute('data-verified'));}}
 mfFresh();
 function flipCard(btn){ var f=btn.closest('.flip'); if(f) f.classList.toggle('flipped'); }
+function mfToast(msg){ var t=document.createElement('div'); t.className='mf-toast'; t.textContent=msg; document.body.appendChild(t); setTimeout(function(){ t.style.transition='opacity .4s'; t.style.opacity='0'; setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); },400); },1900); }
+function shareClose(){ var b=document.getElementById('share-backdrop'); if(b) b.remove(); var p=document.getElementById('sharepop'); if(p) p.remove(); }
+function shareDeal(btn){ var c=btn.closest('[data-c]'); if(!c) return; var enc=encodeURIComponent;
+  var o=c.getAttribute('data-o')||'', code=c.getAttribute('data-c')||'', nm=c.getAttribute('data-n')||code, p=c.getAttribute('data-p')||'', dep=c.getAttribute('data-dep')||'', ret=c.getAttribute('data-ret')||'', ow=(c.getAttribute('data-ow')==='1');
+  var trip=ow?'oneway':'round', unit=ow?'one-way':'round-trip';
+  var url=location.origin+'/explore.html?from='+enc(o)+'&to='+enc(code)+'&trip='+trip+(dep?('&depart='+enc(dep)):'')+((!ow&&ret)?('&return='+enc(ret)):'');
+  var pn=Number(p); var ps=isNaN(pn)?p:pn.toLocaleString();
+  var text=o+' to '+nm+' for $'+ps+' '+unit+', tracked on Magellan Flights.';
+  if(navigator.share){ navigator.share({title:'Magellan Flights deal', text:text, url:url}).catch(function(){}); return; }
+  shareSheet(text, url); }
+function shareSheet(text, url){ shareClose(); var full=text+' '+url; var enc=encodeURIComponent;
+  var bd=document.createElement('div'); bd.className='share-backdrop'; bd.id='share-backdrop'; bd.onclick=shareClose; document.body.appendChild(bd);
+  var X='https://twitter.com/intent/tweet?text='+enc(text)+'&url='+enc(url);
+  var wa='https://wa.me/?text='+enc(full);
+  var fb='https://www.facebook.com/sharer/sharer.php?u='+enc(url);
+  var em='mailto:?subject='+enc('A flight deal I found')+'&body='+enc(full);
+  var pop=document.createElement('div'); pop.className='sharepop'; pop.id='sharepop'; pop.style.left='50%'; pop.style.top='50%'; pop.style.transform='translate(-50%,-50%)';
+  pop.innerHTML='<h4>Share this deal</h4><p class="sp-msg">'+text.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</p><div class="sp-links">'
+    +'<a href="'+X+'" target="_blank" rel="noopener">X</a>'
+    +'<a href="'+wa+'" target="_blank" rel="noopener">WhatsApp</a>'
+    +'<a href="'+fb+'" target="_blank" rel="noopener">Facebook</a>'
+    +'<a href="'+em+'">Email</a>'
+    +'<button class="sp-copy" type="button">Copy link and message</button></div>';
+  document.body.appendChild(pop);
+  pop.querySelector('.sp-copy').onclick=function(){ function done(){ shareClose(); mfToast('Copied. Paste it anywhere to share.'); }
+    if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(full).then(done).catch(function(){ fallbackCopy(full); done(); }); }
+    else { fallbackCopy(full); done(); } };
+}
+function fallbackCopy(s){ var ta=document.createElement('textarea'); ta.value=s; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); }catch(e){} ta.remove(); }
+window.shareDeal=shareDeal;
 function fmtRate(r){ return r>=100?Math.round(r).toLocaleString():(r>=10?r.toFixed(1):r.toFixed(2)); }
 function loadFX(){ fetch('https://open.er-api.com/v6/latest/USD').then(function(r){return r.json();}).then(function(d){
   if(d&&d.rates){ FX=d.rates; document.querySelectorAll('[data-cur]').forEach(function(el){ var c=el.dataset.cur;
