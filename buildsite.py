@@ -328,6 +328,7 @@ def head_seo(active, full_title, description, market=None):
         f'<meta property="og:image" content="{OG_IMAGE}">',
         f'<meta property="og:image:alt" content="{_esc_attr(BRAND)} — the cheapest flights from the USA">',
         '<meta name="twitter:card" content="summary_large_image">',
+        '<meta name="twitter:site" content="@MagellanFlights">',
         f'<meta name="twitter:title" content="{t}">',
         f'<meta name="twitter:description" content="{d}">',
         f'<meta name="twitter:image" content="{OG_IMAGE}">',
@@ -2717,7 +2718,7 @@ def render_page(active, title, body, market, oneway, onewaylm, home, lm, world, 
             f'<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">\n'
             f'<link rel="apple-touch-icon" href="apple-touch-icon.png">\n'
             f'{CSS}\n</head>\n{top_chrome(active, market)}\n{CHART_BG}\n{body}\n{CHAT_HTML}\n{WIDGET_HTML}\n'
-            f'{EMAIL_CAPTURE if active not in ("newsletter.html", "newsletter-issue.html") else ""}\n'
+            f'{EMAIL_CAPTURE if active not in ("newsletter.html", "newsletter-issue.html", "deal-tweets.html") else ""}\n'
             f'{foot}\n{script}\n{POPUP_JS}\n</body>\n</html>').replace("__CCJS__", _cc).replace("__BMJS__", _bm).replace("__NAMESJS__", _names).replace("__MAJORJS__", _major).replace("__HERONAMESJS__", _heron)
 
 
@@ -6942,6 +6943,51 @@ def body_newsletter_issue(oneway, market):
 </div>"""
 
 
+# Owner tool: turn today's best fares into ready-to-post tweets. X killed free
+# API posting, so this is the practical free path - one click opens the tweet
+# pre-filled in X (or Copy to paste anywhere). Each links to the deal on the
+# Market, which renders a rich Twitter card. Grounded voice: hedged "% below
+# normal", no hype, no emoji.
+DEAL_TWEET_HOOKS = [
+    "{o} to {city}: ${p} one-way right now, about {pct}% below its usual price. We track fares daily so you catch the dip.",
+    "Cheap one-way: {o} to {city} for ${p}, roughly {pct}% under its normal fare.",
+    "{city} for ${p} one-way from {o}. About {pct}% below its typical price, tracked live.",
+    "Fare watch: {o} to {city} is down to ${p} one-way, around {pct}% below normal.",
+]
+
+
+def body_deal_tweets(oneway, market):
+    items = [it for it in _hm_items(oneway, market) if it[0] >= 12][:8]
+    cards = []
+    for i, (pct, o, price) in enumerate(items):
+        code = o.get("code") or ""
+        origin = o.get("origin") or ""
+        city = (o.get("name") or code).split(",")[0].strip()
+        if not code or not origin:
+            continue
+        url = f"{BASE_URL}/market.html?deal={origin}-{code}"
+        line = DEAL_TWEET_HOOKS[i % len(DEAL_TWEET_HOOKS)].format(
+            o=origin, city=city, p=f"{price:,.0f}", pct=round(pct))
+        tweet = f"{line} {url}\n\n#cheapflights #travel #flightdeals"
+        intent = "https://twitter.com/intent/tweet?text=" + quote(tweet)
+        tid = f"tw{i}"
+        cards.append(
+            '<div class="panel" style="margin:0 0 14px;padding:16px 18px">'
+            f'<div id="{tid}" style="font-size:15px;line-height:1.55;white-space:pre-wrap;color:var(--ink)">{html.escape(tweet)}</div>'
+            '<div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">'
+            f'<a class="book" href="{html.escape(intent, quote=True)}" target="_blank" rel="noopener" style="font-size:14px;padding:9px 18px">Post on X &rarr;</a>'
+            f'<button class="btn-ghost" type="button" onclick="twCopy(\'{tid}\',this)" style="font-size:14px;padding:9px 16px;cursor:pointer">Copy</button>'
+            '</div></div>')
+    body_cards = "".join(cards) if cards else '<div class="wl-hint">No standout deals to tweet right now. Check back after the next data refresh.</div>'
+    return f"""<div class="wrap" style="max-width:680px">
+  <div class="pagehead"><h1>Deal tweets</h1><p>Ready-to-post tweets for today&rsquo;s best fares, biggest drop first. Click <b>Post on X</b> to open the tweet pre-filled (review it, then post), or <b>Copy</b> to paste anywhere. Each links to the deal on the Market, which renders a rich card on X. Posting 2 to 3 a week is the cheapest way to bring new eyes to the site. (Owner tool, not linked publicly.)</p></div>
+  {body_cards}
+  <script>
+  function twCopy(id, btn){{ var el=document.getElementById(id); if(!el) return; var t=el.textContent; function done(){{ var o=btn.textContent; btn.textContent='Copied'; setTimeout(function(){{ btn.textContent=o; }},1500); }} function fb(){{ var ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); try{{document.execCommand('copy');}}catch(e){{}} ta.remove(); done(); }} if(navigator.clipboard&&navigator.clipboard.writeText){{ navigator.clipboard.writeText(t).then(done).catch(fb); }} else {{ fb(); }} }}
+  </script>
+</div>"""
+
+
 def main():
     market = read_snapshot()
     if not market:
@@ -7015,6 +7061,7 @@ def main():
         "consultant.html": ("Hire a Trip Consultant", body_consultant()),
         "newsletter.html": ("Free Newsletter", body_newsletter(market, oneway, home)),
         "newsletter-issue.html": ("Weekly issue", body_newsletter_issue(oneway, market)),
+        "deal-tweets.html": ("Deal tweets", body_deal_tweets(oneway, market)),
         "lastminute.html": ("Last-minute", body_lastminute(lastmin)),
         "airports.html": ("Captain's Log", body_airports(home)),
         "watchlist.html": ("Watchlist", body_watchlist(market)),
@@ -7115,8 +7162,8 @@ def write_seo_files(pages):
     cityguide_files = set(globals().get("CITYGUIDE_BY_FILE", {}))
     urls = []
     for fname in pages:
-        if fname == "newsletter-issue.html":
-            continue  # owner tool — keep out of sitemap
+        if fname in ("newsletter-issue.html", "deal-tweets.html"):
+            continue  # owner tools — keep out of sitemap
         loc = BASE_URL + "/" + ("" if fname == "index.html" else fname)
         cf = ("monthly" if fname in article_files
               else "weekly" if fname in cityguide_files or fname in route_files or fname in tour_files else "daily")
