@@ -40,8 +40,14 @@ apply everywhere: grounded, hedged claims, no hype, no emojis, no em dashes.
 - Music bed ONLY under open + close, normalized to -28 LUFS vs voice at -16 LUFS.
   NEVER set music by raw volume multiplier — a quiet source file becomes inaudible
   (the 0.12x bug). Always loudnorm both stems to fixed targets.
-- Voice: en-US-ChristopherNeural, rate -8%, pitch -4Hz (Andrew read "very sharp").
-  If it still reads sharp, next candidates: Guy, Davis, Brian.
+- Voice: en-US-AvaMultilingualNeural, rate -3%, no pitch shift. Dalton picked Ava by
+  ear from samples (Andrew = "very sharp", Christopher = "robotic"). Lessons: the
+  Multilingual-generation voices are the natural-sounding ones, and do NOT force big
+  rate/pitch changes - that is what makes TTS sound robotic. To trial voices, render
+  the real hook line per candidate to Desktop\voice-samples and let Dalton listen.
+- PLAN OF RECORD: Dalton records his own voiceovers going forward (authenticity beats
+  any TTS). Build a --voice=file.mp3 mode when he starts: skip TTS, transcribe his
+  recording with faster-whisper word timestamps for captions/slide sync, keep the rest.
 - Location-matched tracks (all Kevin MacLeod CC BY 4.0, attribution REQUIRED in the
   description): London=Sovereign, Athens=Master of the Feast, default=Deliberate Thought.
   Add per-city tracks to MUSIC dict as the roster grows (incompetech direct mp3 URLs).

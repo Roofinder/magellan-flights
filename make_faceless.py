@@ -14,7 +14,8 @@ faint location-matched music under the open and close (Kevin MacLeod, CC BY 4.0)
 captions raised above the Shorts UI. Static slides + crossfades only - zoompan
 jitters ("shaky") and is banned. Verify by extracting frames and reading them.
 
-Voice: en-US-ChristopherNeural (warm, calm - Andrew read too sharp per feedback).
+Voice: en-US-AvaMultilingualNeural (Dalton-picked; multilingual gen = most natural).
+PLANNED: Dalton records his own voiceovers going forward (a --voice=file.mp3 mode).
 Copy stays hedged and grounded. No emojis, no em dashes.
 The 16:9 cuts (final.mp4, rendered 2026-07-13) remain for city-guide page embeds.
 """
@@ -37,9 +38,9 @@ W, H = 1080, 1920
 CAPY = H - 450            # caption overlay: above the Shorts bottom UI
 XFADE = 0.5
 MUSIC_LEAD = 2.0          # seconds of music-alone intro before the narrator starts
-VOICE = "en-US-ChristopherNeural"  # deeper, calmer read than Andrew (was "very sharp")
-RATE = "-8%"              # slower, more soothing pace
-PITCH = "-4Hz"             # slightly lower pitch for warmth
+VOICE = "en-US-AvaMultilingualNeural"  # Dalton picked Ava by ear 2026-07-13 (Christopher "robotic")
+RATE = "-3%"              # near-natural pace; forcing TTS slower sounds robotic
+PITCH = "+0Hz"             # multilingual voices sound most natural unmodified
 CREAM = (243, 236, 216)
 INK = (44, 42, 30)
 MUTED = (122, 113, 90)
