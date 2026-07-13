@@ -3199,6 +3199,10 @@ YT_VIDEOS = {}
 
 
 CITY_GUIDE = {
+    "LON": {"overview": "London layers two thousand years of history along the Thames: royal palaces, world-class free museums, and villages-turned-neighborhoods, each with its own pulse.",
+            "todo": ["Walk the Thames from Westminster to Tower Bridge", "Hit the British Museum and the National Gallery (both free)", "Catch a West End show", "Market-hop Borough and Camden", "Day-trip to Windsor or Oxford by train"],
+            "history": "Founded by the Romans as Londinium nearly 2,000 years ago, London grew into the seat of an empire and remains one of the world's great financial and cultural capitals.",
+            "culture": "Deeply multicultural and famously understated; pub culture, football, afternoon tea, and a theater and music scene that has shaped the world for decades. More than 300 languages are spoken."},
     "ANC": {"overview": "Anchorage is the gateway to Alaska — a city ringed by mountains and water, minutes from glaciers, fjords and some of the best wildlife viewing on the continent.",
             "todo": ["See glaciers on a Kenai Fjords cruise", "Ride the Alaska Railroad toward Denali", "Spot moose, bears and bald eagles", "Drive the scenic Seward Highway", "Chase the northern lights (Sep–Mar)"],
             "history": "Founded as a railroad construction camp in 1915, Anchorage grew with the military and the 1968 oil boom into Alaska’s largest city and the hub for exploring the 49th state.",
@@ -5584,6 +5588,7 @@ def body_money_hub(pages):
 # --------------------------------------------------------------------------- #
 # code -> (City display name, Country, url slug). One page per CITY_GUIDE city.
 CITY_META = {
+    "LON": ("London", "United Kingdom", "london"),
     "SJU": ("San Juan", "Puerto Rico", "san-juan"),
     "SJD": ("Los Cabos", "Mexico", "los-cabos"),
     "CUN": ("Cancun", "Mexico", "cancun"),
