@@ -27,13 +27,20 @@ apply everywhere: grounded, hedged claims, no hype, no emojis, no em dashes.
 6. CTA (~7s): brand line + newsletter ask.
 
 **Around-the-world loop:**
+0. TOUR cities need a TOURS entry (6 curated stops + Wikipedia page name) or they fall back
+   to hero-photo-only. Roster so far: LON, ATH, SJU, BCN, BKK. Add new cities the same way:
+   6 one-line stops, real landmarks, a clean Wikipedia page title per stop for the photo.
 1. HOOK: itinerary card — total price huge, numbered stop list, "then home to {start}".
    Spoken: "Magellan Flights tracked an unforgettable trip around the world: {stops},
    and home, all for {total} dollars."
 2. One beat per stop ("We would start our trip traveling to..." / "Next stop..." /
    "And finally... Then home."), each with its own photo + one-clause blurb.
 3. DEAL RECAP: total + "every leg is a real, bookable one-way we track daily."
-4. Same CTA.
+4. CTA (ATW-specific, NOT the newsletter push): "{N} stops, {N} weeks. One country a
+   week is all it takes. Create your own around the world trip at magellanflights.com."
+   N is computed from the actual stop count (dynamic, not hardcoded) — pitches the
+   pace as doable and sends viewers to the interactive around-the-world.html builder,
+   not the newsletter. Single-city Shorts keep the newsletter CTA; only ATW uses this one.
 
 ## Audio rules
 - 2.0s music-alone intro before the narrator (MUSIC_LEAD). Music fades in 1.2s.

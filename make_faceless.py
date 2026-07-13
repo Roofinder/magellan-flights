@@ -78,6 +78,30 @@ TOURS = {
         ("The Temple of Olympian Zeus.", "Temple of Olympian Zeus, Athens", "Temple of Olympian Zeus"),
         ("And sunset from Lycabettus Hill.", "Mount Lycabettus", "Lycabettus Hill"),
     ],
+    "SJU": [
+        ("Old San Juan, blue cobblestone streets and Spanish colonial color.", "Old San Juan", "Old San Juan"),
+        ("El Morro, the clifftop fortress guarding the bay.", "Castillo San Felipe del Morro", "El Morro"),
+        ("Condado Beach for the easy Caribbean sand.", "Condado, Puerto Rico", "Condado Beach"),
+        ("The bioluminescent bay in nearby Fajardo.", "Fajardo, Puerto Rico", "Fajardo Bio Bay"),
+        ("El Yunque, the only tropical rainforest in the US system.", "El Yunque National Forest", "El Yunque Rainforest"),
+        ("And salsa nights in Santurce.", "Santurce, San Juan, Puerto Rico", "Santurce"),
+    ],
+    "BCN": [
+        ("La Sagrada Familia, Gaudi's unfinished masterpiece.", "Sagrada Familia", "Sagrada Familia"),
+        ("Park Guell, mosaic and skyline views.", "Park Guell", "Park Guell"),
+        ("La Rambla and the Boqueria market.", "La Boqueria", "La Rambla and Boqueria"),
+        ("The Gothic Quarter's medieval streets.", "Gothic Quarter, Barcelona", "Gothic Quarter"),
+        ("Barceloneta Beach, right by the old port.", "Barceloneta", "Barceloneta Beach"),
+        ("And tapas late into the night.", "Tapas", "Tapas Culture"),
+    ],
+    "BKK": [
+        ("The Grand Palace, gold and glittering temples.", "Grand Palace", "The Grand Palace"),
+        ("Wat Arun, the Temple of Dawn on the river.", "Wat Arun", "Wat Arun"),
+        ("Chatuchak Weekend Market, thousands of stalls.", "Chatuchak Market", "Chatuchak Market"),
+        ("A longtail boat through the canals.", "Khlong", "The Khlong Canals"),
+        ("Street food on every corner.", "Thai street food", "Street Food"),
+        ("And rooftop bars over the skyline.", "Bangkok", "Rooftop Bangkok"),
+    ],
 }
 
 
@@ -140,6 +164,17 @@ def wiki_info(term):
 
 def wiki_photo(term):
     return wiki_info(term)[0]
+
+
+def wiki_photo_any(candidates):
+    """Try candidate Wikipedia titles in order, return the first with a real image.
+    Guards against short/single-word city names (e.g. "San Juan") landing on a
+    disambiguation page with no photo when a more specific candidate would work."""
+    for term in candidates:
+        img, blurb = wiki_info(term)
+        if img:
+            return img, blurb
+    return "", ""
 
 
 def shorten(s, max_words=15):
@@ -489,10 +524,10 @@ def build_script_atw(trip):
     sections.append(("deal",
                      f"All in: {total} dollars around the world, and every leg is a real, "
                      f"bookable one-way we track daily. The link is in the description."))
+    nstops = len(stops)
     sections.append(("cta",
-                     "If a trip like this is on your list, our free weekly newsletter is how "
-                     "you catch it: the best fares we tracked, in your inbox before they sell "
-                     "out. Join free at magellan flights dot com."))
+                     f"{nstops} stops, {nstops} weeks. One country a week is all it takes. "
+                     f"Create your own around the world trip at magellan flights dot com."))
     return sections, stopmeta
 
 
@@ -544,13 +579,14 @@ def make_slides_atw(outdir, trip, sections, photos, stopmeta):
             d.text((MX, 760), " > ".join(route_codes), font=ImageFont.truetype(F_BOLD, 44), fill=ink)
             d.text((MX, 850), "link in the description", font=ImageFont.truetype(F_BODY, 42), fill=mut)
         else:  # cta
-            d.text((MX, 440), "Catch the cheap ones", font=ImageFont.truetype(F_HEAD, 80), fill=ink)
-            d.text((MX, 550), "before they vanish", font=ImageFont.truetype(F_HEAD, 80), fill=ink)
-            d.rectangle((MX, 740, W - MX, 856), fill=GREEN)
-            d.text((MX + 34, 768), "magellanflights.com", font=ImageFont.truetype(F_BOLD, 52), fill=(255, 255, 255))
-            for j, ln in enumerate(_wrap(d, "Free weekly newsletter: the best fares we tracked, before they sell out.",
-                                         ImageFont.truetype(F_BODY, 40), W - 2 * MX)[:3]):
-                d.text((MX, 920 + j * 56), ln, font=ImageFont.truetype(F_BODY, 40), fill=mut)
+            nstops = len(stopmeta)
+            d.text((MX, 380), f"{nstops} stops, {nstops} weeks", font=ImageFont.truetype(F_HEAD, 76), fill=ink)
+            d.text((MX, 490), "one country a week", font=ImageFont.truetype(F_HEAD, 76), fill=ink)
+            d.rectangle((MX, 680, W - MX, 796), fill=GREEN)
+            d.text((MX + 34, 708), "magellanflights.com", font=ImageFont.truetype(F_BOLD, 52), fill=(255, 255, 255))
+            for j, ln in enumerate(_wrap(d, "Create your own around the world trip.",
+                                         ImageFont.truetype(F_BODY, 44), W - 2 * MX)[:3]):
+                d.text((MX, 860 + j * 58), ln, font=ImageFont.truetype(F_BODY, 44), fill=mut)
         p = os.path.join(outdir, f"slide{i}.png")
         img.save(p)
         paths.append(p)
@@ -629,7 +665,7 @@ def main():
     print(f"[1/6] city: {name}, {country}  fare: " +
           (f"${price:.0f}" + (f" ({pct:.0f}% below)" if pct else "") if price else "none live"))
     photos = {}
-    src = wiki_photo(name)
+    src, _ = wiki_photo_any([f"{name}, {country}", name])
     if src:
         try:
             photos["hero"] = fetch(src, os.path.join(outdir, "hero.jpg"))
