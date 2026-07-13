@@ -3,6 +3,8 @@
 py make_faceless.py LON --origin=MCO --direct   -> spotlight one tracked route
 py make_faceless.py ATH                         -> city short from best tracked fare
 py make_faceless.py --auto                      -> today's best guide-city deal
+py make_faceless.py --atw                       -> around-the-world loop short (itinerary
+                                                   hook card, one photo slide per stop)
 
 Output: videos/CODE-YYYYMMDD/short.mp4 (1080x1920 vertical, ~50s) + script.txt
 (description text + required music attribution).
@@ -12,7 +14,8 @@ faint location-matched music under the open and close (Kevin MacLeod, CC BY 4.0)
 captions raised above the Shorts UI. Static slides + crossfades only - zoompan
 jitters ("shaky") and is banned. Verify by extracting frames and reading them.
 
-Voice: en-US-AndrewNeural. Copy stays hedged and grounded. No emojis, no em dashes.
+Voice: en-US-ChristopherNeural (warm, calm - Andrew read too sharp per feedback).
+Copy stays hedged and grounded. No emojis, no em dashes.
 The 16:9 cuts (final.mp4, rendered 2026-07-13) remain for city-guide page embeds.
 """
 import asyncio
@@ -33,8 +36,10 @@ FPS = 30
 W, H = 1080, 1920
 CAPY = H - 450            # caption overlay: above the Shorts bottom UI
 XFADE = 0.5
-VOICE = "en-US-AndrewNeural"
-RATE = "+2%"              # a touch quicker for Shorts pacing
+MUSIC_LEAD = 2.0          # seconds of music-alone intro before the narrator starts
+VOICE = "en-US-ChristopherNeural"  # deeper, calmer read than Andrew (was "very sharp")
+RATE = "-8%"              # slower, more soothing pace
+PITCH = "-4Hz"             # slightly lower pitch for warmth
 CREAM = (243, 236, 216)
 INK = (44, 42, 30)
 MUTED = (122, 113, 90)
@@ -117,16 +122,35 @@ def human_date(iso):
         return iso
 
 
-def wiki_photo(term):
+def wiki_info(term):
+    """(photo_url, one_sentence_blurb) from Wikipedia REST summary."""
     try:
         url = "https://en.wikipedia.org/api/rest_v1/page/summary/" + _q(term.replace(" ", "_"))
         req = urllib.request.Request(url, headers={"User-Agent": "MagellanFlights-video/1.0"})
         with urllib.request.urlopen(req, timeout=8) as r:
             data = json.loads(r.read().decode("utf-8"))
-        return (data.get("originalimage") or {}).get("source") or \
-               (data.get("thumbnail") or {}).get("source", "")
+        img = (data.get("originalimage") or {}).get("source") or \
+              (data.get("thumbnail") or {}).get("source", "")
+        blurb = (data.get("extract") or "").split(". ")[0].strip().rstrip(".")
+        return img, (blurb + "." if blurb else "")
     except Exception:
-        return ""
+        return "", ""
+
+
+def wiki_photo(term):
+    return wiki_info(term)[0]
+
+
+def shorten(s, max_words=15):
+    """First clause of a sentence, capped for Shorts pacing."""
+    s = (s or "").split(". ")[0].strip().rstrip(".")
+    for cut in (";", ":", " - "):
+        if cut in s:
+            s = s.split(cut)[0]
+    words = s.split()
+    if len(words) > max_words:
+        s = " ".join(words[:max_words])
+    return (s + ".") if s else ""
 
 
 def fetch(url, path):
@@ -144,18 +168,19 @@ def build_script(code, pct, o, price, origin_name=None, direct=False):
     info = b.DEST_INFO.get(code, {})
     best = b.BEST_TIME.get(code, "year-round")
     date_h = human_date(o["depart"]) if (o and o.get("depart")) else ""
-    ns = "direct " if direct else ""
 
     sections = []
     if price and origin_name:
-        hook = (f"We have tracked a {ns}flight from {origin_name} to {name} for {int(round(price))} dollars "
-                f"one way. The link is in the description. The flight takes place {date_h}"
-                + (", and it is a direct flight." if direct else "."))
+        hook = (f"Magellan Flights deal of the day is a trip to {name} from {origin_name} "
+                f"for only {int(round(price))} dollars"
+                + (", direct" if direct else "")
+                + (f", departing {date_h}" if date_h else "")
+                + ". The link is in the description.")
     elif price:
-        hook = (f"We have tracked {name} at about {int(round(price))} dollars one way. "
-                f"The link is in the description.")
+        hook = (f"Magellan Flights deal of the day: {name} for only {int(round(price))} dollars "
+                f"one way. The link is in the description.")
     else:
-        hook = f"{name}, {country}. Here is how to catch it cheap."
+        hook = f"Magellan Flights deal of the day: {name}, {country}. Here is how to catch it cheap."
     sections.append(("hook", hook))
     ov = g.get("overview", f"{name} is one of the destinations we track every day.")
     first = ov.split(". ")[0].rstrip(".") + "."
@@ -187,7 +212,7 @@ async def tts(sections, out_mp3):
     import edge_tts
     text = " ".join(s[1] for s in sections)
     words = []
-    com = edge_tts.Communicate(text, VOICE, rate=RATE, boundary="WordBoundary")
+    com = edge_tts.Communicate(text, VOICE, rate=RATE, pitch=PITCH, boundary="WordBoundary")
     with open(out_mp3, "wb") as f:
         async for chunk in com.stream():
             if chunk["type"] == "audio":
@@ -376,6 +401,8 @@ def assemble(outdir, slides, spans, audio, caps, total, music=None):
     segs = []
     for i, ((s0, s1), png) in enumerate(zip(spans, slides)):
         dur = max(2.0, (s1 - s0) + (XFADE if i < len(slides) - 1 else 1.0))
+        if i == 0:
+            dur += MUSIC_LEAD    # hold the hook slide through the music-alone intro
         seg = os.path.join(outdir, f"seg{i}.mp4")
         run([FFMPEG, "-y", "-loop", "1", "-framerate", str(FPS), "-t", f"{dur:.2f}", "-i", png,
              "-vf", f"scale={W}:{H}", "-r", str(FPS),
@@ -410,15 +437,20 @@ def assemble(outdir, slides, spans, audio, caps, total, music=None):
         oplen = min(spans[0][1] + 2.8, end)
         clstart = max(spans[-1][0] - 1.5, 0)
         cllen = max(end - clstart, 3.0)
-        afc = (f"[1:a]loudnorm=I=-16:TP=-1.5[va];"
-               f"[2:a]atrim=0:{oplen:.2f},asetpts=PTS-STARTPTS,"
-               f"afade=t=in:st=0:d=1.2,afade=t=out:st={max(oplen - 2.8, 0):.2f}:d=2.8,volume=0.12[mo];"
-               f"[3:a]atrim=0:{cllen:.2f},asetpts=PTS-STARTPTS,"
-               f"afade=t=in:st=0:d=2.2,afade=t=out:st={max(cllen - 2.4, 0):.2f}:d=2.4,volume=0.12,"
+        # loudnorm both stems to fixed integrated-loudness targets so "faint" is a real,
+        # audible level under the voice rather than a raw-amplitude guess (a quiet source
+        # MP3 attenuated further can end up ~30dB down and effectively silent).
+        afc = (f"[1:a]loudnorm=I=-16:TP=-1.5,adelay={int(MUSIC_LEAD * 1000)}:all=1[va];"
+               f"[2:a]loudnorm=I=-28:TP=-3[mn2];"
+               f"[3:a]loudnorm=I=-28:TP=-3[mn3];"
+               f"[mn2]atrim=0:{oplen:.2f},asetpts=PTS-STARTPTS,"
+               f"afade=t=in:st=0:d=1.2,afade=t=out:st={max(oplen - 2.8, 0):.2f}:d=2.8[mo];"
+               f"[mn3]atrim=0:{cllen:.2f},asetpts=PTS-STARTPTS,"
+               f"afade=t=in:st=0:d=2.2,afade=t=out:st={max(cllen - 2.4, 0):.2f}:d=2.4,"
                f"adelay={int(clstart * 1000)}:all=1[mc];"
-               f"[va][mo][mc]amix=inputs=3:duration=first:normalize=0,alimiter=limit=0.97[a]")
+               f"[va][mo][mc]amix=inputs=3:duration=longest:normalize=0,alimiter=limit=0.97[a]")
     else:
-        afc = "[1:a]loudnorm=I=-16:TP=-1.5[a]"
+        afc = f"[1:a]loudnorm=I=-16:TP=-1.5,adelay={int(MUSIC_LEAD * 1000)}:all=1[a]"
     final = os.path.join(outdir, "short.mp4")
     run([FFMPEG, "-y", *inputs, "-filter_complex",
          ";".join(fc) + ";" + afc,
@@ -428,7 +460,154 @@ def assemble(outdir, slides, spans, audio, caps, total, music=None):
     return final
 
 
+# ----------------------------------------------------------------------------- around the world
+def build_script_atw(trip):
+    """Sections for an around-the-world loop short. Hook lays out the whole
+    itinerary + total (payoff in the first seconds), then one quick beat per stop."""
+    start_name = trip["start_name"]
+    total = int(round(trip["total"]))
+    stops = [(L["to"], L["to_name"]) for L in trip["legs"] if L["to"] != trip["start"]]
+    names = [n for _c, n in stops]
+    listed = ", ".join(names[:-1]) + f", and {names[-1]}" if len(names) > 1 else names[0]
+    sections = [("hook",
+                 f"Magellan Flights tracked an unforgettable trip around the world: "
+                 f"{listed}, and home, all for {total} dollars. The link is in the description.")]
+    stopmeta = []
+    for i, (code, name) in enumerate(stops):
+        g = b.CITY_GUIDE.get(code, {})
+        blurb = shorten(g.get("overview", "")) or shorten(wiki_info(name)[1]) or \
+            "one of the great stops on earth."
+        if i == 0:
+            line = f"We would start our trip traveling to {name}. {blurb}"
+        elif i == len(stops) - 1:
+            line = f"And finally, {name}. {blurb} Then home to {start_name}."
+        else:
+            line = f"Next stop, {name}. {blurb}"
+        sections.append((f"stop{i}", line))
+        stopmeta.append((code, name, blurb))
+    sections.append(("deal",
+                     f"All in: {total} dollars around the world, and every leg is a real, "
+                     f"bookable one-way we track daily. The link is in the description."))
+    sections.append(("cta",
+                     "If a trip like this is on your list, our free weekly newsletter is how "
+                     "you catch it: the best fares we tracked, in your inbox before they sell "
+                     "out. Join free at magellan flights dot com."))
+    return sections, stopmeta
+
+
+def make_slides_atw(outdir, trip, sections, photos, stopmeta):
+    from PIL import Image, ImageDraw, ImageFont
+    MX = 90
+    total = int(round(trip["total"]))
+    start_name = trip["start_name"]
+    route_codes = [trip["start"]] + [L["to"] for L in trip["legs"]]
+    paths = []
+    for i, (kind, txt) in enumerate(sections):
+        photo = _load_photo(photos.get(kind)) if kind.startswith("stop") else None
+        if photo is not None:
+            img = photo.copy()
+            ink, mut, accent = (255, 255, 255), PALE, MINT
+        else:
+            img = Image.new("RGB", (W, H), CREAM)
+            ink, mut, accent = INK, MUTED, GREEN
+        d = ImageDraw.Draw(img)
+        d.text((MX, 100), "MAGELLAN FLIGHTS", font=ImageFont.truetype(F_BOLD, 34), fill=accent)
+        if kind == "hook":
+            d.text((MX, 300), "AROUND THE WORLD", font=ImageFont.truetype(F_BOLD, 44), fill=accent)
+            d.text((MX, 380), f"${total:,}", font=ImageFont.truetype(F_HEAD, 180), fill=ink)
+            d.text((MX, 600), "one loop, every leg a real one-way", font=ImageFont.truetype(F_BODY, 40), fill=mut)
+            y = 720
+            for j, (_code, nm, _bl) in enumerate(stopmeta, 1):
+                d.text((MX, y), f"{j}", font=ImageFont.truetype(F_HEAD, 54), fill=accent)
+                d.text((MX + 74, y), nm, font=ImageFont.truetype(F_HEAD, 58), fill=ink)
+                y += 92
+            d.text((MX, y + 8), f"then home to {start_name}", font=ImageFont.truetype(F_BODY, 42), fill=mut)
+            d.text((MX, y + 90), "link in the description", font=ImageFont.truetype(F_BODY, 42), fill=accent)
+        elif kind.startswith("stop"):
+            idx = int(kind[4:])
+            code, nm, blurb = stopmeta[idx]
+            d.text((MX, H - 860), f"STOP {idx + 1} OF {len(stopmeta)}",
+                   font=ImageFont.truetype(F_BOLD, 32), fill=accent)
+            y = H - 790
+            for line in _wrap(d, nm, ImageFont.truetype(F_HEAD, 100), W - 2 * MX)[:2]:
+                d.text((MX, y), line, font=ImageFont.truetype(F_HEAD, 100), fill=ink)
+                y += 118
+            yb = max(y + 14, H - 560)
+            for line in _wrap(d, blurb, ImageFont.truetype(F_BODY, 40), W - 2 * MX)[:2]:
+                d.text((MX, yb), line, font=ImageFont.truetype(F_BODY, 40), fill=mut)
+                yb += 54
+        elif kind == "deal":
+            d.text((MX, 320), "The whole loop", font=ImageFont.truetype(F_HEAD, 56), fill=accent)
+            d.text((MX, 430), f"${total:,}", font=ImageFont.truetype(F_HEAD, 180), fill=ink)
+            d.text((MX, 660), "around the world, tracked daily", font=ImageFont.truetype(F_BOLD, 48), fill=accent)
+            d.text((MX, 760), " > ".join(route_codes), font=ImageFont.truetype(F_BOLD, 44), fill=ink)
+            d.text((MX, 850), "link in the description", font=ImageFont.truetype(F_BODY, 42), fill=mut)
+        else:  # cta
+            d.text((MX, 440), "Catch the cheap ones", font=ImageFont.truetype(F_HEAD, 80), fill=ink)
+            d.text((MX, 550), "before they vanish", font=ImageFont.truetype(F_HEAD, 80), fill=ink)
+            d.rectangle((MX, 740, W - MX, 856), fill=GREEN)
+            d.text((MX + 34, 768), "magellanflights.com", font=ImageFont.truetype(F_BOLD, 52), fill=(255, 255, 255))
+            for j, ln in enumerate(_wrap(d, "Free weekly newsletter: the best fares we tracked, before they sell out.",
+                                         ImageFont.truetype(F_BODY, 40), W - 2 * MX)[:3]):
+                d.text((MX, 920 + j * 56), ln, font=ImageFont.truetype(F_BODY, 40), fill=mut)
+        p = os.path.join(outdir, f"slide{i}.png")
+        img.save(p)
+        paths.append(p)
+    return paths
+
+
+def main_atw():
+    world = b.read_world(kind="any")
+    trip = b.round_the_world(world)
+    if not trip:
+        raise SystemExit("no around-the-world loop available from today's data")
+    sections, stopmeta = build_script_atw(trip)
+    outdir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "videos",
+                          f"ATW-{date.today().strftime('%Y%m%d')}")
+    os.makedirs(outdir, exist_ok=True)
+    route = " > ".join([trip["start"]] + [L["to"] for L in trip["legs"]])
+    print(f"[1/6] loop: {route}  total: ${trip['total']:.0f}")
+    photos = {}
+    got = 0
+    for i, (_code, nm, _bl) in enumerate(stopmeta):
+        src = wiki_photo(nm)
+        if not src:
+            continue
+        for attempt in (1, 2):
+            try:
+                photos[f"stop{i}"] = fetch(src, os.path.join(outdir, f"stop{i}.jpg"))
+                got += 1
+                break
+            except Exception:
+                continue
+    print(f"[2/6] photos: {got}/{len(stopmeta)} stops")
+    audio = os.path.join(outdir, "voice.mp3")
+    text, words = asyncio.run(tts(sections, audio))
+    for w in words:
+        w["t"] += MUSIC_LEAD
+    total_t = words[-1]["t"] + words[-1]["d"]
+    print(f"[3/6] voiceover: {total_t:.1f}s, {len(words)} words, {len(sections)} sections")
+    spans = section_spans(sections, words)
+    slides = make_slides_atw(outdir, trip, sections, photos, stopmeta)
+    print(f"[4/6] slides: {len(slides)}")
+    caps = make_captions(outdir, words)
+    print(f"[5/6] captions: {len(caps)}")
+    mpath, mname = MUSIC["default"]
+    mfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), mpath)
+    final = assemble(outdir, slides, spans, audio, caps, total_t, music=mfile)
+    print(f"[6/6] DONE -> {final}  (music: {mname})")
+    with open(os.path.join(outdir, "script.txt"), "w", encoding="utf-8") as f:
+        attribution = (
+            '\n\nMusic: "' + mname + '" Kevin MacLeod (incompetech.com)\n'
+            "Licensed under Creative Commons: By Attribution 4.0\n"
+            "https://creativecommons.org/licenses/by/4.0/\n"
+        )
+        f.write(text + attribution)
+
+
 def main():
+    if "--atw" in sys.argv:
+        return main_atw()
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     code = args[0].upper() if args else None
     auto = "--auto" in sys.argv or not code
@@ -470,6 +649,8 @@ def main():
     print(f"[2/6] photos: hero={'yes' if 'hero' in photos else 'NO'} + {got} tour stops")
     audio = os.path.join(outdir, "voice.mp3")
     text, words = asyncio.run(tts(sections, audio))
+    for w in words:
+        w["t"] += MUSIC_LEAD    # let the music play alone before the narrator starts
     total = words[-1]["t"] + words[-1]["d"]
     print(f"[3/6] voiceover: {total:.1f}s, {len(words)} words, {len(sections)} sections")
     spans = section_spans(sections, words)
