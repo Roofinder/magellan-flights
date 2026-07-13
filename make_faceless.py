@@ -25,7 +25,6 @@ import os
 import re
 import subprocess
 import sys
-import time
 import urllib.request
 from datetime import date
 from urllib.parse import quote as _q
@@ -190,23 +189,11 @@ def shorten(s, max_words=15):
     return (s + ".") if s else ""
 
 
-def fetch(url, path, attempts=3):
-    """Wikimedia's image CDN rate-limits (429) if you hit it back-to-back with no
-    delay - a handful of landmark photos in a row is enough to trigger it. Back off
-    and retry rather than giving up after one shot."""
-    import time as _time
+def fetch(url, path):
     req = urllib.request.Request(url, headers={"User-Agent": "MagellanFlights-video/1.0"})
-    last_err = None
-    for attempt in range(attempts):
-        try:
-            with urllib.request.urlopen(req, timeout=90) as r, open(path, "wb") as f:
-                f.write(r.read())
-            return path
-        except Exception as e:
-            last_err = e
-            is_429 = "429" in str(e)
-            _time.sleep(4.0 if is_429 else 1.5)
-    raise last_err
+    with urllib.request.urlopen(req, timeout=90) as r, open(path, "wb") as f:
+        f.write(r.read())
+    return path
 
 
 # ----------------------------------------------------------------------------- script
@@ -623,12 +610,13 @@ def main_atw():
         src = wiki_photo(nm)
         if not src:
             continue
-        try:
-            photos[f"stop{i}"] = fetch(src, os.path.join(outdir, f"stop{i}.jpg"))
-            got += 1
-        except Exception:
-            pass
-        time.sleep(0.8)   # space out requests to Wikimedia's image CDN (avoids 429s)
+        for attempt in (1, 2):
+            try:
+                photos[f"stop{i}"] = fetch(src, os.path.join(outdir, f"stop{i}.jpg"))
+                got += 1
+                break
+            except Exception:
+                continue
     print(f"[2/6] photos: {got}/{len(stopmeta)} stops")
     audio = os.path.join(outdir, "voice.mp3")
     text, words = asyncio.run(tts(sections, audio))
@@ -683,18 +671,18 @@ def main():
             photos["hero"] = fetch(src, os.path.join(outdir, "hero.jpg"))
         except Exception:
             pass
-        time.sleep(0.8)
     got = 0
     for i, (_line, page, _disp) in enumerate(TOURS.get(code, [])):
         src = wiki_photo(page)
         if not src:
             continue
-        try:
-            photos[f"tour{i}"] = fetch(src, os.path.join(outdir, f"tour{i}.jpg"))
-            got += 1
-        except Exception:
-            pass
-        time.sleep(0.8)   # space out requests to Wikimedia's image CDN (avoids 429s)
+        for attempt in (1, 2):
+            try:
+                photos[f"tour{i}"] = fetch(src, os.path.join(outdir, f"tour{i}.jpg"))
+                got += 1
+                break
+            except Exception:
+                continue
     print(f"[2/6] photos: hero={'yes' if 'hero' in photos else 'NO'} + {got} tour stops")
     audio = os.path.join(outdir, "voice.mp3")
     text, words = asyncio.run(tts(sections, audio))

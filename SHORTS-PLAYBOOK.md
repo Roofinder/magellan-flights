@@ -67,14 +67,7 @@ apply everywhere: grounded, hedged claims, no hype, no emojis, no em dashes.
 - Captions: 3-word chunks, bold white on dark rounded card, timed to TTS word
   boundaries. Big fare numbers in Georgia serif; kickers in mint on photos, green on cream.
 - Photos: Wikipedia REST `originalimage` (freely licensed, key-free). Fetch with 90s
-  timeout. Wikimedia's image CDN (upload.wikimedia.org, separate from the lookup API)
-  rate-limits with HTTP 429 if you hit it back-to-back with no delay - a plain 6-photo
-  tour in a tight loop is enough to trigger it (SJU went 1/6 photos before this fix).
-  `fetch()` retries with backoff (4s on 429, 1.5s otherwise, 3 attempts); ALSO sleep
-  ~0.8s between consecutive photo downloads in the calling loop so you rarely trigger
-  it at all. Ambiguous single-word city names (e.g. "San Juan" collides with San Juan,
-  Argentina) land on a Wikipedia disambiguation page with no photo - use
-  `wiki_photo_any([f"{name}, {country}", name])` for hero fetches, not a bare name.
+  timeout + one retry — landmark originals are 8-20MB and WILL time out at 25s.
 
 ## CTA language that converts (newsletter ask)
 Formula: (1) qualify the viewer, (2) concrete benefit, (3) honest urgency, (4) free +
