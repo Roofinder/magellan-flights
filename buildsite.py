@@ -3037,33 +3037,20 @@ def body_home(market, hist, cards, lastmin, oneway, summary, world, home=None):
     home_trips_js = json.dumps(home_trips)
     return f"""<section class="lander">
   <div class="lander-inner">
-    <span class="eyebrow">The world is closer than you think</span>
-    <h1>The cheapest <span class="g">one-way flights</span> &mdash; from the US and abroad.</h1>
-    <p class="lead">Track the cheapest fares from the USA to anywhere on earth, every day &mdash; and catch the moment one drops below its normal price.</p>
-    <form class="fsearch" data-alert="{FORM_ACTION}" data-subscribe="{BEEHIIV_URL}" onsubmit="return homeSearch(event)" aria-label="Flight search">
-      <div class="fs-row fs-trip">
-        <label class="fs-radio"><input type="radio" name="fs-trip" value="round" checked onchange="fsTrip('round')"> Round-trip</label>
-        <label class="fs-radio"><input type="radio" name="fs-trip" value="oneway" onchange="fsTrip('oneway')"> One-way</label>
-        <label class="fs-check"><input type="checkbox" id="hs-nonstop"> Non-stop only</label>
-      </div>
-      <div class="fs-row fs-od">
-        <div class="fs-field"><label>From</label><span class="ac-wrap" style="display:block"><input id="hs-from" placeholder="City or airport" autocomplete="off" oninput="hsAC('from')" style="width:100%"><div id="hs-from-ac" class="ac-drop"></div></span><input type="hidden" id="hs-from-code"></div>
-        <button type="button" class="fs-swap" onclick="fsSwap()" aria-label="Swap from and to" title="Swap">&#8644;</button>
-        <div class="fs-field"><label>To</label><span class="ac-wrap" style="display:block"><input id="hs-to" placeholder="Where to?" autocomplete="off" oninput="hsAC('to')" style="width:100%"><div id="hs-to-ac" class="ac-drop"></div></span><input type="hidden" id="hs-to-code"></div>
-      </div>
-      <div class="fs-row">
-        <div class="fs-field"><label>Depart</label><input id="hs-depart" type="date"></div>
-        <div class="fs-field" id="hs-return-wrap"><label>Return</label><input id="hs-return" type="date"></div>
-        <div class="fs-field"><label>Travelers</label><select id="hs-trav"><option>1 traveler</option><option>2 travelers</option><option>3 travelers</option><option>4 travelers</option><option>5+ travelers</option></select></div>
-        <div class="fs-field"><label>Class</label><select id="hs-class"><option>Economy</option><option>Premium</option><option>Business</option><option>First</option></select></div>
-      </div>
-      <div class="fs-alert">
-        <span class="fs-alert-lab">Send me alerts when prices drop <span>(optional)</span></span>
-        <input id="hs-email" type="email" placeholder="Enter your email" autocomplete="email">
-      </div>
-      <button type="submit" class="fs-go">Find deals &rarr;</button>
-    </form>
+    <span class="eyebrow">Flights, tracked like a stock market</span>
+    <h1>Watch the world&rsquo;s fares <span class="g">rise and fall</span> &mdash; and book the moment they drop.</h1>
+    <p class="lead">Magellan tracks the cheapest flights from the USA to anywhere, every day &mdash; like a market. Every fare is judged against its own history, so when a real deal appears, it&rsquo;s unmistakable.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:26px 0 10px">
+      <a href="market.html" style="background:var(--blue);color:#fff;font-weight:800;font-size:15px;padding:15px 28px;border-radius:12px;text-decoration:none;display:inline-flex;align-items:center;box-shadow:0 8px 20px rgba(46,139,87,.22)">Open the Flight Market &rarr;</a>
+      <a class="btn-ghost" href="newsletter.html">Get free deal alerts &rarr;</a>
+    </div>
+    <div style="display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin:8px 0 2px;color:var(--muted);font-size:13.5px">
+      <span><b style="color:var(--ink)">{nroutes:,}</b> routes tracked</span>
+      <span><b style="color:var(--ink)">{ncountries}</b> countries</span>
+      <span><b style="color:var(--green)">{nbook}</b> below normal <i>right now</i></span>
+    </div>
     <p class="trust">Free, forever &middot; fares tracked through the day &middot; live price confirmed when you book on Aviasales</p>
+    <p style="text-align:center;margin-top:4px;font-size:12.5px"><a href="explore.html" style="color:var(--muted);text-decoration:underline">Prefer to search a specific route? Use Explore &rarr;</a></p>
   </div>
 </section>
 <div class="wrap">
@@ -7139,6 +7126,17 @@ def main():
                  + [g["fname"] for g in CITY_GUIDES]
                  + [p["fname"] for p in ROUTE_PAGES]
                  + [m["slug"] + ".html" for m in REGION_TOURS])
+    # EVERGREEN ROUTE PAGES (SEO loop run 1, 2026-07-10): route pages are picked from
+    # today's cheap fares, so they rotate daily and older ones drop out of the sitemap even
+    # though the full page is still live in the repo. Include EVERY route-page file on disk so
+    # our highest buyer-intent money pages ("cheap-flights-from-<city>-to-<dest>") stay indexed
+    # instead of orphaning. Deduped; only adds files that already exist on disk.
+    _seen = set(all_files)
+    for _f in sorted(glob.glob(os.path.join(SITE_DIR, "cheap-flights-from-*-to-*.html"))):
+        _b = os.path.basename(_f)
+        if _b not in _seen:
+            all_files.append(_b)
+            _seen.add(_b)
     with open(os.path.join(SITE_DIR, "deals.xml"), "w", encoding="utf-8") as f:
         f.write(newsletter_rss(market))
     with open(os.path.join(SITE_DIR, "newsletter.xml"), "w", encoding="utf-8") as f:
