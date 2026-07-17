@@ -2624,7 +2624,7 @@ def site_footer(today):
   <div class="ft-top">
     <div class="ft-brand">
       <a class="logo" href="index.html"><span class="mark">{LOGO_SVG}</span>{BRAND}</a>
-      <p class="ft-tag">The cheapest flights from the USA to anywhere on earth, tracked every day and judged against their own price history.</p>
+      <p class="ft-tag">Flight deals from the USA and abroad, tracked every day and judged against each route&rsquo;s own price history.</p>
       <a class="nav-cta ft-cta" href="newsletter.html">Join the free newsletter</a>
     </div>
     <nav class="ft-links">{cols_html}</nav>
@@ -3033,8 +3033,8 @@ def body_home(market, hist, cards, lastmin, oneway, summary, world, home=None):
     return f"""<section class="lander">
   <div class="lander-inner">
     <span class="eyebrow">Flights, tracked like a stock market</span>
-    <h1>Watch the world&rsquo;s fares <span class="g">rise and fall</span> &mdash; and book the moment they drop.</h1>
-    <p class="lead">Magellan tracks the cheapest flights from the USA and abroad, every day, like a market. Every fare is judged against its own history, so when a real deal appears, it&rsquo;s unmistakable.</p>
+    <h1>Find the flight <span class="g">deal</span>.</h1>
+    <p class="lead">Fares from the USA and abroad, tracked every day like a market and judged against each route&rsquo;s own history &mdash; so a real deal is unmistakable, and you book the moment it drops.</p>
     <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:26px 0 10px">
       <a href="market.html" style="background:var(--blue);color:#fff;font-weight:800;font-size:15px;padding:15px 28px;border-radius:12px;text-decoration:none;display:inline-flex;align-items:center;box-shadow:0 8px 20px rgba(46,139,87,.22)">Open the Flight Market &rarr;</a>
       <a class="btn-ghost" href="newsletter.html">Get free deal alerts &rarr;</a>
