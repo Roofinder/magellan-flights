@@ -34,11 +34,7 @@ jobs:
         run: |
           python market.py
           python explore.py || true
-          python explore.py --lastminute || true
           python world.py || true
-          python world.py --lastminute || true
-          python lastminute.py || true
-          python lastminute.py --international || true
           python homebase.py || true
 
       - name: Re-price for accuracy

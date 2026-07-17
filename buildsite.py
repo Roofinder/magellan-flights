@@ -6,7 +6,6 @@ Pages (shared header, tickers, nav and footer on every one):
   index.html       Home - tickers, market summary, top deals, email signup
   market.html      Region indices + movers board + all deal cards
   explore.html     Region-selectable ticker + one-way escapes abroad
-  lastminute.html  Cheapest round-trip getaways this week
   airports.html    "My airports" - personalized deals from your home airport(s)
   watchlist.html   Your starred destinations + followed airlines
 
@@ -200,10 +199,6 @@ SEO = {
         "Cheap One-Way Flights from the USA (Next 6 Months) | Magellan Flights",
         "The cheapest one-way flights from the USA over the next six months. "
         "Filter by region and home airport to find your next trip for less."),
-    "lastminute.html": (
-        "Cheap Last-Minute Flights from the USA | Magellan Flights",
-        "Today's cheapest last-minute flights from the USA, domestic and "
-        "international. Real, bookable fares for travelers who can leave soon."),
     "blog.html": (
         "Today's Cheapest Flight from the USA — Daily Guide | Magellan Flights",
         "Our daily guide to the single best flight deal from the USA right now: "
@@ -2178,7 +2173,7 @@ function dealRow(o,d){ var on=WF.indexOf(o+'|'+d.code)>=0; var ow=!d['return'];
   + '<div class="mv-right"><span class="mv-price">$'+d.price.toLocaleString()+'</span> <span class="ow-unit">'+(ow?'one-way':'round-trip')+'</span>'
   + '<a class="mini-book" href="'+d.link+'" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a></div></div>'; }
 function findDeal(o,c){ if(!HOME[o]) return null; var best=null;
-  var keys = (ACTRIP==='ow') ? ['oneway'] : ['deals','lastminute'];
+  var keys = (ACTRIP==='ow') ? ['oneway'] : ['deals'];
   keys.forEach(function(k){ (HOME[o][k]||[]).forEach(function(d){ if(d.code===c && (!best||d.price<best.price)) best=d; }); });
   return best; }
 function toggleFlight(o,c){ var key=o+'|'+c; var i=WF.indexOf(key); if(i<0)WF.push(key); else WF.splice(i,1); save(); renderAirportWatch(); renderCities(); }
@@ -2202,19 +2197,17 @@ function renderCities(){ var chips=document.getElementById('citychips'), deals=d
   hint.style.display='none';
   var ow=(ACTRIP==='ow');
   document.querySelectorAll('[data-actrip]').forEach(function(b){ b.classList.toggle('on', (b.dataset.actrip==='ow')===ow); });
-  var mb=document.getElementById('ac-modebar'); if(mb) mb.style.display=ow?'none':'';
-  var key = ow ? 'oneway' : (ACMODE==='lm' ? 'lastminute' : 'deals');
+  var key = ow ? 'oneway' : 'deals';
   var pool=[]; valid.forEach(function(c){ pool=pool.concat(HOME[c][key]||[]); });
   var av=regAvail(pool);
   ACSEL=ACSEL.filter(function(r){ return r==='Abroad'?av['Abroad']:av[r]; });
   syncChips('[data-acr]','acr',av,ACSEL);
-  document.querySelectorAll('[data-act]').forEach(function(b){ b.classList.toggle('on', b.dataset.act===ACMODE); });
-  var label = ow ? '&middot; cheapest one-way' : (ACMODE==='lm' ? '&middot; last-minute this week' : '&middot; cheapest anytime');
+  var label = ow ? '&middot; cheapest one-way' : '&middot; cheapest anytime';
   deals.innerHTML=valid.map(function(c){
     var arr=(HOME[c][key]||[]).filter(function(d){ return regMatch(d, ACSEL); });
     var h='<div class="grouphdr">'+''+'From '+HOME[c].name+' ('+c+') '+label+'</div>';
     h += arr.length ? arr.map(function(d){ return dealRow(c,d); }).join('')
-                    : '<div class="wl-hint">No '+(ow?'one-way ':(ACMODE==='lm'?'last-minute ':''))+'deals for this selection.</div>';
+                    : '<div class="wl-hint">No '+(ow?'one-way ':'')+'deals for this selection.</div>';
     return h; }).join('');
 }
 var ACSEL=[]; var ACMODE='any'; var ACTRIP='rt';
@@ -2223,7 +2216,7 @@ function setACMode(m){ ACMODE=m; renderCities(); }
 function setACTrip(t){ ACTRIP=t; if(t==='ow') ACMODE='any'; renderCities(); }
 function cpAppend(cls, h){ var m=document.getElementById('cpmsgs'); if(!m) return; var d=document.createElement('div'); d.className='cp-msg '+cls; d.innerHTML='<span class="bub">'+h+'</span>'; m.appendChild(d); m.scrollTop=m.scrollHeight; }
 function chatToggle(){ var p=document.getElementById('chatpanel'); if(!p) return; p.classList.toggle('open');
-  if(p.classList.contains('open') && !p.dataset.greeted){ cpAppend('bot', "Hi! I search the live deals on this site. Try:<br>&bull; \"cheapest one-way to Asia\"<br>&bull; \"last-minute to the Caribbean\"<br>&bull; \"where can I go under $300?\""); p.dataset.greeted='1'; } }
+  if(p.classList.contains('open') && !p.dataset.greeted){ cpAppend('bot', "Hi! I search the live deals on this site. Try:<br>&bull; \"cheapest one-way to Asia\"<br>&bull; \"where can I go under $300?\"<br>&bull; \"best time to visit Japan\""); p.dataset.greeted='1'; } }
 function chatSend(){ var i=document.getElementById('cpinput'); if(!i) return; var t=(i.value||'').trim(); if(!t) return;
   cpAppend('you', t.replace(/</g,'&lt;')); i.value='';
   var th=cpThink();
@@ -2236,7 +2229,7 @@ function findDest(s){ for(var i=0;i<MARKET.length;i++){ var parts=MARKET[i].n.to
   for(var j=0;j<parts.length;j++){ var t=parts[j].trim(); if(t.length>2 && s.indexOf(t)>=0) return MARKET[i]; } }
   return null; }
 function botReply(q){ var s=q.toLowerCase();
-  if(/^(hi|hey|hello|help|what can|how do)/.test(s)) return "I can search live deals here. Try:<br>&bull; \"cheapest one-way to Europe\"<br>&bull; \"last-minute to the Caribbean\"<br>&bull; \"where can I go under $200?\"<br>&bull; \"best time to visit Japan\"";
+  if(/^(hi|hey|hello|help|what can|how do)/.test(s)) return "I can search live deals here. Try:<br>&bull; \"cheapest one-way to Europe\"<br>&bull; \"where can I go under $200?\"<br>&bull; \"best time to visit Japan\"";
   if(/best time|when (should|to|is best)|what month|when to (go|visit|travel)/.test(s)){
     var hit=findDest(s);
     if(hit && BT[hit.c]) return "Best time to visit <b>"+hit.n+"</b>: "+BT[hit.c]+". (Based on weather/crowd averages.)";
@@ -2256,11 +2249,8 @@ function botReply(q){ var s=q.toLowerCase();
     if(cur && FX[cur]){ return "$"+amt.toLocaleString()+" &asymp; <b>"+Math.round(amt*FX[cur]).toLocaleString()+" "+cur+"</b>"+(place?(" in "+place):"")+"."; }
     return "Tell me a place — e.g. \"how far does $100 go in Thailand?\"";
   }
-  var lm=/last[- ]?minute|this week|soon|right now/.test(s);
   var oneway=!/round[- ]?trip/.test(s);
-  var data = lm ? (oneway && typeof OWLM!=='undefined' ? OWLM : (typeof LM!=='undefined'?LM:[]))
-                : (oneway && typeof OW!=='undefined' ? OW : (typeof LM!=='undefined'?LM:[]));
-  if(!data || !data.length){ data = (typeof OW!=='undefined'?OW:[]); }
+  var data = (typeof OW!=='undefined' ? OW : []);
   var KW=[['southeast asia','SE Asia'],['se asia','SE Asia'],['east asia','E Asia'],['south asia','S Asia'],['asia','Asia'],['western europe','W Europe'],['west europe','W Europe'],['eastern europe','E Europe'],['east europe','E Europe'],['nordic','Nordic'],['scandinav','Nordic'],['europe','Europe'],['caribbean','Caribbean'],['central america','C America'],['mexico','C America'],['south america','S America'],['oceania','Oceania'],['australia','Oceania'],['middle east','Middle East'],['africa','Africa'],['canada','Canada'],['domestic','USA'],['abroad','Abroad'],['international','Abroad']];
   var region=null; for(var i=0;i<KW.length;i++){ if(s.indexOf(KW[i][0])>=0){ region=KW[i][1]; break; } }
   var cap=null; var m=s.match(/(\d{2,4})/); if(m && /under|below|less|budget|for |\$/.test(s)) cap=parseInt(m[1],10);
@@ -2270,9 +2260,9 @@ function botReply(q){ var s=q.toLowerCase();
   if(!region && !cap){ var words=s.replace(/[^a-z ]/g,' ').split(/\s+/).filter(function(w){return w.length>3;});
     if(words.length){ items=data.filter(function(d){ var nm=(d.n||d.name||'').toLowerCase(); return words.some(function(w){ return nm.indexOf(w)>=0; }); }); } }
   items.sort(function(a,b){ return botPrice(a)-botPrice(b); });
-  if(!items.length) return "I couldn't find "+(lm?'last-minute ':'')+(oneway?'one-way ':'')+"deals"+(region?(' to '+region):'')+(cap?(' under $'+cap):'')+" right now. Try a different region, or open the <a href='explore.html'>One-way explorer</a>.";
-  var head=(lm?'Last-minute ':'')+(oneway?'one-way ':'round-trip ')+'deals'+(region?(' to '+region):'')+(cap?(' under $'+cap):'')+':';
-  return head+'<br>'+botList(items,4,oneway)+'<br><a href="'+(lm?'lastminute.html':(oneway?'explore.html':'market.html'))+'">See more &rarr;</a>';
+  if(!items.length) return "I couldn't find "+(oneway?'one-way ':'')+"deals"+(region?(' to '+region):'')+(cap?(' under $'+cap):'')+" right now. Try a different region, or open the <a href='explore.html'>One-way explorer</a>.";
+  var head=(oneway?'one-way ':'round-trip ')+'deals'+(region?(' to '+region):'')+(cap?(' under $'+cap):'')+':';
+  return head+'<br>'+botList(items,4,oneway)+'<br><a href="'+(oneway?'explore.html':'market.html')+'">See more &rarr;</a>';
 }
 function fakeSubmit(e){ e.preventDefault();
   var f=e.target, a=f.getAttribute('action'), ok=document.getElementById('ok'), btn=f.querySelector('button');
@@ -2285,7 +2275,7 @@ function fakeSubmit(e){ e.preventDefault();
     .catch(function(){ ok.innerHTML='Network error \u2014 please try again.'; ok.style.display='block'; })
     .then(function(){ if(btn){ btn.disabled=false; btn.textContent=lbl; } });
   return false; }
-var HSECS=['summary','indices','movers','deals','lastminute','oneway'];
+var HSECS=['summary','indices','movers','deals','oneway'];
 var HL=JSON.parse(localStorage.getItem('fs_home_layout')||'{}');
 function secOn(s){ return HL[s]!==false; }
 function applyLayout(){ HSECS.forEach(function(s){ var el=document.querySelector('[data-sec="'+s+'"]');
@@ -3015,7 +3005,7 @@ function homeSearch(e){ e.preventDefault();
 def body_home(market, hist, cards, lastmin, oneway, summary, world, home=None):
     labels = [("summary", "Market summary"), ("indices", "Fare indices"),
               ("movers", "Biggest movers"), ("deals", "Cheapest trips"),
-              ("lastminute", "Last-minute getaways"), ("oneway", "One-way escapes")]
+              ("oneway", "One-way escapes")]
     checks = "".join(f'<label><input type="checkbox" id="cb-{k}" onchange="toggleSec(\'{k}\')"> {lab}</label>'
                      for k, lab in labels)
     top4 = sorted(featured_pool(market), key=lambda m: signal_for(m["price"], m["benchmark"])[1], reverse=True)[:4]
@@ -4347,14 +4337,13 @@ def body_consultant():
 
 def body_explore(home):
     _air_card = ('''<div class="tl-card" id="ex-tab-air" style="display:none">
-  <p style="font-size:13.5px;color:var(--muted);margin:0 0 12px">The simplest way to fly cheap: pick your home airport and see the cheapest one-ways and last-minute deals leaving from your city right now. Star &#9734; any deal to watch it. Everything saves in this browser.</p>
+  <p style="font-size:13.5px;color:var(--muted);margin:0 0 12px">The simplest way to plan: pick your home airport and see the cheapest one-ways leaving from your city, judged against their normal price. Star &#9734; any deal to watch it. Everything saves in this browser.</p>
   <div class="citybar"><select id="city-pick">__CITYOPTS__</select><button onclick="addCity()">Add my airport</button></div>
   <div class="citychips" id="citychips"></div>
   <div class="sec-head"><h2>&#11088; My watched flights</h2><span>star any deal below to track it</span></div>
   <div class="panel"><div id="airwatch"></div><div class="wl-hint" id="aw-hint">Star (&#9734;) any deal below to add it to your watched flights. Saved in this browser.</div></div>
   <div class="sec-head"><h2>Deals from your airport</h2><span>tap &#9734; to watch</span></div>
   <div class="airchips" style="margin:6px 0 8px;"><button class="airchip on" data-actrip="rt" onclick="setACTrip('rt')">Round-trip</button><button class="airchip" data-actrip="ow" onclick="setACTrip('ow')">One-way</button></div>
-  <div class="airchips" id="ac-modebar" style="margin:6px 0 8px;"><button class="airchip on" data-act="any" onclick="setACMode('any')">Cheapest anytime</button><button class="airchip" data-act="lm" onclick="setACMode('lm')"><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#2f6b46" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.2v5l3.2 2"/></svg> Last-minute this week</button></div>
   <div class="airchips" style="margin:0 0 14px;">__ACREGIONS__</div>
   <div class="panel"><div id="citydeals"></div><div class="wl-hint" id="city-hint">Add your home airport (e.g. Raleigh, RDU) to see the cheapest trips leaving from your city.</div></div>
 </div>'''.replace("__CITYOPTS__", city_options(home)).replace("__ACREGIONS__", region_chip_bar("data-acr", "toggleACR")))
@@ -4493,10 +4482,6 @@ def body_airports(home):
   <div class="airchips" style="margin:6px 0 8px;">
     <button class="airchip on" data-actrip="rt" onclick="setACTrip('rt')">Round-trip</button>
     <button class="airchip" data-actrip="ow" onclick="setACTrip('ow')">One-way</button>
-  </div>
-  <div class="airchips" id="ac-modebar" style="margin:6px 0 8px;">
-    <button class="airchip on" data-act="any" onclick="setACMode('any')">Cheapest anytime</button>
-    <button class="airchip" data-act="lm" onclick="setACMode('lm')"><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#2f6b46" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.2v5l3.2 2"/></svg> Last-minute this week</button>
   </div>
   <div class="airchips" style="margin:0 0 14px;">{region_chip_bar("data-acr", "toggleACR")}</div>
   <div class="panel"><div id="citydeals"></div>
@@ -4967,7 +4952,7 @@ ARTICLES = [
                       "do flight prices drop closer to departure", "cheap last minute flight tips"],
         "kicker": "Myth check",
         "published": "2026-06-22", "updated": "2026-06-22", "read_min": 5,
-        "money_href": "lastminute.html", "money_label": "today's cheapest last-minute fares",
+        "money_href": "explore.html", "money_label": "the cheapest one-ways from your airport",
         "lede": "There's a stubborn myth that airlines slash prices at the last second to fill empty "
                 "seats. Mostly, the opposite is true — and believing it can cost you real money. "
                 "But there's a real exception worth knowing. Here's the honest version.",
@@ -4993,12 +4978,12 @@ ARTICLES = [
              "<li>It's an <b>off-peak leisure route</b> the airline is struggling to fill.</li>"
              "<li>There's <b>overcapacity</b> — too many seats chasing too few travelers.</li>"
              "<li>You're <b>flexible</b> on destination and can pounce on whatever drops.</li></ul>"
-             "<p>That's exactly what our <a href='lastminute.html'>last-minute board</a> surfaces "
-             "— the routes where leaving soon is actually cheap right now.</p>"),
+             "<p>That's exactly what our <a href='market.html'>flight market</a> surfaces "
+             "— the routes trading below their normal price right now, from your airport.</p>"),
             ("How to play it if you must book late",
              "<ul class='blog-list'>"
              "<li><b>Be flexible on dates and airports</b> — flexibility is your only leverage late.</li>"
-             "<li><b>Watch a last-minute deal feed</b> instead of searching one route over and over.</li>"
+             "<li><b>Watch a fare feed or set price alerts</b> instead of searching one route over and over.</li>"
              "<li><b>Fly mid-week</b> — Tuesday and Wednesday departures stay cheaper even late.</li>"
              "<li><b>Know your rights</b> if a flight is cancelled or changed — see the "
              "<a href='https://www.transportation.gov/airconsumer' target='_blank' rel='noopener'>"
@@ -5465,7 +5450,6 @@ def money_targets(home):
         deals = sorted(info.get("deals", []), key=lambda x: x.get("price", 1e9))
         if len(deals) < 5:
             continue
-        lm = sorted(info.get("lastminute", []), key=lambda x: x.get("price", 1e9))
         slug = f"cheap-flights-from-{_slugify(city)}-{code.lower()}"
         low = deals[0]; topdest = low["name"].split(",")[0]
         out.append({
@@ -5474,7 +5458,7 @@ def money_targets(home):
             "description": (f"Today's cheapest flights from {city} ({code}): real, bookable "
                             f"fares to {topdest} from ${low['price']:,.0f} and more, updated daily."),
             "h1": f"Cheap flights from {city} ({code})",
-            "deals": deals, "lm": lm,
+            "deals": deals,
         })
     return out
 
@@ -5511,16 +5495,6 @@ def body_moneypage(p, today):
     table = ('<table class="deal-table"><thead><tr><th>Destination</th><th>Dates</th>'
              '<th>Price</th><th></th></tr></thead><tbody>' + "".join(rows) + "</tbody></table>")
     low = p["deals"][0]; topdest = html.escape(low["name"].split(",")[0])
-    lm = p["lm"][:6]
-    lm_html = ""
-    if lm:
-        lmrows = "".join(
-            f'<li>{html.escape(d["name"].split(",")[0])} &mdash; <b>${d["price"]:,.0f}</b> '
-            f'<span class="dt-dates">({html.escape(d.get("depart",""))})</span> &middot; '
-            f'<a href="{html.escape(d["link"], quote=True)}" target="_blank" rel="noopener" '
-            f'style="color:var(--gold)">book</a></li>' for d in lm)
-        lm_html = (f'<section class="blog-sec"><h2>Cheapest last-minute flights from '
-                   f'{html.escape(p["city"])}</h2><ul class="blog-list">{lmrows}</ul></section>')
     faq_items = "".join(
         f'<details class="art-q"><summary>{html.escape(q)}</summary><p>{html.escape(a)}</p></details>'
         for q, a in money_faqs(p))
@@ -5553,7 +5527,6 @@ def body_moneypage(p, today):
     we're tracking from {p['code']} &mdash; all real, bookable, and refreshed through the day.</p></div>
   {cta}
   {table}
-  {lm_html}
   {routes_html}
   {faq_html}
   {others_html}
@@ -7059,7 +7032,6 @@ def main():
         "newsletter.html": ("Free Newsletter", body_newsletter(market, oneway, home)),
         "newsletter-issue.html": ("Weekly issue", body_newsletter_issue(oneway, market)),
         "deal-tweets.html": ("Deal tweets", body_deal_tweets(oneway, market)),
-        "lastminute.html": ("Last-minute", body_lastminute(lastmin)),
         "airports.html": ("Captain's Log", body_airports(home)),
         "watchlist.html": ("Watchlist", body_watchlist(market)),
         "essentials.html": ("Travel essentials", body_essentials()),
@@ -7078,7 +7050,8 @@ def main():
             f.write(doc)
 
     # Retired pages -> redirect stubs (old links + SEO survive; not in sitemap).
-    REDIRECTS = {"world.html": "explore.html", "trip.html": "around-the-world.html",
+    REDIRECTS = {"world.html": "explore.html", "lastminute.html": "explore.html",
+                 "trip.html": "around-the-world.html",
                  "cheap-europe-tour.html": "cheap-europe-trip.html",
                  "cheap-asia-tour.html": "cheap-asia-trip.html",
                  "cheap-latin-america-tour.html": "cheap-latin-america-trip.html",
@@ -7160,7 +7133,7 @@ def write_seo_files(pages):
     lastmod = datetime.now().strftime("%Y-%m-%d")
     # Rough priority: home highest, then the deal boards, then helper pages.
     prio = {"index.html": "1.0", "market.html": "0.9", "world.html": "0.8",
-            "explore.html": "0.8", "lastminute.html": "0.8", "cheap-flights.html": "0.8",
+            "explore.html": "0.8", "cheap-flights.html": "0.8",
             "city-guides.html": "0.8", "cheap-flight-index.html": "0.8", "newsletter.html": "0.7", "guides.html": "0.7", "blog.html": "0.7",
             "airports.html": "0.6"}
     article_files = set(globals().get("ARTICLE_BY_FILE", {}))
@@ -7203,7 +7176,7 @@ def write_seo_files(pages):
              "like a stock market, so travelers book at the low. Every fare is real "
              "and links to booking.", "", "## Key pages"]
     for fn in ["index.html", "market.html", "explore.html", "around-the-world.html", "cheap-flights.html", "cheap-flight-index.html", "newsletter.html",
-               "lastminute.html", "airports.html", "guides.html"]:
+               "airports.html", "guides.html"]:
         if fn in SEO:
             t, desc = SEO[fn]
             loc = BASE_URL + "/" + ("" if fn == "index.html" else fn)
