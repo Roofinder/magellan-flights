@@ -2704,9 +2704,14 @@ def render_page(active, title, body, market, oneway, onewaylm, home, lm, world, 
         ga = (f'<script async src="https://www.googletagmanager.com/gtag/js?id={GA_MEASUREMENT_ID}"></script>\n'
               f'<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}'
               f'gtag(\'js\',new Date());gtag(\'config\',\'{GA_MEASUREMENT_ID}\');</script>\n')
+    # Vercel Web Analytics - framework-agnostic script; Vercel serves /_vercel/insights/script.js
+    # for any project once "Web Analytics" is turned on in the project dashboard (Analytics tab).
+    # No-ops harmlessly if that toggle is off, so it's always safe to ship.
+    vercel_analytics = '<script defer src="/_vercel/insights/script.js"></script>\n'
     return (f'<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
             f'<meta name="viewport" content="width=device-width, initial-scale=1">\n'
             f'{ga}'
+            f'{vercel_analytics}'
             f'<title>{_esc_attr(seo_title)}</title>\n'
             f'<meta name="description" content="{_esc_attr(seo_desc)}">\n'
             f'{seo_head}\n'
