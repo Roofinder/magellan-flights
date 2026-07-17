@@ -6665,7 +6665,7 @@ def _email_rare_fare(mf):
         '<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:separate;margin:0 0 26px">'
         '<tr><td style="border:2px solid #2f6b46;border-radius:14px;background:#ffffff;padding:0">'
         '<div style="background:#2f6b46;border-radius:11px 11px 0 0;padding:9px 18px">'
-        '<span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#ffffff;font-weight:bold">&#9889; Rare Fare Alert</span>'
+        '<span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#ffffff;font-weight:bold">Rare Fare Alert</span>'
         '<span style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#bfe0cb;margin-left:8px">possible mistake fare</span>'
         '</div>'
         '<div style="padding:20px 22px">'
@@ -6733,7 +6733,7 @@ def newsletter_issue_html(oneway, market, world=None):
             f'<div style="font-size:13.5px;color:#5b5440;font-style:italic;line-height:1.55;margin:2px 0 16px">{html.escape(blurb)}</div>'
         ) if blurb else ''
         coords_cell = (
-            f'<td align="right" style="font-family:Arial,Helvetica,sans-serif;font-size:10.5px;letter-spacing:1.5px;color:#b0a173;white-space:nowrap;vertical-align:middle">&#9788; {html.escape(coords)}</td>'
+            f'<td align="right" style="font-family:Arial,Helvetica,sans-serif;font-size:10.5px;letter-spacing:1.5px;color:#b0a173;white-space:nowrap;vertical-align:middle">{html.escape(coords)}</td>'
         ) if coords else ''
         normally = (f'<div style="font-size:12px;color:#9b9582;text-decoration:line-through;margin-bottom:6px">normally ~${hnorm:,.0f}</div>'
                     if hnorm > hp else '')
