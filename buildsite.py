@@ -180,8 +180,8 @@ GA_MEASUREMENT_ID = "G-EX9M7KPYCK"
 # ~55-60 chars and descriptions ~150-160 so Google shows them in full.
 SEO = {
     "index.html": (
-        "Cheap Flights from the USA — Tracked Daily | Magellan Flights",
-        "Find today's cheapest flights from the USA to anywhere. Real fares "
+        "Cheap Flights from the USA and Abroad | Magellan Flights",
+        "The market for flights. Real fares from the USA and abroad, "
         "refreshed several times a day and tracked like a stock market, so you "
         "book at the low. Round-trip and one-way deals."),
     "market.html": (
@@ -2538,7 +2538,7 @@ def top_chrome(active, market):
         cls = "link active" if href == active else "link"
         nav.append(f'<a class="{cls}" href="{href}">{label}</a>')
     nav_html = "".join(nav)
-    return f"""<body>
+    return f"""<body class="tickers-off">
 <div id="astro-splash"><div class="intro-stage">{INTRO_SVG}</div></div>
 <script>(function(){{var s=document.getElementById('astro-splash');if(!s)return;
 var seen;try{{seen=localStorage.getItem('mf_intro');}}catch(e){{}}
@@ -2553,12 +2553,12 @@ window.addEventListener('load',function(){{setTimeout(done, rm?400:1400);}});}})
 <header>
   <div class="bar">
     <a class="logo" href="index.html"><span class="mark">{LOGO_SVG}</span>{BRAND}</a>
-    <nav class="nav">{nav_html}<a class="nav-star" href="watchlist.html" title="My bucket list" aria-label="My bucket list">&#9733;</a><a class="nav-cta" href="newsletter.html">Newsletter</a><button type="button" class="ticker-toggle" onclick="toggleTickers()" title="Hide or show the price ticker" aria-label="Toggle ticker"><span class="tt-ar">&#9650;</span> Ticker</button></nav>
+    <nav class="nav">{nav_html}<a class="nav-star" href="watchlist.html" title="My bucket list" aria-label="My bucket list">&#9733;</a><a class="nav-cta" href="newsletter.html">Newsletter</a><button type="button" class="ticker-toggle" onclick="toggleTickers()" title="Hide or show the price ticker" aria-label="Toggle ticker"><span class="tt-ar">&#9660;</span> Ticker</button></nav>
   </div>
 </header>
 <script>
 function toggleTickers(){{ var off=document.body.classList.toggle('tickers-off'); try{{ localStorage.setItem('mf_tickers', off?'off':'on'); }}catch(e){{}} var a=document.querySelector('.ticker-toggle .tt-ar'); if(a) a.innerHTML= off?'&#9660;':'&#9650;'; }}
-(function(){{ var off=false; try{{ off=localStorage.getItem('mf_tickers')==='off'; }}catch(e){{}} if(off){{ document.body.classList.add('tickers-off'); var a=document.querySelector('.ticker-toggle .tt-ar'); if(a) a.innerHTML='&#9660;'; }} }})();
+(function(){{ var on=false; try{{ on=localStorage.getItem('mf_tickers')==='on'; }}catch(e){{}} if(on){{ document.body.classList.remove('tickers-off'); }} var a=document.querySelector('.ticker-toggle .tt-ar'); if(a) a.innerHTML= on?'&#9650;':'&#9660;'; }})();
 </script>
 </div>"""
 
@@ -3044,7 +3044,7 @@ def body_home(market, hist, cards, lastmin, oneway, summary, world, home=None):
   <div class="lander-inner">
     <span class="eyebrow">Flights, tracked like a stock market</span>
     <h1>Watch the world&rsquo;s fares <span class="g">rise and fall</span> &mdash; and book the moment they drop.</h1>
-    <p class="lead">Magellan tracks the cheapest flights from the USA to anywhere, every day &mdash; like a market. Every fare is judged against its own history, so when a real deal appears, it&rsquo;s unmistakable.</p>
+    <p class="lead">Magellan tracks the cheapest flights from the USA and abroad, every day, like a market. Every fare is judged against its own history, so when a real deal appears, it&rsquo;s unmistakable.</p>
     <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:26px 0 10px">
       <a href="market.html" style="background:var(--blue);color:#fff;font-weight:800;font-size:15px;padding:15px 28px;border-radius:12px;text-decoration:none;display:inline-flex;align-items:center;box-shadow:0 8px 20px rgba(46,139,87,.22)">Open the Flight Market &rarr;</a>
       <a class="btn-ghost" href="newsletter.html">Get free deal alerts &rarr;</a>
