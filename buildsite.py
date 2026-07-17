@@ -2634,13 +2634,13 @@ def site_footer(today):
   <div class="ft-top">
     <div class="ft-brand">
       <a class="logo" href="index.html"><span class="mark">{LOGO_SVG}</span>{BRAND}</a>
-      <p class="ft-tag">The cheapest flights from the USA to anywhere on earth &mdash; tracked every day, judged against their own price history.</p>
+      <p class="ft-tag">The cheapest flights from the USA to anywhere on earth, tracked every day and judged against their own price history.</p>
       <a class="nav-cta ft-cta" href="newsletter.html">Join the free newsletter</a>
     </div>
     <nav class="ft-links">{cols_html}</nav>
   </div>
   <div class="ft-bottom">
-    <p>Prices are one-way unless marked otherwise and change fast &mdash; book soon if you see one you love. {BRAND} may earn a commission when you book through our links, at no extra cost to you.</p>
+    <p>Prices are one-way unless marked otherwise and change fast, so book soon if you see one you love. {BRAND} may earn a commission when you book through our links, at no extra cost to you.</p>
     <p>&copy; {BRAND} &middot; Fares found {today} and may change at any time.</p>
   </div>
 </footer>"""
@@ -6492,7 +6492,7 @@ def _email_heatmap(items):
     hm = f"{BASE_URL}/heatmap.html"
     return (
         _email_section("The fare heatmap",
-                       "Every tracked fare at a glance &mdash; the greener the tile, the further below normal.")
+                       "Every tracked fare at a glance. The greener the tile, the further below normal.")
         + f'<a href="{hm}" style="text-decoration:none;color:inherit"><table width="100%" cellpadding="0" cellspacing="0" '
           f'style="border-collapse:separate;border-spacing:5px;margin:0 0 4px">{rows}</table></a>'
         + f'<div style="text-align:center;margin-top:12px"><a href="{hm}" style="background:#2c2a1e;color:#ffffff;'
@@ -6676,7 +6676,7 @@ def _email_rare_fare(mf):
         f'<td style="padding-left:14px;vertical-align:middle">{normally}'
         '<div style="margin-top:5px"><span style="background:#2f6b46;color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;padding:3px 9px;border-radius:11px;white-space:nowrap">&#9660; more than half off</span></div></td>'
         '</tr></table>'
-        '<div style="font-size:13px;color:#5b5440;font-style:italic;line-height:1.55;margin-bottom:16px">A fare this far below normal is the kind that&rsquo;s sometimes an airline pricing error &mdash; and those can vanish within hours. We can&rsquo;t guarantee it&rsquo;ll still be live; confirm the price on the next screen before you book.</div>'
+        '<div style="font-size:13px;color:#5b5440;font-style:italic;line-height:1.55;margin-bottom:16px">A fare this far below normal is the kind that&rsquo;s sometimes an airline pricing error, and those can vanish within hours. We can&rsquo;t guarantee it&rsquo;ll still be live; confirm the price on the next screen before you book.</div>'
         f'<a href="{link}" style="background:#2f6b46;color:#ffffff;text-decoration:none;padding:14px 30px;border-radius:9px;font-size:15px;font-weight:bold;display:inline-block;font-family:Arial,Helvetica,sans-serif">Verify &amp; book now &rarr;</a>'
         '</div>'
         '</td></tr></table>')
@@ -6703,13 +6703,13 @@ def newsletter_issue_html(oneway, market, world=None):
     elif share >= 55:
         mood = "a good week to buy"
     elif share >= 35:
-        mood = "a mixed week &mdash; be picky"
+        mood = "a mixed week, be picky"
     else:
-        mood = "a quiet week &mdash; wait for drops"
+        mood = "a quiet week, wait for drops"
     fare_watch = (
         '<table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 18px"><tr>'
         '<td style="background:#eef4ec;border:1px solid #cfe0d2;border-radius:8px;padding:9px 14px;font-family:Georgia,serif;font-size:13px;color:#2c2a1e">'
-        f'<b style="color:#2f6b46">&#128202; Fare Watch:</b> {share:.0f}% of the routes we track are below their normal price right now &mdash; {mood}.'
+        f'<b style="color:#2f6b46">Fare Watch:</b> {share:.0f}% of the routes we track are below their normal price right now, {mood}.'
         '</td></tr></table>') if graded else ""
 
     # --- Section: one trip to book now (the single best below-normal fare) ---
@@ -6744,7 +6744,7 @@ def newsletter_issue_html(oneway, market, world=None):
             f'{photo_banner}'
             f'<div style="background:#ffffff;padding:22px 24px;border-radius:{body_radius}">'
             '<table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 2px"><tr>'
-            '<td style="font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:#2f6b46;font-weight:bold;vertical-align:middle">&#128205; Book this week</td>'
+            '<td style="font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:#2f6b46;font-weight:bold;vertical-align:middle">Book this week</td>'
             f'{coords_cell}'
             '</tr></table>'
             f'<div style="font-size:27px;font-weight:bold;margin:7px 0 2px;color:#2c2a1e;line-height:1.15">{_flag_email(ho.get("cc"))}{loc}</div>'
@@ -6850,8 +6850,8 @@ def newsletter_issue_html(oneway, market, world=None):
     fell_section = ""
     if fell_rows:
         fell_section = (
-            _email_section("&#128201; Dropped this week",
-                           "Fares that actually fell against their own recent price history &mdash; watch these.")
+            _email_section("Dropped this week",
+                           "Fares that actually fell against their own recent price history. Watch these.")
             + f'<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border:1px solid #cfe0d2;border-radius:12px;overflow:hidden;margin:0 0 26px">{fell_rows}</table>')
 
     # --- Section: deals from YOUR airport (CTA to the live, interactive page) ---
@@ -6859,8 +6859,8 @@ def newsletter_issue_html(oneway, market, world=None):
     airport_section = (
         '<table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px"><tr>'
         '<td style="background:#eef4ec;border:1px solid #cfe0d2;border-radius:12px;padding:22px 20px;text-align:center">'
-        '<div style="font-size:17px;font-weight:bold;color:#2c2a1e;margin-bottom:5px">&#9992; Want deals from <i>your</i> airport?</div>'
-        '<div style="font-size:13.5px;color:#5b5440;margin-bottom:14px;line-height:1.55">Pick your home airport and see the cheapest routes abroad leaving from near you &mdash; live, updated every day.</div>'
+        '<div style="font-size:17px;font-weight:bold;color:#2c2a1e;margin-bottom:5px">Want deals from <i>your</i> airport?</div>'
+        '<div style="font-size:13.5px;color:#5b5440;margin-bottom:14px;line-height:1.55">Pick your home airport and see the cheapest routes abroad leaving from near you, live and updated every day.</div>'
         f'<a href="{BASE_URL}/airports.html" style="background:#2f6b46;color:#ffffff;text-decoration:none;padding:13px 26px;border-radius:9px;font-size:14px;font-weight:bold;display:inline-block">See cheapest routes from your airport &rarr;</a>'
         '</td></tr></table>')
 
@@ -6878,8 +6878,8 @@ def newsletter_issue_html(oneway, market, world=None):
     if _trip:
         _route = " &rarr; ".join(html.escape(c) for c in ([_trip["start"]] + [L["to"] for L in _trip["legs"]]))
         atw_section = (
-            _email_section("&#127758; Trip of the week: around the world",
-                           "The cheapest full loop we can build right now &mdash; every leg a real, bookable one-way.")
+            _email_section("Trip of the week: around the world",
+                           "The cheapest full loop we can build right now, every leg a real, bookable one-way.")
             + '<table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 26px"><tr>'
             '<td style="border:1px solid #2f6b46;border-radius:12px;padding:20px 22px;background:#ffffff">'
             f'<div style="font-family:Georgia,serif;font-size:21px;font-weight:bold;color:#2c2a1e;margin:0 0 3px">{html.escape(_trip["start_name"])} &rarr; around the world &rarr; home</div>'
@@ -6895,7 +6895,7 @@ def newsletter_issue_html(oneway, market, world=None):
     return (
         '<div style="max-width:600px;margin:0 auto;font-family:Georgia,serif;color:#2c2a1e">'
         '<div style="background:#2f6b46;padding:30px 26px 26px;text-align:center;border-radius:16px 16px 0 0">'
-        '<div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#bfe0cb;font-weight:bold">&#9992;&nbsp; Magellan Flights</div>'
+        '<div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#bfe0cb;font-weight:bold">Magellan Flights</div>'
         '<div style="font-family:Georgia,serif;font-size:34px;font-weight:bold;color:#ffffff;margin:11px 0 9px;letter-spacing:.5px">The Flight Market</div>'
         '<div style="font-size:1px;line-height:1px"><span style="display:inline-block;width:84px;border-top:1px solid #7bb392">&nbsp;</span></div>'
         f'<div style="font-family:Arial,Helvetica,sans-serif;font-size:10.5px;letter-spacing:2.5px;text-transform:uppercase;color:#9fd0b0;margin-top:9px">Weekly Briefing &middot; {issued}</div>'
@@ -6912,13 +6912,13 @@ def newsletter_issue_html(oneway, market, world=None):
         f'{heatmap_section}'
         f'{_email_deal_guide()}'
         '<table width="100%" cellpadding="0" cellspacing="0" style="margin:18px 0 0"><tr><td style="background:#ffffff;border:1px dashed #c9b88e;border-radius:12px;padding:18px 20px;text-align:center">'
-        '<div style="font-size:15px;color:#2c2a1e;font-weight:bold;margin-bottom:4px">&#128233; Know a fellow deal-hunter?</div>'
-        '<div style="font-size:13px;color:#7a715a;margin-bottom:10px;line-height:1.5">Forward this email &mdash; they can get the weekly briefing free. The more of us watching the market, the better it gets.</div>'
+        '<div style="font-size:15px;color:#2c2a1e;font-weight:bold;margin-bottom:4px">Know a fellow deal-hunter?</div>'
+        '<div style="font-size:13px;color:#7a715a;margin-bottom:10px;line-height:1.5">Forward this email. They can get the weekly briefing free, and the more of us watching the market, the better it gets.</div>'
         f'<a href="{BASE_URL}/newsletter.html" style="color:#2f6b46;text-decoration:none;font-weight:bold;font-size:13px">Send a friend to magellanflights.com/newsletter &rarr;</a>'
         '</td></tr></table>'
         '</div>'
         '<div style="background:#e7ddc6;padding:18px 26px;border-radius:0 0 16px 16px;font-size:11.5px;color:#7a715a;text-align:center;line-height:1.6">'
-        '<b style="color:#2c2a1e">How we judge &ldquo;below normal&rdquo;:</b> we compare the cheapest one-way we&rsquo;ve tracked to that route&rsquo;s usual price (estimated from round-trip fares and its own price history). An honest guide, not a guarantee &mdash; your live price is always confirmed on Aviasales.'
+        '<b style="color:#2c2a1e">How we judge &ldquo;below normal&rdquo;:</b> we compare the cheapest one-way we&rsquo;ve tracked to that route&rsquo;s usual price (estimated from round-trip fares and its own price history). An honest guide, not a guarantee. Your live price is always confirmed on Aviasales.'
         f'<br><br>You&rsquo;re getting this because you joined Magellan Flights at <a href="{BASE_URL}" style="color:#2f6b46">magellanflights.com</a>. Unsubscribe anytime.'
         '</div>'
         '</div>')
@@ -6927,7 +6927,7 @@ def newsletter_issue_html(oneway, market, world=None):
 def body_newsletter_issue(oneway, market):
     issue = newsletter_issue_html(oneway, market)
     return f"""<div class="wrap" style="max-width:720px">
-  <div class="pagehead"><h1>Weekly issue generator</h1><p><b>Automated:</b> Beehiiv&rsquo;s RSS-to-send pulls this issue from <a href="newsletter.xml" style="color:var(--gold)">newsletter.xml</a> and emails it once a week with no copy-paste &mdash; set it up once under <i>Automations &rarr; RSS</i> in Beehiiv (feed URL: <code>magellanflights.com/newsletter.xml</code>). <b>Manual fallback:</b> click <b>Copy issue</b>, open Beehiiv, create a new post, paste (Ctrl/Cmd-V), and send. Either way it refreshes automatically as the deals update. (Owner tool &mdash; not linked publicly.)</p></div>
+  <div class="pagehead"><h1>Weekly issue generator</h1><p><b>Automated:</b> Beehiiv&rsquo;s RSS-to-send pulls this issue from <a href="newsletter.xml" style="color:var(--gold)">newsletter.xml</a> and emails it once a week with no copy-paste. Set it up once under <i>Automations &rarr; RSS</i> in Beehiiv (feed URL: <code>magellanflights.com/newsletter.xml</code>). <b>Manual fallback:</b> click <b>Copy issue</b>, open Beehiiv, create a new post, paste (Ctrl/Cmd-V), and send. Either way it refreshes automatically as the deals update. (Owner tool, not linked publicly.)</p></div>
   <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:0 0 16px">
     <button class="book" id="nlcopy" onclick="nlCopy()" style="font-size:15px;padding:12px 26px;border:0;cursor:pointer">Copy issue</button>
     <span id="nlcopied" style="color:#2f6b46;font-weight:600"></span>
