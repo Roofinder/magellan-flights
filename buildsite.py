@@ -117,7 +117,7 @@ FOOTER_NAV = [
     ("Browse fares", [("market.html", "The Market"), ("explore.html", "Explore &amp; search"),
                       ("around-the-world.html", "Around the World"),
                       ("cheap-europe-trip.html", "Continent trips"),
-                      ("cheap-flights.html", "Cheap flights by airport")]),
+                      ("cheap-flights.html", "Flight deals by airport")]),
     ("Learn", [("city-guides.html", "City guides"), ("guides.html", "Guides &amp; tips"),
                ("blog.html", "Today&rsquo;s Daily Guide"), ("cheap-flight-index.html", "Cheap Flight Index"),
                ("travel-cards.html", "Travel cards"), ("essentials.html", "Travel kit"),
@@ -2519,7 +2519,7 @@ INTRO_SVG = (
     'calcMode="spline" keyTimes="0;1" keySplines="0.45 0 0.25 1">'
     '<mpath href="#arcpath"/></animateMotion></g>'
     f'<text class="intro-ttl" x="82" y="180">{BRAND}</text>'
-    '<text class="intro-sub" x="86" y="240">The cheapest flights from the USA</text>'
+    '<text class="intro-sub" x="86" y="240">Find the flight deal.</text>'
     '<text class="intro-url" x="86" y="566">magellanflights.com</text>'
     '</svg>')
 
@@ -2572,7 +2572,7 @@ EMAIL_CAPTURE = ("""
 <div id="mf-capture" class="mf-capture" role="complementary" aria-label="Newsletter signup">
   <button class="mfc-x" onclick="mfCaptureClose()" aria-label="Dismiss">&times;</button>
   <div class="mfc-body">
-    <div class="mfc-title">Catch the cheap ones before they vanish</div>
+    <div class="mfc-title">Catch the deals before they vanish</div>
     <div class="mfc-sub">One email a week: the best fares we tracked and the one trip worth booking. Free, unsubscribe anytime.</div>
     <form class="mfc-form" onsubmit="return mfCaptureSub(event)">
       <input id="mfc-email" type="email" required placeholder="you@email.com" autocomplete="email" aria-label="Email address">
@@ -2996,7 +2996,7 @@ def oneway_board(oneway, market, limit=8):
         return ""
     return (f'<section class="home-sec"><div class="sec-head">'
             f'<h2><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#2f6b46" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5c.8 0 1.3 1.1 1.3 2.6v3.7l7.2 4.1v1.9l-7.2-2.1v3.6l1.9 1.4v1.5L12 18.5l-3.2 1.2v-1.5l1.9-1.4v-3.6L3.5 14.8v-1.9l7.2-4.1V5.1C10.7 3.6 11.2 2.5 12 2.5z"/></svg> One-way Voyages</h2>'
-            f'<span>cheap one-way fares to anywhere</span></div>'
+            f'<span>one-way deals to anywhere</span></div>'
             f'<div class="grid">{"".join(cards)}</div></section>')
 
 
@@ -3047,7 +3047,7 @@ function homeSearch(e){ e.preventDefault();
 
 def body_home(market, hist, cards, lastmin, oneway, summary, world, home=None):
     labels = [("summary", "Market summary"), ("indices", "Fare indices"),
-              ("movers", "Biggest movers"), ("deals", "Cheapest trips"),
+              ("movers", "Biggest movers"), ("deals", "Best deals"),
               ("oneway", "One-way escapes")]
     checks = "".join(f'<label><input type="checkbox" id="cb-{k}" onchange="toggleSec(\'{k}\')"> {lab}</label>'
                      for k, lab in labels)
@@ -3138,7 +3138,7 @@ def body_story(market, oneway, world):
   <div class="lander-inner">
     <span class="eyebrow">Our story</span>
     <h1>Airfare, <span class="g">handed back</span> to ordinary travelers.</h1>
-    <p class="lead">Magellan Flights tracks the cheapest fares from the USA to anywhere on earth, every day &mdash; and tells you the moment one drops below its normal price. Start with a search, or read how we got here.</p>
+    <p class="lead">Magellan Flights tracks flight deals from the USA and abroad, every day &mdash; and tells you the moment a fare drops below its normal price. Start with a search, or read how we got here.</p>
     <form class="fsearch" data-alert="{FORM_ACTION}" data-subscribe="{BEEHIIV_URL}" onsubmit="return homeSearch(event)" aria-label="Flight search">
       <div class="fs-row fs-trip">
         <label class="fs-radio"><input type="radio" name="fs-trip" value="round" checked onchange="fsTrip('round')"> Round-trip</label>
@@ -3183,7 +3183,7 @@ def body_story(market, oneway, world):
 
   <div class="section-head-lg"><h2>What we actually do</h2><p>Three jobs, every single day &mdash; so you don&rsquo;t have to refresh a dozen booking sites hoping to get lucky.</p></div>
   <div class="why">
-    <div class="why-card"><h3>1 &middot; We track</h3><p>We watch the cheapest one-way and round-trip fares from {nroutes} US routes to {ncountries} countries, refreshed several times a day &mdash; a living market of real, bookable prices.</p></div>
+    <div class="why-card"><h3>1 &middot; We track</h3><p>We watch one-way and round-trip fares from {nroutes} US routes to {ncountries} countries, refreshed several times a day &mdash; a living market of real, bookable prices.</p></div>
     <div class="why-card"><h3>2 &middot; We judge</h3><p>Every fare is measured against that route&rsquo;s own price history &mdash; its Standard Meridian. That&rsquo;s how we know a $300 ticket to Europe is a genuine steal and a $300 ticket next door is not.</p></div>
     <div class="why-card"><h3>3 &middot; We flag &amp; alert</h3><p>When a price drops well below normal we flag it BUY ({nbook} today) and, if you ask, email you the moment it happens &mdash; so you book at the low instead of the average.</p></div>
   </div>
@@ -3568,7 +3568,7 @@ def oneway_market(oneway, market, limit=30):
                    f'<span class="owreg-meta">{len(countries)} countries &middot; from <b>${reg_cheapest:,.0f}</b></span></summary>')
         body.append(f'<details class="owreg" data-region="{reg}">{reg_sum}<div class="owreg-body">{"".join(inner)}</div></details>')
     head = ('<div class="sec-head" id="deals"><h2><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="#2f6b46" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5c.8 0 1.3 1.1 1.3 2.6v3.7l7.2 4.1v1.9l-7.2-2.1v3.6l1.9 1.4v1.5L12 18.5l-3.2 1.2v-1.5l1.9-1.4v-3.6L3.5 14.8v-1.9l7.2-4.1V5.1C10.7 3.6 11.2 2.5 12 2.5z"/></svg> One-way Voyages</h2>'
-            f'<span>{len(regions_present)} regions &middot; {ncountries} countries &middot; {ncities} cheap one-way fares &middot; tap a region, then a country</span></div>')
+            f'<span>{len(regions_present)} regions &middot; {ncountries} countries &middot; {ncities} one-way fares &middot; tap a region, then a country</span></div>')
     chips_html = f'<div class="airchips" style="margin:2px 0 10px">{"".join(chips)}</div>'
     searchbar = ('<div class="owm-bar"><input type="text" id="ow-q" placeholder="Search a country or city\u2026" oninput="owApply()" autocomplete="off">'
                  '<select id="ow-month" onchange="owApply()" style="background:#efe5cd;color:var(--ink);border:1px solid var(--line);border-radius:9px;padding:9px 12px;font:inherit"><option value="">Any month</option></select></div>')
@@ -3796,7 +3796,7 @@ def body_heatmap(oneway, market):
 
 def body_market(market, hist, cards, lastmin, oneway):
     return f"""<div class="wrap">
-  <div class="pagehead"><h1>The Market &mdash; Cheapest One-Way Flights from the USA</h1><p>The full board &mdash; the cheapest one-way fares to anywhere, judged against each route&rsquo;s own price history, plus region fare indices.</p></div>
+  <div class="pagehead"><h1>The Market &mdash; One-Way Flight Deals from the USA</h1><p>The full board &mdash; one-way deals to anywhere, judged against each route&rsquo;s own price history, plus region fare indices.</p></div>
   <div class="summary">{market_pulse(market)}</div>
   <div class="sec-head"><h2>Fare heatmap</h2><span>one-way deals vs. their normal price</span></div>
   {heatmap_legend()}
@@ -4072,7 +4072,7 @@ def body_rtw(world):
     shell = """<style>.mf-ledger{margin-top:14px;background:#efe5cd;border:1px solid #d9c9a0;border-radius:12px;padding:14px}.mf-totals{display:flex;gap:12px;flex-wrap:wrap}.mf-tot{flex:1;min-width:150px;background:#efe5cd;border:1px solid #d9c9a0;border-radius:10px;padding:10px 12px}.mf-tot .mf-lbl{display:block;font-size:12px;color:var(--muted)}.mf-tot .mf-val{font-size:22px;font-weight:700}.mf-tot .mf-sub{display:block;font-size:11px;color:var(--muted);margin-top:2px}.mf-conf{border-color:rgba(46,139,87,.45)}.mf-conf .mf-val{color:#2e8b57}.mf-save{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}.mf-save input{flex:1;min-width:180px;background:#efe5cd;border:1px solid #d9c9a0;border-radius:8px;color:var(--ink);padding:8px 10px;font:inherit}.rtw-confwrap{display:flex;align-items:center;gap:6px;margin-top:6px}.rtw-bk{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);cursor:pointer}.rtw-bp{width:84px;background:#efe5cd;border:1px solid #d9c9a0;border-radius:6px;color:var(--ink);padding:3px 6px;font:inherit}.rtw-bp:disabled{opacity:.4}.mf-trips-h{font-size:12px;color:var(--muted);margin:14px 0 4px}.mf-trip{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 0;border-top:1px solid #d9c9a0}.mf-trip-nm{font-weight:600}.mf-trip-meta{font-size:12px;color:var(--muted)}.mf-mini{padding:3px 10px;font-size:12px}.rtw-mustchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.rtw-chip{display:inline-flex;align-items:center;gap:5px;background:#2f6b46;border:1px solid #d9c9a0;border-radius:999px;padding:3px 4px 3px 10px;font-size:12px;color:#fff}.rtw-chip button{background:none;border:none;color:var(--muted);cursor:pointer;font-size:15px;line-height:1;padding:0 3px}.rtw-chip button:hover{color:#fff}.rtw-mustbtns{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px;font-size:12px;color:var(--muted)}.rtw-mustbtns select{background:#efe5cd;border:1px solid #d9c9a0;border-radius:6px;color:var(--ink);padding:3px 6px;font:inherit}.rtw-mustnote{font-size:11px;color:var(--muted);margin-top:6px}</style>
 <div class="wrap">
   <div class="pagehead"><h1>__COMPASS__ Cheapest Around-the-World Flights</h1>
-  <p>Five centuries after Magellan circled the globe, build your own cheapest way to do it today &mdash; one cheap one-way at a time. Set your start, stops, regions and budget, and we&rsquo;ll find the lowest-cost real loop our tracker can assemble right now.</p></div>
+  <p>Five centuries after Magellan circled the globe, build your own way to do it today &mdash; one one-way deal at a time. Set your start, stops, regions and budget, and we&rsquo;ll find the lowest-cost real loop our tracker can assemble right now.</p></div>
   <div class="tl-card">
     <div class="rtw-controls">
       <label class="rtw-ctl"><span>Scope</span>
@@ -4393,7 +4393,7 @@ def body_explore(home):
   <div class="panel"><div id="citydeals"></div><div class="wl-hint" id="city-hint">Add your home airport (e.g. Raleigh, RDU) to see the cheapest trips leaving from your city.</div></div>
 </div>'''.replace("__CITYOPTS__", city_options(home)).replace("__ACREGIONS__", region_chip_bar("data-acr", "toggleACR")))
     _html = """<div class="wrap">
-  <div class="pagehead"><h1>Find Cheap One-Way Flights from the USA</h1><p>Add your home airport(s) and we&rsquo;ll find the cheapest one-ways to <b>anywhere</b>, or type a destination to see every fare we have for it. Add several airports and we compare across all of them. Just want to browse the cheapest deals? That&rsquo;s the <a href="market.html" style="color:var(--gold)">Market</a>.</p></div>
+  <div class="pagehead"><h1>Find One-Way Flight Deals from the USA</h1><p>Add your home airport(s) and we&rsquo;ll find the best one-way deals to <b>anywhere</b>, or type a destination to see every fare we have for it. Add several airports and we compare across all of them. Just want to browse today&rsquo;s deals? That&rsquo;s the <a href="market.html" style="color:var(--gold)">Market</a>.</p></div>
   <div class="airchips" id="ex-tabs" style="margin:0 0 14px;gap:8px">
     <button type="button" class="airchip on" id="ex-tab-explore-btn" onclick="exTab('explore')">Explore anywhere</button>
     <button type="button" class="airchip" id="ex-tab-air-btn" onclick="exTab('air')">From my airport</button>
@@ -4536,7 +4536,7 @@ def body_airports(home):
 
 def body_ask():
     return rf"""<div class="wrap" style="max-width:760px">
-  <div class="pagehead"><h1>Ask Magellan</h1><p>Ask about our cheapest tracked one-way deals &mdash; what&rsquo;s below normal right now, deals to a region, or how the fare market looks. Answers come only from {BRAND}&rsquo;s live-tracked data &mdash; no made-up prices.</p></div>
+  <div class="pagehead"><h1>Ask Magellan</h1><p>Ask about our tracked one-way deals &mdash; what&rsquo;s below normal right now, deals to a region, or how the fare market looks. Answers come only from {BRAND}&rsquo;s live-tracked data &mdash; no made-up prices.</p></div>
   <div class="signup" style="margin:0 0 18px"><div class="signup-inner">
     <form onsubmit="return askSub(event)" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;max-width:560px;margin:0 auto">
       <input id="ask-q" type="text" required autocomplete="off" placeholder="e.g. Where can I fly cheap right now?" style="flex:1;min-width:240px;background:#fffdf6;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:15px">
@@ -5456,7 +5456,7 @@ def body_guides(market):
         f'<div class="gc-more">Read guide &rarr;</div></a>'
         for a in ARTICLES)
     return f"""<div class="wrap">
-  <div class="pagehead"><h1>Flight deal guides</h1><p>Straight answers on when to book, where to go, and how to catch a cheap fare &mdash; backed by the fares we track every day.</p></div>
+  <div class="pagehead"><h1>Flight deal guides</h1><p>Straight answers on when to book, where to go, and how to catch a deal &mdash; backed by the fares we track every day.</p></div>
   <div class="guide-grid">{cards}</div>
 </div>"""
 
@@ -6316,7 +6316,7 @@ def body_newsletter(market, oneway, home=None):
         ("Is the newsletter free?", "Yes, completely free. We may earn a commission when you book through our links, at no extra cost to you."),
         ("How often will I hear from you?", "Once a week — a short research digest of the market's moves and one trip worth booking. No spam, ever."),
         ("What's in each issue?", "A research digest: how each country's fares moved week-over-week, the biggest movers judged against each route's own history, past and current top performers, and one recommended trip to book now while it's below normal."),
-        ("How do you decide a fare is “below normal”?", "We compare the cheapest one-way we've tracked for a route to that route's usual price — estimated from round-trip fares and the route's own price history. The bigger the gap, the better the deal. It's an honest research guide, not a guarantee or a prediction, and your live price is always confirmed on Aviasales before you book."),
+        ("How do you decide a fare is “below normal”?", "We compare the lowest one-way we've tracked for a route to that route's usual price — estimated from round-trip fares and the route's own price history. The bigger the gap, the better the deal. It's an honest research guide, not a guarantee or a prediction, and your live price is always confirmed on Aviasales before you book."),
         ("Can I unsubscribe anytime?", "Of course — one click in any email and you're off the list, no hard feelings."),
     ]
     faq_html = "".join(f'<details class="art-q"><summary>{html.escape(q)}</summary><p>{html.escape(a)}</p></details>'
@@ -6358,7 +6358,7 @@ def body_newsletter(market, oneway, home=None):
   <p style="font-size:13px;color:var(--muted)">A sample of what lands in your inbox &mdash; see the full board on the <a href="market.html" style="color:var(--gold)">Market</a>.</p></div>
   <div class="blog-sec"><h2>Frequently asked questions</h2>{faq_html}</div>
   <div class="signup" style="margin-top:10px"><div class="signup-inner">
-    <h2>Catch your dream trip when it&rsquo;s cheap</h2>
+    <h2>Catch your dream trip when the price drops</h2>
     <p>The biggest below-normal flight deals from the USA &mdash; and the one to book now. Free, once a week.</p>
     <a class="book" href="javascript:void(0)" onclick="var e=document.getElementById('nl-email');if(e){{e.scrollIntoView({{behavior:'smooth',block:'center'}});e.focus();}}return false;" style="display:inline-block;font-size:16px;padding:12px 28px;margin-top:6px">Join free &rarr;</a>
   </div></div>
