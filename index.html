@@ -1003,7 +1003,7 @@ function dealRow(o,d){ var on=WF.indexOf(o+'|'+d.code)>=0; var ow=!d['return'];
   + '<div class="mv-right"><span class="mv-price">$'+d.price.toLocaleString()+'</span> <span class="ow-unit">'+(ow?'one-way':'round-trip')+'</span>'
   + '<a class="mini-book" href="'+d.link+'" target="_blank" rel="noopener">See live price on Aviasales &rarr;</a></div></div>'; }
 function findDeal(o,c){ if(!HOME[o]) return null; var best=null;
-  var keys = (ACTRIP==='ow') ? ['oneway'] : ['deals','lastminute'];
+  var keys = (ACTRIP==='ow') ? ['oneway'] : ['deals'];
   keys.forEach(function(k){ (HOME[o][k]||[]).forEach(function(d){ if(d.code===c && (!best||d.price<best.price)) best=d; }); });
   return best; }
 function toggleFlight(o,c){ var key=o+'|'+c; var i=WF.indexOf(key); if(i<0)WF.push(key); else WF.splice(i,1); save(); renderAirportWatch(); renderCities(); }
@@ -1027,19 +1027,17 @@ function renderCities(){ var chips=document.getElementById('citychips'), deals=d
   hint.style.display='none';
   var ow=(ACTRIP==='ow');
   document.querySelectorAll('[data-actrip]').forEach(function(b){ b.classList.toggle('on', (b.dataset.actrip==='ow')===ow); });
-  var mb=document.getElementById('ac-modebar'); if(mb) mb.style.display=ow?'none':'';
-  var key = ow ? 'oneway' : (ACMODE==='lm' ? 'lastminute' : 'deals');
+  var key = ow ? 'oneway' : 'deals';
   var pool=[]; valid.forEach(function(c){ pool=pool.concat(HOME[c][key]||[]); });
   var av=regAvail(pool);
   ACSEL=ACSEL.filter(function(r){ return r==='Abroad'?av['Abroad']:av[r]; });
   syncChips('[data-acr]','acr',av,ACSEL);
-  document.querySelectorAll('[data-act]').forEach(function(b){ b.classList.toggle('on', b.dataset.act===ACMODE); });
-  var label = ow ? '&middot; cheapest one-way' : (ACMODE==='lm' ? '&middot; last-minute this week' : '&middot; cheapest anytime');
+  var label = ow ? '&middot; cheapest one-way' : '&middot; cheapest anytime';
   deals.innerHTML=valid.map(function(c){
     var arr=(HOME[c][key]||[]).filter(function(d){ return regMatch(d, ACSEL); });
     var h='<div class="grouphdr">'+''+'From '+HOME[c].name+' ('+c+') '+label+'</div>';
     h += arr.length ? arr.map(function(d){ return dealRow(c,d); }).join('')
-                    : '<div class="wl-hint">No '+(ow?'one-way ':(ACMODE==='lm'?'last-minute ':''))+'deals for this selection.</div>';
+                    : '<div class="wl-hint">No '+(ow?'one-way ':'')+'deals for this selection.</div>';
     return h; }).join('');
 }
 var ACSEL=[]; var ACMODE='any'; var ACTRIP='rt';
@@ -1048,7 +1046,7 @@ function setACMode(m){ ACMODE=m; renderCities(); }
 function setACTrip(t){ ACTRIP=t; if(t==='ow') ACMODE='any'; renderCities(); }
 function cpAppend(cls, h){ var m=document.getElementById('cpmsgs'); if(!m) return; var d=document.createElement('div'); d.className='cp-msg '+cls; d.innerHTML='<span class="bub">'+h+'</span>'; m.appendChild(d); m.scrollTop=m.scrollHeight; }
 function chatToggle(){ var p=document.getElementById('chatpanel'); if(!p) return; p.classList.toggle('open');
-  if(p.classList.contains('open') && !p.dataset.greeted){ cpAppend('bot', "Hi! I search the live deals on this site. Try:<br>&bull; \"cheapest one-way to Asia\"<br>&bull; \"last-minute to the Caribbean\"<br>&bull; \"where can I go under $300?\""); p.dataset.greeted='1'; } }
+  if(p.classList.contains('open') && !p.dataset.greeted){ cpAppend('bot', "Hi! I search the live deals on this site. Try:<br>&bull; \"cheapest one-way to Asia\"<br>&bull; \"where can I go under $300?\"<br>&bull; \"best time to visit Japan\""); p.dataset.greeted='1'; } }
 function chatSend(){ var i=document.getElementById('cpinput'); if(!i) return; var t=(i.value||'').trim(); if(!t) return;
   cpAppend('you', t.replace(/</g,'&lt;')); i.value='';
   var th=cpThink();
@@ -1061,7 +1059,7 @@ function findDest(s){ for(var i=0;i<MARKET.length;i++){ var parts=MARKET[i].n.to
   for(var j=0;j<parts.length;j++){ var t=parts[j].trim(); if(t.length>2 && s.indexOf(t)>=0) return MARKET[i]; } }
   return null; }
 function botReply(q){ var s=q.toLowerCase();
-  if(/^(hi|hey|hello|help|what can|how do)/.test(s)) return "I can search live deals here. Try:<br>&bull; \"cheapest one-way to Europe\"<br>&bull; \"last-minute to the Caribbean\"<br>&bull; \"where can I go under $200?\"<br>&bull; \"best time to visit Japan\"";
+  if(/^(hi|hey|hello|help|what can|how do)/.test(s)) return "I can search live deals here. Try:<br>&bull; \"cheapest one-way to Europe\"<br>&bull; \"where can I go under $200?\"<br>&bull; \"best time to visit Japan\"";
   if(/best time|when (should|to|is best)|what month|when to (go|visit|travel)/.test(s)){
     var hit=findDest(s);
     if(hit && BT[hit.c]) return "Best time to visit <b>"+hit.n+"</b>: "+BT[hit.c]+". (Based on weather/crowd averages.)";
@@ -1081,11 +1079,8 @@ function botReply(q){ var s=q.toLowerCase();
     if(cur && FX[cur]){ return "$"+amt.toLocaleString()+" &asymp; <b>"+Math.round(amt*FX[cur]).toLocaleString()+" "+cur+"</b>"+(place?(" in "+place):"")+"."; }
     return "Tell me a place — e.g. \"how far does $100 go in Thailand?\"";
   }
-  var lm=/last[- ]?minute|this week|soon|right now/.test(s);
   var oneway=!/round[- ]?trip/.test(s);
-  var data = lm ? (oneway && typeof OWLM!=='undefined' ? OWLM : (typeof LM!=='undefined'?LM:[]))
-                : (oneway && typeof OW!=='undefined' ? OW : (typeof LM!=='undefined'?LM:[]));
-  if(!data || !data.length){ data = (typeof OW!=='undefined'?OW:[]); }
+  var data = (typeof OW!=='undefined' ? OW : []);
   var KW=[['southeast asia','SE Asia'],['se asia','SE Asia'],['east asia','E Asia'],['south asia','S Asia'],['asia','Asia'],['western europe','W Europe'],['west europe','W Europe'],['eastern europe','E Europe'],['east europe','E Europe'],['nordic','Nordic'],['scandinav','Nordic'],['europe','Europe'],['caribbean','Caribbean'],['central america','C America'],['mexico','C America'],['south america','S America'],['oceania','Oceania'],['australia','Oceania'],['middle east','Middle East'],['africa','Africa'],['canada','Canada'],['domestic','USA'],['abroad','Abroad'],['international','Abroad']];
   var region=null; for(var i=0;i<KW.length;i++){ if(s.indexOf(KW[i][0])>=0){ region=KW[i][1]; break; } }
   var cap=null; var m=s.match(/(\d{2,4})/); if(m && /under|below|less|budget|for |\$/.test(s)) cap=parseInt(m[1],10);
@@ -1095,9 +1090,9 @@ function botReply(q){ var s=q.toLowerCase();
   if(!region && !cap){ var words=s.replace(/[^a-z ]/g,' ').split(/\s+/).filter(function(w){return w.length>3;});
     if(words.length){ items=data.filter(function(d){ var nm=(d.n||d.name||'').toLowerCase(); return words.some(function(w){ return nm.indexOf(w)>=0; }); }); } }
   items.sort(function(a,b){ return botPrice(a)-botPrice(b); });
-  if(!items.length) return "I couldn't find "+(lm?'last-minute ':'')+(oneway?'one-way ':'')+"deals"+(region?(' to '+region):'')+(cap?(' under $'+cap):'')+" right now. Try a different region, or open the <a href='explore.html'>One-way explorer</a>.";
-  var head=(lm?'Last-minute ':'')+(oneway?'one-way ':'round-trip ')+'deals'+(region?(' to '+region):'')+(cap?(' under $'+cap):'')+':';
-  return head+'<br>'+botList(items,4,oneway)+'<br><a href="'+(lm?'lastminute.html':(oneway?'explore.html':'market.html'))+'">See more &rarr;</a>';
+  if(!items.length) return "I couldn't find "+(oneway?'one-way ':'')+"deals"+(region?(' to '+region):'')+(cap?(' under $'+cap):'')+" right now. Try a different region, or open the <a href='explore.html'>One-way explorer</a>.";
+  var head=(oneway?'one-way ':'round-trip ')+'deals'+(region?(' to '+region):'')+(cap?(' under $'+cap):'')+':';
+  return head+'<br>'+botList(items,4,oneway)+'<br><a href="'+(oneway?'explore.html':'market.html')+'">See more &rarr;</a>';
 }
 function fakeSubmit(e){ e.preventDefault();
   var f=e.target, a=f.getAttribute('action'), ok=document.getElementById('ok'), btn=f.querySelector('button');
@@ -1110,7 +1105,7 @@ function fakeSubmit(e){ e.preventDefault();
     .catch(function(){ ok.innerHTML='Network error \u2014 please try again.'; ok.style.display='block'; })
     .then(function(){ if(btn){ btn.disabled=false; btn.textContent=lbl; } });
   return false; }
-var HSECS=['summary','indices','movers','deals','lastminute','oneway'];
+var HSECS=['summary','indices','movers','deals','oneway'];
 var HL=JSON.parse(localStorage.getItem('fs_home_layout')||'{}');
 function secOn(s){ return HL[s]!==false; }
 function applyLayout(){ HSECS.forEach(function(s){ var el=document.querySelector('[data-sec="'+s+'"]');
