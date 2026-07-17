@@ -4084,7 +4084,9 @@ def body_rtw(world):
       <label class="rtw-ctl" id="rtw-dir-wrap"><span>Direction</span>
         <select id="rtw-dir" onchange="rtwBuild()"><option value="BOTH">Either &mdash; cheapest</option><option value="W">Westward (Magellan&rsquo;s way)</option><option value="E">Eastward</option></select></label>
       <label class="rtw-ctl" id="rtw-end-wrap"><span>End</span>
-        <select id="rtw-end" onchange="rtwBuild()"><option value="START">Back to your start</option><option value="ANY">Cheapest US arrival &mdash; anywhere</option></select></label>
+        <select id="rtw-end" onchange="rtwEndToggle();rtwBuild()"><option value="START">Back to your start</option><option value="ANY">Cheapest US arrival</option></select></label>
+      <label class="rtw-ctl" id="rtw-endarea-wrap" style="display:none"><span>Arrive</span>
+        <select id="rtw-endarea" onchange="rtwBuild()"><option value="MAIN">Mainland US (no Hawaii)</option><option value="ANY">Anywhere in the US</option><option value="EAST">East Coast</option><option value="CENTRAL">Central US</option><option value="WEST">West Coast</option></select></label>
       <label class="rtw-ctl"><span><span id="rtw-stops-cap">Stops</span> <b id="rtw-stops-lab">3</b></span>
         <input type="range" id="rtw-stops" min="2" max="5" value="3" oninput="rtwStopsLab();rtwBuild()"></label>
     </div>
@@ -4104,7 +4106,7 @@ def body_rtw(world):
       <div class="airchips" id="rtw-conts" style="margin-top:6px">__CONT_CHIPS__</div></div>
   </div>
   <div id="rtw-out">__DEFAULT__</div>
-  <p class="finehint" style="text-align:center;margin-top:18px">Set <b>End</b> to &ldquo;Cheapest US arrival&rdquo; if you don&rsquo;t need to land back where you started &mdash; we&rsquo;ll start and end anywhere in the US for the lowest total, so you can position to a cheap start city and take the cheapest way back into the country. Loops are built from recently-tracked one-way fares &mdash; geography won&rsquo;t always be textbook-perfect, and each leg&rsquo;s live price is confirmed when you book on Aviasales. No full loop for some combinations &mdash; widen the regions, raise the budget, or change the stop count. Want a hand? <a href="consultant.html" style="color:var(--gold)">Hire a consultant</a>.</p>
+  <p class="finehint" style="text-align:center;margin-top:18px">Set <b>End</b> to &ldquo;Cheapest US arrival&rdquo; if you don&rsquo;t need to land back where you started &mdash; we&rsquo;ll start and end anywhere in the US for the lowest total, so you can position to a cheap start city and take the cheapest way back into the country. Use <b>Arrive</b> to keep it on the mainland (no Hawaii) or bias to your coast so the last hop home is short. Loops are built from recently-tracked one-way fares &mdash; geography won&rsquo;t always be textbook-perfect, and each leg&rsquo;s live price is confirmed when you book on Aviasales. No full loop for some combinations &mdash; widen the regions, raise the budget, or change the stop count. Want a hand? <a href="consultant.html" style="color:var(--gold)">Hire a consultant</a>.</p>
 </div>
 <script>
 /* Interactive cheapest-circumnavigation builder. Eastward/westward DP over tracked
@@ -4129,7 +4131,17 @@ window.rtwMustDel=function(c){ var i=MFMUST.indexOf(c); if(i>=0){ MFMUST.splice(
 window.rtwFromBucket=function(){ var list=[]; try{ list=JSON.parse(localStorage.getItem('mf_bucket')||'[]'); }catch(e){} var note=go("rtw-must-note"); if(!list.length){ if(note) note.innerHTML="Your bucket list is empty &mdash; star &#9734; deals on <a href=\\"explore.html\\" style=\\"color:var(--gold)\\">Explore</a> to save cities here."; return; } var added=0, skipped=0, full=false, seen={}; for(var i=0;i<list.length;i++){ var c=list[i].d; if(c && seen[c]) continue; if(c) seen[c]=1; if(c && RHUBS[c]){ if(MFMUST.indexOf(c)<0){ if(MFMUST.length<6){ MFMUST.push(c); added++; } else { full=true; } } } else { skipped++; } } renderMustChips(); var msg=added?('Added '+added+' cit'+(added>1?'ies':'y')+' from your bucket list.'):'No new routable cities to add.'; if(full) msg+=' (6-city max reached.)'; if(skipped) msg+=' '+skipped+' saved place'+(skipped>1?'s aren\\'t':' isn\\'t')+' a routable hub yet, so skipped.'; if(note) note.textContent=msg; rtwBuild(); };
 function cheapestCycle(start, cities){ var n=cities.length; if(!n||!RHUBS[start]) return null; var full=(1<<n)-1; var dp=[], par=[]; for(var m=0;m<=full;m++){ dp[m]=[]; par[m]=[]; for(var j=0;j<n;j++){ dp[m][j]=Infinity; par[m][j]=-1; } } for(var j0=0;j0<n;j0++){ var p0=legP(start,cities[j0]); if(p0!=null) dp[1<<j0][j0]=p0; } for(var m=1;m<=full;m++){ for(var j=0;j<n;j++){ if(!(m&(1<<j))) continue; var cj=dp[m][j]; if(cj===Infinity) continue; for(var k=0;k<n;k++){ if(m&(1<<k)) continue; var pk=legP(cities[j],cities[k]); if(pk==null) continue; var nm=m|(1<<k), nc=cj+pk; if(nc<dp[nm][k]){ dp[nm][k]=nc; par[nm][k]=j; } } } } var best=Infinity, bj=-1; for(var j2=0;j2<n;j2++){ if(dp[full][j2]===Infinity) continue; var pe=legP(cities[j2],start); if(pe==null) continue; var t=dp[full][j2]+pe; if(t<best){ best=t; bj=j2; } } if(bj<0) return null; var order=[], mm=full, jj=bj; while(jj>=0){ order.push(cities[jj]); var pj=par[mm][jj]; mm=mm&~(1<<jj); jj=pj; } order.reverse(); return {total:best, order:order}; }
 function pickExtras(musts, pool, target){ var set=musts.slice(), inset={}; set.forEach(function(c){ inset[c]=1; }); while(set.length<target){ var bc=null, bp=Infinity; for(var i=0;i<pool.length;i++){ var c=pool[i]; if(inset[c]||!RHUBS[c]) continue; var mp=Infinity; for(var j=0;j<set.length;j++){ var a=legP(set[j],c), b=legP(c,set[j]); if(a!=null&&a<mp) mp=a; if(b!=null&&b<mp) mp=b; } if(mp<bp){ bp=mp; bc=c; } } if(bc==null) break; set.push(bc); inset[bc]=1; } return set; }
-function buildLoop(start, nStops, allowed, dir, mustH, endMode){
+function inArea(e, area){
+  var lo=RHUBS[e]?RHUBS[e].lon:null; if(lo==null) return false;
+  switch(area){
+    case "MAIN": return lo>=-130;                 // continental US (drops Hawaii ~-157)
+    case "EAST": return lo>=-90;
+    case "CENTRAL": return lo>=-105 && lo<-90;
+    case "WEST": return lo>=-130 && lo<-105;
+    default: return true;                          // ANY
+  }
+}
+function buildLoop(start, nStops, allowed, dir, mustH, endMode, endArea){
   if(!RHUBS[start]) return null;
   var rel=relLon(start, dir);
   var cand=[]; for(var h in RHUBS){ if(h===start||rel[h]<=0) continue; if(allowed && !allowed[RHUBS[h].cont]) continue; cand.push(h); }
@@ -4156,7 +4168,9 @@ function buildLoop(start, nStops, allowed, dir, mustH, endMode){
   // mode, whichever US airport is cheapest to arrive at (start anywhere in the
   // US, end anywhere in the US). rel[e]===0 for e===start reproduces the old
   // closed-loop math exactly.
-  var ends = (endMode==="ANY") ? RUS : [start];
+  var ends;
+  if(endMode==="ANY"){ ends=RUS.filter(function(e){ return inArea(e, endArea); }); if(!ends.length) ends=RUS; }
+  else { ends=[start]; }
   var best=null;
   cand.forEach(function(h){
     var d=dp[h+"|"+nStops]; if(!d) return;
@@ -4267,7 +4281,8 @@ function render(best, opts){
 window.rtwStopsLab=function(){ go("rtw-stops-lab").textContent=go("rtw-stops").value; };
 function fillMust(scope){ var dl=go("rtw-must-dl"); if(!dl) return; var inp=go("rtw-must"); var cur=inp?inp.value:""; var codes=[]; if(scope!=="WORLD" && REGIONS[scope]){ codes=REGIONS[scope].h.slice(); } else { for(var h in RHUBS){ if(RUS.indexOf(h)<0) codes.push(h); } } codes=codes.filter(function(h){ return RHUBS[h]; }); codes.sort(function(a,b){ var an=RHUBS[a].n, bn=RHUBS[b].n; return an<bn?-1:(an>bn?1:0); }); var html=""; var ok={}; for(var i=0;i<codes.length;i++){ var nm=RHUBS[codes[i]].n||""; ok[nm.toLowerCase()]=1; html+='<option value="'+nm.replace(/"/g,"&quot;")+'"></option>'; } dl.innerHTML=html; if(inp && cur && !ok[cur.toLowerCase()]) inp.value=""; }
 function mustCode(){ var inp=go("rtw-must"); if(!inp) return ""; var v=(inp.value||"").trim().toLowerCase(); if(!v) return ""; for(var h in RHUBS){ if((RHUBS[h].n||"").toLowerCase()===v) return h; } return ""; }
-window.rtwScope=function(){ var scope=go("rtw-scope")?go("rtw-scope").value:"WORLD", world=(scope==="WORLD"); var dw=go("rtw-dir-wrap"), sw=go("rtw-start-wrap"), rw=go("rtw-regions-wrap"), ew=go("rtw-end-wrap"); if(dw) dw.style.display=world?"":"none"; if(ew) ew.style.display=world?"":"none"; if(sw) sw.style.display=""; if(rw) rw.style.display=world?"":"none"; var cap=go("rtw-stops-cap"); if(cap) cap.textContent=world?"Stops":"Cities"; fillMust(scope); };
+window.rtwEndToggle=function(){ var scope=go("rtw-scope")?go("rtw-scope").value:"WORLD"; var open=(go("rtw-end")&&go("rtw-end").value==="ANY"&&scope==="WORLD"); var w=go("rtw-endarea-wrap"); if(w) w.style.display=open?"":"none"; };
+window.rtwScope=function(){ var scope=go("rtw-scope")?go("rtw-scope").value:"WORLD", world=(scope==="WORLD"); var dw=go("rtw-dir-wrap"), sw=go("rtw-start-wrap"), rw=go("rtw-regions-wrap"), ew=go("rtw-end-wrap"); if(dw) dw.style.display=world?"":"none"; if(ew) ew.style.display=world?"":"none"; if(sw) sw.style.display=""; if(rw) rw.style.display=world?"":"none"; var cap=go("rtw-stops-cap"); if(cap) cap.textContent=world?"Stops":"Cities"; rtwEndToggle(); fillMust(scope); };
 window.rtwToggleCont=function(btn){ btn.classList.toggle("on"); rtwBuild(); };
 window.rtwCopy=function(btn){ try{ navigator.clipboard.writeText(location.href); }catch(e){} var t=btn.textContent; btn.textContent="Copied!"; setTimeout(function(){ btn.textContent=t; },1500); };
 var MFCONF={}, MFLEGS=[], mfEstTotal=0;
@@ -4295,7 +4310,7 @@ window.mfLoad=function(id){ var t=mfGetTrips().filter(function(x){ return x.id==
 function mfRenderTrips(){ var el=go("mf-trips"); if(!el) return; var trips=mfGetTrips(); if(!trips.length){ el.innerHTML=""; return; } var h='<div class="mf-trips-h">My saved trips</div>'; for(var i=0;i<trips.length;i++){ var t=trips[i]; h+='<div class="mf-trip"><span class="mf-trip-nm">'+mfEsc(t.name)+'</span><span class="mf-trip-meta">$'+((t.est||0)).toLocaleString()+' &middot; '+((t.legs&&t.legs.length)||0)+' legs</span><button class="airchip mf-mini" onclick="mfLoad('+t.id+')">Load</button><button class="airchip mf-mini" onclick="mfDelete('+t.id+')">Delete</button></div>'; } el.innerHTML=h; }
 function regionsOn(){ var out=[]; var chips=go("rtw-conts").querySelectorAll("[data-rcont]"); for(var i=0;i<chips.length;i++){ if(chips[i].classList.contains("on")) out.push(chips[i].getAttribute("data-rcont")); } return out; }
 function updateURL(){
-  var p={scope:go("rtw-scope")?go("rtw-scope").value:"WORLD", start:go("rtw-start").value, dir:go("rtw-dir").value, end:(go("rtw-end")?go("rtw-end").value:"START"), stops:go("rtw-stops").value,
+  var p={scope:go("rtw-scope")?go("rtw-scope").value:"WORLD", start:go("rtw-start").value, dir:go("rtw-dir").value, end:(go("rtw-end")?go("rtw-end").value:"START"), endarea:(go("rtw-endarea")?go("rtw-endarea").value:"MAIN"), stops:go("rtw-stops").value,
          budget:go("rtw-budget").value, must:MFMUST.join(","), mode:(MFMUST.length&&go("rtw-mode")?go("rtw-mode").value:""), weeks:go("rtw-weeks").value, regions:regionsOn().join("~")};
   var q=[]; for(var k in p){ if(p[k]!=="" && p[k]!=null) q.push(k+"="+encodeURIComponent(p[k])); }
   try{ history.replaceState(null,"", location.pathname+"?"+q.join("&")); }catch(e){}
@@ -4334,9 +4349,10 @@ window.rtwBuild=function(){
     if(on.length){ allowed={}; on.forEach(function(c){ allowed[c]=true; }); }
     var start=go("rtw-start").value, dir=go("rtw-dir").value;
     var endMode=go("rtw-end")?go("rtw-end").value:"START";
+    var endArea=go("rtw-endarea")?go("rtw-endarea").value:"MAIN";
     var dirs = dir==="BOTH" ? ["E","W"] : [dir];
     var starts = start==="AUTO" ? RUS : [start];
-    starts.forEach(function(s){ dirs.forEach(function(dd){ var x=buildLoop(s,nStops,allowed,dd,"",endMode); if(x&&(best==null||x.total<best.total)){ x.dir=dd; best=x; } }); });
+    starts.forEach(function(s){ dirs.forEach(function(dd){ var x=buildLoop(s,nStops,allowed,dd,"",endMode,endArea); if(x&&(best==null||x.total<best.total)){ x.dir=dd; best=x; } }); });
   }
   updateURL();
   render(best, {budget:budget, weeks:weeks, regionName:regionName, custom:custom, mode:(go("rtw-mode")?go("rtw-mode").value:"")});
@@ -4349,6 +4365,7 @@ function rtwInit(){
     if(qs.get("start")) go("rtw-start").value=qs.get("start");
     if(qs.get("dir")) go("rtw-dir").value=qs.get("dir");
     if(qs.get("end") && go("rtw-end")) go("rtw-end").value=qs.get("end");
+    if(qs.get("endarea") && go("rtw-endarea")) go("rtw-endarea").value=qs.get("endarea");
     if(qs.get("stops")){ go("rtw-stops").value=qs.get("stops"); rtwStopsLab(); }
     if(qs.get("budget")) go("rtw-budget").value=qs.get("budget");
     if(qs.get("must")){ var mm=qs.get("must").split(","); for(var mi=0;mi<mm.length;mi++){ var raw=mm[mi].trim(); if(!raw) continue; var cc=RHUBS[raw]?raw:nameToCode(raw); if(cc && MFMUST.indexOf(cc)<0 && MFMUST.length<6) MFMUST.push(cc); } }
