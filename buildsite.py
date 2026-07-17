@@ -1871,6 +1871,8 @@ CSS = r"""<style>
 
   /* ====================  Landing hero  ==================== */
   .lander{ position:relative; overflow:hidden; text-align:center; padding:48px 20px 22px; }
+  .lander-slim{ padding:34px 20px 12px; }
+  .lander-slim h1{ font-size:33px; }
   .lander-glow{ position:absolute; top:-170px; left:50%; transform:translateX(-50%); width:820px; height:440px;
                 background:radial-gradient(ellipse at center, rgba(47,107,70,.14), rgba(47,107,70,0) 70%);
                 pointer-events:none; z-index:0; }
@@ -2889,6 +2891,47 @@ def oneway_winner(oneway, market):
             f'<span class="winner-cta">See live price on Aviasales &rarr;</span></a>')
 
 
+def roundtrip_winner(market):
+    """Today's best ROUND-TRIP deal (biggest below-normal), as a winner banner
+    that visually matches oneway_winner so the homepage opens with a matched pair."""
+    pool = [m for m in featured_pool(market) if m.get("benchmark")]
+    if not pool:
+        return ""
+    # Prefer an ATTRACTIVE deal for the hero: meaningfully below normal AND
+    # affordable in absolute terms, so we don't headline a $2k fare just because
+    # it's the biggest % drop. Rotate the top few by day so it isn't stale.
+    cands = [m for m in pool if signal_for(m["price"], m["benchmark"])[1] >= 15 and float(m["price"]) <= 900]
+    if not cands:
+        cands = [m for m in pool if signal_for(m["price"], m["benchmark"])[1] >= 8]
+    if not cands:
+        cands = pool
+    cands.sort(key=lambda m: signal_for(m["price"], m["benchmark"])[1], reverse=True)
+    pool7 = cands[:7]
+    best = pool7[datetime.now().timetuple().tm_yday % len(pool7)]
+    _, pct = signal_for(best["price"], best["benchmark"])
+    price = float(best["price"])
+    if pct >= 8:
+        c, v = "g", "Low"
+    elif pct >= -6:
+        c, v = "y", "Typical"
+    else:
+        c, v = "r", "High"
+    palette = {"g": ("rgba(46,139,87,.15)", "var(--green)"),
+               "y": ("rgba(47,107,70,.14)", "var(--gold)"),
+               "r": ("rgba(192,57,43,.13)", "var(--red)")}
+    bg, col = palette[c]
+    dates = (f'{html.escape(best.get("depart",""))} &rarr; {html.escape(best.get("return",""))}'
+             if best.get("return") else html.escape(best.get("depart","")))
+    return (f'<a class="winner" data-o="{html.escape(best["origin"], quote=True)}" data-d="{best["code"]}" data-ow="0" href="{html.escape(best["link"], quote=True)}" target="_blank" rel="noopener">'
+            f'<span class="winner-badge">Today&rsquo;s Best Round-Trip</span>'
+            f'<div class="winner-main"><div class="winner-city">{html.escape(best["name"])}</div>'
+            f'<div class="winner-route">Round-trip from {html.escape(best["origin"])} &middot; {dates} &middot; <span style="color:var(--gold)">live price at booking</span></div></div>'
+            f'<div class="winner-right"><span class="winner-price">${price:,.0f}</span>'
+            f'<span style="color:var(--muted);font-size:13px">round-trip</span>'
+            f'<span class="winner-off" style="background:{bg};color:{col}">{v}</span></div>'
+            f'<span class="winner-cta">See live price on Aviasales &rarr;</span></a>')
+
+
 def oneway_bar(price, typ):
     """Price-position bar for a one-way fare, using a baseline `typ` derived from
     the destination's round-trip benchmark."""
@@ -3030,28 +3073,33 @@ def body_home(market, hist, cards, lastmin, oneway, summary, world, home=None):
         if _ow or _atw:
             home_trips[_og] = {"ow": _ow, "atw": _atw}
     home_trips_js = json.dumps(home_trips)
-    return f"""<section class="lander">
+    return f"""<section class="lander lander-slim">
   <div class="lander-inner">
     <span class="eyebrow">Flights, tracked like a stock market</span>
     <h1>Find the flight <span class="g">deal</span>.</h1>
-    <p class="lead">Fares from the USA and abroad, tracked every day like a market and judged against each route&rsquo;s own history &mdash; so a real deal is unmistakable, and you book the moment it drops.</p>
-    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:26px 0 10px">
-      <a href="market.html" style="background:var(--blue);color:#fff;font-weight:800;font-size:15px;padding:15px 28px;border-radius:12px;text-decoration:none;display:inline-flex;align-items:center;box-shadow:0 8px 20px rgba(46,139,87,.22)">Open the Flight Market &rarr;</a>
-      <a class="btn-ghost" href="newsletter.html">Get free deal alerts &rarr;</a>
-    </div>
-    <div style="display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin:8px 0 2px;color:var(--muted);font-size:13.5px">
+    <p class="lead">Fares from the USA and abroad, judged against each route&rsquo;s own history. Here are today&rsquo;s two standouts &mdash; a full trip and a one-way &mdash; both trading below normal right now.</p>
+    <div style="display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin:14px 0 2px;color:var(--muted);font-size:13.5px">
       <span><b style="color:var(--ink)">{nroutes:,}</b> routes tracked</span>
       <span><b style="color:var(--ink)">{ncountries}</b> countries</span>
       <span><b style="color:var(--green)">{nbook}</b> below normal <i>right now</i></span>
     </div>
     <p class="trust">Free, forever &middot; fares tracked through the day &middot; live price confirmed when you book on Aviasales</p>
-    <p style="text-align:center;margin-top:4px;font-size:12.5px"><a href="explore.html" style="color:var(--muted);text-decoration:underline">Prefer to search a specific route? Use Explore &rarr;</a></p>
   </div>
 </section>
 <div class="wrap">
+  <section class="home-sec" id="deals" style="margin-top:6px">
+    <div class="sec-head"><h2>Today&rsquo;s best deals</h2><span>the biggest drops below normal right now</span></div>
+    <div id="home-rt">{roundtrip_winner(market)}</div>
+    <div id="home-ow" style="margin-top:14px">{oneway_winner(oneway, market)}</div>
+    <div style="text-align:center;margin-top:20px">
+      <a href="market.html" style="background:var(--blue);color:#fff;font-weight:800;font-size:15px;padding:15px 28px;border-radius:12px;text-decoration:none;display:inline-flex;align-items:center;box-shadow:0 8px 20px rgba(46,139,87,.22)">Find more deals like these in the Market &rarr;</a>
+    </div>
+    <p class="finehint" style="text-align:center;margin-top:12px">Tap any deal to see today&rsquo;s live price and book on Aviasales.</p>
+  </section>
+
   <section class="home-sec" id="from-your-airport" style="margin-top:10px">
-    <div class="sec-head"><h2>Cheap one-ways from your home airport</h2><span>the deals that actually matter to you</span></div>
-    <p style="color:var(--muted);margin:0 0 12px;max-width:640px">The one thing every flight-deal list gets wrong: showing you fares from airports you&rsquo;ll never use. Pick yours and see only the cheap one-ways that actually leave from near you.</p>
+    <div class="sec-head"><h2>Deals from your home airport</h2><span>the deals that actually matter to you</span></div>
+    <p style="color:var(--muted);margin:0 0 12px;max-width:640px">The one thing every flight-deal list gets wrong: showing you fares from airports you&rsquo;ll never use. Pick yours and see only the one-way deals that actually leave from near you.</p>
     <div id="fya-welcome" style="display:none;background:rgba(47,107,70,.10);border:1px solid var(--line);border-radius:10px;padding:11px 15px;margin:0 0 12px;font-size:14.5px"></div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
       <select id="fya-select" aria-label="Choose your home airport" onchange="mhSet(this.value)" style="flex:1;min-width:240px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:15px">{city_options(home or {})}</select>
@@ -3061,16 +3109,13 @@ def body_home(market, hist, cards, lastmin, oneway, summary, world, home=None):
     var HOME_TRIPS={home_trips_js};
     function mhSet(c){{if(!c)return;try{{localStorage.setItem('mh_home',c);}}catch(e){{}}var u=new URL(location.href);u.searchParams.set('home',c);location.href=u.toString();}}
     function mhClear(){{try{{localStorage.removeItem('mh_home');}}catch(e){{}}var u=new URL(location.href);u.searchParams.delete('home');location.href=u.toString();}}
-    (function(){{try{{var p=new URLSearchParams(location.search);var code=(p.get('home')||localStorage.getItem('mh_home')||'').toUpperCase();if(!code)return;var sel=document.getElementById('fya-select');if(sel)sel.value=code;var nm=(sel&&sel.selectedIndex>=0&&sel.options[sel.selectedIndex])?sel.options[sel.selectedIndex].text:code;var t=HOME_TRIPS[code];var w=document.getElementById('fya-welcome');var tail=' <a href="airports.html" style="color:var(--gold);font-weight:600">See all deals from here &rarr;</a> &middot; <a href="#" onclick="mhClear();return false" style="color:var(--muted)">change</a>';if(t){{if(t.ow){{var ow=document.getElementById('home-ow');if(ow)ow.innerHTML=t.ow;}}if(t.atw){{var aw=document.getElementById('home-atw');if(aw)aw.innerHTML=t.atw;}}if(w){{w.innerHTML='&#9992;&#65039; Showing your best trips from <b>'+nm+'</b>.'+tail;w.style.display='block';}}}}else{{if(w){{w.innerHTML='We don&rsquo;t track enough one-ways from <b>'+nm+'</b> yet &mdash; here are today&rsquo;s top picks.'+tail;w.style.display='block';}}}}}}catch(e){{}}}})();
+    (function(){{function apply(){{try{{var p=new URLSearchParams(location.search);var code=(p.get('home')||localStorage.getItem('mh_home')||'').toUpperCase();if(!code)return;var sel=document.getElementById('fya-select');if(sel)sel.value=code;var nm=(sel&&sel.selectedIndex>=0&&sel.options[sel.selectedIndex])?sel.options[sel.selectedIndex].text:code;var t=HOME_TRIPS[code];var w=document.getElementById('fya-welcome');var tail=' <a href="airports.html" style="color:var(--gold);font-weight:600">See all deals from here &rarr;</a> &middot; <a href="#" onclick="mhClear();return false" style="color:var(--muted)">change</a>';if(t){{if(t.ow){{var ow=document.getElementById('home-ow');if(ow)ow.innerHTML=t.ow;}}if(t.atw){{var aw=document.getElementById('home-atw');if(aw)aw.innerHTML=t.atw;}}if(w){{w.innerHTML='&#9992;&#65039; Showing your best trips from <b>'+nm+'</b>.'+tail;w.style.display='block';}}}}else{{if(w){{w.innerHTML='We don&rsquo;t track enough one-ways from <b>'+nm+'</b> yet &mdash; here are today&rsquo;s top picks.'+tail;w.style.display='block';}}}}}}catch(e){{}}}}if(document.readyState!=='loading'){{apply();}}else{{document.addEventListener('DOMContentLoaded',apply);}}}})();
     </script>
   </section>
-  <section class="home-sec" id="deals" style="margin-top:10px"><div id="home-ow">{oneway_winner(oneway, market)}</div>
-    <div style="text-align:center;margin-top:14px"><a class="btn-ghost" href="market.html">Search more one-way deals &rarr;</a></div>
-  </section>
+
   <section class="home-sec"><div id="home-atw">{atw_highlight(world)}</div>
     <div style="text-align:center;margin-top:14px"><a class="btn-ghost" href="around-the-world.html">Search more Around the World trips &rarr;</a></div>
   </section>
-  <p class="finehint" style="text-align:center;margin-top:18px">These are recently-tracked one-way fares &mdash; tap any deal to see today&rsquo;s live price and book on Aviasales.</p>
   <div class="summary" data-sec="summary">{summary}</div>
   <p class="finehint" style="text-align:center;margin-top:22px"><a href="our-story.html" style="color:var(--blue)">Why &ldquo;Magellan,&rdquo; how we read a price, and everything we track &rarr;</a></p>
 </div>
