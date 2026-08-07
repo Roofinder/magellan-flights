@@ -1,8 +1,4 @@
 origin,origin_name,destination_code,destination_name,country_code,currency,price,depart,booking_link
-JFK,New York,CMN,"Casablanca, Morocco",MA,USD,491,2026-07-18,https://www.aviasales.com/search/JFK1807CMN1?marker=741311
-JFK,New York,ISB,"Islamabad, Pakistan",PK,USD,492,2026-07-22,https://www.aviasales.com/search/JFK2207ISB1?marker=741311
-JFK,New York,HAM,"Hamburg, Germany",DE,USD,493,2026-07-22,https://www.aviasales.com/search/JFK2207HAM1?marker=741311
-JFK,New York,PAE,"Everett, United States",US,USD,493,2026-07-25,https://www.aviasales.com/search/JFK2507PAE1?marker=741311
 JFK,New York,PRN,"Pristina, Kosovo",XK,USD,503,2026-07-21,https://www.aviasales.com/search/JFK2107PRN1?marker=741311
 JFK,New York,DLM,"Dalaman, Turkiye",TR,USD,505,2026-07-17,https://www.aviasales.com/search/JFK1707DLM1?marker=741311
 JFK,New York,ITO,"Hilo, United States",US,USD,505,2026-07-30,https://www.aviasales.com/search/JFK3007ITO1?marker=741311
@@ -71,13 +67,6 @@ JFK,New York,SKD,"Samarkand, Uzbekistan",UZ,USD,699,2026-07-28,https://www.avias
 JFK,New York,SYD,"Sydney, Australia",AU,USD,783,2026-07-29,https://www.aviasales.com/search/JFK2907SYD1?marker=741311
 JFK,New York,ZNZ,"Zanzibar, Tanzania",TZ,USD,873,2026-07-20,https://www.aviasales.com/search/JFK2007ZNZ1?marker=741311
 JFK,New York,MRU,"Mauritius, Mauritius",MU,USD,956,2026-07-31,https://www.aviasales.com/search/JFK3107MRU1?marker=741311
-LAX,Los Angeles,TAS,"Tashkent, Uzbekistan",UZ,USD,490,2026-07-21,https://www.aviasales.com/search/LAX2107TAS1?marker=741311
-LAX,Los Angeles,HKT,"Phuket, Thailand",TH,USD,492,2026-07-21,https://www.aviasales.com/search/LAX2107HKT1?marker=741311
-LAX,Los Angeles,DPS,"Denpasar (Bali), Indonesia",ID,USD,492,2026-07-23,https://www.aviasales.com/search/LAX2307DPS1?marker=741311
-LAX,Los Angeles,IST,"Istanbul, Turkiye",TR,USD,493,2026-07-27,https://www.aviasales.com/search/LAX2707IST1?marker=741311
-LAX,Los Angeles,HRB,"Harbin, China",CN,USD,493,2026-07-17,https://www.aviasales.com/search/LAX1707HRB1?marker=741311
-LAX,Los Angeles,LNS,"Lancaster, United States",US,USD,496,2026-07-24,https://www.aviasales.com/search/LAX2407LNS1?marker=741311
-LAX,Los Angeles,JMK,"Mikonos, Greece",GR,USD,499,2026-07-17,https://www.aviasales.com/search/LAX1707JMK1?marker=741311
 LAX,Los Angeles,CEB,"Cebu City, Philippines",PH,USD,506,2026-07-22,https://www.aviasales.com/search/LAX2207CEB1?marker=741311
 LAX,Los Angeles,ALA,"Almaty, Kazakhstan",KZ,USD,506,2026-07-27,https://www.aviasales.com/search/LAX2707ALA1?marker=741311
 LAX,Los Angeles,NCE,"Nice, France",FR,USD,513,2026-07-19,https://www.aviasales.com/search/LAX1907NCE1?marker=741311
@@ -138,9 +127,6 @@ LAX,Los Angeles,KVX,"Kirov, Russia",RU,USD,1178,2026-07-28,https://www.aviasales
 LAX,Los Angeles,PKC,"Petropavlovsk-Kamchatsky, Russia",RU,USD,1277,2026-07-20,https://www.aviasales.com/search/LAX2007PKC1?marker=741311
 LAX,Los Angeles,OGZ,"Vladikavkaz, Russia",RU,USD,1297,2026-07-21,https://www.aviasales.com/search/LAX2107OGZ1?marker=741311
 LAX,Los Angeles,CEK,"Chelyabinsk, Russia",RU,USD,2035,2026-07-22,https://www.aviasales.com/search/LAX2207CEK1?marker=741311
-ORD,Chicago,OSL,"Oslo, Norway",NO,USD,490,2026-07-19,https://www.aviasales.com/search/ORD1907OSL1?marker=741311
-ORD,Chicago,BEG,"Belgrade, Serbia",RS,USD,493,2026-07-19,https://www.aviasales.com/search/ORD1907BEG1?marker=741311
-ORD,Chicago,VNO,"Vilnius, Lithuania",LT,USD,493,2026-07-22,https://www.aviasales.com/search/ORD2207VNO1?marker=741311
 ORD,Chicago,ZAG,"Zagreb, Croatia",HR,USD,513,2026-07-29,https://www.aviasales.com/search/ORD2907ZAG1?marker=741311
 ORD,Chicago,ALG,"Algiers, Algeria",DZ,USD,524,2026-07-24,https://www.aviasales.com/search/ORD2407ALG1?marker=741311
 ORD,Chicago,TAS,"Tashkent, Uzbekistan",UZ,USD,526,2026-07-23,https://www.aviasales.com/search/ORD2307TAS1?marker=741311
@@ -191,10 +177,6 @@ ORD,Chicago,OVB,"Novosibirsk, Russia",RU,USD,1037,2026-07-19,https://www.aviasal
 ORD,Chicago,JHM,"Kapalua, United States",US,USD,1102,2026-07-17,https://www.aviasales.com/search/ORD1707JHM1?marker=741311
 ORD,Chicago,GNJ,"Ganja, Azerbaijan",AZ,USD,1134,2026-07-28,https://www.aviasales.com/search/ORD2807GNJ1?marker=741311
 ORD,Chicago,KGF,"Karagandy, Kazakhstan",KZ,USD,1343,2026-07-31,https://www.aviasales.com/search/ORD3107KGF1?marker=741311
-MIA,Miami,BUD,"Budapest, Hungary",HU,USD,490,2026-07-29,https://www.aviasales.com/search/MIA2907BUD1?marker=741311
-MIA,Miami,XMN,"Xiamen, China",CN,USD,490,2026-07-21,https://www.aviasales.com/search/MIA2107XMN1?marker=741311
-MIA,Miami,GND,"St. George's, Grenada",GD,USD,494,2026-07-21,https://www.aviasales.com/search/MIA2107GND1?marker=741311
-MIA,Miami,MHK,"Manhattan, United States",US,USD,500,2026-07-30,https://www.aviasales.com/search/MIA3007MHK1?marker=741311
 MIA,Miami,RAK,"Marrakech, Morocco",MA,USD,509,2026-07-26,https://www.aviasales.com/search/MIA2607RAK1?marker=741311
 MIA,Miami,FYV,"Fayetteville, United States",US,USD,510,2026-07-17,https://www.aviasales.com/search/MIA1707FYV1?marker=741311
 MIA,Miami,BUH,"Bucharest, Romania",RO,USD,513,2026-07-25,https://www.aviasales.com/search/MIA2507BUH1?marker=741311
@@ -336,7 +318,6 @@ BOS,Boston,KUF,"Samara, Russia",RU,USD,1027,2026-07-23,https://www.aviasales.com
 BOS,Boston,MRV,"Mineralnye Vody, Russia",RU,USD,1031,2026-07-30,https://www.aviasales.com/search/BOS3007MRV1?marker=741311
 BOS,Boston,RGK,"Gorno-Altaysk, Russia",RU,USD,1232,2026-07-17,https://www.aviasales.com/search/BOS1707RGK1?marker=741311
 BOS,Boston,KJA,"Krasnoyarsk, Russia",RU,USD,1324,2026-07-31,https://www.aviasales.com/search/BOS3107KJA1?marker=741311
-ATL,Atlanta,EVN,"Yerevan, Armenia",AM,USD,492,2026-07-27,https://www.aviasales.com/search/ATL2707EVN1?marker=741311
 ATL,Atlanta,KZN,"Kazan, Russia",RU,USD,506,2026-07-28,https://www.aviasales.com/search/ATL2807KZN1?marker=741311
 ATL,Atlanta,FNC,"Funchal, Portugal",PT,USD,513,2026-07-27,https://www.aviasales.com/search/ATL2707FNC1?marker=741311
 ATL,Atlanta,BEG,"Belgrade, Serbia",RS,USD,521,2026-07-19,https://www.aviasales.com/search/ATL1907BEG1?marker=741311
@@ -395,9 +376,6 @@ SEA,Seattle,GOJ,"Nizhniy Novgorod, Russia",RU,USD,919,2026-07-21,https://www.avi
 SEA,Seattle,SKD,"Samarkand, Uzbekistan",UZ,USD,938,2026-07-21,https://www.aviasales.com/search/SEA2107SKD1?marker=741311
 SEA,Seattle,PEE,"Perm, Russia",RU,USD,959,2026-07-19,https://www.aviasales.com/search/SEA1907PEE1?marker=741311
 SEA,Seattle,OVB,"Novosibirsk, Russia",RU,USD,1095,2026-07-17,https://www.aviasales.com/search/SEA1707OVB1?marker=741311
-YTO,Toronto,GZP,"Alanya, Turkiye",TR,USD,493,2026-07-26,https://www.aviasales.com/search/YTO2607GZP1?marker=741311
-YTO,Toronto,CAI,"Cairo, Egypt",EG,USD,498,2026-07-26,https://www.aviasales.com/search/YTO2607CAI1?marker=741311
-YTO,Toronto,AUH,"Abu Dhabi, United Arab Emirates",AE,USD,500,2026-07-28,https://www.aviasales.com/search/YTO2807AUH1?marker=741311
 YTO,Toronto,HNL,"Honolulu, United States",US,USD,507,2026-07-31,https://www.aviasales.com/search/YTO3107HNL1?marker=741311
 YTO,Toronto,YQY,"Sydney, Canada",CA,USD,508,2026-07-22,https://www.aviasales.com/search/YTO2207YQY1?marker=741311
 YTO,Toronto,EVN,"Yerevan, Armenia",AM,USD,508,2026-07-25,https://www.aviasales.com/search/YTO2507EVN1?marker=741311
@@ -488,8 +466,6 @@ YTO,Toronto,CHC,"Christchurch, New Zealand",NZ,USD,1098,2026-07-28,https://www.a
 YTO,Toronto,MGQ,"Mogadishu, Somalia",SO,USD,1113,2026-07-22,https://www.aviasales.com/search/YTO2207MGQ1?marker=741311
 YTO,Toronto,IKT,"Irkutsk, Russia",RU,USD,1151,2026-07-25,https://www.aviasales.com/search/YTO2507IKT1?marker=741311
 YTO,Toronto,AKL,"Auckland, New Zealand",NZ,USD,1219,2026-07-17,https://www.aviasales.com/search/YTO1707AKL1?marker=741311
-YVR,Vancouver,HKG,"Hong Kong, Hong Kong",HK,USD,490,2026-07-17,https://www.aviasales.com/search/YVR1707HKG1?marker=741311
-YVR,Vancouver,JKT,"Jakarta, Indonesia",ID,USD,491,2026-07-27,https://www.aviasales.com/search/YVR2707JKT1?marker=741311
 YVR,Vancouver,PAE,"Everett, United States",US,USD,519,2026-07-23,https://www.aviasales.com/search/YVR2307PAE1?marker=741311
 YVR,Vancouver,RMO,"Chisinau, Moldova",MD,USD,535,2026-07-27,https://www.aviasales.com/search/YVR2707RMO1?marker=741311
 YVR,Vancouver,WYS,"West Yellowstone, United States",US,USD,537,2026-07-26,https://www.aviasales.com/search/YVR2607WYS1?marker=741311
@@ -527,9 +503,6 @@ YVR,Vancouver,AKL,"Auckland, New Zealand",NZ,USD,1154,2026-07-25,https://www.avi
 YVR,Vancouver,VFA,"Victoria Falls, Zimbabwe",ZW,USD,1175,2026-07-26,https://www.aviasales.com/search/YVR2607VFA1?marker=741311
 YVR,Vancouver,VRA,"Varadero, Cuba",CU,USD,1239,2026-07-31,https://www.aviasales.com/search/YVR3107VRA1?marker=741311
 YVR,Vancouver,HGA,"Hargeisa, Somalia",SO,USD,1563,2026-07-26,https://www.aviasales.com/search/YVR2607HGA1?marker=741311
-DFW,Dallas,ICN,"Seoul, South Korea",KR,USD,492,2026-07-24,https://www.aviasales.com/search/DFW2407ICN1?t=KE17848920001784994300000865DFWICN_6e1624dd1a5f0e5c47aed93a063f8584_37705&search_date=13072026&expected_price_uuid=019f5bac-56a8-8010-2afc-46a1abb49e69&static_fare_key=TY%7CP0%7CH1%7CL1_2_0%7CCH0%7CR0%7CTBC1&itinerary_key=JHA-x2fkOTGUNN5rmgAyCQ&destination_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=492&marker=741311
-DFW,Dallas,AGS,"Augusta, United States",US,USD,492,2026-07-24,https://www.aviasales.com/search/DFW2407AGS1?marker=741311
-DFW,Dallas,SEL,"Seoul, South Korea",KR,USD,497,2026-07-24,https://www.aviasales.com/search/DFW2407SEL1?marker=741311
 DFW,Dallas,TUN,"Tunis, Tunisia",TN,USD,527,2026-07-27,https://www.aviasales.com/search/DFW2707TUN1?marker=741311
 DFW,Dallas,HKG,"Hong Kong, Hong Kong",HK,USD,539,2026-07-23,https://www.aviasales.com/search/DFW2307HKG1?marker=741311
 DFW,Dallas,VNO,"Vilnius, Lithuania",LT,USD,554,2026-07-26,https://www.aviasales.com/search/DFW2607VNO1?marker=741311
@@ -558,8 +531,6 @@ DFW,Dallas,JRO,"Kilimanjaro, Tanzania",TZ,USD,1104,2026-07-17,https://www.aviasa
 DFW,Dallas,VVO,"Vladivostok, Russia",RU,USD,1108,2026-07-19,https://www.aviasales.com/search/DFW1907VVO1?marker=741311
 DFW,Dallas,TMJ,"Termez, Uzbekistan",UZ,USD,1330,2026-07-18,https://www.aviasales.com/search/DFW1807TMJ1?marker=741311
 DFW,Dallas,PLZ,"Port Elizabeth, South Africa",ZA,USD,1335,2026-07-18,https://www.aviasales.com/search/DFW1807PLZ1?marker=741311
-DTW,Detroit,LGB,"Long Beach, United States",US,USD,497,2026-07-21,https://www.aviasales.com/search/DTW2107LGB1?marker=741311
-DTW,Detroit,LIM,"Lima, Peru",PE,USD,498,2026-07-19,https://www.aviasales.com/search/DTW1907LIM1?marker=741311
 DTW,Detroit,IST,"Istanbul, Turkiye",TR,USD,580,2026-07-21,https://www.aviasales.com/search/DTW2107IST1?marker=741311
 DTW,Detroit,AYT,"Antalya, Turkiye",TR,USD,599,2026-07-19,https://www.aviasales.com/search/DTW1907AYT1?marker=741311
 DTW,Detroit,BGW,"Baghdad, Iraq",IQ,USD,701,2026-07-21,https://www.aviasales.com/search/DTW2107BGW1?marker=741311
@@ -588,7 +559,6 @@ DEN,Denver,MOW,"Moscow, Russia",RU,USD,763,2026-07-27,https://www.aviasales.com/
 DEN,Denver,TAS,"Tashkent, Uzbekistan",UZ,USD,827,2026-07-17,https://www.aviasales.com/search/DEN1707TAS1?marker=741311
 DEN,Denver,DYU,"Dushanbe, Tajikistan",TJ,USD,862,2026-07-21,https://www.aviasales.com/search/DEN2107DYU1?marker=741311
 DEN,Denver,KUF,"Samara, Russia",RU,USD,888,2026-07-31,https://www.aviasales.com/search/DEN3107KUF1?marker=741311
-IAH,Houston,DUB,"Dublin, Ireland",IE,USD,494,2026-07-19,https://www.aviasales.com/search/IAH1907DUB1?marker=741311
 IAH,Houston,WAW,"Warsaw, Poland",PL,USD,535,2026-07-25,https://www.aviasales.com/search/IAH2507WAW1?marker=741311
 IAH,Houston,IST,"Istanbul, Turkiye",TR,USD,550,2026-07-31,https://www.aviasales.com/search/IAH3107IST1?marker=741311
 IAH,Houston,LCA,"Larnaca, Cyprus",CY,USD,587,2026-07-19,https://www.aviasales.com/search/IAH1907LCA1?marker=741311
@@ -660,7 +630,6 @@ PHX,Phoenix,MOW,"Moscow, Russia",RU,USD,820,2026-07-28,https://www.aviasales.com
 PHX,Phoenix,EBL,"Erbil, Iraq",IQ,USD,822,2026-07-20,https://www.aviasales.com/search/PHX2007EBL1?marker=741311
 PHX,Phoenix,SEZ,"Mahe Island, Seychelles",SC,USD,1019,2026-07-28,https://www.aviasales.com/search/PHX2807SEZ1?marker=741311
 PHX,Phoenix,SVX,"Yekaterinburg, Russia",RU,USD,1066,2026-07-22,https://www.aviasales.com/search/PHX2207SVX1?marker=741311
-LON,London,YTO,"Toronto, Canada",CA,USD,493,2026-07-21,https://www.aviasales.com/search/LON2107YTO1?marker=741311
 LON,London,BKK,"Bangkok, Thailand",TH,USD,508,2026-07-22,https://www.aviasales.com/search/LON2207BKK1?marker=741311
 LON,London,HKT,"Phuket, Thailand",TH,USD,521,2026-07-23,https://www.aviasales.com/search/LON2307HKT1?marker=741311
 LON,London,ICN,"Seoul, South Korea",KR,USD,524,2026-07-23,https://www.aviasales.com/search/LON2307ICN1?t=ET17847918001784908800001470STNATHADDICN_5a5b339c0f137db2652b6e365669e89d_40976&search_date=15072026&expected_price_uuid=019f65ed-e28a-8030-207e-d9312e77f01e&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=lGA5WPbSvmHTtIFKmUb0rw&destination_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=524&marker=741311
@@ -697,8 +666,6 @@ LON,London,GRU,"Sao Paulo, Brazil",BR,USD,928,2026-07-19,https://www.aviasales.c
 LON,London,LAS,"Las Vegas, United States",US,USD,962,2026-07-23,https://www.aviasales.com/search/LON2307LAS1?marker=741311
 LON,London,CUN,"Cancun, Mexico",MX,USD,1031,2026-07-17,https://www.aviasales.com/search/LON1707CUN1?marker=741311
 LON,London,MEX,"Mexico City, Mexico",MX,USD,1046,2026-07-30,https://www.aviasales.com/search/LON3007MEX1?marker=741311
-LAS,Las Vegas,BKK,"Bangkok, Thailand",TH,USD,495,2026-07-31,https://www.aviasales.com/search/LAS3107BKK1?marker=741311
-LAS,Las Vegas,MNL,"Manila, Philippines",PH,USD,496,2026-07-23,https://www.aviasales.com/search/LAS2307MNL1?marker=741311
 LAS,Las Vegas,DIK,"Dickinson, United States",US,USD,508,2026-07-20,https://www.aviasales.com/search/LAS2007DIK1?marker=741311
 LAS,Las Vegas,GNV,"Gainesville, United States",US,USD,524,2026-07-17,https://www.aviasales.com/search/LAS1707GNV1?marker=741311
 LAS,Las Vegas,ICN,"Seoul, South Korea",KR,USD,525,2026-07-26,https://www.aviasales.com/search/LAS2607ICN1?t=UA17850492001785212400001760LASSFOICN_7f742934035aa70a147ed0191fa00593_40385&search_date=13072026&expected_price_uuid=019f5a86-d2f9-8030-a8b0-e8ba1c9df48e&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=aMiej5jpFufahb1GsbXQ5A&destination_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=525&marker=741311
@@ -730,7 +697,6 @@ LAS,Las Vegas,AER,"Adler/Sochi, Russia",RU,USD,986,2026-07-29,https://www.aviasa
 LAS,Las Vegas,SVX,"Yekaterinburg, Russia",RU,USD,988,2026-07-21,https://www.aviasales.com/search/LAS2107SVX1?marker=741311
 LAS,Las Vegas,NQZ,"Astana, Kazakhstan",KZ,USD,1008,2026-07-17,https://www.aviasales.com/search/LAS1707NQZ1?marker=741311
 LAS,Las Vegas,KRR,"Krasnodar, Russia",RU,USD,1044,2026-07-17,https://www.aviasales.com/search/LAS1707KRR1?marker=741311
-PAR,Paris,YTO,"Toronto, Canada",CA,USD,495,2026-07-31,https://www.aviasales.com/search/PAR3107YTO1?marker=741311
 PAR,Paris,JFK,"New York, United States",US,USD,502,2026-07-23,https://www.aviasales.com/search/PAR2307JFK1?t=N017848266001784932200002120BVAOLBCIAFCOJFK_ccd435a58a304aeaa85f21d3c6dc7291_39206&search_date=17072026&expected_price_uuid=019f6e8e-f065-8040-6358-bf6cd833d9fb&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=ofWgz3UvdQy1nDssiUw9eg&destination_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=502&marker=741311
 PAR,Paris,GOI,"Goa, India",IN,USD,502,2026-07-23,https://www.aviasales.com/search/PAR2307GOI1?marker=741311
 PAR,Paris,MLE,"Male, Maldives",MV,USD,525,2026-07-24,https://www.aviasales.com/search/PAR2407MLE1?marker=741311
@@ -768,7 +734,6 @@ PAR,Paris,CLT,"Charlotte, United States",US,USD,1006,2026-07-28,https://www.avia
 PAR,Paris,BOG,"Bogota, Colombia",CO,USD,1026,2026-07-23,https://www.aviasales.com/search/PAR2307BOG1?marker=741311
 PAR,Paris,HNL,"Honolulu, United States",US,USD,1095,2026-07-31,https://www.aviasales.com/search/PAR3107HNL1?marker=741311
 PAR,Paris,PPT,"Papeete, French Polynesia",PF,USD,1753,2026-07-30,https://www.aviasales.com/search/PAR3007PPT1?marker=741311
-MCO,Orlando,BEG,"Belgrade, Serbia",RS,USD,489,2026-07-19,https://www.aviasales.com/search/MCO1907BEG1?marker=741311
 MCO,Orlando,EVN,"Yerevan, Armenia",AM,USD,502,2026-07-26,https://www.aviasales.com/search/MCO2607EVN1?marker=741311
 MCO,Orlando,AYT,"Antalya, Turkiye",TR,USD,508,2026-07-31,https://www.aviasales.com/search/MCO3107AYT1?marker=741311
 MCO,Orlando,PAE,"Everett, United States",US,USD,523,2026-07-28,https://www.aviasales.com/search/MCO2807PAE1?marker=741311
@@ -812,7 +777,6 @@ RDU,Raleigh,IST,"Istanbul, Turkiye",TR,USD,591,2026-07-19,https://www.aviasales.
 RDU,Raleigh,MOW,"Moscow, Russia",RU,USD,770,2026-07-25,https://www.aviasales.com/search/RDU2507MOW1?marker=741311
 RDU,Raleigh,LOS,"Lagos, Nigeria",NG,USD,899,2026-07-19,https://www.aviasales.com/search/RDU1907LOS1?marker=741311
 RDU,Raleigh,ART,"Watertown, United States",US,USD,2268,2026-07-17,https://www.aviasales.com/search/RDU1707ART1?marker=741311
-FRA,Frankfurt,YTO,"Toronto, Canada",CA,USD,492,2026-07-30,https://www.aviasales.com/search/FRA3007YTO1?marker=741311
 FRA,Frankfurt,DEL,"New Delhi, India",IN,USD,514,2026-07-31,https://www.aviasales.com/search/FRA3107DEL1?marker=741311
 FRA,Frankfurt,ZNZ,"Zanzibar, Tanzania",TZ,USD,559,2026-07-28,https://www.aviasales.com/search/FRA2807ZNZ1?marker=741311
 FRA,Frankfurt,MLE,"Male, Maldives",MV,USD,569,2026-07-21,https://www.aviasales.com/search/FRA2107MLE1?marker=741311
@@ -890,13 +854,10 @@ MAD,Madrid,GRU,"Sao Paulo, Brazil",BR,USD,808,2026-07-20,https://www.aviasales.c
 MAD,Madrid,SEA,"Seattle, United States",US,USD,818,2026-07-29,https://www.aviasales.com/search/MAD2907SEA1?marker=741311
 MAD,Madrid,SFO,"San Francisco, United States",US,USD,857,2026-07-19,https://www.aviasales.com/search/MAD1907SFO1?marker=741311
 MAD,Madrid,CTG,"Cartagena, Colombia",CO,USD,1159,2026-07-17,https://www.aviasales.com/search/MAD1707CTG1?marker=741311
-CMH,Columbus,CPR,"Casper, United States",US,USD,495,2026-07-25,https://www.aviasales.com/search/CMH2507CPR1?marker=741311
 CMH,Columbus,YQB,"Quebec, Canada",CA,USD,508,2026-07-17,https://www.aviasales.com/search/CMH1707YQB1?marker=741311
 CMH,Columbus,BFL,"Bakersfield, United States",US,USD,560,2026-07-22,https://www.aviasales.com/search/CMH2207BFL1?marker=741311
 CMH,Columbus,TAS,"Tashkent, Uzbekistan",UZ,USD,727,2026-07-22,https://www.aviasales.com/search/CMH2207TAS1?marker=741311
 CMH,Columbus,ADD,"Addis Ababa, Ethiopia",ET,USD,953,2026-07-17,https://www.aviasales.com/search/CMH1707ADD1?marker=741311
-BCN,Barcelona,YTO,"Toronto, Canada",CA,USD,499,2026-07-21,https://www.aviasales.com/search/BCN2107YTO1?marker=741311
-BCN,Barcelona,HKT,"Phuket, Thailand",TH,USD,499,2026-07-28,https://www.aviasales.com/search/BCN2807HKT1?marker=741311
 BCN,Barcelona,CMB,"Colombo, Sri Lanka",LK,USD,507,2026-07-20,https://www.aviasales.com/search/BCN2007CMB1?marker=741311
 BCN,Barcelona,MLE,"Male, Maldives",MV,USD,511,2026-07-28,https://www.aviasales.com/search/BCN2807MLE1?marker=741311
 BCN,Barcelona,TYO,"Tokyo, Japan",JP,USD,558,2026-07-20,https://www.aviasales.com/search/BCN2007TYO1?marker=741311
@@ -919,7 +880,6 @@ BCN,Barcelona,GRU,"Sao Paulo, Brazil",BR,USD,873,2026-07-21,https://www.aviasale
 BCN,Barcelona,CUN,"Cancun, Mexico",MX,USD,884,2026-07-31,https://www.aviasales.com/search/BCN3107CUN1?marker=741311
 BCN,Barcelona,HNL,"Honolulu, United States",US,USD,906,2026-07-22,https://www.aviasales.com/search/BCN2207HNL1?marker=741311
 BCN,Barcelona,UIO,"Quito, Ecuador",EC,USD,989,2026-07-29,https://www.aviasales.com/search/BCN2907UIO1?marker=741311
-IST,Istanbul,JFK,"New York, United States",US,USD,500,2026-07-24,https://www.aviasales.com/search/IST2407JFK1?t=N017848944001784932200001050SAWFCOJFK_fb158f99fe154c2d520cde4fb63b3641_39170&search_date=17072026&expected_price_uuid=019f7081-1036-8030-6614-f94d7dade3a5&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=MnnxA08m8aZkltOfZ34yoQ&destination_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=500&marker=741311
 IST,Istanbul,CEB,"Cebu City, Philippines",PH,USD,502,2026-07-24,https://www.aviasales.com/search/IST2407CEB1?marker=741311
 IST,Istanbul,YTO,"Toronto, Canada",CA,USD,538,2026-07-21,https://www.aviasales.com/search/IST2107YTO1?marker=741311
 IST,Istanbul,CPT,"Cape Town, South Africa",ZA,USD,567,2026-07-24,https://www.aviasales.com/search/IST2407CPT1?marker=741311
@@ -966,8 +926,6 @@ FCO,Rome,TPA,"Tampa, United States",US,USD,849,2026-07-31,https://www.aviasales.
 FCO,Rome,SFO,"San Francisco, United States",US,USD,898,2026-07-25,https://www.aviasales.com/search/FCO2507SFO1?marker=741311
 FCO,Rome,SYD,"Sydney, Australia",AU,USD,937,2026-07-20,https://www.aviasales.com/search/FCO2007SYD1?marker=741311
 VIE,Vienna,BTS,"Bratislava, Slovakia",SK,USD,1020,2026-07-27,https://www.aviasales.com/search/VIE2707BTS1?t=PC17851818001785310800002150VIEISTESBAYTBTS_d7a9f78adc6cd07a3efb6de3618ece42_79588&search_date=27072026&expected_price_uuid=019fa45b-43f1-8030-29e5-aba2b09b5167&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=3yrSPfBwl3f7epxcGksT0g&expected_price_source=share&expected_price_currency=usd&expected_price=1020&marker=741311
-VIE,Vienna,TYO,"Tokyo, Japan",JP,USD,494,2026-07-25,https://www.aviasales.com/search/VIE2507TYO1?marker=741311
-VIE,Vienna,HKG,"Hong Kong, Hong Kong",HK,USD,498,2026-07-21,https://www.aviasales.com/search/VIE2107HKG1?marker=741311
 VIE,Vienna,YTO,"Toronto, Canada",CA,USD,525,2026-07-22,https://www.aviasales.com/search/VIE2207YTO1?marker=741311
 VIE,Vienna,JNB,"Johannesburg, South Africa",ZA,USD,580,2026-07-26,https://www.aviasales.com/search/VIE2607JNB1?marker=741311
 VIE,Vienna,SEZ,"Mahe Island, Seychelles",SC,USD,594,2026-07-23,https://www.aviasales.com/search/VIE2307SEZ1?marker=741311
@@ -1001,11 +959,6 @@ DXB,Dubai,LAS,"Las Vegas, United States",US,USD,919,2026-07-25,https://www.avias
 DXB,Dubai,GRU,"Sao Paulo, Brazil",BR,USD,982,2026-07-19,https://www.aviasales.com/search/DXB1907GRU1?t=DT17844258001784559900002655DXBKGLJNBNBJGRU_066745ca82132e766a3d9cf4773c3907_76112&search_date=15072026&expected_price_uuid=019f66bf-806b-8030-6de5-f33609feefaf&static_fare_key=TY%7CP1%7CH1%7CL1_2_46%7CCH0%7CR0%7CTBC1&itinerary_key=6qua7i5GVEMTpRo4dSewhA&destination_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=982&marker=741311
 DXB,Dubai,LIM,"Lima, Peru",PE,USD,1052,2026-07-26,https://www.aviasales.com/search/DXB2607LIM1?marker=741311
 DXB,Dubai,HNL,"Honolulu, United States",US,USD,1063,2026-07-29,https://www.aviasales.com/search/DXB2907HNL1?marker=741311
-ZRH,Zurich,LUZ,"Swidnik, Poland",PL,USD,489,2026-07-17,https://www.aviasales.com/search/ZRH1707LUZ1?marker=741311
-ZRH,Zurich,OGZ,"Vladikavkaz, Russia",RU,USD,492,2026-07-28,https://www.aviasales.com/search/ZRH2807OGZ1?marker=741311
-ZRH,Zurich,GRV,"Groznyy, Russia",RU,USD,495,2026-07-27,https://www.aviasales.com/search/ZRH2707GRV1?marker=741311
-ZRH,Zurich,IGT,"Magas, Russia",RU,USD,498,2026-07-31,https://www.aviasales.com/search/ZRH3107IGT1?marker=741311
-ZRH,Zurich,SHA,"Shanghai, China",CN,USD,500,2026-07-20,https://www.aviasales.com/search/ZRH2007SHA1?marker=741311
 ZRH,Zurich,CEK,"Chelyabinsk, Russia",RU,USD,501,2026-07-20,https://www.aviasales.com/search/ZRH2007CEK1?marker=741311
 ZRH,Zurich,SIN,"Singapore, Singapore",SG,USD,511,2026-07-28,https://www.aviasales.com/search/ZRH2807SIN1?marker=741311
 ZRH,Zurich,BJS,"Beijing, China",CN,USD,513,2026-07-21,https://www.aviasales.com/search/ZRH2107BJS1?marker=741311
@@ -1053,11 +1006,6 @@ ZRH,Zurich,PGF,"Perpignan, France",FR,USD,993,2026-07-17,https://www.aviasales.c
 ZRH,Zurich,BQT,"Brest, Belarus",BY,USD,1019,2026-07-27,https://www.aviasales.com/search/ZRH2707BQT1?marker=741311
 ZRH,Zurich,SJO,"San Jose, Costa Rica",CR,USD,1032,2026-07-22,https://www.aviasales.com/search/ZRH2207SJO1?marker=741311
 ZRH,Zurich,RNS,"Rennes, France",FR,USD,1110,2026-07-17,https://www.aviasales.com/search/ZRH1707RNS1?marker=741311
-LIS,Lisbon,UFA,"Ufa, Russia",RU,USD,490,2026-07-30,https://www.aviasales.com/search/LIS3007UFA1?marker=741311
-LIS,Lisbon,NYC,"New York, United States",US,USD,493,2026-07-21,https://www.aviasales.com/search/LIS2107NYC1?marker=741311
-LIS,Lisbon,BJS,"Beijing, China",CN,USD,494,2026-07-24,https://www.aviasales.com/search/LIS2407BJS1?marker=741311
-LIS,Lisbon,CVU,"Corvo Island, Portugal",PT,USD,497,2026-07-19,https://www.aviasales.com/search/LIS1907CVU1?marker=741311
-LIS,Lisbon,BSZ,"Bishkek, Kyrgyzstan",KG,USD,500,2026-07-18,https://www.aviasales.com/search/LIS1807BSZ1?marker=741311
 LIS,Lisbon,YVR,"Vancouver, Canada",CA,USD,502,2026-07-22,https://www.aviasales.com/search/LIS2207YVR1?marker=741311
 LIS,Lisbon,GOJ,"Nizhniy Novgorod, Russia",RU,USD,517,2026-07-30,https://www.aviasales.com/search/LIS3007GOJ1?marker=741311
 LIS,Lisbon,CUN,"Cancun, Mexico",MX,USD,518,2026-07-26,https://www.aviasales.com/search/LIS2607CUN1?marker=741311
@@ -1113,7 +1061,6 @@ LIS,Lisbon,KOE,"Kupang, Indonesia",ID,USD,927,2026-07-30,https://www.aviasales.c
 LIS,Lisbon,RIO,"Rio de Janeiro, Brazil",BR,USD,930,2026-07-20,https://www.aviasales.com/search/LIS2007RIO1?marker=741311
 LIS,Lisbon,TMS,"Sao Tome Island, São Tomé and Príncipe",ST,USD,952,2026-07-26,https://www.aviasales.com/search/LIS2607TMS1?marker=741311
 LIS,Lisbon,UDI,"Uberlandia, Brazil",BR,USD,954,2026-07-22,https://www.aviasales.com/search/LIS2207UDI1?marker=741311
-DUB,Dublin,MAA,"Chennai, India",IN,USD,491,2026-07-22,https://www.aviasales.com/search/DUB2207MAA1?marker=741311
 DUB,Dublin,DYU,"Dushanbe, Tajikistan",TJ,USD,505,2026-07-18,https://www.aviasales.com/search/DUB1807DYU1?marker=741311
 DUB,Dublin,ICN,"Seoul, South Korea",KR,USD,512,2026-07-30,https://www.aviasales.com/search/DUB3007ICN1?t=ET17853909001785513600001565DUBATHADDICN_1a4b9d36cab82c212e003969d7c070ca_39217&search_date=12072026&expected_price_uuid=019f56a9-4387-8030-e4be-ed45ede38b1a&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=XCOVkkF2ezO2PByLCdrisg&destination_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=512&marker=741311
 DUB,Dublin,SEL,"Seoul, South Korea",KR,USD,518,2026-07-30,https://www.aviasales.com/search/DUB3007SEL1?marker=741311
@@ -1147,9 +1094,6 @@ DUB,Dublin,SAO,"Sao Paulo, Brazil",BR,USD,1066,2026-07-26,https://www.aviasales.
 DUB,Dublin,BUE,"Buenos Aires, Argentina",AR,USD,1189,2026-07-26,https://www.aviasales.com/search/DUB2607BUE1?marker=741311
 DUB,Dublin,KVX,"Kirov, Russia",RU,USD,1210,2026-07-22,https://www.aviasales.com/search/DUB2207KVX1?marker=741311
 DUB,Dublin,KGD,"Kaliningrad, Russia",RU,USD,1796,2026-07-18,https://www.aviasales.com/search/DUB1807KGD1?marker=741311
-ATH,Athens,IAR,"Yaroslavl, Russia",RU,USD,489,2026-07-25,https://www.aviasales.com/search/ATH2507IAR1?marker=741311
-ATH,Athens,SVL,"Savonlinna, Finland",FI,USD,493,2026-07-23,https://www.aviasales.com/search/ATH2307SVL1?marker=741311
-ATH,Athens,YTO,"Toronto, Canada",CA,USD,495,2026-07-21,https://www.aviasales.com/search/ATH2107YTO1?marker=741311
 ATH,Athens,DPS,"Denpasar (Bali), Indonesia",ID,USD,519,2026-07-24,https://www.aviasales.com/search/ATH2407DPS1?marker=741311
 ATH,Athens,STW,"Stavropol, Russia",RU,USD,523,2026-07-20,https://www.aviasales.com/search/ATH2007STW1?marker=741311
 ATH,Athens,SKX,"Saransk, Russia",RU,USD,531,2026-07-17,https://www.aviasales.com/search/ATH1707SKX1?marker=741311
@@ -1175,8 +1119,6 @@ ATH,Athens,LAX,"Los Angeles, United States",US,USD,1160,2026-07-17,https://www.a
 ATH,Athens,BWI,"Baltimore, United States",US,USD,1184,2026-07-23,https://www.aviasales.com/search/ATH2307BWI1?marker=741311
 ATH,Athens,SAN,"San Diego, United States",US,USD,1200,2026-07-17,https://www.aviasales.com/search/ATH1707SAN1?marker=741311
 ATH,Athens,CUN,"Cancun, Mexico",MX,USD,1569,2026-07-17,https://www.aviasales.com/search/ATH1707CUN1?marker=741311
-CPH,Copenhagen,SYX,"Sanya, China",CN,USD,495,2026-07-30,https://www.aviasales.com/search/CPH3007SYX1?marker=741311
-CPH,Copenhagen,GOH,"Nuuk, Greenland",GL,USD,500,2026-07-22,https://www.aviasales.com/search/CPH2207GOH1?marker=741311
 CPH,Copenhagen,SZX,"Shenzhen, China",CN,USD,502,2026-07-25,https://www.aviasales.com/search/CPH2507SZX1?marker=741311
 CPH,Copenhagen,TYO,"Tokyo, Japan",JP,USD,505,2026-07-28,https://www.aviasales.com/search/CPH2807TYO1?marker=741311
 CPH,Copenhagen,MNL,"Manila, Philippines",PH,USD,512,2026-07-17,https://www.aviasales.com/search/CPH1707MNL1?marker=741311
@@ -1204,9 +1146,6 @@ CPH,Copenhagen,FUO,"Foshan, China",CN,USD,855,2026-07-25,https://www.aviasales.c
 CPH,Copenhagen,BWI,"Baltimore, United States",US,USD,892,2026-07-30,https://www.aviasales.com/search/CPH3007BWI1?marker=741311
 CPH,Copenhagen,BOM,"Mumbai, India",IN,USD,916,2026-07-17,https://www.aviasales.com/search/CPH1707BOM1?marker=741311
 CPH,Copenhagen,SWF,"Newburgh, United States",US,USD,1920,2026-07-20,https://www.aviasales.com/search/CPH2007SWF1?marker=741311
-MUC,Munich,CEK,"Chelyabinsk, Russia",RU,USD,492,2026-07-29,https://www.aviasales.com/search/MUC2907CEK1?marker=741311
-MUC,Munich,KGF,"Karagandy, Kazakhstan",KZ,USD,494,2026-07-23,https://www.aviasales.com/search/MUC2307KGF1?marker=741311
-MUC,Munich,AZN,"Andijan, Uzbekistan",UZ,USD,495,2026-07-29,https://www.aviasales.com/search/MUC2907AZN1?marker=741311
 MUC,Munich,UGC,"Urgench, Uzbekistan",UZ,USD,507,2026-07-23,https://www.aviasales.com/search/MUC2307UGC1?marker=741311
 MUC,Munich,NYC,"New York, United States",US,USD,508,2026-07-20,https://www.aviasales.com/search/MUC2007NYC1?marker=741311
 MUC,Munich,HKT,"Phuket, Thailand",TH,USD,515,2026-07-23,https://www.aviasales.com/search/MUC2307HKT1?marker=741311
@@ -1233,10 +1172,6 @@ MUC,Munich,GRU,"Sao Paulo, Brazil",BR,USD,944,2026-07-20,https://www.aviasales.c
 MUC,Munich,SYD,"Sydney, Australia",AU,USD,961,2026-07-30,https://www.aviasales.com/search/MUC3007SYD1?marker=741311
 MUC,Munich,LAX,"Los Angeles, United States",US,USD,1004,2026-07-29,https://www.aviasales.com/search/MUC2907LAX1?marker=741311
 MUC,Munich,SFO,"San Francisco, United States",US,USD,1136,2026-07-17,https://www.aviasales.com/search/MUC1707SFO1?marker=741311
-AUH,Abu Dhabi,KHS,"Khasab, Oman",OM,USD,492,2026-07-27,https://www.aviasales.com/search/AUH2707KHS1?marker=741311
-AUH,Abu Dhabi,SUI,"Sukhumi, Abkhazia",AB,USD,493,2026-07-20,https://www.aviasales.com/search/AUH2007SUI1?marker=741311
-AUH,Abu Dhabi,BAX,"Barnaul, Russia",RU,USD,494,2026-07-27,https://www.aviasales.com/search/AUH2707BAX1?marker=741311
-AUH,Abu Dhabi,PRI,"Praslin Island, Seychelles",SC,USD,499,2026-07-26,https://www.aviasales.com/search/AUH2607PRI1?marker=741311
 AUH,Abu Dhabi,GOP,"Gorakhpur, India",IN,USD,514,2026-07-17,https://www.aviasales.com/search/AUH1707GOP1?marker=741311
 AUH,Abu Dhabi,REN,"Orenburg, Russia",RU,USD,518,2026-07-20,https://www.aviasales.com/search/AUH2007REN1?marker=741311
 AUH,Abu Dhabi,MEL,"Melbourne, Australia",AU,USD,530,2026-07-30,https://www.aviasales.com/search/AUH3007MEL1?marker=741311
@@ -1263,9 +1198,6 @@ AUH,Abu Dhabi,LIM,"Lima, Peru",PE,USD,1010,2026-07-23,https://www.aviasales.com/
 AUH,Abu Dhabi,CUN,"Cancun, Mexico",MX,USD,1024,2026-07-31,https://www.aviasales.com/search/AUH3107CUN1?marker=741311
 AUH,Abu Dhabi,GRU,"Sao Paulo, Brazil",BR,USD,1090,2026-07-20,https://www.aviasales.com/search/AUH2007GRU1?t=AV17845245001784697900003310AUHSAWSOFMADBOGGRU_44a8a60ec3805a2513662e0dfb839a5f_85118&search_date=15072026&expected_price_uuid=019f662f-64a4-8030-e1a2-6cf170dbedb5&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=b3AV1sedkczPHjlIkaX3Uw&destination_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=1090&marker=741311
 AUH,Abu Dhabi,LAX,"Los Angeles, United States",US,USD,1134,2026-07-31,https://www.aviasales.com/search/AUH3107LAX1?marker=741311
-TLV,Tel Aviv,BKK,"Bangkok, Thailand",TH,USD,493,2026-07-19,https://www.aviasales.com/search/TLV1907BKK1?marker=741311
-TLV,Tel Aviv,STW,"Stavropol, Russia",RU,USD,494,2026-07-23,https://www.aviasales.com/search/TLV2307STW1?marker=741311
-TLV,Tel Aviv,MVQ,"Mogilev, Belarus",BY,USD,498,2026-07-17,https://www.aviasales.com/search/TLV1707MVQ1?marker=741311
 TLV,Tel Aviv,ZNZ,"Zanzibar, Tanzania",TZ,USD,500,2026-07-18,https://www.aviasales.com/search/TLV1807ZNZ1?marker=741311
 TLV,Tel Aviv,MNL,"Manila, Philippines",PH,USD,500,2026-07-25,https://www.aviasales.com/search/TLV2507MNL1?marker=741311
 TLV,Tel Aviv,NOZ,"Novokuznetsk, Russia",RU,USD,503,2026-07-27,https://www.aviasales.com/search/TLV2707NOZ1?marker=741311
@@ -1333,12 +1265,6 @@ TLV,Tel Aviv,SJU,"San Juan, Puerto Rico",PR,USD,1090,2026-07-19,https://www.avia
 TLV,Tel Aviv,SFO,"San Francisco, United States",US,USD,1092,2026-07-19,https://www.aviasales.com/search/TLV1907SFO1?marker=741311
 TLV,Tel Aviv,LAS,"Las Vegas, United States",US,USD,1209,2026-07-17,https://www.aviasales.com/search/TLV1707LAS1?marker=741311
 TLV,Tel Aviv,GRU,"Sao Paulo, Brazil",BR,USD,1233,2026-07-21,https://www.aviasales.com/search/TLV2107GRU1?t=EK17846241001784740500002300TLVDXBGRU_e2db57996c2071967d941d4e81ec8dad_94525&search_date=12072026&expected_price_uuid=019f55fd-a150-8030-a8fa-3497ee7de6a5&static_fare_key=TY%7CP0%7CH1%7CL1_2_46%7CCH0%7CR0%7CTBC1&itinerary_key=CiOllsYRNFjwCh6bj2uCsw&destination_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=1233&marker=741311
-DOH,Doha,URC,"Urumqi, China",CN,USD,490,2026-07-28,https://www.aviasales.com/search/DOH2807URC1?marker=741311
-DOH,Doha,JNB,"Johannesburg, South Africa",ZA,USD,491,2026-07-18,https://www.aviasales.com/search/DOH1807JNB1?marker=741311
-DOH,Doha,HKG,"Hong Kong, Hong Kong",HK,USD,492,2026-07-17,https://www.aviasales.com/search/DOH1707HKG1?marker=741311
-DOH,Doha,TAC,"Tacloban, Philippines",PH,USD,493,2026-07-31,https://www.aviasales.com/search/DOH3107TAC1?marker=741311
-DOH,Doha,USM,"Koh Samui, Thailand",TH,USD,495,2026-07-29,https://www.aviasales.com/search/DOH2907USM1?marker=741311
-DOH,Doha,SYX,"Sanya, China",CN,USD,499,2026-07-20,https://www.aviasales.com/search/DOH2007SYX1?marker=741311
 DOH,Doha,MPM,"Maputo, Mozambique",MZ,USD,504,2026-07-18,https://www.aviasales.com/search/DOH1807MPM1?marker=741311
 DOH,Doha,NJF,"Al-Najaf, Iraq",IQ,USD,507,2026-07-27,https://www.aviasales.com/search/DOH2707NJF1?marker=741311
 DOH,Doha,YIW,"Yiwu, China",CN,USD,508,2026-07-28,https://www.aviasales.com/search/DOH2807YIW1?marker=741311
@@ -1411,12 +1337,6 @@ DOH,Doha,MVD,"Montevideo, Uruguay",UY,USD,1193,2026-07-21,https://www.aviasales.
 DOH,Doha,OMA,"Omaha, United States",US,USD,1197,2026-07-29,https://www.aviasales.com/search/DOH2907OMA1?marker=741311
 DOH,Doha,TUL,"Tulsa, United States",US,USD,1198,2026-07-31,https://www.aviasales.com/search/DOH3107TUL1?marker=741311
 DOH,Doha,LIM,"Lima, Peru",PE,USD,1245,2026-07-21,https://www.aviasales.com/search/DOH2107LIM1?marker=741311
-SIN,Singapore,GUW,"Atyrau, Kazakhstan",KZ,USD,490,2026-07-19,https://www.aviasales.com/search/SIN1907GUW1?marker=741311
-SIN,Singapore,BEG,"Belgrade, Serbia",RS,USD,490,2026-07-18,https://www.aviasales.com/search/SIN1807BEG1?marker=741311
-SIN,Singapore,HBA,"Hobart, Australia",AU,USD,492,2026-07-26,https://www.aviasales.com/search/SIN2607HBA1?marker=741311
-SIN,Singapore,CMN,"Casablanca, Morocco",MA,USD,494,2026-07-31,https://www.aviasales.com/search/SIN3107CMN1?marker=741311
-SIN,Singapore,BSZ,"Bishkek, Kyrgyzstan",KG,USD,495,2026-07-31,https://www.aviasales.com/search/SIN3107BSZ1?marker=741311
-SIN,Singapore,HEL,"Helsinki, Finland",FI,USD,498,2026-07-24,https://www.aviasales.com/search/SIN2407HEL1?marker=741311
 SIN,Singapore,YNB,"Yanbu, Saudi Arabia",SA,USD,502,2026-07-26,https://www.aviasales.com/search/SIN2607YNB1?marker=741311
 SIN,Singapore,OMS,"Omsk, Russia",RU,USD,507,2026-07-21,https://www.aviasales.com/search/SIN2107OMS1?marker=741311
 SIN,Singapore,MRV,"Mineralnye Vody, Russia",RU,USD,510,2026-07-23,https://www.aviasales.com/search/SIN2307MRV1?marker=741311
@@ -1441,7 +1361,6 @@ SIN,Singapore,BNA,"Nashville, United States",US,USD,944,2026-07-29,https://www.a
 SIN,Singapore,MIA,"Miami, United States",US,USD,951,2026-07-30,https://www.aviasales.com/search/SIN3007MIA1?marker=741311
 SIN,Singapore,GRU,"Sao Paulo, Brazil",BR,USD,1275,2026-07-21,https://www.aviasales.com/search/SIN2107GRU1?t=WY17846640001784802900002975SINBAHDXBMCTDOHGRU_fe43a4de0f8509a60937cc5cf0d7f9d8_98803&search_date=15072026&expected_price_uuid=019f649e-5e3f-8030-20bb-8d8c2f58ccfa&static_fare_key=TY%7CP0%7CH1%7CL1_1_25%7CCH1%7CR1%7CTBC1&itinerary_key=ysgtYq8MFHlzHKFzCeG6Sg&destination_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=1275&marker=741311
 SIN,Singapore,LIM,"Lima, Peru",PE,USD,1292,2026-07-22,https://www.aviasales.com/search/SIN2207LIM1?marker=741311
-BKK,Bangkok,RAK,"Marrakech, Morocco",MA,USD,490,2026-07-22,https://www.aviasales.com/search/BKK2207RAK1?marker=741311
 BKK,Bangkok,BJV,"Bodrum, Turkiye",TR,USD,517,2026-07-17,https://www.aviasales.com/search/BKK1707BJV1?marker=741311
 BKK,Bangkok,JNB,"Johannesburg, South Africa",ZA,USD,527,2026-07-26,https://www.aviasales.com/search/BKK2607JNB1?marker=741311
 BKK,Bangkok,ZNZ,"Zanzibar, Tanzania",TZ,USD,542,2026-07-20,https://www.aviasales.com/search/BKK2007ZNZ1?marker=741311
@@ -1459,15 +1378,6 @@ BKK,Bangkok,MEX,"Mexico City, Mexico",MX,USD,840,2026-07-21,https://www.aviasale
 BKK,Bangkok,MIA,"Miami, United States",US,USD,998,2026-07-18,https://www.aviasales.com/search/BKK1807MIA1?marker=741311
 BKK,Bangkok,GRU,"Sao Paulo, Brazil",BR,USD,1127,2026-07-20,https://www.aviasales.com/search/BKK2007GRU1?t=ET17845122001784564400001470BKKADDGRU_29c71e17ca59cdb3d73373426e032eba_87367&search_date=16072026&expected_price_uuid=019f6992-75c0-8030-a038-b79bd4dabfbc&static_fare_key=TY%7CP1%7CH1%7CL1_2_0%7CCH0%7CR0%7CTBC1&itinerary_key=uDQh2tsu8gLbX0uCMXaHKA&destination_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=1127&marker=741311
 BKK,Bangkok,BOG,"Bogota, Colombia",CO,USD,1147,2026-07-28,https://www.aviasales.com/search/BKK2807BOG1?marker=741311
-ICN,Seoul,BQS,"Blagoveschensk, Russia",RU,USD,489,2026-07-20,https://www.aviasales.com/search/ICN2007BQS1?marker=741311
-ICN,Seoul,GOJ,"Nizhniy Novgorod, Russia",RU,USD,490,2026-07-23,https://www.aviasales.com/search/ICN2307GOJ1?marker=741311
-ICN,Seoul,TJM,"Tyumen, Russia",RU,USD,490,2026-07-20,https://www.aviasales.com/search/ICN2007TJM1?marker=741311
-ICN,Seoul,LCA,"Larnaca, Cyprus",CY,USD,492,2026-07-18,https://www.aviasales.com/search/ICN1807LCA1?marker=741311
-ICN,Seoul,OVB,"Novosibirsk, Russia",RU,USD,493,2026-07-28,https://www.aviasales.com/search/ICN2807OVB1?marker=741311
-ICN,Seoul,LBD,"Khujand, Tajikistan",TJ,USD,494,2026-07-23,https://www.aviasales.com/search/ICN2307LBD1?marker=741311
-ICN,Seoul,URA,"Oral, Kazakhstan",KZ,USD,497,2026-07-25,https://www.aviasales.com/search/ICN2507URA1?marker=741311
-ICN,Seoul,MUC,"Munich, Germany",DE,USD,497,2026-07-25,https://www.aviasales.com/search/ICN2507MUC1?marker=741311
-ICN,Seoul,NCU,"Nukus, Uzbekistan",UZ,USD,498,2026-07-24,https://www.aviasales.com/search/ICN2407NCU1?marker=741311
 ICN,Seoul,ANK,"Ankara, Turkiye",TR,USD,501,2026-07-22,https://www.aviasales.com/search/ICN2207ANK1?marker=741311
 ICN,Seoul,HEL,"Helsinki, Finland",FI,USD,513,2026-07-24,https://www.aviasales.com/search/ICN2407HEL1?marker=741311
 ICN,Seoul,BHK,"Bukhara, Uzbekistan",UZ,USD,514,2026-07-25,https://www.aviasales.com/search/ICN2507BHK1?marker=741311
@@ -1525,9 +1435,6 @@ ICN,Seoul,SJC,"San Jose, United States",US,USD,969,2026-07-18,https://www.aviasa
 ICN,Seoul,BOG,"Bogota, Colombia",CO,USD,1012,2026-07-28,https://www.aviasales.com/search/ICN2807BOG1?marker=741311
 ICN,Seoul,LIM,"Lima, Peru",PE,USD,1052,2026-07-20,https://www.aviasales.com/search/ICN2007LIM1?marker=741311
 ICN,Seoul,GRU,"Sao Paulo, Brazil",BR,USD,1134,2026-07-22,https://www.aviasales.com/search/ICN2207GRU1?t=OZ17847564001784871000002630ICNLAXGRU_33ed10b83dcfaa518192ca28de5e3de5_87873&search_date=15072026&expected_price_uuid=019f6451-dddb-8030-ab98-1f7bd734e426&static_fare_key=TY%7CP1%7CH1%7CL1_2_64%7CCH0%7CR0%7CTBC1&itinerary_key=7sFfzkMPXO4gZSWNiomoaQ&origin_airports=0&destination_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=1134&marker=741311
-HKG,Hong Kong,UFA,"Ufa, Russia",RU,USD,492,2026-07-27,https://www.aviasales.com/search/HKG2707UFA1?marker=741311
-HKG,Hong Kong,BER,"Berlin, Germany",DE,USD,494,2026-07-27,https://www.aviasales.com/search/HKG2707BER1?marker=741311
-HKG,Hong Kong,NCE,"Nice, France",FR,USD,498,2026-07-18,https://www.aviasales.com/search/HKG1807NCE1?marker=741311
 HKG,Hong Kong,SVX,"Yekaterinburg, Russia",RU,USD,501,2026-07-27,https://www.aviasales.com/search/HKG2707SVX1?marker=741311
 HKG,Hong Kong,TIV,"Tivat, Montenegro",ME,USD,507,2026-07-26,https://www.aviasales.com/search/HKG2607TIV1?marker=741311
 HKG,Hong Kong,VAR,"Varna, Bulgaria",BG,USD,513,2026-07-31,https://www.aviasales.com/search/HKG3107VAR1?marker=741311
@@ -1599,13 +1506,6 @@ HKG,Hong Kong,ANU,"Saint John's, Antigua and Barbuda",AG,USD,1321,2026-07-24,htt
 HKG,Hong Kong,SCL,"Santiago, Chile",CL,USD,1357,2026-07-20,https://www.aviasales.com/search/HKG2007SCL1?marker=741311
 HKG,Hong Kong,VAV,"Vava'u, Tonga",TO,USD,2154,2026-07-18,https://www.aviasales.com/search/HKG1807VAV1?marker=741311
 HKG,Hong Kong,MAJ,"Majuro, Marshall Islands",MH,USD,2406,2026-07-23,https://www.aviasales.com/search/HKG2307MAJ1?marker=741311
-TYO,Tokyo,BCN,"Barcelona, Spain",ES,USD,490,2026-07-18,https://www.aviasales.com/search/TYO1807BCN1?marker=741311
-TYO,Tokyo,AUH,"Abu Dhabi, United Arab Emirates",AE,USD,491,2026-07-26,https://www.aviasales.com/search/TYO2607AUH1?marker=741311
-TYO,Tokyo,DXB,"Dubai, United Arab Emirates",AE,USD,492,2026-07-20,https://www.aviasales.com/search/TYO2007DXB1?marker=741311
-TYO,Tokyo,WAW,"Warsaw, Poland",PL,USD,492,2026-07-24,https://www.aviasales.com/search/TYO2407WAW1?marker=741311
-TYO,Tokyo,FCO,"Rome, Italy",IT,USD,493,2026-07-25,https://www.aviasales.com/search/TYO2507FCO1?t=TR17849676001785067200002080NRTSINATHFCO_f17d85abcee462de978f3babea033452_38255&search_date=14072026&expected_price_uuid=019f6262-2e99-8030-a442-3d1250724c36&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=5JI0f_W2HoqA-gBWPJRWYg&destination_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=493&marker=741311
-TYO,Tokyo,LED,"Saint Petersburg, Russia",RU,USD,494,2026-07-21,https://www.aviasales.com/search/TYO2107LED1?marker=741311
-TYO,Tokyo,ROM,"Rome, Italy",IT,USD,499,2026-07-25,https://www.aviasales.com/search/TYO2507ROM1?marker=741311
 TYO,Tokyo,TBS,"Tbilisi, Georgia",GE,USD,511,2026-07-28,https://www.aviasales.com/search/TYO2807TBS1?marker=741311
 TYO,Tokyo,DOH,"Doha, Qatar",QA,USD,517,2026-07-20,https://www.aviasales.com/search/TYO2007DOH1?marker=741311
 TYO,Tokyo,SHJ,"Sharjah, United Arab Emirates",AE,USD,517,2026-07-25,https://www.aviasales.com/search/TYO2507SHJ1?marker=741311
@@ -1703,7 +1603,6 @@ TYO,Tokyo,HTA,"Chita, Russia",RU,USD,1562,2026-07-22,https://www.aviasales.com/s
 TYO,Tokyo,IKS,"Tiksi, Russia",RU,USD,1583,2026-07-20,https://www.aviasales.com/search/TYO2007IKS1?marker=741311
 TYO,Tokyo,BOB,"Bora Bora, French Polynesia",PF,USD,1614,2026-07-20,https://www.aviasales.com/search/TYO2007BOB1?marker=741311
 TYO,Tokyo,PAE,"Everett, United States",US,USD,1829,2026-07-31,https://www.aviasales.com/search/TYO3107PAE1?marker=741311
-DEL,Delhi,SCO,"Aktau, Kazakhstan",KZ,USD,494,2026-07-17,https://www.aviasales.com/search/DEL1707SCO1?marker=741311
 DEL,Delhi,NJC,"Nizhnevartovsk, Russia",RU,USD,503,2026-07-20,https://www.aviasales.com/search/DEL2007NJC1?marker=741311
 DEL,Delhi,OBO,"Obihiro, Japan",JP,USD,506,2026-07-28,https://www.aviasales.com/search/DEL2807OBO1?marker=741311
 DEL,Delhi,AGB,"Augsburg, Germany",DE,USD,523,2026-07-22,https://www.aviasales.com/search/DEL2207AGB1?marker=741311
@@ -1737,10 +1636,6 @@ DEL,Delhi,BUE,"Buenos Aires, Argentina",AR,USD,1307,2026-07-20,https://www.avias
 DEL,Delhi,SWF,"Newburgh, United States",US,USD,1341,2026-07-19,https://www.aviasales.com/search/DEL1907SWF1?marker=741311
 DEL,Delhi,OAK,"Oakland, United States",US,USD,1420,2026-07-18,https://www.aviasales.com/search/DEL1807OAK1?marker=741311
 DEL,Delhi,BOB,"Bora Bora, French Polynesia",PF,USD,1493,2026-07-27,https://www.aviasales.com/search/DEL2707BOB1?marker=741311
-KUL,Kuala Lumpur,CMN,"Casablanca, Morocco",MA,USD,492,2026-07-26,https://www.aviasales.com/search/KUL2607CMN1?marker=741311
-KUL,Kuala Lumpur,TIV,"Tivat, Montenegro",ME,USD,494,2026-07-28,https://www.aviasales.com/search/KUL2807TIV1?marker=741311
-KUL,Kuala Lumpur,PEE,"Perm, Russia",RU,USD,495,2026-07-20,https://www.aviasales.com/search/KUL2007PEE1?marker=741311
-KUL,Kuala Lumpur,OSL,"Oslo, Norway",NO,USD,499,2026-07-27,https://www.aviasales.com/search/KUL2707OSL1?marker=741311
 KUL,Kuala Lumpur,NAN,"Nadi, Fiji",FJ,USD,501,2026-07-30,https://www.aviasales.com/search/KUL3007NAN1?marker=741311
 KUL,Kuala Lumpur,OVB,"Novosibirsk, Russia",RU,USD,503,2026-07-19,https://www.aviasales.com/search/KUL1907OVB1?marker=741311
 KUL,Kuala Lumpur,SEZ,"Mahe Island, Seychelles",SC,USD,506,2026-07-25,https://www.aviasales.com/search/KUL2507SEZ1?marker=741311
@@ -1783,7 +1678,6 @@ KUL,Kuala Lumpur,LGB,"Long Beach, United States",US,USD,1025,2026-07-31,https://
 KUL,Kuala Lumpur,SJC,"San Jose, United States",US,USD,1042,2026-07-20,https://www.aviasales.com/search/KUL2007SJC1?marker=741311
 KUL,Kuala Lumpur,FLL,"Fort Lauderdale, United States",US,USD,1094,2026-07-18,https://www.aviasales.com/search/KUL1807FLL1?marker=741311
 KUL,Kuala Lumpur,GRU,"Sao Paulo, Brazil",BR,USD,1113,2026-07-26,https://www.aviasales.com/search/KUL2607GRU1?t=MF17850330001785181800003140KULXMNCDGGRU_458897a9223bb03d1efca6dd837df9ad_86245&search_date=15072026&expected_price_uuid=019f639f-cf3d-8030-22a2-87ab96a8219c&static_fare_key=TY%7CP1%7CH1%7CL1_1_23%7CCH0%7CR0%7CTBC1&itinerary_key=Jf-XfQhbhWnCWygSPxzBfg&destination_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=1113&marker=741311
-BOM,Mumbai,VAM,"Maamigili, Maldives",MV,USD,496,2026-07-29,https://www.aviasales.com/search/BOM2907VAM1?marker=741311
 BOM,Mumbai,MTS,"Manzini, Eswatini",SZ,USD,510,2026-07-20,https://www.aviasales.com/search/BOM2007MTS1?marker=741311
 BOM,Mumbai,OOL,"Gold Coast, Australia",AU,USD,516,2026-07-28,https://www.aviasales.com/search/BOM2807OOL1?marker=741311
 BOM,Mumbai,KHV,"Khabarovsk, Russia",RU,USD,529,2026-07-20,https://www.aviasales.com/search/BOM2007KHV1?marker=741311
@@ -1812,7 +1706,6 @@ BOM,Mumbai,BUE,"Buenos Aires, Argentina",AR,USD,1099,2026-07-20,https://www.avia
 BOM,Mumbai,LIM,"Lima, Peru",PE,USD,1244,2026-07-31,https://www.aviasales.com/search/BOM3107LIM1?marker=741311
 BOM,Mumbai,OAK,"Oakland, United States",US,USD,1317,2026-07-28,https://www.aviasales.com/search/BOM2807OAK1?marker=741311
 MNL,Manila,LGP,"Legazpi, Philippines",PH,USD,42,2026-07-23,https://www.aviasales.com/search/MNL2307LGP1?marker=741311
-MNL,Manila,GOT,"Gothenburg, Sweden",SE,USD,497,2026-07-22,https://www.aviasales.com/search/MNL2207GOT1?marker=741311
 MNL,Manila,CPH,"Copenhagen, Denmark",DK,USD,502,2026-07-23,https://www.aviasales.com/search/MNL2307CPH1?marker=741311
 MNL,Manila,DRW,"Darwin, Australia",AU,USD,502,2026-07-23,https://www.aviasales.com/search/MNL2307DRW1?marker=741311
 MNL,Manila,SKX,"Saransk, Russia",RU,USD,502,2026-07-30,https://www.aviasales.com/search/MNL3007SKX1?marker=741311
@@ -1848,8 +1741,6 @@ MNL,Manila,BUE,"Buenos Aires, Argentina",AR,USD,1380,2026-07-25,https://www.avia
 MNL,Manila,SJC,"San Jose, United States",US,USD,1384,2026-07-21,https://www.aviasales.com/search/MNL2107SJC1?marker=741311
 MNL,Manila,HAV,"Havana, Cuba",CU,USD,1581,2026-07-20,https://www.aviasales.com/search/MNL2007HAV1?marker=741311
 MNL,Manila,BRC,"San Carlos de Bariloche, Argentina",AR,USD,1772,2026-07-22,https://www.aviasales.com/search/MNL2207BRC1?marker=741311
-TPE,Taipei,NQZ,"Astana, Kazakhstan",KZ,USD,493,2026-07-18,https://www.aviasales.com/search/TPE1807NQZ1?marker=741311
-TPE,Taipei,BJV,"Bodrum, Turkiye",TR,USD,495,2026-07-27,https://www.aviasales.com/search/TPE2707BJV1?marker=741311
 TPE,Taipei,AKL,"Auckland, New Zealand",NZ,USD,509,2026-07-28,https://www.aviasales.com/search/TPE2807AKL1?marker=741311
 TPE,Taipei,DYU,"Dushanbe, Tajikistan",TJ,USD,521,2026-07-22,https://www.aviasales.com/search/TPE2207DYU1?marker=741311
 TPE,Taipei,SEA,"Seattle, United States",US,USD,528,2026-07-19,https://www.aviasales.com/search/TPE1907SEA1?marker=741311
@@ -1871,9 +1762,6 @@ TPE,Taipei,GRU,"Sao Paulo, Brazil",BR,USD,1249,2026-07-26,https://www.aviasales.
 TPE,Taipei,SAO,"Sao Paulo, Brazil",BR,USD,1263,2026-07-26,https://www.aviasales.com/search/TPE2607SAO1?marker=741311
 TPE,Taipei,AUG,"Augusta, United States",US,USD,1305,2026-07-22,https://www.aviasales.com/search/TPE2207AUG1?marker=741311
 TPE,Taipei,BUE,"Buenos Aires, Argentina",AR,USD,1390,2026-07-22,https://www.aviasales.com/search/TPE2207BUE1?marker=741311
-SGN,Ho Chi Minh,AER,"Adler/Sochi, Russia",RU,USD,496,2026-07-28,https://www.aviasales.com/search/SGN2807AER1?marker=741311
-SGN,Ho Chi Minh,OMS,"Omsk, Russia",RU,USD,497,2026-07-22,https://www.aviasales.com/search/SGN2207OMS1?marker=741311
-SGN,Ho Chi Minh,OVB,"Novosibirsk, Russia",RU,USD,499,2026-07-20,https://www.aviasales.com/search/SGN2007OVB1?marker=741311
 SGN,Ho Chi Minh,MRV,"Mineralnye Vody, Russia",RU,USD,503,2026-07-28,https://www.aviasales.com/search/SGN2807MRV1?marker=741311
 SGN,Ho Chi Minh,ROR,"Koror, Palau",PW,USD,514,2026-07-25,https://www.aviasales.com/search/SGN2507ROR1?marker=741311
 SGN,Ho Chi Minh,KRR,"Krasnodar, Russia",RU,USD,515,2026-07-21,https://www.aviasales.com/search/SGN2107KRR1?marker=741311
@@ -1928,8 +1816,6 @@ SGN,Ho Chi Minh,SCL,"Santiago, Chile",CL,USD,1416,2026-07-18,https://www.aviasal
 SGN,Ho Chi Minh,RIO,"Rio de Janeiro, Brazil",BR,USD,1426,2026-07-23,https://www.aviasales.com/search/SGN2307RIO1?marker=741311
 SGN,Ho Chi Minh,LIM,"Lima, Peru",PE,USD,1546,2026-07-31,https://www.aviasales.com/search/SGN3107LIM1?marker=741311
 SGN,Ho Chi Minh,HAV,"Havana, Cuba",CU,USD,1642,2026-07-31,https://www.aviasales.com/search/SGN3107HAV1?marker=741311
-SYD,Sydney,MAD,"Madrid, Spain",ES,USD,491,2026-07-20,https://www.aviasales.com/search/SYD2007MAD1?marker=741311
-SYD,Sydney,BCN,"Barcelona, Spain",ES,USD,494,2026-07-29,https://www.aviasales.com/search/SYD2907BCN1?marker=741311
 SYD,Sydney,IST,"Istanbul, Turkiye",TR,USD,502,2026-07-26,https://www.aviasales.com/search/SYD2607IST1?marker=741311
 SYD,Sydney,FCO,"Rome, Italy",IT,USD,506,2026-07-22,https://www.aviasales.com/search/SYD2207FCO1?t=MU17847180001784833800002410SYDPVGFCO_b268f403e94d274d920295332849113f_39231&search_date=16072026&expected_price_uuid=019f689f-9b82-8010-2e6d-c0ca4e7cd810&static_fare_key=TY%7CP1%7CH1%7CL1_2_46%7CCH1%7CR0%7CTBC1&itinerary_key=coYfyd1aWA1FE16gWFgmog&destination_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=506&marker=741311
 SYD,Sydney,ROM,"Rome, Italy",IT,USD,512,2026-07-22,https://www.aviasales.com/search/SYD2207ROM1?marker=741311
@@ -1997,9 +1883,6 @@ SYD,Sydney,PNI,"Pohnpei, Micronesia",FM,USD,1299,2026-07-31,https://www.aviasale
 SYD,Sydney,OAK,"Oakland, United States",US,USD,1395,2026-07-18,https://www.aviasales.com/search/SYD1807OAK1?marker=741311
 SYD,Sydney,INU,"Nauru Island, Nauru",NR,USD,2084,2026-07-25,https://www.aviasales.com/search/SYD2507INU1?marker=741311
 SYD,Sydney,HNM,"Hana, United States",US,USD,5413,2026-07-23,https://www.aviasales.com/search/SYD2307HNM1?marker=741311
-CGK,Jakarta,MRV,"Mineralnye Vody, Russia",RU,USD,489,2026-07-30,https://www.aviasales.com/search/CGK3007MRV1?marker=741311
-CGK,Jakarta,CIT,"Shymkent, Kazakhstan",KZ,USD,492,2026-07-22,https://www.aviasales.com/search/CGK2207CIT1?marker=741311
-CGK,Jakarta,KZN,"Kazan, Russia",RU,USD,499,2026-07-23,https://www.aviasales.com/search/CGK2307KZN1?marker=741311
 CGK,Jakarta,EVN,"Yerevan, Armenia",AM,USD,501,2026-07-24,https://www.aviasales.com/search/CGK2407EVN1?marker=741311
 CGK,Jakarta,CNS,"Cairns, Australia",AU,USD,509,2026-07-19,https://www.aviasales.com/search/CGK1907CNS1?marker=741311
 CGK,Jakarta,AER,"Adler/Sochi, Russia",RU,USD,512,2026-07-30,https://www.aviasales.com/search/CGK3007AER1?marker=741311
@@ -2026,8 +1909,6 @@ CGK,Jakarta,SWF,"Newburgh, United States",US,USD,927,2026-07-28,https://www.avia
 CGK,Jakarta,ONT,"Ontario, United States",US,USD,967,2026-07-24,https://www.aviasales.com/search/CGK2407ONT1?marker=741311
 CGK,Jakarta,GRU,"Sao Paulo, Brazil",BR,USD,1005,2026-07-20,https://www.aviasales.com/search/CGK2007GRU1?t=LA17845530001784694900002965CGKKULTFUFRAGRU_8e248261dbb6135ea92d2f9161adecbf_78389&search_date=16072026&expected_price_uuid=019f6a9f-1c5a-8030-20f6-d9bdac4b31e0&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=hdwaUPRlTgGszYyB3ekSig&origin_airports=0&destination_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=1005&marker=741311
 CGK,Jakarta,SAO,"Sao Paulo, Brazil",BR,USD,1016,2026-07-20,https://www.aviasales.com/search/CGK2007SAO1?marker=741311
-MEX,Mexico City,MAD,"Madrid, Spain",ES,USD,490,2026-07-27,https://www.aviasales.com/search/MEX2707MAD1?marker=741311
-MEX,Mexico City,FRA,"Frankfurt, Germany",DE,USD,496,2026-07-18,https://www.aviasales.com/search/MEX1807FRA1?marker=741311
 MEX,Mexico City,RIO,"Rio de Janeiro, Brazil",BR,USD,504,2026-07-31,https://www.aviasales.com/search/MEX3107RIO1?marker=741311
 MEX,Mexico City,TYO,"Tokyo, Japan",JP,USD,511,2026-07-23,https://www.aviasales.com/search/MEX2307TYO1?marker=741311
 MEX,Mexico City,IQT,"Iquitos, Peru",PE,USD,524,2026-07-17,https://www.aviasales.com/search/MEX1707IQT1?marker=741311
@@ -2092,7 +1973,6 @@ MEX,Mexico City,IKT,"Irkutsk, Russia",RU,USD,1511,2026-07-17,https://www.aviasal
 MEX,Mexico City,WLG,"Wellington, New Zealand",NZ,USD,1636,2026-07-22,https://www.aviasales.com/search/MEX2207WLG1?marker=741311
 MEX,Mexico City,FUO,"Foshan, China",CN,USD,1741,2026-07-25,https://www.aviasales.com/search/MEX2507FUO1?marker=741311
 MEX,Mexico City,UUD,"Ulan-Ude, Russia",RU,USD,1759,2026-07-19,https://www.aviasales.com/search/MEX1907UUD1?marker=741311
-AKL,Auckland,BOB,"Bora Bora, French Polynesia",PF,USD,493,2026-07-20,https://www.aviasales.com/search/AKL2007BOB1?marker=741311
 AKL,Auckland,ALA,"Almaty, Kazakhstan",KZ,USD,509,2026-07-23,https://www.aviasales.com/search/AKL2307ALA1?marker=741311
 AKL,Auckland,YVR,"Vancouver, Canada",CA,USD,529,2026-07-27,https://www.aviasales.com/search/AKL2707YVR1?marker=741311
 AKL,Auckland,LAX,"Los Angeles, United States",US,USD,582,2026-07-31,https://www.aviasales.com/search/AKL3107LAX1?marker=741311
@@ -2129,7 +2009,6 @@ AKL,Auckland,CEK,"Chelyabinsk, Russia",RU,USD,993,2026-07-18,https://www.aviasal
 AKL,Auckland,UUS,"Yuzhno-Sakhalinsk, Russia",RU,USD,1000,2026-07-22,https://www.aviasales.com/search/AKL2207UUS1?marker=741311
 AKL,Auckland,SWF,"Newburgh, United States",US,USD,1045,2026-07-31,https://www.aviasales.com/search/AKL3107SWF1?marker=741311
 AKL,Auckland,BNN,"Bronnoysund, Norway",NO,USD,1296,2026-07-30,https://www.aviasales.com/search/AKL3007BNN1?marker=741311
-MEL,Melbourne,BCN,"Barcelona, Spain",ES,USD,498,2026-07-31,https://www.aviasales.com/search/MEL3107BCN1?marker=741311
 MEL,Melbourne,FCO,"Rome, Italy",IT,USD,501,2026-07-26,https://www.aviasales.com/search/MEL2607FCO1?t=MU17851014001785179400001780MELPVGFCO_428aa1e31b77bc58062e9c3630a4e256_38616&search_date=11072026&expected_price_uuid=019f536f-70f6-8030-68c9-bfc973e0f3d7&static_fare_key=TY%7CP0%7CH1%7CL1_2_46%7CCH1%7CR0%7CTBC1&itinerary_key=B2ZMSMr-xmx6OcTl-WX50g&destination_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=501&marker=741311
 MEL,Melbourne,IST,"Istanbul, Turkiye",TR,USD,507,2026-07-25,https://www.aviasales.com/search/MEL2507IST1?marker=741311
 MEL,Melbourne,ROM,"Rome, Italy",IT,USD,507,2026-07-26,https://www.aviasales.com/search/MEL2607ROM1?marker=741311
@@ -2169,9 +2048,6 @@ MEL,Melbourne,SWF,"Newburgh, United States",US,USD,1207,2026-07-27,https://www.a
 MEL,Melbourne,LIM,"Lima, Peru",PE,USD,1222,2026-07-23,https://www.aviasales.com/search/MEL2307LIM1?marker=741311
 MEL,Melbourne,OAK,"Oakland, United States",US,USD,1246,2026-07-26,https://www.aviasales.com/search/MEL2607OAK1?marker=741311
 MEL,Melbourne,SJC,"San Jose, United States",US,USD,1332,2026-07-26,https://www.aviasales.com/search/MEL2607SJC1?marker=741311
-GRU,Sao Paulo,PAR,"Paris, France",FR,USD,491,2026-07-22,https://www.aviasales.com/search/GRU2207PAR1?marker=741311
-GRU,Sao Paulo,GDN,"Gdansk, Poland",PL,USD,491,2026-07-27,https://www.aviasales.com/search/GRU2707GDN1?marker=741311
-GRU,Sao Paulo,BEG,"Belgrade, Serbia",RS,USD,499,2026-07-22,https://www.aviasales.com/search/GRU2207BEG1?marker=741311
 GRU,Sao Paulo,FRA,"Frankfurt, Germany",DE,USD,505,2026-07-27,https://www.aviasales.com/search/GRU2707FRA1?marker=741311
 GRU,Sao Paulo,ZRH,"Zurich, Switzerland",CH,USD,505,2026-07-26,https://www.aviasales.com/search/GRU2607ZRH1?marker=741311
 GRU,Sao Paulo,ATM,"Altamira, Brazil",BR,USD,518,2026-07-26,https://www.aviasales.com/search/GRU2607ATM1?marker=741311
@@ -2258,7 +2134,6 @@ GRU,Sao Paulo,BNE,"Brisbane, Australia",AU,USD,1288,2026-07-27,https://www.avias
 GRU,Sao Paulo,IKT,"Irkutsk, Russia",RU,USD,1338,2026-07-21,https://www.aviasales.com/search/GRU2107IKT1?marker=741311
 GRU,Sao Paulo,LEC,"Lencois, Brazil",BR,USD,1368,2026-07-19,https://www.aviasales.com/search/GRU1907LEC1?marker=741311
 GRU,Sao Paulo,OGL,"Georgetown, Guyana",GY,USD,2256,2026-07-17,https://www.aviasales.com/search/GRU1707OGL1?marker=741311
-EZE,Buenos Aires,BSB,"Brasilia, Brazil",BR,USD,492,2026-07-23,https://www.aviasales.com/search/EZE2307BSB1?marker=741311
 EZE,Buenos Aires,SAP,"San Pedro Sula, Honduras",HN,USD,517,2026-07-30,https://www.aviasales.com/search/EZE3007SAP1?marker=741311
 EZE,Buenos Aires,VIX,"Vitoria, Brazil",BR,USD,523,2026-07-17,https://www.aviasales.com/search/EZE1707VIX1?marker=741311
 EZE,Buenos Aires,FLL,"Fort Lauderdale, United States",US,USD,524,2026-07-24,https://www.aviasales.com/search/EZE2407FLL1?marker=741311
@@ -2375,7 +2250,6 @@ EZE,Buenos Aires,KJA,"Krasnoyarsk, Russia",RU,USD,1836,2026-07-21,https://www.av
 EZE,Buenos Aires,VVO,"Vladivostok, Russia",RU,USD,1851,2026-07-22,https://www.aviasales.com/search/EZE2207VVO1?marker=741311
 EZE,Buenos Aires,WUS,"Wuyishan, China",CN,USD,2452,2026-07-17,https://www.aviasales.com/search/EZE1707WUS1?marker=741311
 EZE,Buenos Aires,GRV,"Groznyy, Russia",RU,USD,2653,2026-07-20,https://www.aviasales.com/search/EZE2007GRV1?marker=741311
-BOG,Bogota,BSB,"Brasilia, Brazil",BR,USD,495,2026-07-31,https://www.aviasales.com/search/BOG3107BSB1?marker=741311
 BOG,Bogota,PHL,"Philadelphia, United States",US,USD,502,2026-07-25,https://www.aviasales.com/search/BOG2507PHL1?marker=741311
 BOG,Bogota,ASU,"Asuncion, Paraguay",PY,USD,505,2026-07-18,https://www.aviasales.com/search/BOG1807ASU1?marker=741311
 BOG,Bogota,MIL,"Milan, Italy",IT,USD,516,2026-07-27,https://www.aviasales.com/search/BOG2707MIL1?marker=741311
@@ -2505,7 +2379,6 @@ JNB,Johannesburg,UUS,"Yuzhno-Sakhalinsk, Russia",RU,USD,837,2026-07-18,https://w
 JNB,Johannesburg,ABA,"Abakan, Russia",RU,USD,839,2026-07-25,https://www.aviasales.com/search/JNB2507ABA1?marker=741311
 JNB,Johannesburg,RIO,"Rio de Janeiro, Brazil",BR,USD,1012,2026-07-22,https://www.aviasales.com/search/JNB2207RIO1?marker=741311
 JNB,Johannesburg,BUE,"Buenos Aires, Argentina",AR,USD,1016,2026-07-23,https://www.aviasales.com/search/JNB2307BUE1?marker=741311
-AYT,Antalya,ZNZ,"Zanzibar, Tanzania",TZ,USD,493,2026-07-28,https://www.aviasales.com/search/AYT2807ZNZ1?marker=741311
 AYT,Antalya,KBV,"Krabi, Thailand",TH,USD,508,2026-07-31,https://www.aviasales.com/search/AYT3107KBV1?marker=741311
 AYT,Antalya,TYO,"Tokyo, Japan",JP,USD,515,2026-07-21,https://www.aviasales.com/search/AYT2107TYO1?marker=741311
 AYT,Antalya,SEZ,"Mahe Island, Seychelles",SC,USD,533,2026-07-22,https://www.aviasales.com/search/AYT2207SEZ1?marker=741311
@@ -2531,10 +2404,6 @@ AYT,Antalya,BOG,"Bogota, Colombia",CO,USD,977,2026-07-18,https://www.aviasales.c
 AYT,Antalya,GRU,"Sao Paulo, Brazil",BR,USD,988,2026-07-21,https://www.aviasales.com/search/AYT2107GRU1?t=LA17846379001784742600002105AYTGVAMADGRU_8cf5ea45fa03b879126aada34d05a10d_77467&search_date=17072026&expected_price_uuid=019f7034-d0ae-8030-6ffe-70468224d743&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=BwhlhyXR-0IGotlkwVA9sQ&destination_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=988&marker=741311
 AYT,Antalya,LAX,"Los Angeles, United States",US,USD,1003,2026-07-31,https://www.aviasales.com/search/AYT3107LAX1?marker=741311
 AYT,Antalya,GOI,"Goa, India",IN,USD,1100,2026-07-17,https://www.aviasales.com/search/AYT1707GOI1?marker=741311
-CMN,Casablanca,URA,"Oral, Kazakhstan",KZ,USD,493,2026-07-30,https://www.aviasales.com/search/CMN3007URA1?marker=741311
-CMN,Casablanca,CEE,"Cherepovets, Russia",RU,USD,494,2026-07-21,https://www.aviasales.com/search/CMN2107CEE1?marker=741311
-CMN,Casablanca,SCO,"Aktau, Kazakhstan",KZ,USD,498,2026-07-18,https://www.aviasales.com/search/CMN1807SCO1?marker=741311
-CMN,Casablanca,BJS,"Beijing, China",CN,USD,499,2026-07-20,https://www.aviasales.com/search/CMN2007BJS1?marker=741311
 CMN,Casablanca,RAI,"Praia, Cape Verde",CV,USD,503,2026-07-23,https://www.aviasales.com/search/CMN2307RAI1?marker=741311
 CMN,Casablanca,DYU,"Dushanbe, Tajikistan",TJ,USD,510,2026-07-22,https://www.aviasales.com/search/CMN2207DYU1?marker=741311
 CMN,Casablanca,KGL,"Kigali, Rwanda",RW,USD,513,2026-07-26,https://www.aviasales.com/search/CMN2607KGL1?marker=741311
@@ -2601,7 +2470,6 @@ CMN,Casablanca,FLN,"Florianopolis, Brazil",BR,USD,1102,2026-07-31,https://www.av
 CMN,Casablanca,BUE,"Buenos Aires, Argentina",AR,USD,1164,2026-07-27,https://www.aviasales.com/search/CMN2707BUE1?marker=741311
 CMN,Casablanca,SCL,"Santiago, Chile",CL,USD,1233,2026-07-24,https://www.aviasales.com/search/CMN2407SCL1?marker=741311
 CMN,Casablanca,LGB,"Long Beach, United States",US,USD,1903,2026-07-21,https://www.aviasales.com/search/CMN2107LGB1?marker=741311
-DLM,Dalaman,DAD,"Da Nang, Vietnam",VN,USD,491,2026-07-24,https://www.aviasales.com/search/DLM2407DAD1?marker=741311
 DLM,Dalaman,HKG,"Hong Kong, Hong Kong",HK,USD,512,2026-07-20,https://www.aviasales.com/search/DLM2007HKG1?marker=741311
 DLM,Dalaman,VVO,"Vladivostok, Russia",RU,USD,517,2026-07-28,https://www.aviasales.com/search/DLM2807VVO1?marker=741311
 DLM,Dalaman,TYO,"Tokyo, Japan",JP,USD,536,2026-07-22,https://www.aviasales.com/search/DLM2207TYO1?marker=741311
@@ -2664,7 +2532,6 @@ NBO,Nairobi,AKL,"Auckland, New Zealand",NZ,USD,1128,2026-07-18,https://www.avias
 NBO,Nairobi,BOG,"Bogota, Colombia",CO,USD,1218,2026-07-21,https://www.aviasales.com/search/NBO2107BOG1?marker=741311
 NBO,Nairobi,BNE,"Brisbane, Australia",AU,USD,1382,2026-07-17,https://www.aviasales.com/search/NBO1707BNE1?marker=741311
 NBO,Nairobi,HAV,"Havana, Cuba",CU,USD,1614,2026-07-21,https://www.aviasales.com/search/NBO2107HAV1?marker=741311
-BJV,Bodrum,SUI,"Sukhumi, Abkhazia",AB,USD,497,2026-07-19,https://www.aviasales.com/search/BJV1907SUI1?marker=741311
 BJV,Bodrum,HKG,"Hong Kong, Hong Kong",HK,USD,535,2026-07-26,https://www.aviasales.com/search/BJV2607HKG1?marker=741311
 BJV,Bodrum,CAN,"Guangzhou, China",CN,USD,547,2026-07-19,https://www.aviasales.com/search/BJV1907CAN1?marker=741311
 BJV,Bodrum,ASB,"Ashgabat, Turkmenistan",TM,USD,565,2026-07-20,https://www.aviasales.com/search/BJV2007ASB1?marker=741311
@@ -2678,9 +2545,6 @@ BJV,Bodrum,LAX,"Los Angeles, United States",US,USD,866,2026-07-23,https://www.av
 BJV,Bodrum,VLN,"Valencia, Venezuela",VE,USD,935,2026-07-22,https://www.aviasales.com/search/BJV2207VLN1?marker=741311
 BJV,Bodrum,BUE,"Buenos Aires, Argentina",AR,USD,984,2026-07-20,https://www.aviasales.com/search/BJV2007BUE1?marker=741311
 BJV,Bodrum,SAO,"Sao Paulo, Brazil",BR,USD,1182,2026-07-17,https://www.aviasales.com/search/BJV1707SAO1?marker=741311
-VCE,Venice,TJM,"Tyumen, Russia",RU,USD,490,2026-07-22,https://www.aviasales.com/search/VCE2207TJM1?marker=741311
-VCE,Venice,OUA,"Ouagadougou, Burkina Faso",BF,USD,495,2026-07-28,https://www.aviasales.com/search/VCE2807OUA1?marker=741311
-VCE,Venice,GOJ,"Nizhniy Novgorod, Russia",RU,USD,497,2026-07-30,https://www.aviasales.com/search/VCE3007GOJ1?marker=741311
 VCE,Venice,GOI,"Goa, India",IN,USD,500,2026-07-30,https://www.aviasales.com/search/VCE3007GOI1?marker=741311
 VCE,Venice,KUL,"Kuala Lumpur, Malaysia",MY,USD,505,2026-07-29,https://www.aviasales.com/search/VCE2907KUL1?marker=741311
 VCE,Venice,KGD,"Kaliningrad, Russia",RU,USD,508,2026-07-24,https://www.aviasales.com/search/VCE2407KGD1?marker=741311
@@ -2719,7 +2583,6 @@ VCE,Venice,RIO,"Rio de Janeiro, Brazil",BR,USD,1225,2026-07-24,https://www.avias
 VCE,Venice,FLN,"Florianopolis, Brazil",BR,USD,1269,2026-07-24,https://www.aviasales.com/search/VCE2407FLN1?marker=741311
 VCE,Venice,ART,"Watertown, United States",US,USD,1318,2026-07-29,https://www.aviasales.com/search/VCE2907ART1?marker=741311
 VCE,Venice,CLO,"Cali, Colombia",CO,USD,1447,2026-07-17,https://www.aviasales.com/search/VCE1707CLO1?marker=741311
-NAP,Naples,GRO,"Girona, Spain",ES,USD,498,2026-07-24,https://www.aviasales.com/search/NAP2407GRO1?marker=741311
 NAP,Naples,SCW,"Syktyvkar, Russia",RU,USD,503,2026-07-27,https://www.aviasales.com/search/NAP2707SCW1?marker=741311
 NAP,Naples,PDV,"Plovdiv, Bulgaria",BG,USD,505,2026-07-23,https://www.aviasales.com/search/NAP2307PDV1?marker=741311
 NAP,Naples,KUN,"Kaunas, Lithuania",LT,USD,515,2026-07-19,https://www.aviasales.com/search/NAP1907KUN1?marker=741311
@@ -2751,8 +2614,6 @@ DBV,Dubrovnik,HTA,"Chita, Russia",RU,USD,803,2026-07-26,https://www.aviasales.co
 DBV,Dubrovnik,DFW,"Dallas, United States",US,USD,858,2026-07-27,https://www.aviasales.com/search/DBV2707DFW1?marker=741311
 DBV,Dubrovnik,KLF,"Kaluga, Russia",RU,USD,1104,2026-07-26,https://www.aviasales.com/search/DBV2607KLF1?marker=741311
 DBV,Dubrovnik,IKT,"Irkutsk, Russia",RU,USD,1270,2026-07-20,https://www.aviasales.com/search/DBV2007IKT1?marker=741311
-SPU,Split,NYC,"New York, United States",US,USD,489,2026-07-21,https://www.aviasales.com/search/SPU2107NYC1?marker=741311
-SPU,Split,MSQ,"Minsk, Belarus",BY,USD,490,2026-07-22,https://www.aviasales.com/search/SPU2207MSQ1?marker=741311
 SPU,Split,NQZ,"Astana, Kazakhstan",KZ,USD,520,2026-07-23,https://www.aviasales.com/search/SPU2307NQZ1?marker=741311
 SPU,Split,BJS,"Beijing, China",CN,USD,603,2026-07-19,https://www.aviasales.com/search/SPU1907BJS1?marker=741311
 SPU,Split,ASF,"Astrakhan, Russia",RU,USD,609,2026-07-23,https://www.aviasales.com/search/SPU2307ASF1?marker=741311
@@ -2766,9 +2627,6 @@ SPU,Split,AGB,"Augsburg, Germany",DE,USD,935,2026-07-18,https://www.aviasales.co
 SPU,Split,VVO,"Vladivostok, Russia",RU,USD,943,2026-07-20,https://www.aviasales.com/search/SPU2007VVO1?marker=741311
 SPU,Split,WDH,"Windhoek, Namibia",NA,USD,1165,2026-07-18,https://www.aviasales.com/search/SPU1807WDH1?marker=741311
 SPU,Split,GRO,"Girona, Spain",ES,USD,2636,2026-07-20,https://www.aviasales.com/search/SPU2007GRO1?marker=741311
-NCE,Nice,MSQ,"Minsk, Belarus",BY,USD,489,2026-07-31,https://www.aviasales.com/search/NCE3107MSQ1?marker=741311
-NCE,Nice,ICN,"Seoul, South Korea",KR,USD,491,2026-07-27,https://www.aviasales.com/search/NCE2707ICN1?t=ET17851680001785340800002460NCEATHADDICN_7d9229fd9592dbbbb89b6264d248e352_38313&search_date=16072026&expected_price_uuid=019f6a9a-bc4d-8030-a9fa-aac8d559f3e3&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=z5OA95EOE_6KGweH_h3pWA&destination_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=491&marker=741311
-NCE,Nice,SEL,"Seoul, South Korea",KR,USD,497,2026-07-27,https://www.aviasales.com/search/NCE2707SEL1?marker=741311
 NCE,Nice,VOG,"Volgograd, Russia",RU,USD,501,2026-07-19,https://www.aviasales.com/search/NCE1907VOG1?marker=741311
 NCE,Nice,GOJ,"Nizhniy Novgorod, Russia",RU,USD,512,2026-07-21,https://www.aviasales.com/search/NCE2107GOJ1?marker=741311
 NCE,Nice,SGN,"Ho Chi Minh City, Vietnam",VN,USD,525,2026-07-29,https://www.aviasales.com/search/NCE2907SGN1?marker=741311
@@ -2792,7 +2650,6 @@ NCE,Nice,MIA,"Miami, United States",US,USD,831,2026-07-19,https://www.aviasales.
 NCE,Nice,MEX,"Mexico City, Mexico",MX,USD,906,2026-07-18,https://www.aviasales.com/search/NCE1807MEX1?marker=741311
 NCE,Nice,BNA,"Nashville, United States",US,USD,1059,2026-07-18,https://www.aviasales.com/search/NCE1807BNA1?marker=741311
 NCE,Nice,BOG,"Bogota, Colombia",CO,USD,1227,2026-07-17,https://www.aviasales.com/search/NCE1707BOG1?marker=741311
-AGP,Malaga,CEK,"Chelyabinsk, Russia",RU,USD,493,2026-07-30,https://www.aviasales.com/search/AGP3007CEK1?marker=741311
 AGP,Malaga,JFK,"New York, United States",US,USD,507,2026-07-24,https://www.aviasales.com/search/AGP2407JFK1?t=N017848851001784932200001145AGPFCOJFK_dfc43c7dfd0c89924755df195db7f316_39280&search_date=15072026&expected_price_uuid=019f6828-0b5b-8030-26d1-9f380cfb80b4&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=10sneM-CTG5M_oq5V2giFQ&destination_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=507&marker=741311
 AGP,Malaga,BKK,"Bangkok, Thailand",TH,USD,508,2026-07-19,https://www.aviasales.com/search/AGP1907BKK1?marker=741311
 AGP,Malaga,NYC,"New York, United States",US,USD,513,2026-07-24,https://www.aviasales.com/search/AGP2407NYC1?marker=741311
@@ -2862,8 +2719,6 @@ PMI,Palma de Mallorca,GRU,"Sao Paulo, Brazil",BR,USD,954,2026-07-28,https://www.
 PMI,Palma de Mallorca,SAO,"Sao Paulo, Brazil",BR,USD,965,2026-07-28,https://www.aviasales.com/search/PMI2807SAO1?marker=741311
 PMI,Palma de Mallorca,FLL,"Fort Lauderdale, United States",US,USD,1013,2026-07-19,https://www.aviasales.com/search/PMI1907FLL1?marker=741311
 PMI,Palma de Mallorca,RIO,"Rio de Janeiro, Brazil",BR,USD,1109,2026-07-17,https://www.aviasales.com/search/PMI1707RIO1?marker=741311
-OPO,Porto,YYJ,"Victoria, Canada",CA,USD,491,2026-07-21,https://www.aviasales.com/search/OPO2107YYJ1?marker=741311
-OPO,Porto,DLE,"Dole, France",FR,USD,495,2026-07-17,https://www.aviasales.com/search/OPO1707DLE1?marker=741311
 OPO,Porto,JFK,"New York, United States",US,USD,508,2026-07-21,https://www.aviasales.com/search/OPO2107JFK1?t=N017846451001784759400002205OPOFCOJFK_3be4931d3c00f16082e9440ae9941420_39035&search_date=13072026&expected_price_uuid=019f5c64-26da-8030-6a83-6ff3746f08d1&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=qBMLcYJnRsjKuNRe6cbuZA&destination_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=508&marker=741311
 OPO,Porto,NYC,"New York, United States",US,USD,508,2026-07-22,https://www.aviasales.com/search/OPO2207NYC1?marker=741311
 OPO,Porto,EBU,"St Etienne, France",FR,USD,510,2026-07-18,https://www.aviasales.com/search/OPO1807EBU1?marker=741311
@@ -2897,13 +2752,10 @@ OPO,Porto,SCL,"Santiago, Chile",CL,USD,1015,2026-07-21,https://www.aviasales.com
 OPO,Porto,VXE,"Sao Vicente, Cape Verde",CV,USD,1058,2026-07-17,https://www.aviasales.com/search/OPO1707VXE1?marker=741311
 OPO,Porto,VIX,"Vitoria, Brazil",BR,USD,1130,2026-07-30,https://www.aviasales.com/search/OPO3007VIX1?marker=741311
 OPO,Porto,RIO,"Rio de Janeiro, Brazil",BR,USD,1170,2026-07-17,https://www.aviasales.com/search/OPO1707RIO1?marker=741311
-IBZ,Ibiza,HAD,"Halmstad, Sweden",SE,USD,493,2026-07-19,https://www.aviasales.com/search/IBZ1907HAD1?marker=741311
 IBZ,Ibiza,AGB,"Augsburg, Germany",DE,USD,517,2026-07-20,https://www.aviasales.com/search/IBZ2007AGB1?marker=741311
 IBZ,Ibiza,SVX,"Yekaterinburg, Russia",RU,USD,585,2026-07-27,https://www.aviasales.com/search/IBZ2707SVX1?marker=741311
 IBZ,Ibiza,MCX,"Makhachkala, Russia",RU,USD,837,2026-07-17,https://www.aviasales.com/search/IBZ1707MCX1?marker=741311
 IBZ,Ibiza,VVO,"Vladivostok, Russia",RU,USD,1514,2026-07-17,https://www.aviasales.com/search/IBZ1707VVO1?marker=741311
-SKG,Thessaloniki,KGD,"Kaliningrad, Russia",RU,USD,491,2026-07-23,https://www.aviasales.com/search/SKG2307KGD1?marker=741311
-SKG,Thessaloniki,OVB,"Novosibirsk, Russia",RU,USD,492,2026-07-31,https://www.aviasales.com/search/SKG3107OVB1?marker=741311
 SKG,Thessaloniki,NHA,"Nha Trang, Vietnam",VN,USD,506,2026-07-24,https://www.aviasales.com/search/SKG2407NHA1?marker=741311
 SKG,Thessaloniki,FUK,"Fukuoka, Japan",JP,USD,518,2026-07-29,https://www.aviasales.com/search/SKG2907FUK1?marker=741311
 SKG,Thessaloniki,BJS,"Beijing, China",CN,USD,521,2026-07-30,https://www.aviasales.com/search/SKG3007BJS1?marker=741311
@@ -2936,11 +2788,9 @@ JMK,Mykonos,IAH,"Houston, United States",US,USD,906,2026-07-18,https://www.avias
 JMK,Mykonos,HOU,"Houston, United States",US,USD,916,2026-07-18,https://www.aviasales.com/search/JMK1807HOU1?marker=741311
 JMK,Mykonos,MIA,"Miami, United States",US,USD,931,2026-07-20,https://www.aviasales.com/search/JMK2007MIA1?marker=741311
 JMK,Mykonos,FLL,"Fort Lauderdale, United States",US,USD,1077,2026-07-20,https://www.aviasales.com/search/JMK2007FLL1?marker=741311
-JTR,Santorini,URA,"Oral, Kazakhstan",KZ,USD,499,2026-07-18,https://www.aviasales.com/search/JTR1807URA1?marker=741311
 JTR,Santorini,SVX,"Yekaterinburg, Russia",RU,USD,536,2026-07-22,https://www.aviasales.com/search/JTR2207SVX1?marker=741311
 JTR,Santorini,KUF,"Samara, Russia",RU,USD,559,2026-07-18,https://www.aviasales.com/search/JTR1807KUF1?marker=741311
 JTR,Santorini,TJM,"Tyumen, Russia",RU,USD,559,2026-07-27,https://www.aviasales.com/search/JTR2707TJM1?marker=741311
-HER,Heraklion,AGB,"Augsburg, Germany",DE,USD,494,2026-07-27,https://www.aviasales.com/search/HER2707AGB1?marker=741311
 HER,Heraklion,CEK,"Chelyabinsk, Russia",RU,USD,504,2026-07-31,https://www.aviasales.com/search/HER3107CEK1?marker=741311
 HER,Heraklion,EBB,"Entebbe, Uganda",UG,USD,587,2026-07-18,https://www.aviasales.com/search/HER1807EBB1?marker=741311
 HER,Heraklion,DPS,"Denpasar (Bali), Indonesia",ID,USD,652,2026-07-25,https://www.aviasales.com/search/HER2507DPS1?marker=741311
@@ -2954,8 +2804,6 @@ RHO,Rhodes,GRV,"Groznyy, Russia",RU,USD,1342,2026-07-30,https://www.aviasales.co
 RHO,Rhodes,IGT,"Magas, Russia",RU,USD,1342,2026-07-29,https://www.aviasales.com/search/RHO2907IGT1?marker=741311
 RHO,Rhodes,OGZ,"Vladikavkaz, Russia",RU,USD,1400,2026-07-30,https://www.aviasales.com/search/RHO3007OGZ1?marker=741311
 RHO,Rhodes,ONT,"Ontario, United States",US,USD,1520,2026-07-29,https://www.aviasales.com/search/RHO2907ONT1?marker=741311
-HRG,Hurghada,BAX,"Barnaul, Russia",RU,USD,492,2026-07-21,https://www.aviasales.com/search/HRG2107BAX1?marker=741311
-HRG,Hurghada,DYU,"Dushanbe, Tajikistan",TJ,USD,499,2026-07-31,https://www.aviasales.com/search/HRG3107DYU1?marker=741311
 HRG,Hurghada,HKT,"Phuket, Thailand",TH,USD,511,2026-07-19,https://www.aviasales.com/search/HRG1907HKT1?marker=741311
 HRG,Hurghada,KJA,"Krasnoyarsk, Russia",RU,USD,526,2026-07-29,https://www.aviasales.com/search/HRG2907KJA1?marker=741311
 HRG,Hurghada,PES,"Petrozavodsk, Russia",RU,USD,535,2026-07-23,https://www.aviasales.com/search/HRG2307PES1?marker=741311
@@ -2981,7 +2829,6 @@ HRG,Hurghada,COU,"Columbia, United States",US,USD,957,2026-07-26,https://www.avi
 HRG,Hurghada,GYE,"Guayaquil, Ecuador",EC,USD,1097,2026-07-26,https://www.aviasales.com/search/HRG2607GYE1?marker=741311
 HRG,Hurghada,ASU,"Asuncion, Paraguay",PY,USD,1322,2026-07-22,https://www.aviasales.com/search/HRG2207ASU1?marker=741311
 HRG,Hurghada,CUE,"Cuenca, Ecuador",EC,USD,1385,2026-07-31,https://www.aviasales.com/search/HRG3107CUE1?marker=741311
-SSH,Sharm el-Sheikh,HKT,"Phuket, Thailand",TH,USD,493,2026-07-19,https://www.aviasales.com/search/SSH1907HKT1?marker=741311
 SSH,Sharm el-Sheikh,SHA,"Shanghai, China",CN,USD,504,2026-07-29,https://www.aviasales.com/search/SSH2907SHA1?marker=741311
 SSH,Sharm el-Sheikh,DBB,"Dabaa City, Egypt",EG,USD,506,2026-07-29,https://www.aviasales.com/search/SSH2907DBB1?marker=741311
 SSH,Sharm el-Sheikh,CTU,"Chengdu, China",CN,USD,509,2026-07-18,https://www.aviasales.com/search/SSH1807CTU1?marker=741311
@@ -3016,8 +2863,6 @@ SSH,Sharm el-Sheikh,MEX,"Mexico City, Mexico",MX,USD,788,2026-07-18,https://www.
 SSH,Sharm el-Sheikh,LAD,"Luanda, Angola",AO,USD,873,2026-07-21,https://www.aviasales.com/search/SSH2107LAD1?marker=741311
 SSH,Sharm el-Sheikh,LAP,"La Paz, Mexico",MX,USD,958,2026-07-17,https://www.aviasales.com/search/SSH1707LAP1?marker=741311
 SSH,Sharm el-Sheikh,IGU,"Foz do Iguaçu, Brazil",BR,USD,1314,2026-07-22,https://www.aviasales.com/search/SSH2207IGU1?marker=741311
-RAK,Marrakech,ADD,"Addis Ababa, Ethiopia",ET,USD,493,2026-07-20,https://www.aviasales.com/search/RAK2007ADD1?marker=741311
-RAK,Marrakech,IZM,"Izmir, Turkiye",TR,USD,499,2026-07-17,https://www.aviasales.com/search/RAK1707IZM1?marker=741311
 RAK,Marrakech,BJS,"Beijing, China",CN,USD,533,2026-07-25,https://www.aviasales.com/search/RAK2507BJS1?marker=741311
 RAK,Marrakech,HKT,"Phuket, Thailand",TH,USD,567,2026-07-25,https://www.aviasales.com/search/RAK2507HKT1?marker=741311
 RAK,Marrakech,JKT,"Jakarta, Indonesia",ID,USD,570,2026-07-21,https://www.aviasales.com/search/RAK2107JKT1?marker=741311
@@ -3040,11 +2885,6 @@ RAK,Marrakech,NOS,"Nossi-Be, Madagascar",MG,USD,1081,2026-07-31,https://www.avia
 RAK,Marrakech,SWF,"Newburgh, United States",US,USD,1136,2026-07-24,https://www.aviasales.com/search/RAK2407SWF1?marker=741311
 RAK,Marrakech,RIO,"Rio de Janeiro, Brazil",BR,USD,1208,2026-07-29,https://www.aviasales.com/search/RAK2907RIO1?marker=741311
 RAK,Marrakech,GNJ,"Ganja, Azerbaijan",AZ,USD,1319,2026-07-29,https://www.aviasales.com/search/RAK2907GNJ1?marker=741311
-CPT,Cape Town,BAK,"Baku, Azerbaijan",AZ,USD,490,2026-07-23,https://www.aviasales.com/search/CPT2307BAK1?marker=741311
-CPT,Cape Town,NQZ,"Astana, Kazakhstan",KZ,USD,496,2026-07-21,https://www.aviasales.com/search/CPT2107NQZ1?marker=741311
-CPT,Cape Town,SHA,"Shanghai, China",CN,USD,497,2026-07-17,https://www.aviasales.com/search/CPT1707SHA1?marker=741311
-CPT,Cape Town,BJM,"Bujumbura, Burundi",BI,USD,498,2026-07-22,https://www.aviasales.com/search/CPT2207BJM1?marker=741311
-CPT,Cape Town,MOW,"Moscow, Russia",RU,USD,499,2026-07-19,https://www.aviasales.com/search/CPT1907MOW1?marker=741311
 CPT,Cape Town,DAC,"Dhaka, Bangladesh",BD,USD,518,2026-07-22,https://www.aviasales.com/search/CPT2207DAC1?marker=741311
 CPT,Cape Town,OVD,"Asturias, Spain",ES,USD,519,2026-07-31,https://www.aviasales.com/search/CPT3107OVD1?marker=741311
 CPT,Cape Town,HKT,"Phuket, Thailand",TH,USD,540,2026-07-24,https://www.aviasales.com/search/CPT2407HKT1?marker=741311
@@ -3084,8 +2924,6 @@ CPT,Cape Town,BUE,"Buenos Aires, Argentina",AR,USD,1121,2026-07-24,https://www.a
 CPT,Cape Town,ASU,"Asuncion, Paraguay",PY,USD,1238,2026-07-22,https://www.aviasales.com/search/CPT2207ASU1?marker=741311
 CPT,Cape Town,SWF,"Newburgh, United States",US,USD,1254,2026-07-19,https://www.aviasales.com/search/CPT1907SWF1?marker=741311
 CPT,Cape Town,IPC,"Easter Island, Chile",CL,USD,1823,2026-07-24,https://www.aviasales.com/search/CPT2407IPC1?marker=741311
-MRU,Mauritius,IST,"Istanbul, Turkiye",TR,USD,493,2026-07-23,https://www.aviasales.com/search/MRU2307IST1?marker=741311
-MRU,Mauritius,BKK,"Bangkok, Thailand",TH,USD,495,2026-07-27,https://www.aviasales.com/search/MRU2707BKK1?marker=741311
 MRU,Mauritius,CMB,"Colombo, Sri Lanka",LK,USD,529,2026-07-23,https://www.aviasales.com/search/MRU2307CMB1?marker=741311
 MRU,Mauritius,DAR,"Dar Es Salaam, Tanzania",TZ,USD,534,2026-07-31,https://www.aviasales.com/search/MRU3107DAR1?marker=741311
 MRU,Mauritius,NCE,"Nice, France",FR,USD,535,2026-07-24,https://www.aviasales.com/search/MRU2407NCE1?marker=741311
@@ -3178,9 +3016,6 @@ ZNZ,Zanzibar,SLU,"Castries, Saint Lucia",LC,USD,1306,2026-07-17,https://www.avia
 ZNZ,Zanzibar,TQO,"Tulum, Mexico",MX,USD,1340,2026-07-17,https://www.aviasales.com/search/ZNZ1707TQO1?marker=741311
 ZNZ,Zanzibar,CUN,"Cancun, Mexico",MX,USD,1382,2026-07-17,https://www.aviasales.com/search/ZNZ1707CUN1?marker=741311
 ZNZ,Zanzibar,FUO,"Foshan, China",CN,USD,1725,2026-07-26,https://www.aviasales.com/search/ZNZ2607FUO1?marker=741311
-SEZ,Seychelles,AMS,"Amsterdam, Netherlands",NL,USD,496,2026-07-21,https://www.aviasales.com/search/SEZ2107AMS1?marker=741311
-SEZ,Seychelles,ATH,"Athens, Greece",GR,USD,496,2026-07-21,https://www.aviasales.com/search/SEZ2107ATH1?marker=741311
-SEZ,Seychelles,MOW,"Moscow, Russia",RU,USD,498,2026-07-22,https://www.aviasales.com/search/SEZ2207MOW1?marker=741311
 SEZ,Seychelles,DLM,"Dalaman, Turkiye",TR,USD,506,2026-07-18,https://www.aviasales.com/search/SEZ1807DLM1?marker=741311
 SEZ,Seychelles,DAD,"Da Nang, Vietnam",VN,USD,507,2026-07-25,https://www.aviasales.com/search/SEZ2507DAD1?marker=741311
 SEZ,Seychelles,BAK,"Baku, Azerbaijan",AZ,USD,510,2026-07-29,https://www.aviasales.com/search/SEZ2907BAK1?marker=741311
@@ -3219,9 +3054,6 @@ SEZ,Seychelles,SYD,"Sydney, Australia",AU,USD,931,2026-07-31,https://www.aviasal
 SEZ,Seychelles,KHV,"Khabarovsk, Russia",RU,USD,978,2026-07-28,https://www.aviasales.com/search/SEZ2807KHV1?marker=741311
 SEZ,Seychelles,SUI,"Sukhumi, Abkhazia",AB,USD,1047,2026-07-29,https://www.aviasales.com/search/SEZ2907SUI1?marker=741311
 SEZ,Seychelles,KGD,"Kaliningrad, Russia",RU,USD,1152,2026-07-17,https://www.aviasales.com/search/SEZ1707KGD1?marker=741311
-MLE,Maldives,MIL,"Milan, Italy",IT,USD,489,2026-07-19,https://www.aviasales.com/search/MLE1907MIL1?marker=741311
-MLE,Maldives,SEZ,"Mahe Island, Seychelles",SC,USD,493,2026-07-29,https://www.aviasales.com/search/MLE2907SEZ1?marker=741311
-MLE,Maldives,LCA,"Larnaca, Cyprus",CY,USD,499,2026-07-22,https://www.aviasales.com/search/MLE2207LCA1?marker=741311
 MLE,Maldives,MOW,"Moscow, Russia",RU,USD,508,2026-07-22,https://www.aviasales.com/search/MLE2207MOW1?marker=741311
 MLE,Maldives,SSH,"Sharm el Sheikh, Egypt",EG,USD,509,2026-07-27,https://www.aviasales.com/search/MLE2707SSH1?marker=741311
 MLE,Maldives,ICN,"Seoul, South Korea",KR,USD,510,2026-07-19,https://www.aviasales.com/search/MLE1907ICN1?t=VJ17844948001784706900003295MLECMBBOMHANICN_9d3c8b24e67540ad2b6910767893c444_39165&search_date=13072026&expected_price_uuid=019f5a18-a5f9-8010-2f7b-478a846f5804&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=yDWSKYwgEZI4WlR5KdqROA&destination_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=510&marker=741311
@@ -3283,7 +3115,6 @@ MLE,Maldives,PER,"Perth, Australia",AU,USD,1412,2026-07-17,https://www.aviasales
 MLE,Maldives,CUN,"Cancun, Mexico",MX,USD,1418,2026-07-25,https://www.aviasales.com/search/MLE2507CUN1?marker=741311
 MLE,Maldives,OAK,"Oakland, United States",US,USD,1532,2026-07-23,https://www.aviasales.com/search/MLE2307OAK1?marker=741311
 MLE,Maldives,BHZ,"Belo Horizonte, Brazil",BR,USD,1569,2026-07-26,https://www.aviasales.com/search/MLE2607BHZ1?marker=741311
-CMB,Colombo,OVB,"Novosibirsk, Russia",RU,USD,493,2026-07-23,https://www.aviasales.com/search/CMB2307OVB1?marker=741311
 CMB,Colombo,VVO,"Vladivostok, Russia",RU,USD,504,2026-07-18,https://www.aviasales.com/search/CMB1807VVO1?marker=741311
 CMB,Colombo,MCX,"Makhachkala, Russia",RU,USD,511,2026-07-29,https://www.aviasales.com/search/CMB2907MCX1?marker=741311
 CMB,Colombo,SVX,"Yekaterinburg, Russia",RU,USD,512,2026-07-18,https://www.aviasales.com/search/CMB1807SVX1?marker=741311
@@ -3311,7 +3142,6 @@ CMB,Colombo,GRU,"Sao Paulo, Brazil",BR,USD,1345,2026-07-30,https://www.aviasales
 CMB,Colombo,SAO,"Sao Paulo, Brazil",BR,USD,1360,2026-07-30,https://www.aviasales.com/search/CMB3007SAO1?marker=741311
 CMB,Colombo,PWE,"Pevek, Russia",RU,USD,1653,2026-07-31,https://www.aviasales.com/search/CMB3107PWE1?marker=741311
 CMB,Colombo,SWF,"Newburgh, United States",US,USD,1808,2026-07-18,https://www.aviasales.com/search/CMB1807SWF1?marker=741311
-KTM,Kathmandu,BAX,"Barnaul, Russia",RU,USD,499,2026-07-21,https://www.aviasales.com/search/KTM2107BAX1?marker=741311
 KTM,Kathmandu,VVO,"Vladivostok, Russia",RU,USD,505,2026-07-25,https://www.aviasales.com/search/KTM2507VVO1?marker=741311
 KTM,Kathmandu,CMN,"Casablanca, Morocco",MA,USD,507,2026-07-24,https://www.aviasales.com/search/KTM2407CMN1?marker=741311
 KTM,Kathmandu,LIS,"Lisbon, Portugal",PT,USD,509,2026-07-26,https://www.aviasales.com/search/KTM2607LIS1?marker=741311
@@ -3335,9 +3165,6 @@ KTM,Kathmandu,POP,"Puerto Plata, Dominican Republic",DO,USD,1220,2026-07-20,http
 KTM,Kathmandu,BOG,"Bogota, Colombia",CO,USD,1268,2026-07-30,https://www.aviasales.com/search/KTM3007BOG1?marker=741311
 KTM,Kathmandu,SWF,"Newburgh, United States",US,USD,1377,2026-07-24,https://www.aviasales.com/search/KTM2407SWF1?marker=741311
 KTM,Kathmandu,DOM,"Dominica, Dominica",DM,USD,1739,2026-07-20,https://www.aviasales.com/search/KTM2007DOM1?marker=741311
-HKT,Phuket,KUT,"Kutaisi, Georgia",GE,USD,493,2026-07-30,https://www.aviasales.com/search/HKT3007KUT1?marker=741311
-HKT,Phuket,BUS,"Batumi, Georgia",GE,USD,497,2026-07-30,https://www.aviasales.com/search/HKT3007BUS1?marker=741311
-HKT,Phuket,TIV,"Tivat, Montenegro",ME,USD,497,2026-07-20,https://www.aviasales.com/search/HKT2007TIV1?marker=741311
 HKT,Phuket,MRV,"Mineralnye Vody, Russia",RU,USD,504,2026-07-25,https://www.aviasales.com/search/HKT2507MRV1?marker=741311
 HKT,Phuket,STW,"Stavropol, Russia",RU,USD,505,2026-07-22,https://www.aviasales.com/search/HKT2207STW1?marker=741311
 HKT,Phuket,TOF,"Tomsk, Russia",RU,USD,505,2026-07-30,https://www.aviasales.com/search/HKT3007TOF1?marker=741311
@@ -3391,10 +3218,6 @@ GOI,Goa,MCX,"Makhachkala, Russia",RU,USD,600,2026-07-27,https://www.aviasales.co
 GOI,Goa,SMS,"Sainte Marie, Madagascar",MG,USD,671,2026-07-22,https://www.aviasales.com/search/GOI2207SMS1?marker=741311
 GOI,Goa,PEZ,"Penza, Russia",RU,USD,766,2026-07-17,https://www.aviasales.com/search/GOI1707PEZ1?marker=741311
 GOI,Goa,YVR,"Vancouver, Canada",CA,USD,862,2026-07-20,https://www.aviasales.com/search/GOI2007YVR1?marker=741311
-DPS,Bali,PMI,"Palma, Spain",ES,USD,492,2026-07-28,https://www.aviasales.com/search/DPS2807PMI1?marker=741311
-DPS,Bali,BOD,"Bordeaux, France",FR,USD,493,2026-07-25,https://www.aviasales.com/search/DPS2507BOD1?marker=741311
-DPS,Bali,BEG,"Belgrade, Serbia",RS,USD,493,2026-07-25,https://www.aviasales.com/search/DPS2507BEG1?marker=741311
-DPS,Bali,AYT,"Antalya, Turkiye",TR,USD,498,2026-07-21,https://www.aviasales.com/search/DPS2107AYT1?marker=741311
 DPS,Bali,BER,"Berlin, Germany",DE,USD,504,2026-07-28,https://www.aviasales.com/search/DPS2807BER1?marker=741311
 DPS,Bali,PRG,"Prague, Czech Republic",CZ,USD,504,2026-07-19,https://www.aviasales.com/search/DPS1907PRG1?marker=741311
 DPS,Bali,RIX,"Riga, Latvia",LV,USD,508,2026-07-21,https://www.aviasales.com/search/DPS2107RIX1?marker=741311
@@ -3499,7 +3322,6 @@ DPS,Bali,PPT,"Papeete, French Polynesia",PF,USD,1185,2026-07-19,https://www.avia
 DPS,Bali,GRU,"Sao Paulo, Brazil",BR,USD,1342,2026-07-21,https://www.aviasales.com/search/DPS2107GRU1?t=ET17846511001784737200002095DPSKULADDGRU_094a24d730e1fdd8308abb657666cd30_102800&search_date=14072026&expected_price_uuid=019f5e08-f0eb-8030-a9dc-e9a9c27bffd3&static_fare_key=TY%7CP1%7CH1%7CL1_2_0%7CCH0%7CR0%7CTBC1&itinerary_key=NLet8LZpS1xkiu9O5knkog&destination_airports=0&expected_price_source=share&expected_price_currency=usd&expected_price=1342&marker=741311
 DPS,Bali,UIO,"Quito, Ecuador",EC,USD,1388,2026-07-24,https://www.aviasales.com/search/DPS2407UIO1?marker=741311
 DPS,Bali,LIM,"Lima, Peru",PE,USD,1458,2026-07-22,https://www.aviasales.com/search/DPS2207LIM1?marker=741311
-DAD,Da Nang,AMS,"Amsterdam, Netherlands",NL,USD,493,2026-07-31,https://www.aviasales.com/search/DAD3107AMS1?marker=741311
 DAD,Da Nang,NOZ,"Novokuznetsk, Russia",RU,USD,503,2026-07-22,https://www.aviasales.com/search/DAD2207NOZ1?marker=741311
 DAD,Da Nang,ULY,"Ulyanovsk, Russia",RU,USD,505,2026-07-29,https://www.aviasales.com/search/DAD2907ULY1?marker=741311
 DAD,Da Nang,CSY,"Cheboksary, Russia",RU,USD,505,2026-07-28,https://www.aviasales.com/search/DAD2807CSY1?marker=741311
@@ -3588,7 +3410,6 @@ ZQN,Queenstown,SJC,"San Jose, United States",US,USD,923,2026-07-27,https://www.a
 ZQN,Queenstown,GVA,"Geneva, Switzerland",CH,USD,995,2026-07-20,https://www.aviasales.com/search/ZQN2007GVA1?marker=741311
 ZQN,Queenstown,OAK,"Oakland, United States",US,USD,1021,2026-07-27,https://www.aviasales.com/search/ZQN2707OAK1?marker=741311
 ZQN,Queenstown,ONT,"Ontario, United States",US,USD,1496,2026-07-21,https://www.aviasales.com/search/ZQN2107ONT1?marker=741311
-CUN,Cancun,LGB,"Long Beach, United States",US,USD,494,2026-07-18,https://www.aviasales.com/search/CUN1807LGB1?marker=741311
 CUN,Cancun,VNO,"Vilnius, Lithuania",LT,USD,514,2026-07-27,https://www.aviasales.com/search/CUN2707VNO1?marker=741311
 CUN,Cancun,MIL,"Milan, Italy",IT,USD,522,2026-07-18,https://www.aviasales.com/search/CUN1807MIL1?marker=741311
 CUN,Cancun,LJU,"Ljubljana, Slovenia",SI,USD,537,2026-07-23,https://www.aviasales.com/search/CUN2307LJU1?marker=741311
