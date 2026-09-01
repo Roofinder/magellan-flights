@@ -3032,8 +3032,30 @@ function homeSearch(e){ e.preventDefault();
   var owEl=document.querySelector('input[name="fs-trip"]:checked'); var oneway=(owEl&&owEl.value==='oneway');
   var travEl=document.getElementById('hs-trav'); var adults=1; if(travEl){ var mt=(travEl.value||'').match(/[0-9]+/); if(mt) adults=Math.max(1,parseInt(mt[0],10)); }
   var emEl=document.getElementById('hs-email'); var em=emEl?emEl.value.trim():'';
+  /* A2b. Subscribe through /api/subscribe, not the hosted Beehiiv URL.
+
+     This used to window.open the hosted page with ?email=, which A3 proved on
+     2026-07-01 does NOT work: Beehiiv's hosted subscribe page ignores URL query
+     params, so the email did not even prefill. Somebody who typed their address
+     here got a popup asking for it again, and no home_airport was ever captured.
+
+     The departure airport is BETTER data than the newsletter form gets, because
+     the newsletter form has to ask and this one already knows: they just told us
+     where they are flying from.
+
+     keepalive is load bearing. The Aviasales redirect fires immediately below,
+     and a normal fetch is cancelled on navigation, so the subscribe would be lost
+     exactly when the search succeeded. */
   var sub=e.target.getAttribute('data-subscribe');
-  if(em && sub){ try{ window.open(sub+(sub.indexOf('?')<0?'?':'&')+'email='+encodeURIComponent(em),'_blank','noopener'); }catch(_){} }
+  if(em){
+    if(fc){ try{ localStorage.setItem('fs_home',JSON.stringify([fc])); }catch(_){} }
+    try{
+      fetch('/api/subscribe',{method:'POST',keepalive:true,
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({email:em,home_airport:fc||''})})
+        .catch(function(){ if(sub){ try{ window.open(sub,'_blank','noopener'); }catch(_){} } });
+    }catch(_){ if(sub){ try{ window.open(sub,'_blank','noopener'); }catch(_){} } }
+  }
   if(fc && tc && fc!==tc){
     var dd=fsDDMM(dep)||fsSoon(21); var path=fc+dd+tc;
     if(!oneway){ path+=(fsDDMM(ret)||fsSoon(28)); }
