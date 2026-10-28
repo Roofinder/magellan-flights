@@ -1,5 +1,14 @@
-# Internal docs — kept in the repo but NOT served on the public site
-SITE-AUDIT.md
-SOCIAL-POSTS.md
-NEWSLETTER-GROWTH.md
-MAGELLAN-ACTION-PLAN.md
+# Build-only and internal files: kept in the repo, never served on the public site.
+# Note: api/ask.js reads winners.json and oneway_index.json, so .json files stay uploaded.
+*.py
+*.csv
+*.md
+__pycache__/
+config.example.json
+.claude/
+.github/
+seo/
+seo-loop/
+social/
+weekly-batch/
+daily-deals/
